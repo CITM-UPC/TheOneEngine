@@ -92,12 +92,23 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="MyGameEditor.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Render.cpp" />
+    <ClCompile Include="TheOneEditor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheOneEngine\TheOneEngine.vcxproj">
       <Project>{0e04f5b4-d4a2-4f7b-b350-a0edcae8a446}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="Defs.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="Module.h" />
+    <ClInclude Include="Render.h" />
+    <ClInclude Include="Test.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

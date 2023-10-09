@@ -12,12 +12,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
-    <ClInclude Include="MyGameEngine.h" />
+    <ClInclude Include="TheOneEngine.h" />
     <ClInclude Include="types.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="MyGameEngine.cpp" />
+    <ClCompile Include="TheOneEngine.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

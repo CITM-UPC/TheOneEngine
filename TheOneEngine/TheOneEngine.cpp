@@ -1,15 +1,17 @@
-#include "MyGameEngine.h"
+#include "TheOneEngine.h"
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
 
 static double angle = 0.0;
 
-void MyGameEngine::step(std::chrono::duration<double> dt) {
+void TheOneEngine::step(std::chrono::duration<double> dt)
+{
     const double angle_vel = 360.0; // 360 degrees per second
 	angle += angle_vel * dt.count();
 }
 
-static void drawAxis() {
+static void drawAxis()
+{
     glLineWidth(4.0);
     glBegin(GL_LINES);
     glColor3ub(255, 0, 0);
@@ -24,12 +26,14 @@ static void drawAxis() {
     glEnd();
 }
 
-static void drawGrid(int grid_size, int grid_step) {
+static void drawGrid(int grid_size, int grid_step)
+{
     glLineWidth(1.0);
     glColor3ub(128, 128, 128);
 
     glBegin(GL_LINES);
-    for (int i = -grid_size; i <= grid_size; i += grid_step) {
+    for (int i = -grid_size; i <= grid_size; i += grid_step)
+    {
         //XY plane
         glVertex2i(i, -grid_size);
         glVertex2i(i,  grid_size);
@@ -45,7 +49,8 @@ static void drawGrid(int grid_size, int grid_step) {
     glEnd();
 }
 
-void MyGameEngine::render(RenderModes renderMode) {
+void TheOneEngine::render(RenderModes renderMode)
+{
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
@@ -62,6 +67,7 @@ void MyGameEngine::render(RenderModes renderMode) {
     }
     
 #pragma region direct draw test
+
     glRotated(angle, 0, 0, 1);
 
     glColor4ub(255, 0, 0, 255);

@@ -5,7 +5,7 @@
 #include "types.h"
 #include "Camera.h"
 
-class MyGameEngine
+class TheOneEngine
 {
 public:
 
