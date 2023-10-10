@@ -21,8 +21,7 @@
 #define SAVE_STATE_FILENAME "save_game.xml"
 
 // Modules
-class Editor;
-class Test;
+class TheOneEditor;
 class Input;
 class Render;
 
@@ -88,10 +87,9 @@ private:
 public:
 
 	// Modules
-	Editor* editor;
+	TheOneEditor* theOneEditor;
 	Input* input;
 	Render* render;
-	Test* test;
 
 
 	bool saveGameRequested;

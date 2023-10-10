@@ -1,7 +1,6 @@
 #include "App.h"
 
-#include "Test.h"
-#include "Render.h"
+#include "TheOneEditor.h"
 
 #include "Defs.h"
 #include "Log.h"
@@ -12,15 +11,15 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	test = new Test();
+	theOneEditor = new TheOneEditor();
 
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(test, true);
+	AddModule(theOneEditor, true);
 
 	// Render last to swap buffer
-	AddModule(render, true);
+	//AddModule(render, true);
 
 }
 
