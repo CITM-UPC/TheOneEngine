@@ -1,21 +1,21 @@
 #include "App.h"
-#include "Render.h"
+#include "Test.h"
 
 #include "Defs.h"
 #include "Log.h"
 
 #define VSYNC true
 
-Render::Render() : Module()
+Test::Test() : Module()
 {
 }
 
 // Destructor
-Render::~Render()
+Test::~Test()
 {}
 
 // Called before render is available
-bool Render::Awake()
+bool Test::Awake()
 {
 	bool ret = true;
 
@@ -25,30 +25,30 @@ bool Render::Awake()
 }
 
 // Called before the first frame
-bool Render::Start()
+bool Test::Start()
 {
 	return true;
 }
 
 // Called each loop iteration
-bool Render::PreUpdate()
+bool Test::PreUpdate()
 {
 	return true;
 }
 
-bool Render::Update(float dt)
+bool Test::Update(float dt)
 {
 
 	return true;
 }
 
-bool Render::PostUpdate()
+bool Test::PostUpdate()
 {
 	return true;
 }
 
 // Called before quitting
-bool Render::CleanUp()
+bool Test::CleanUp()
 {
 	return true;
 }

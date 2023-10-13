@@ -95,7 +95,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClCompile Include="App.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Render.cpp" />
+    <ClCompile Include="Test.cpp" />
     <ClCompile Include="TheOneEditor.cpp" />
   </ItemGroup>
   <ItemGroup>

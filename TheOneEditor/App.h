@@ -15,8 +15,7 @@
 
 
 // Modules
-class Editor;
-class Test;
+class TheOneEditor;
 class Input;
 class Render;
 
@@ -82,7 +81,7 @@ private:
 public:
 
 	// Modules
-	Editor* editor;
+	TheOneEditor* theOneEditor;
 	Input* input;
 	Render* render;
 
