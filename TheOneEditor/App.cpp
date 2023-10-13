@@ -1,6 +1,5 @@
 #include "App.h"
 
-#include "Test.h"
 #include "Render.h"
 
 #include "Defs.h"
@@ -12,15 +11,15 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	test = new Test();
-
+	//test = new Test();
+	render = new Render();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
-	AddModule(test, true);
+	//AddModule(test, true);
 
 	// Render last to swap buffer
-	AddModule(render, true);
+ 	AddModule(render, true);
 
 }
 
@@ -50,21 +49,20 @@ bool App::Awake()
 	//ret = LoadConfig();
 	ret = true;
 
-	/*if (ret == true)
+	if (ret == true)
 	{
-		title = configNode.child("app").child("title").child_value();
+		//title = configNode.child("app").child("title").child_value();
 		
-		maxFrameDuration = configNode.child("app").child("frcap").attribute("value").as_int();
+		//maxFrameDuration = configNode.child("app").child("frcap").attribute("value").as_int();
 	
-		ListItem<Module*>* item;
-		item = modules.start;
-
-		while (item != NULL && ret == true)
+		for (const auto& item : modules)
 		{
-			ret = item->data->Awake();
-			item = item->next;
+			if (item->active == false)
+				continue;
+
+			item->Awake();
 		}
-	}*/
+	}
 
 	//LOG("---------------- Time Awake: %f/n", timer.ReadMSec());
 

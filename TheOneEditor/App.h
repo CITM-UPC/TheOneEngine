@@ -1,12 +1,9 @@
 #ifndef __APP_H__
 #define __APP_H__
 
-//#define IMGUI_IMPL_OPENGL_LOADER_CUSTOM
 
 #include "Module.h"
 #include "Defs.h"
-//#include "PerfTimer.h"
-//#include "Timer.h"
 
 #include <iostream>
 #include <sstream>
@@ -16,9 +13,6 @@
 #include <string>
 #include <list>
 
-
-#define CONFIG_FILENAME		"config.xml"
-#define SAVE_STATE_FILENAME "save_game.xml"
 
 // Modules
 class Editor;
@@ -91,7 +85,6 @@ public:
 	Editor* editor;
 	Input* input;
 	Render* render;
-	Test* test;
 
 
 	bool saveGameRequested;
