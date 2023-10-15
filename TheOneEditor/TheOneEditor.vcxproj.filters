@@ -21,21 +21,15 @@
     <ClCompile Include="App.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TheOneEditor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Test.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.h">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
@@ -44,8 +38,8 @@
     <ClInclude Include="Defs.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="Test.h">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="Module.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

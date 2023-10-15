@@ -15,8 +15,7 @@
 
 
 // Modules
-class TheOneEditor;
-class Input;
+class Window;
 class Render;
 
 using namespace std;
@@ -48,17 +47,12 @@ public:
 	// Exposing some properties for reading
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
-	const char* GetTitle() const;
-	const char* GetOrganization() const;
+
 	uint GetFPS();
 	float GetAverageFPS();
 	float GetDT();
 	float GetTimesSinceStart();
 	uint GetFrameCount();
-
-	// L03: DONE 1: Create methods to control that the real Load and Save happens at the end of the frame
-	void LoadGameRequest();
-	void SaveGameRequest();
 
 
 private:
@@ -81,16 +75,15 @@ private:
 public:
 
 	// Modules
-	TheOneEditor* theOneEditor;
-	Input* input;
+	Window* window;
 	Render* render;
-
 
 	bool saveGameRequested;
 	bool loadGameRequested;
 
 	int musicValue = 100;
 	int sfxValue = 100;
+
 private:
 
 	int argc;
