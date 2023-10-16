@@ -1,9 +1,14 @@
 #include "App.h"
 
 #include "Window.h"
+#include "Input.h"
 
 #include "Defs.h"
 #include "Log.h"
+
+#include "GL/glew.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_opengl.h"
 
 
 // Constructor

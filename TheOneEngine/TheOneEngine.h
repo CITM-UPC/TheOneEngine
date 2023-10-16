@@ -1,9 +1,12 @@
+#ifndef __THE_ONE_ENGINE_H__
+#define __THE_ONE_ENGINE_H__
 #pragma once
 
 #include <chrono>
 
 #include "types.h"
 #include "Camera.h"
+
 
 class TheOneEngine
 {
@@ -17,3 +20,4 @@ public:
 	void render(RenderModes renderMode);
 };
 
+#endif

@@ -1,7 +1,6 @@
 #ifndef __APP_H__
 #define __APP_H__
 
-
 #include "Module.h"
 #include "Defs.h"
 
@@ -16,9 +15,11 @@
 
 // Modules
 class Window;
+class Input;
 class Render;
 
 using namespace std;
+
 class App
 {
 public:
@@ -76,6 +77,7 @@ public:
 
 	// Modules
 	Window* window;
+	Input* input;
 	Render* render;
 
 	bool saveGameRequested;

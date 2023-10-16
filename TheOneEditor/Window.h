@@ -12,13 +12,11 @@
 #include <chrono>
 #include <thread>
 
-#include "GL/glew.h"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_opengl.h"
 
 
-#define WINDOW_WIDTH 720
-#define WINDOW_HEIGHT 560
+
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 720
 
 
 using namespace std;
@@ -84,7 +82,7 @@ public:
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-        auto window = SDL_CreateWindow("SDL+OpenGL Window", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+        auto window = SDL_CreateWindow("TheOneEngine", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
         if (!window) throw exception(SDL_GetError());
 
         return window;
@@ -106,25 +104,7 @@ public:
         if (!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
         glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         glClearColor(1, 1, 1, 1);
-    }
-
-    static bool processSDLEvents()
-    {
-        SDL_Event event;
-        while (SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
-            case SDL_QUIT: return false;
-            case SDL_KEYDOWN:
-                switch (event.key.keysym.sym) {
-                case SDLK_ESCAPE: return false;
-                }
-                break;
-            }
-        }
-        return true;
-    }
+    }   
 
 private:
     SDL_Window* window;

@@ -105,6 +105,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
   <ItemGroup>
     <ClInclude Include="App.h" />
     <ClInclude Include="Defs.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
   </ItemGroup>
