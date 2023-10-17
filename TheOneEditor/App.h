@@ -7,6 +7,7 @@
 
 #include "Window.h"
 #include "Input.h"
+#include "Renderer3D.h"
 
 #include <iostream>
 #include <sstream>
@@ -20,7 +21,7 @@
 // Modules
 class Window;
 class Input;
-class Render;
+class Renderer3D;
 
 using namespace std;
 using namespace chrono;
@@ -79,7 +80,7 @@ public:
 	// Modules
 	Window* window;
 	Input* input;
-	Render* render;
+	Renderer3D* renderer3D;
 
 	int musicValue = 100;
 	int sfxValue = 100;
@@ -97,7 +98,7 @@ private:
 	double targetFPS = 60;
 	std::chrono::duration<double> targetFrameDuration;
 	std::chrono::steady_clock::time_point frameStart, frameEnd;
-	float dt;
+	double dt;
 
 };
 

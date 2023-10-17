@@ -16,7 +16,7 @@ public:
 
 	Camera camera;
 
-	void step(std::chrono::duration<double> dt);
+	void step(double dt);
 	void render(RenderModes renderMode);
 };
 

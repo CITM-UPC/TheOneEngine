@@ -7,8 +7,9 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	input = new Input(this);
 	window = new Window(this);
+	input = new Input(this);
+	renderer3D = new Renderer3D(this);
 
 	// Ordered for awake / Start / Update
 	// Reverse order for CleanUp
@@ -17,6 +18,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input, true);
 
 	// Render last to swap buffer
+	AddModule(renderer3D, true);
 
 }
 
@@ -71,6 +73,8 @@ bool App::Start()
 {
 	bool ret = true;
 
+	dt = 0.016; //hekbas
+
 	for (const auto& item : modules)
 	{
 		if (item->active == false)
@@ -119,10 +123,14 @@ void App::FinishUpdate()
 	frameEnd = std::chrono::steady_clock::now();
 	auto frameDuration = std::chrono::duration_cast<std::chrono::duration<double>>(frameEnd - frameStart);
 
+	//dt = frameDuration.count();
+
 	if (frameDuration < targetFrameDuration)
 	{
 		std::chrono::duration<double> sleepTime = targetFrameDuration - frameDuration;
 		std::this_thread::sleep_for(sleepTime);
+
+		//dt = targetFrameDuration.count();
 	}
 }
 

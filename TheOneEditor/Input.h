@@ -1,5 +1,5 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef __INPUT_H__
+#define __INPUT_H__
 #pragma once
 
 #include "Module.h"
@@ -19,4 +19,4 @@ public:
     bool processSDLEvents();
 };
 
-#endif // INPUT_H
+#endif // __INPUT_H__

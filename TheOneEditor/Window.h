@@ -1,5 +1,5 @@
-#ifndef WINDOW_H
-#define WINDOW_H
+#ifndef __WINDOW_H__
+#define __WINDOW_H__
 #pragma once
 
 #include "Module.h"
@@ -44,4 +44,4 @@ private:
     SDL_GLContext glContext;
 };
 
-#endif // WINDOW_H
+#endif // __WINDOW_H__

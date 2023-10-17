@@ -4,10 +4,10 @@
 
 static double angle = 0.0;
 
-void TheOneEngine::step(std::chrono::duration<double> dt)
+void TheOneEngine::step(double dt)
 {
     const double angle_vel = 360.0; // 360 degrees per second
-	angle += angle_vel * dt.count();
+	angle += angle_vel * dt;
 }
 
 static void drawAxis()
