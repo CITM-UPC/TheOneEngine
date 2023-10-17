@@ -6,13 +6,16 @@ Input::~Input(){}
 
 bool Input::PreUpdate()
 {
-    while (processSDLEvents())
+    bool ret = true;
+
+    while (ret = processSDLEvents())
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
         SDL_GL_SwapWindow(app->window->GetWindow());
     }
-    return true;
+
+    return ret;
 }
 
 bool Input::processSDLEvents()

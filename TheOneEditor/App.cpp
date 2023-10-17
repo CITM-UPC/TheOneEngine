@@ -13,11 +13,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	window = new Window(this);
 
 	// Ordered for awake / Start / Update
-	// Reverse order of CleanUp
-	//AddModule(test, true);
+	// Reverse order for CleanUp
+	
+	AddModule(window, true);
+	AddModule(input, true);
 
 	// Render last to swap buffer
- 	AddModule(window, true);
 
 }
 
@@ -137,7 +138,7 @@ bool App::PreUpdate()
 		if (item->active == false)
 			continue;
 
-		item->PreUpdate();
+		ret = item->PreUpdate();
 	}
 
 	return ret;
@@ -154,7 +155,7 @@ bool App::DoUpdate()
 		if (item->active == false)
 			continue;
 
-		item->Update(dt);
+		ret = item->Update(dt);
 	}
 
 	return ret;
@@ -171,7 +172,7 @@ bool App::PostUpdate()
 		if (item->active == false)
 			continue;
 
-		item->PostUpdate();
+		ret = item->PostUpdate();
 	}
 
 	return ret;
