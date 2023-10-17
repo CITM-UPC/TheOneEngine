@@ -8,12 +8,7 @@ bool Input::PreUpdate()
 {
     bool ret = true;
 
-    while (ret = processSDLEvents())
-    {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-
-        SDL_GL_SwapWindow(app->window->GetWindow());
-    }
+    ret = processSDLEvents();
 
     return ret;
 }
@@ -21,6 +16,7 @@ bool Input::PreUpdate()
 bool Input::processSDLEvents()
 {
     SDL_Event event;
+
     while (SDL_PollEvent(&event))
     {
         switch (event.type)

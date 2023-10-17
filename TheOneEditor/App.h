@@ -23,6 +23,7 @@ class Input;
 class Render;
 
 using namespace std;
+using namespace chrono;
 
 class App
 {
@@ -53,11 +54,7 @@ public:
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
-	uint GetFPS();
-	float GetAverageFPS();
 	float GetDT();
-	float GetTimesSinceStart();
-	uint GetFrameCount();
 
 
 private:
@@ -84,9 +81,6 @@ public:
 	Input* input;
 	Render* render;
 
-	bool saveGameRequested;
-	bool loadGameRequested;
-
 	int musicValue = 100;
 	int sfxValue = 100;
 
@@ -99,24 +93,11 @@ private:
 
 	list<Module*> modules;
 
-	uint frames;
+	// Fps control
+	double targetFPS = 60;
+	std::chrono::duration<double> targetFrameDuration;
+	std::chrono::steady_clock::time_point frameStart, frameEnd;
 	float dt;
-
-	/*Timer timer;
-	PerfTimer ptimer;
-
-	Timer startupTime;
-	Timer frameTime;
-	Timer lastSecFrameTime;*/
-
-	uint64 frameCount = 0;
-	uint32 framesPerSecond = 0;
-	uint32 lastSecFrameCount = 0;
-
-	float averageFps = 0.0f;
-	float secondsSinceStartup = 0.0f;
-
-	uint32 maxFrameDuration = 0;
 
 };
 

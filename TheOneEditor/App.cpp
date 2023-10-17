@@ -7,8 +7,6 @@
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
-	frames = 0;
-
 	input = new Input(this);
 	window = new Window(this);
 
@@ -40,9 +38,9 @@ void App::AddModule(Module* module, bool activate)
 // Called before render is available
 bool App::Awake()
 {
-	//timer = Timer();
-
 	bool ret = false;
+
+	targetFrameDuration = (std::chrono::duration<double>)1 / targetFPS;
 
 	//Load config from XML
 	//ret = LoadConfig();
@@ -71,10 +69,6 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
-	/*timer.Start();
-	startupTime.Start();
-	lastSecFrameTime.Start();*/
-
 	bool ret = true;
 
 	for (const auto& item : modules)
@@ -115,16 +109,21 @@ bool App::Update()
 
 // ---------------------------------------------
 void App::PrepareUpdate()
-{
-	//frameTime.Start();
+{	
+	frameStart = std::chrono::steady_clock::now();
 }
 
 // ---------------------------------------------
 void App::FinishUpdate()
 {
-	// Shows the time measurements in the window title
-	static char title[256];
-	//app->win->SetTitle(title);
+	frameEnd = std::chrono::steady_clock::now();
+	auto frameDuration = std::chrono::duration_cast<std::chrono::duration<double>>(frameEnd - frameStart);
+
+	if (frameDuration < targetFrameDuration)
+	{
+		std::chrono::duration<double> sleepTime = targetFrameDuration - frameDuration;
+		std::this_thread::sleep_for(sleepTime);
+	}
 }
 
 // Call modules before each loop iteration
@@ -208,31 +207,7 @@ const char* App::GetArgv(int index) const
 }
 
 // ---------------------------------------
-uint App::GetFPS() 
-{
-	return framesPerSecond;
-}
-
-// ---------------------------------------
-float App::GetAverageFPS()
-{
-	return averageFps;
-}
-
-// ---------------------------------------
 float App::GetDT()
 {
 	return dt;
-}
-
-// ---------------------------------------
-float App::GetTimesSinceStart()
-{
-	return secondsSinceStartup;
-}
-
-// ---------------------------------------
-uint App::GetFrameCount()
-{
-	return frameCount;
 }
