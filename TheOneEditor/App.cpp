@@ -1,14 +1,7 @@
 #include "App.h"
 
-#include "Window.h"
-#include "Input.h"
-
 #include "Defs.h"
 #include "Log.h"
-
-#include "GL/glew.h"
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_opengl.h"
 
 
 // Constructor
@@ -16,8 +9,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	frames = 0;
 
-	//test = new Test();
-	window = new Window();
+	input = new Input(this);
+	window = new Window(this);
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp

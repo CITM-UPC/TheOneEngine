@@ -1,9 +1,12 @@
-#pragma once
-
 #ifndef __DEFS_H__
 #define __DEFS_H__
+#pragma once
 
 #include <stdio.h>
+
+#include "GL/glew.h"
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_opengl.h"
 
 
 // NULL just in case ----------------------

@@ -7,7 +7,7 @@ class Module
 {
 public:
 
-	Module() : active(false)
+	Module(App* parent) : active(false), app(parent)
 	{}
 
 	void Init()
@@ -70,7 +70,7 @@ public:
 public:
 
 	bool active;
-
+	App* app;
 };
 
 #endif // __MODULE_H__

@@ -1,8 +1,12 @@
 #ifndef __APP_H__
 #define __APP_H__
+#pragma once
 
 #include "Module.h"
 #include "Defs.h"
+
+#include "Window.h"
+#include "Input.h"
 
 #include <iostream>
 #include <sstream>
@@ -115,7 +119,5 @@ private:
 	uint32 maxFrameDuration = 0;
 
 };
-
-extern App* app;
 
 #endif	// __APP_H__
