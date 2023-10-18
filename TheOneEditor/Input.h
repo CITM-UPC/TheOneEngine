@@ -4,7 +4,7 @@
 
 #include "Module.h"
 #include "App.h"
-#include <SDL2/SDL.h>
+#include "Defs.h"
 
 
 class Input : public Module
@@ -17,6 +17,12 @@ public:
     bool PreUpdate();
 
     bool processSDLEvents();
+
+    SDL_Event GetEvent() const { return event; }
+
+public:
+
+    SDL_Event event;
 };
 
 #endif // __INPUT_H__

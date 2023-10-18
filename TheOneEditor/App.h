@@ -7,6 +7,7 @@
 
 #include "Window.h"
 #include "Input.h"
+#include "Gui.h"
 #include "Renderer3D.h"
 
 #include <iostream>
@@ -80,6 +81,7 @@ public:
 	// Modules
 	Window* window;
 	Input* input;
+	Gui* gui;
 	Renderer3D* renderer3D;
 
 	int musicValue = 100;
