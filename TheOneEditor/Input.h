@@ -14,15 +14,15 @@ public:
 
     virtual ~Input();
 
+    bool Awake();
+
     bool PreUpdate();
 
     bool processSDLEvents();
 
-    SDL_Event GetEvent() const { return event; }
-
 public:
 
-    SDL_Event event;
+    //SDL_Event event;
 };
 
 #endif // __INPUT_H__

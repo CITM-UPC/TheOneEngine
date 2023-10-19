@@ -81,5 +81,5 @@ void Window::initOpenGL()
     if (glew_init_error != GLEW_OK) throw exception((char*)glewGetErrorString(glew_init_error));
     if (!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    glClearColor(1, 1, 1, 1);
+    glClearColor(0, 0, 0, 1);
 }

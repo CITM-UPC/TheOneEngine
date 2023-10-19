@@ -46,6 +46,9 @@ bool Renderer3D::PostUpdate()
 {
     
     engine.render(TheOneEngine::RenderModes::DEBUG);
+
+    app->gui->RenderGui();
+
     SDL_GL_SwapWindow(app->window->GetWindow());
 
     return true;

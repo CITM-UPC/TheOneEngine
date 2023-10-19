@@ -19,6 +19,10 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void RenderGui();
+
+	void HandleInput(SDL_Event* event);
+
 	void GUIWindow1();
 	void InspectorWindow();
 
@@ -36,6 +40,9 @@ private:
 	bool show_guiwindow_1 = false;
 	bool full_desktop = false;
 	bool minimize_window = false;
+
+	/*Inspector Window Vars*/
+	bool show_inspector_window = false;
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 };

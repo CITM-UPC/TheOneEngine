@@ -17,10 +17,11 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(window, true);
 	AddModule(input, true);
-	AddModule(gui, true);
+	
 
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
+	AddModule(gui, true);
 
 }
 

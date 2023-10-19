@@ -20,7 +20,7 @@ static void drawAxis()
     glColor3ub(0, 255, 0);
     glVertex3d(0, 0, 0);
     glVertex3d(0, 0.8, 0);
-    glColor3ub(0, 0, 1);
+    glColor3ub(0, 0, 255);
     glVertex3d(0, 0, 0);
     glVertex3d(0, 0, 0.8);
     glEnd();
@@ -62,7 +62,7 @@ void TheOneEngine::render(RenderModes renderMode)
         camera.up.x, camera.up.y, camera.up.z);
 
     if (renderMode == RenderModes::DEBUG) {
-        drawGrid(100, 1);
+        drawGrid(10, 1);
         drawAxis();
     }
     

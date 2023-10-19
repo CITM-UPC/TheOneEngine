@@ -18,6 +18,7 @@ bool Gui::Awake()
     bool ret = true;
 
     show_guiwindow_1 = true;
+    show_inspector_window = true;
 
     return ret;
 }
@@ -39,13 +40,11 @@ bool Gui::Start()
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
     // Setup Platform/Renderer backends
-    ImGui_ImplSDL2_InitForOpenGL(app->window->GetWindow(), app->window->GetGLContext());
+    ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->window->glContext);
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-
-    //ImGui_ImplSDL2_ProcessEvent(&app->input->GetEvent());
 
     ImGuiWindowFlags flags = 0;
 
@@ -61,6 +60,17 @@ bool Gui::PreUpdate()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
+    if (show_guiwindow_1)
+    {
+        GUIWindow1();
+    }
+
+    /*if (show_inspector_window)
+    {
+        InspectorWindow();
+    }*/
+
+
     return ret;
 }
 
@@ -69,10 +79,6 @@ bool Gui::Update(float dt)
     bool ret = true;
 
 
-    if (show_guiwindow_1)
-    {
-        GUIWindow1();
-    }
 
     return ret;
 }
@@ -81,10 +87,7 @@ bool Gui::PostUpdate()
 {
     bool ret = true;
 
-    /*Renders GUI*/
-    ImGui::EndFrame();
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    
     return ret;
 }
 
@@ -99,6 +102,18 @@ bool Gui::CleanUp()
     ImGui::DestroyContext();
 
     return ret;
+}
+
+void Gui::RenderGui()
+{
+    ImGui::EndFrame();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}
+
+void Gui::HandleInput(SDL_Event* event) 
+{
+    ImGui_ImplSDL2_ProcessEvent(event);
 }
 
 void Gui::GUIWindow1() {
@@ -137,4 +152,6 @@ void Gui::InspectorWindow()
 
     /*Transform*/
     ImGui::Text("");
+
+    ImGui::End();
 }

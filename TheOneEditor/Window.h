@@ -39,7 +39,7 @@ public:
     SDL_Window* GetWindow() const;
     SDL_GLContext GetGLContext() const;
 
-private:
+public:
     SDL_Window* window;
     SDL_GLContext glContext;
 };

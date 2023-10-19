@@ -1,8 +1,24 @@
 #include "App.h"
+#include "Log.h"
 
 Input::Input(App* app) : Module(app) {}
 
 Input::~Input(){}
+
+bool Input::Awake()
+{
+    LOG("Init SDL input event system");
+    bool ret = true;
+    SDL_Init(0);
+
+    if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+    {
+        LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+        ret = false;
+    }
+
+    return ret;
+}
 
 bool Input::PreUpdate()
 {
@@ -15,8 +31,13 @@ bool Input::PreUpdate()
 
 bool Input::processSDLEvents()
 {
-    while (SDL_PollEvent(&event))
+    SDL_PumpEvents();
+
+    static SDL_Event event;
+
+    while (SDL_PollEvent(&event) != 0)
     {
+        app->gui->HandleInput(&event);
         switch (event.type)
         {
         case SDL_QUIT: return false;
