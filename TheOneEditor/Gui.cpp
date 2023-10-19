@@ -65,10 +65,10 @@ bool Gui::PreUpdate()
         GUIWindow1();
     }
 
-    /*if (show_inspector_window)
+    if (show_inspector_window)
     {
         InspectorWindow();
-    }*/
+    }
 
 
     return ret;
