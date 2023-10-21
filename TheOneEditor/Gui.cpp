@@ -19,6 +19,7 @@ bool Gui::Awake()
 
     show_guiwindow_1 = true;
     show_inspector_window = true;
+    show_console_window = true;
 
     return ret;
 }
@@ -73,6 +74,11 @@ bool Gui::PreUpdate()
     if (show_inspector_window)
     {
         InspectorWindow();
+    }
+    
+    if (show_console_window)
+    {
+        ConsoleWindow();
     }
 
 
@@ -165,6 +171,7 @@ void Gui::GeneralWindowDockspace()
             auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.25f, nullptr, &dockspace_id);
 
             ImGui::DockBuilderDockWindow("Inspector", dock_id_right); //Takes the name of a window
+            ImGui::DockBuilderDockWindow("Console", dock_id_down); //Takes the name of a window
             //ImGui::DockBuilderDockWindow("Hello, world!", dock_id_down);
             ImGui::DockBuilderFinish(dockspace_id);
         }
@@ -175,17 +182,22 @@ void Gui::GeneralWindowDockspace()
     {
         if (ImGui::BeginMenu("File"))
         {
-            //ShowExampleMenuFile();
+            GeneralMenuFile();
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-            if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
-            ImGui::Separator();
-            if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-            if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-            if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+            GeneralMenuEdit();
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Windows"))
+        {
+            GeneralMenuWindows();
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("About"))
+        {
+            GeneralMenuAbout();
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -193,6 +205,64 @@ void Gui::GeneralWindowDockspace()
 
 
     ImGui::End();
+}
+
+void Gui::GeneralMenuFile()
+{
+    if (ImGui::MenuItem("New")) {}
+    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+    if (ImGui::BeginMenu("Open Recent"))
+    {
+        ImGui::MenuItem("fish_hat.c");
+        ImGui::MenuItem("fish_hat.inl");
+        ImGui::MenuItem("fish_hat.h");
+        if (ImGui::BeginMenu("More.."))
+        {
+            ImGui::MenuItem("Hello");
+            ImGui::MenuItem("Sailor");
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenu();
+    }
+    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
+    if (ImGui::MenuItem("Save As..")) {}
+}
+
+void Gui::GeneralMenuEdit()
+{
+    if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+    if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+    ImGui::Separator();
+    if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+    if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+    if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+}
+
+void Gui::GeneralMenuWindows()
+{
+    if (ImGui::MenuItem("New")) {}
+    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+    if (ImGui::BeginMenu("Open Recent"))
+    {
+        ImGui::MenuItem("fish_hat.c");
+        ImGui::MenuItem("fish_hat.inl");
+        ImGui::MenuItem("fish_hat.h");
+        if (ImGui::BeginMenu("More.."))
+        {
+            ImGui::MenuItem("Hello");
+            ImGui::MenuItem("Sailor");
+            ImGui::EndMenu();
+        }
+        ImGui::EndMenu();
+    }
+    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
+    if (ImGui::MenuItem("Save As..")) {}
+}
+
+void Gui::GeneralMenuAbout()
+{
+    ImGui::SeparatorText("ABOUT THIS DEMO:");
+    ImGui::Text("This is a Demo of TheOneEngine created in OpenGL by two students, Hector Bascones Zamora and Arnau Jimenez Gallego");
 }
 
 void Gui::GUIWindow1() {
@@ -230,10 +300,21 @@ void Gui::InspectorWindow()
 
     ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
     ImGui::Begin("Inspector");
-
+    
     /*Transform*/
     ImGui::Text("Transform");
-    //ImGui::TextEx("Escribe");
+    static char buf[32] = "0";
+    ImGui::InputText("X", buf, IM_ARRAYSIZE(buf));
+    ImGui::InputText("Y", buf, IM_ARRAYSIZE(buf));
+    ImGui::InputText("Z", buf, IM_ARRAYSIZE(buf));
+    
+    ImGui::Text("Mesh");
+    static char mesh_name[32] = "house.fbx";
+    ImGui::InputText("", mesh_name, IM_ARRAYSIZE(mesh_name));
+
+    ImGui::Text("Texture");
+    static char texture_name[32] = "texture.png";
+    ImGui::InputText("", texture_name, IM_ARRAYSIZE(texture_name));
 
     ImGui::End();
 }
@@ -244,12 +325,10 @@ void Gui::ConsoleWindow()
 
     clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
 
-    ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
-    ImGui::Begin("Inspector");
+    ImGui::SetNextWindowSize(ImVec2(1280, 300), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
+    ImGui::Begin("Console");
 
-    /*Transform*/
-    ImGui::Text("Transform");
-    //ImGui::TextEx("Escribe");
+    ImGuiTextBuffer log;
 
     ImGui::End();
 }

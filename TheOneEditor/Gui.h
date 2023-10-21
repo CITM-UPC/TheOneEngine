@@ -26,14 +26,21 @@ public:
 private:
 
 	/*Methods for windows*/
-	void GeneralWindowDockspace();
+
+	/*Main Dockspace*/
+	void GeneralWindowDockspace(); 
+	void GeneralMenuFile();
+	void GeneralMenuEdit();
+	void GeneralMenuWindows();
+	void GeneralMenuAbout();
+
 	void GUIWindow1();
 	void InspectorWindow();
 	void ConsoleWindow();
 
 private:
 
-	/*Create bools for each window to show and the genral that contains all of them*/
+	/*Create bools for each window to show and the general that contains all of them*/
 	bool show_gui = true;
 
 
@@ -44,6 +51,9 @@ private:
 
 	/*Inspector Window Vars*/
 	bool show_inspector_window = false;
+	
+	/*Console Window Vars*/
+	bool show_console_window = false;
 
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 };
