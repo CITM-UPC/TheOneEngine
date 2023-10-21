@@ -60,6 +60,11 @@ bool Gui::PreUpdate()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
+    if (show_gui)
+    {
+        GeneralWindowDockspace();
+    }
+
     if (show_guiwindow_1)
     {
         GUIWindow1();
@@ -116,6 +121,58 @@ void Gui::HandleInput(SDL_Event* event)
     ImGui_ImplSDL2_ProcessEvent(event);
 }
 
+void Gui::GeneralWindowDockspace()
+{
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+
+    ImGuiViewport* viewport = ImGui::GetMainViewport();
+    ImGui::SetNextWindowPos(viewport->Pos);
+    ImGui::SetNextWindowSize(viewport->Size);
+    ImGui::SetNextWindowViewport(viewport->ID);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+    window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+    window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+    if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+        window_flags |= ImGuiWindowFlags_NoBackground;
+
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
+    ImGui::Begin("DockSpace", nullptr, window_flags);
+    ImGui::PopStyleVar();
+    ImGui::PopStyleVar(2);
+
+    // DockSpace
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
+    {
+        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+
+        static auto first_time = true;
+        if (first_time)
+        {
+            first_time = false;
+
+            ImGui::DockBuilderRemoveNode(dockspace_id); // clear any previous layout
+            ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
+            ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
+
+            auto dock_id_top = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.2f, nullptr, &dockspace_id);
+            auto dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.25f, nullptr, &dockspace_id);
+            auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.2f, nullptr, &dockspace_id);
+            auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.25f, nullptr, &dockspace_id);
+
+            ImGui::DockBuilderDockWindow("Inspector", dock_id_right); //Takes the name of a window
+            //ImGui::DockBuilderDockWindow("Hello, world!", dock_id_down);
+            ImGui::DockBuilderFinish(dockspace_id);
+        }
+    }
+
+    ImGui::End();
+}
+
 void Gui::GUIWindow1() {
     ImGuiIO& io = ImGui::GetIO();
 
@@ -124,6 +181,7 @@ void Gui::GUIWindow1() {
     static float f = 0.0f;
     static int counter = 0;
 
+    ImGui::SetNextWindowSize(ImVec2(339, 180), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
     ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
     ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
@@ -148,10 +206,12 @@ void Gui::InspectorWindow()
 
     clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
 
+    ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
     ImGui::Begin("Inspector");
 
     /*Transform*/
-    ImGui::Text("");
+    ImGui::Text("Transform");
+    //ImGui::TextEx("Escribe");
 
     ImGui::End();
 }

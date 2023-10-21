@@ -20,9 +20,6 @@ public:
 
     bool processSDLEvents();
 
-public:
-
-    //SDL_Event event;
 };
 
 #endif // __INPUT_H__

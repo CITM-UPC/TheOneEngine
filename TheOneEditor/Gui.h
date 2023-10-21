@@ -23,6 +23,7 @@ public:
 
 	void HandleInput(SDL_Event* event);
 
+	void GeneralWindowDockspace();
 	void GUIWindow1();
 	void InspectorWindow();
 
@@ -33,10 +34,11 @@ private:
 
 private:
 
-	/*Create bools for each window to show*/
+	/*Create bools for each window to show and the genral that contains all of them*/
 	bool show_gui = true;
 
-	/*GUIWINDOW1 BOOLS*/
+
+	/*GuiWindow1 Vars*/
 	bool show_guiwindow_1 = false;
 	bool full_desktop = false;
 	bool minimize_window = false;

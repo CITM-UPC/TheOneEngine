@@ -49,7 +49,7 @@ bool Renderer3D::PostUpdate()
 
     app->gui->RenderGui();
 
-    SDL_GL_SwapWindow(app->window->GetWindow());
+    SDL_GL_SwapWindow(app->window->window);
 
     return true;
 }
