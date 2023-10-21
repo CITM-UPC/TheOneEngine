@@ -170,6 +170,28 @@ void Gui::GeneralWindowDockspace()
         }
     }
 
+    /*Creates the Main Menu Bar*/
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            //ShowExampleMenuFile();
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Edit"))
+        {
+            if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
+            if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
+            ImGui::Separator();
+            if (ImGui::MenuItem("Cut", "CTRL+X")) {}
+            if (ImGui::MenuItem("Copy", "CTRL+C")) {}
+            if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+            ImGui::EndMenu();
+        }
+        ImGui::EndMainMenuBar();
+    }
+
+
     ImGui::End();
 }
 
@@ -201,6 +223,22 @@ void Gui::GUIWindow1() {
 }
 
 void Gui::InspectorWindow()
+{
+    ImGuiIO& io = ImGui::GetIO();
+
+    clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
+
+    ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
+    ImGui::Begin("Inspector");
+
+    /*Transform*/
+    ImGui::Text("Transform");
+    //ImGui::TextEx("Escribe");
+
+    ImGui::End();
+}
+
+void Gui::ConsoleWindow()
 {
     ImGuiIO& io = ImGui::GetIO();
 

@@ -23,14 +23,13 @@ public:
 
 	void HandleInput(SDL_Event* event);
 
-	void GeneralWindowDockspace();
-	void GUIWindow1();
-	void InspectorWindow();
-
 private:
 
 	/*Methods for windows*/
-
+	void GeneralWindowDockspace();
+	void GUIWindow1();
+	void InspectorWindow();
+	void ConsoleWindow();
 
 private:
 

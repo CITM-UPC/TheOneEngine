@@ -8,14 +8,13 @@ Window::~Window() {}
 bool Window::Awake()
 {
     window = initSDLWindowWithOpenGL();
-
+    glContext = createSdlGlContext(window);
+    initOpenGL();
     return true;
 }
 
 bool Window::Start()
 {
-    glContext = createSdlGlContext(window);
-    initOpenGL();
 
     return true;
 }
