@@ -6,6 +6,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window(this);
 	input = new Input(this);
+	gui = new Gui(this);
 	hardware = new Hardware(this);
 	renderer3D = new Renderer3D(this);
 
@@ -18,6 +19,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
+	AddModule(gui, true);
 
 }
 

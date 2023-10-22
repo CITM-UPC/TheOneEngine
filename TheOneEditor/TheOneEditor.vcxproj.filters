@@ -37,6 +37,9 @@
     <ClCompile Include="Hardware.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Gui.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -55,6 +58,9 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Renderer3D.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Gui.h">
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Hardware.h">
