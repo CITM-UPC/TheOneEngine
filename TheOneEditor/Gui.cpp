@@ -17,8 +17,10 @@ bool Gui::Awake()
     LOG("Creating IMGUI context");
     bool ret = true;
 
-    show_guiwindow_1 = true;
+    show_guiwindow_1 = false;
+    show_sceneView_window = false;
     show_inspector_window = true;
+    show_hierarchy_window = true;
     show_console_window = true;
 
     return ret;
@@ -70,10 +72,20 @@ bool Gui::PreUpdate()
     {
         GUIWindow1();
     }
+    
+    if (show_sceneView_window)
+    {
+        SceneViewWindow();
+    }
 
     if (show_inspector_window)
     {
         InspectorWindow();
+    }
+    
+    if (show_hierarchy_window)
+    {
+        HierarchyWindow();
     }
     
     if (show_console_window)
@@ -170,9 +182,10 @@ void Gui::GeneralWindowDockspace()
             auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.2f, nullptr, &dockspace_id);
             auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.25f, nullptr, &dockspace_id);
 
+            ImGui::DockBuilderDockWindow("Scene", dockspace_id); //Takes the name of a window
             ImGui::DockBuilderDockWindow("Inspector", dock_id_right); //Takes the name of a window
+            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left); //Takes the name of a window
             ImGui::DockBuilderDockWindow("Console", dock_id_down); //Takes the name of a window
-            //ImGui::DockBuilderDockWindow("Hello, world!", dock_id_down);
             ImGui::DockBuilderFinish(dockspace_id);
         }
     }
@@ -292,6 +305,28 @@ void Gui::GUIWindow1() {
     ImGui::End();
 }
 
+void Gui::SceneViewWindow()
+{
+    ImGuiIO& io = ImGui::GetIO();
+
+    ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
+
+    ImGui::Begin("Scene");
+    //{
+    //    // Using a Child allow to fill all the space of the window.
+    //    // It also alows customization
+    //    ImGui::BeginChild("GameRender");
+    //    // Get the size of the child (i.e. the whole draw size of the windows).
+    //    ImVec2 wsize = ImGui::GetWindowSize();
+    //    // Because I use the texture from OpenGL, I need to invert the V from the UV.
+    //    ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
+    //    ImGui::EndChild();
+    //}
+    //ImGui::End();
+
+    ImGui::End();
+}
+
 void Gui::InspectorWindow()
 {
     ImGuiIO& io = ImGui::GetIO();
@@ -303,32 +338,45 @@ void Gui::InspectorWindow()
     
     /*Transform*/
     ImGui::Text("Transform");
-    static char buf[32] = "0";
+    static char buf[5] = "0";
+    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
+    ImGui::PushItemWidth(50.0f);
     ImGui::InputText("X", buf, IM_ARRAYSIZE(buf));
+    ImGui::SameLine();
     ImGui::InputText("Y", buf, IM_ARRAYSIZE(buf));
+    ImGui::SameLine();
     ImGui::InputText("Z", buf, IM_ARRAYSIZE(buf));
     
+    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
     ImGui::Text("Mesh");
     static char mesh_name[32] = "house.fbx";
+    ImGui::PushItemWidth(150.0f);
+    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
     ImGui::InputText("", mesh_name, IM_ARRAYSIZE(mesh_name));
 
+    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
     ImGui::Text("Texture");
     static char texture_name[32] = "texture.png";
+    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
     ImGui::InputText("", texture_name, IM_ARRAYSIZE(texture_name));
 
+    ImGui::PopItemWidth();
+
+    ImGui::End();
+}
+
+void Gui::HierarchyWindow()
+{
+
+    ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
+    ImGui::Begin("Hierarchy");
+    
     ImGui::End();
 }
 
 void Gui::ConsoleWindow()
 {
-    ImGuiIO& io = ImGui::GetIO();
-
-    clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
-
-    ImGui::SetNextWindowSize(ImVec2(1280, 300), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
     ImGui::Begin("Console");
-
-    ImGuiTextBuffer log;
-
+    //console.Draw("Console", &show_console_window);
     ImGui::End();
 }
