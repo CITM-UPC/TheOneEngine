@@ -1,14 +1,12 @@
 #include "App.h"
 
-#include "Defs.h"
-#include "Log.h"
-
 
 // Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	window = new Window(this);
 	input = new Input(this);
+	hardware = new Hardware(this);
 	renderer3D = new Renderer3D(this);
 
 	// Ordered for awake / Start / Update
@@ -16,6 +14,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(window, true);
 	AddModule(input, true);
+	AddModule(hardware, true);
 
 	// Render last to swap buffer
 	AddModule(renderer3D, true);

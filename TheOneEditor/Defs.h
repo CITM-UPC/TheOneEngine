@@ -8,6 +8,10 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_opengl.h"
 
+#include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
+#include <glm/mat4x4.hpp>
+
 
 // NULL just in case ----------------------
 #ifdef NULL
@@ -72,6 +76,10 @@ typedef unsigned long ulong;
 typedef unsigned __int64 uint64;
 typedef unsigned __int32 uint32;
 typedef unsigned __int16 uint16;
+
+typedef glm::dvec3 vec3;
+typedef glm::dvec4 vec4;
+typedef glm::dmat4 mat4;
 // -------------------------------------------------------------------------------
 
 
