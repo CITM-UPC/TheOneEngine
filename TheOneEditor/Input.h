@@ -4,7 +4,7 @@
 
 #include "Module.h"
 #include "App.h"
-#include <SDL2/SDL.h>
+#include "Defs.h"
 
 
 class Input : public Module
@@ -14,9 +14,12 @@ public:
 
     virtual ~Input();
 
+    bool Awake();
+
     bool PreUpdate();
 
     bool processSDLEvents();
+
 };
 
 #endif // __INPUT_H__

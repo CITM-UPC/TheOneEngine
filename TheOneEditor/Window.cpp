@@ -8,25 +8,17 @@ Window::~Window() {}
 bool Window::Awake()
 {
     window = initSDLWindowWithOpenGL();
-
+    glContext = createSdlGlContext(window);
+    initOpenGL();
     return true;
 }
 
 bool Window::Start()
 {
-    glContext = createSdlGlContext(window);
-    initOpenGL();
 
     return true;
 }
 
-SDL_Window* Window::GetWindow() const {
-    return window;
-}
-
-SDL_GLContext Window::GetGLContext() const {
-    return glContext;
-}
 
 bool Window::CleanUp()
 {
@@ -81,5 +73,5 @@ void Window::initOpenGL()
     if (glew_init_error != GLEW_OK) throw exception((char*)glewGetErrorString(glew_init_error));
     if (!GLEW_VERSION_3_1) throw exception("OpenGL 3.1 Not Supported!");
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    glClearColor(1, 1, 1, 1);
+    glClearColor(0.25, 0.25, .25, 1);
 }

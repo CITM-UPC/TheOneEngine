@@ -7,6 +7,8 @@
 
 #include "Window.h"
 #include "Input.h"
+#include "Gui.h"
+#include "Hardware.h"
 #include "Renderer3D.h"
 
 #include <iostream>
@@ -18,13 +20,15 @@
 #include <list>
 
 
+using namespace std;
+using namespace chrono;
+
+
 // Modules
 class Window;
 class Input;
 class Renderer3D;
 
-using namespace std;
-using namespace chrono;
 
 class App
 {
@@ -80,6 +84,8 @@ public:
 	// Modules
 	Window* window;
 	Input* input;
+	Hardware* hardware;
+	Gui* gui;
 	Renderer3D* renderer3D;
 
 	int musicValue = 100;
@@ -101,5 +107,7 @@ private:
 	double dt;
 
 };
+
+extern App* app;
 
 #endif	// __APP_H__

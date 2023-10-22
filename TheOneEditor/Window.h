@@ -36,10 +36,7 @@ public:
     static SDL_GLContext createSdlGlContext(SDL_Window* window);
     static void initOpenGL();
 
-    SDL_Window* GetWindow() const;
-    SDL_GLContext GetGLContext() const;
-
-private:
+public:
     SDL_Window* window;
     SDL_GLContext glContext;
 };
