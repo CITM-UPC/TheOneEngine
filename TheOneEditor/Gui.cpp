@@ -275,7 +275,7 @@ void Gui::GeneralMenuWindows()
 void Gui::GeneralMenuAbout()
 {
     ImGui::SeparatorText("ABOUT THIS DEMO:");
-    ImGui::Text("This is a Demo of TheOneEngine created in OpenGL by two students, Hector Bascones Zamora and Arnau Jimenez Gallego");
+    ImGui::Text("This is a Demo of TheOneEngine created in OpenGL by two students, Hector Bascones Zamora and Arnau Jimenez Gallego for the subject Game Engines");
 
     HardwareInfo hardware_info = app->hardware->GetInfo();
 
@@ -283,7 +283,7 @@ void Gui::GeneralMenuAbout()
     // --- SDL Version ---
     ImGui::Text("SDL Version:");
     ImGui::SameLine();
-    ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.sdl_version);
+    ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
     ImGui::Separator();
 
     // --- CPU ---
