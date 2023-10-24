@@ -18,18 +18,18 @@ class AssetTexture;
 class AssetManager : public Module
 {
 	friend class ImporterMesh;
-	friend class ImporterTexture;
+	//friend class ImporterTexture;
 
 public:
 
 	AssetManager(App* app);
-	~AssetManager();
+	virtual ~AssetManager();
 
-	bool Awake() override;
-	bool Start() override;
+	bool Awake();
+	bool Start();
 	
-	bool Update(double dt) override;
-	bool CleanUp() override;
+	bool Update(double dt);
+	bool CleanUp();
 
 public:
 
@@ -50,9 +50,9 @@ public:
 	}
 
 	// Asset Handling
-	Asset* GetAsset(uint UID, bool loadinmemory = true);
+	Asset* GetAsset(uint ID, bool loadinmemory = true);
 	Asset* CreateAsset(Asset::AssetType type, std::string source_file);
-	Asset* CreateAssetGivenUID(Asset::AssetType type, std::string source_file, uint UID);
+	Asset* CreateAssetFromID(Asset::AssetType type, std::string source_file, uint ID);
 
 
 	// Getter

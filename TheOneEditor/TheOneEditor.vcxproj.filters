@@ -58,6 +58,9 @@
     <ClCompile Include="ImporterMesh.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="AssetMesh.cpp">
+      <Filter>Assets</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -95,6 +98,9 @@
     </ClInclude>
     <ClInclude Include="ImporterMesh.h">
       <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetMesh.h">
+      <Filter>Assets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
