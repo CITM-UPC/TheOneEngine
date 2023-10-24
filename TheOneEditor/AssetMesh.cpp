@@ -56,6 +56,7 @@ std::vector<AssetMesh::Ptr> AssetMesh::loadFromFile(const std::string& path)
     vector<AssetMesh::Ptr> mesh_ptrs;
 
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
+
     for (size_t m = 0; m < scene->mNumMeshes; ++m) {
         auto mesh = scene->mMeshes[m];
         auto faces = mesh->mFaces;
@@ -96,18 +97,24 @@ void AssetMesh::draw()
 {
     glColor4ub(255, 255, 255, 255);
 
+    // WIREFRAME MODE, comment the line below dor fill mode
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id);
     glEnableClientState(GL_VERTEX_ARRAY);
 
-    switch (format) {
+    switch (format)
+    {
     case Formats::F_V3:
         glVertexPointer(3, GL_FLOAT, 0, nullptr);
         break;
+
     case Formats::F_V3C4:
         glEnableClientState(GL_COLOR_ARRAY);
         glVertexPointer(3, GL_FLOAT, sizeof(V3C4), nullptr);
         glColorPointer(4, GL_FLOAT, sizeof(V3C4), (void*)sizeof(V3));
         break;
+
     case Formats::F_V3T2:
         glEnable(GL_TEXTURE_2D);
         //if (texture.get()) texture->bind();

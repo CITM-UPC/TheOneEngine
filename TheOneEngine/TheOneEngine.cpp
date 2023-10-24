@@ -2,6 +2,7 @@
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
 
+
 static double angle = 0.0;
 
 void TheOneEngine::step(double dt)
@@ -66,9 +67,9 @@ void TheOneEngine::render(RenderModes renderMode)
         drawAxis();
     }
     
-#pragma region direct draw test
+#pragma region direct draw test    
 
-    glRotated(angle, 0, 0, 1);
+    /*glRotated(angle, 0, 0, 1);
 
     glColor4ub(255, 0, 0, 255);
     glBegin(GL_TRIANGLES);
@@ -78,7 +79,7 @@ void TheOneEngine::render(RenderModes renderMode)
 
     glVertex3d(0.25, 0.25, 0);
     glVertex3d(-0.25, 0.25, 0);
-    glVertex3d(0, -0.25, 0);
+    glVertex3d(0, -0.25, 0);*/
 
     glEnd();
 #pragma endregion
