@@ -104,9 +104,11 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 
 // CONFIGURATION -----------------------------------------------------------------
 #define TITLE "THE ONE ENGINE"
+#define ORGANIZATION "CITM - UPC"
 #define VERSION "v0.1"
 
 // Folder paths
+#define ASSETS_PATH "Assets/"
 
 #define BUFFER_SIZE 4096
 // -------------------------------------------------------------------------------

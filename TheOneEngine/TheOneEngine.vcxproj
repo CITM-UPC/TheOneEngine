@@ -70,7 +70,7 @@
 $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp --recurse --triplet x64-windows</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc143-mt.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
@@ -98,7 +98,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp --recurse --triple
 $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp --recurse --triplet x64-windows</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc143-mt.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
