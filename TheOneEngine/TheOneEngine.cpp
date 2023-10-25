@@ -36,10 +36,10 @@ static void drawGrid(int grid_size, int grid_step)
     for (int i = -grid_size; i <= grid_size; i += grid_step)
     {
         //XY plane
-        glVertex2i(i, -grid_size);
+        /*glVertex2i(i, -grid_size);
         glVertex2i(i,  grid_size);
         glVertex2i(-grid_size, i);
-        glVertex2i( grid_size, i);
+        glVertex2i( grid_size, i);*/
 
         //XZ plane
         glVertex3i(i, 0, -grid_size);
@@ -63,7 +63,7 @@ void TheOneEngine::render(RenderModes renderMode)
         camera.up.x, camera.up.y, camera.up.z);
 
     if (renderMode == RenderModes::DEBUG) {
-        drawGrid(10, 1);
+        drawGrid(100, 1);
         drawAxis();
     }
     
