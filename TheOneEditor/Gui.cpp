@@ -42,13 +42,14 @@ bool Gui::Start()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+    
 
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->window->glContext);
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
-    // Setup Dear ImGui style
     ImGui::StyleColorsDark();
+    SetGuiStyle();
 
     ImGuiWindowFlags flags = 0;
 
@@ -143,6 +144,24 @@ void Gui::RenderGui()
 void Gui::HandleInput(SDL_Event* event) 
 {
     ImGui_ImplSDL2_ProcessEvent(event);
+}
+
+void Gui::SetGuiStyle()
+{
+
+    // Setup Dear ImGui style
+    ImGuiStyle& style = ImGui::GetStyle();
+
+    // light style from Pacôme Danhiez (user itamago) https://github.com/ocornut/imgui/pull/511#issuecomment-175719267
+    style.Alpha = 1.0f;
+    style.FrameRounding = 3.0f;
+    style.Colors[ImGuiCol_Tab] = ImVec4(0.8f, 0.2f, 0.00f, 0.5f);
+    style.Colors[ImGuiCol_TabHovered] = ImVec4(0.8f, 0.2f, 0.00f, 1.00f);
+    style.Colors[ImGuiCol_TabActive] = ImVec4(0.8f, 0.2f, 0.00f, 1.00f);
+    style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.8f, 0.2f, 0.00f, 0.5f);
+    style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.8f, 0.2f, 0.00f, 0.5f);
+    
+
 }
 
 void Gui::GeneralWindowDockspace()

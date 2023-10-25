@@ -375,6 +375,8 @@ public:
 
 private:
 
+	void SetGuiStyle();
+
 	/*Methods for windows*/
 
 	/*Main Dockspace*/
