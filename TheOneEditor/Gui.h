@@ -389,6 +389,7 @@ private:
 	void SceneViewWindow();
 	void InspectorWindow();
 	void HierarchyWindow();
+	void AssetsWindow();
 	void ConsoleWindow();
 
 private:
@@ -410,6 +411,9 @@ private:
 	
 	/*Hierarchy Window Vars*/
 	bool show_hierarchy_window = false;
+	
+	/*Assets Window Vars*/
+	bool show_assets_window = false;
 	
 	/*Console Window Vars*/
 	bool show_console_window = false;
