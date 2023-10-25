@@ -1,9 +1,9 @@
 #include "App.h"
 
-
-// Constructor
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
+	engine = new EngineCore();
+
 	window = new Window(this);
 	input = new Input(this);
 	gui = new Gui(this);
@@ -23,7 +23,6 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 }
 
-// Destructor
 App::~App()
 {
 	// Release modules

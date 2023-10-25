@@ -1,12 +1,12 @@
+#include "App.h"
+#include "Log.h"
+
 #include <iostream>
 #include <sstream>
 #include <vector>
 #include <chrono>
 #include <thread>
 #include <stdlib.h>
-
-#include "App.h"
-#include "Log.h"
 
 
 enum MainState

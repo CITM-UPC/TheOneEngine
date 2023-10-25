@@ -3,13 +3,14 @@
 #pragma once
 
 #include "Module.h"
-#include "Defs.h"
 
 #include "Window.h"
 #include "Input.h"
-#include "Gui.h"
 #include "Hardware.h"
+#include "Gui.h"
 #include "Renderer3D.h"
+
+#include "..\TheOneEngine\EngineCore.h"
 
 #include <iostream>
 #include <sstream>
@@ -22,12 +23,6 @@
 
 using namespace std;
 using namespace chrono;
-
-
-// Modules
-class Window;
-class Input;
-class Renderer3D;
 
 
 class App
@@ -61,7 +56,6 @@ public:
 
 	float GetDT();
 
-
 private:
 
 	// Call modules before each loop iteration
@@ -80,6 +74,8 @@ private:
 	bool PostUpdate();
 
 public:
+
+	EngineCore* engine;
 
 	// Modules
 	Window* window;
@@ -105,7 +101,6 @@ private:
 	std::chrono::duration<double> targetFrameDuration;
 	std::chrono::steady_clock::time_point frameStart, frameEnd;
 	double dt;
-
 };
 
 extern App* app;

@@ -1,7 +1,4 @@
 #include "Asset.h"
-#include "App.h"
-#include "AssetManager.h"
-#include "Log.h"
 #include "Defs.h"
 
 

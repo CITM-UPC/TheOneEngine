@@ -1,11 +1,11 @@
-#include "TheOneEngine.h"
+#include "EngineCore.h"
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
 
 
 static double angle = 0.0;
 
-void TheOneEngine::step(double dt)
+void EngineCore::step(double dt)
 {
     const double angle_vel = 360.0; // 360 degrees per second
 	angle += angle_vel * dt;
@@ -50,7 +50,7 @@ static void drawGrid(int grid_size, int grid_step)
     glEnd();
 }
 
-void TheOneEngine::render(RenderModes renderMode)
+void EngineCore::render(RenderModes renderMode)
 {
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

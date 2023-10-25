@@ -1,5 +1,4 @@
 #include "AssetMesh.h"
-#include "App.h"
 #include "Defs.h"
 
 #include <assimp/postprocess.h>
@@ -83,7 +82,7 @@ std::vector<AssetMesh::Ptr> AssetMesh::loadFromFile(const std::string& path)
         string texPath = aiScene::GetShortFilename(aiPath.C_Str());
 
         auto mesh_ptr = make_shared<AssetMesh>(0, "path", Formats::F_V3T2, vertex_data.data(), vertex_data.size(), index_data.data(), index_data.size());
-        //mesh_ptr->texture = make_shared<Texture2D>(texPath);
+        mesh_ptr->texture = make_shared<Texture>(texPath);
 
         mesh_ptrs.push_back(mesh_ptr);
     }

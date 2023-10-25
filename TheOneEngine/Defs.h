@@ -120,4 +120,4 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 // -------------------------------------------------------------------------------
 
 
-#endif	// __DEFS_H__
+#endif	// !__DEFS_H__

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Asset.h"
+#include "Texture.h"
 #include "Defs.h"
 
 #include <vector>
@@ -36,7 +37,7 @@ public:
 	using Ptr = std::shared_ptr<AssetMesh>;
 	static std::vector<Ptr> loadFromFile(const std::string& path);
 
-	//Texture2D::Ptr texture;
+	Texture::Ptr texture;
 
 private:
 	AssetMesh(const AssetMesh& cpy);

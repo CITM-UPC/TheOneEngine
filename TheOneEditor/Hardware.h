@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Module.h"
+#include "../TheOneEngine/Defs.h"
 
 #include <string>
 
@@ -50,4 +51,4 @@ private:
 	mutable HardwareInfo info;
 };
 
-#endif __RENDERER_3D__
+#endif //! __RENDERER_3D__

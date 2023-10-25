@@ -5,26 +5,16 @@
 #include "Module.h"
 
 #include <SDL2/SDL.h>
-#include <stdexcept>
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <chrono>
-#include <thread>
 
 
 #define WINDOW_WIDTH 1280
 #define WINDOW_HEIGHT 720
 
 
-using namespace std;
-using namespace chrono;
-
 class Window : public Module
 {
 public:
     Window(App* app);
-
     virtual ~Window();
 
     bool Awake();
@@ -40,4 +30,4 @@ public:
     SDL_GLContext glContext;
 };
 
-#endif // __WINDOW_H__
+#endif // !__WINDOW_H__

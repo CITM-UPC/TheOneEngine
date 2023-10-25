@@ -2,7 +2,6 @@
 #define __IMPORTER_H__
 #pragma once
 
-#include "Defs.h"
 
 class Asset;
 

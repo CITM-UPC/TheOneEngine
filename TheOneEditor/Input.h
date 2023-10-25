@@ -3,9 +3,6 @@
 #pragma once
 
 #include "Module.h"
-#include "App.h"
-#include "Defs.h"
-
 
 class Input : public Module
 {

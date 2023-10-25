@@ -1,5 +1,5 @@
-#include "Defs.h"
 #include "Hardware.h"
+#include "App.h"
 
 
 Hardware::Hardware(App* app) : Module(app)

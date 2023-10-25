@@ -14,9 +14,6 @@
     <Filter Include="Importers">
       <UniqueIdentifier>{a02db338-d43a-4456-9139-c05723651d56}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets">
-      <UniqueIdentifier>{b0f45eb8-bcc0-453a-88fa-b46fef49455a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -49,17 +46,11 @@
     <ClCompile Include="AssetManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Asset.cpp">
-      <Filter>Assets</Filter>
-    </ClCompile>
     <ClCompile Include="Importer.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
     <ClCompile Include="ImporterMesh.cpp">
       <Filter>Importers</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetMesh.cpp">
-      <Filter>Assets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +66,6 @@
     <ClInclude Include="App.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Defs.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer3D.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -90,17 +78,11 @@
     <ClInclude Include="AssetManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Asset.h">
-      <Filter>Assets</Filter>
-    </ClInclude>
     <ClInclude Include="Importer.h">
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="ImporterMesh.h">
       <Filter>Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetMesh.h">
-      <Filter>Assets</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

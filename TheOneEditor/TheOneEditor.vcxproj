@@ -93,7 +93,6 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="AssetMesh.cpp" />
     <ClCompile Include="Hardware.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="Importer.cpp" />
@@ -102,7 +101,6 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
-    <ClCompile Include="Asset.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Window.h" />
@@ -114,8 +112,6 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
-    <ClInclude Include="AssetMesh.h" />
-    <ClInclude Include="Defs.h" />
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="Importer.h" />
@@ -124,7 +120,6 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="Renderer3D.h" />
-    <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

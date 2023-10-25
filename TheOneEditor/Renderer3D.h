@@ -3,9 +3,8 @@
 #pragma once
 
 #include "Module.h"
-#include "App.h"
 
-#include "../TheOneEngine/TheOneEngine.h"
+class EngineCore;
 
 class Renderer3D : public Module
 {
@@ -22,10 +21,6 @@ public:
     bool PostUpdate();
 
     bool CleanUp();
-
-private:
-    TheOneEngine engine;
-
 };
 
-#endif __RENDERER_3D__
+#endif // !__RENDERER_3D__

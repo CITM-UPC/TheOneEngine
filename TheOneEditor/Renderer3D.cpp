@@ -2,7 +2,7 @@
 #include "App.h"
 
 // hekbas testing Mesh load/draw
-#include "AssetMesh.h"
+//#include "AssetMesh.h"
 
 
 Renderer3D::Renderer3D(App* app) : Module(app) {}
@@ -17,13 +17,13 @@ bool Renderer3D::Awake()
 
 bool Renderer3D::Start()
 {
-    engine.camera.fov = 60;
-    engine.camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
-    engine.camera.zNear = 0.1;
-    engine.camera.zFar = 100;
-    engine.camera.eye = vec3(5, 1.75, 5);
-    engine.camera.center = vec3(0, 1, 0);
-    engine.camera.up = vec3(0, 1, 0);
+    app->engine->camera.fov = 60;
+    app->engine->camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
+    app->engine->camera.zNear = 0.1;
+    app->engine->camera.zFar = 100;
+    app->engine->camera.eye = vec3(5, 1.75, 5);
+    app->engine->camera.center = vec3(0, 1, 0);
+    app->engine->camera.up = vec3(0, 1, 0);
 
     return true;
 }
@@ -37,14 +37,14 @@ bool Renderer3D::PreUpdate()
 
 bool Renderer3D::Update(double dt)
 {
-    engine.step(dt);
+    app->engine->step(dt);
 
     return true;
 }
 
 bool Renderer3D::PostUpdate()
 { 
-    engine.render(TheOneEngine::RenderModes::DEBUG);
+    app->engine->render(EngineCore::RenderModes::DEBUG);
 
     // hekbas testing Mesh load/draw
     static auto mesh_ptrs = AssetMesh::loadFromFile("Assets/SM_BakerHouse.fbx");

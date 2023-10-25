@@ -1,11 +1,8 @@
 #include "AssetManager.h"
 #include "App.h"
-#include "Log.h"
-#include "Defs.h"
 
+#include "Log.h"
 #include "Importer.h"
-#include "Asset.h"
-#include "AssetMesh.h"
 
 #include <assimp/cimport.h>
 

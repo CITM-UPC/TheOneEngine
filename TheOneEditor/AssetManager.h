@@ -2,15 +2,15 @@
 #define __ASSET_MANAGER_H__
 #pragma once
 
-
 #include "Module.h"
-#include "Asset.h"
+#include "../TheOneEngine/EngineCore.h"
 #include "Importer.h"
 
 #include <string>
 #include <map>
 
 
+class Asset;
 class AssetMesh;
 class AssetTexture;
 
