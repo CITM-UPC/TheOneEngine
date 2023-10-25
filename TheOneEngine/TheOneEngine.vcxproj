@@ -67,7 +67,7 @@
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)\vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp --recurse --triplet x64-windows</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp --recurse --overlay-triplets=custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib</AdditionalDependencies>
