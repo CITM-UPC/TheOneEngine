@@ -3,7 +3,6 @@
 #pragma once
 
 #include "Module.h"
-#include "App.h"
 
 #include <SDL2/SDL.h>
 #include <stdexcept>
