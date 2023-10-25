@@ -21,6 +21,7 @@ bool Gui::Awake()
     show_sceneView_window = false;
     show_inspector_window = true;
     show_hierarchy_window = true;
+    show_assets_window = true;
     show_console_window = true;
 
     return ret;
@@ -86,6 +87,11 @@ bool Gui::PreUpdate()
     if (show_hierarchy_window)
     {
         HierarchyWindow();
+    }
+    
+    if (show_assets_window)
+    {
+        AssetsWindow();
     }
     
     if (show_console_window)
@@ -185,6 +191,7 @@ void Gui::GeneralWindowDockspace()
             ImGui::DockBuilderDockWindow("Scene", dockspace_id); //Takes the name of a window
             ImGui::DockBuilderDockWindow("Inspector", dock_id_right); //Takes the name of a window
             ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left); //Takes the name of a window
+            ImGui::DockBuilderDockWindow("Assets", dock_id_down); //Takes the name of a window
             ImGui::DockBuilderDockWindow("Console", dock_id_down); //Takes the name of a window
             ImGui::DockBuilderFinish(dockspace_id);
         }
@@ -424,15 +431,37 @@ void Gui::InspectorWindow()
     ImGui::Begin("Inspector");
     
     /*Transform*/
-    ImGui::Text("Transform");
+    ImGui::SeparatorText("Transform");
     static char buf[5] = "0";
-    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::PushItemWidth(50.0f);
-    ImGui::InputText("X", buf, IM_ARRAYSIZE(buf));
+    ImGui::Text("Position");
+    //ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
+    ImGui::PushItemWidth(40.0f);
     ImGui::SameLine();
-    ImGui::InputText("Y", buf, IM_ARRAYSIZE(buf));
+    ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
     ImGui::SameLine();
-    ImGui::InputText("Z", buf, IM_ARRAYSIZE(buf));
+    ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
+    ImGui::SameLine();
+    ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
+    
+    ImGui::Text("Rotation");
+    //ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
+    ImGui::PushItemWidth(40.0f);
+    ImGui::SameLine();
+    ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
+    ImGui::SameLine();
+    ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
+    ImGui::SameLine();
+    ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
+    
+    ImGui::Text("Scale   ");
+    //ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
+    ImGui::PushItemWidth(40.0f);
+    ImGui::SameLine();
+    ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
+    ImGui::SameLine();
+    ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
+    ImGui::SameLine();
+    ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
     
     ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
     ImGui::Text("Mesh");
@@ -457,6 +486,13 @@ void Gui::HierarchyWindow()
 
     ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
     ImGui::Begin("Hierarchy");
+    
+    ImGui::End();
+}
+
+void Gui::AssetsWindow()
+{
+    ImGui::Begin("Assets");
     
     ImGui::End();
 }
