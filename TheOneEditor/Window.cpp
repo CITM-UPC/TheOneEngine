@@ -3,6 +3,7 @@
 
 
 Window::Window(App* app) : Module(app), window(nullptr), glContext(nullptr) {}
+
 Window::~Window() {}
 
 bool Window::Awake()

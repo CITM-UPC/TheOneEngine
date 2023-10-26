@@ -30,6 +30,7 @@ private:
 
 public:
 	AssetMesh(uint ID, std::string path, Formats format, const void* vertex_data, uint numVerts, const uint* indexs_data = nullptr, uint numIndexs = 0);
+	AssetMesh(AssetMesh&& b) noexcept;
 	~AssetMesh();
 
 	void draw();

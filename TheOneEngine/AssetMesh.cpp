@@ -44,6 +44,18 @@ AssetMesh::AssetMesh(uint ID, string path, Formats format, const void* vertex_da
     }
 }
 
+AssetMesh::AssetMesh(AssetMesh&& b) noexcept : Asset(AssetType::MESH, ID, path),
+    format(b.format),
+    vertex_buffer_id(b.vertex_buffer_id),
+    numVerts(b.numVerts),
+    indexs_buffer_id(b.indexs_buffer_id),
+    numIndexs(b.numIndexs),
+    texture(b.texture)
+{
+    b.vertex_buffer_id = 0;
+    b.indexs_buffer_id = 0;
+}
+
 AssetMesh::~AssetMesh()
 {
     if (vertex_buffer_id) glDeleteBuffers(1, &vertex_buffer_id);
@@ -79,9 +91,11 @@ std::vector<AssetMesh::Ptr> AssetMesh::loadFromFile(const std::string& path)
         auto material = scene->mMaterials[mesh->mMaterialIndex];
         aiString aiPath;
         material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
-        string texPath = aiScene::GetShortFilename(aiPath.C_Str());
 
-        auto mesh_ptr = make_shared<AssetMesh>(0, "path", Formats::F_V3T2, vertex_data.data(), vertex_data.size(), index_data.data(), index_data.size());
+        string folderPath = "Assets\\";
+        string texPath = folderPath + aiScene::GetShortFilename(aiPath.C_Str());
+
+        auto mesh_ptr = make_shared<AssetMesh>(0, path, Formats::F_V3T2, vertex_data.data(), vertex_data.size(), index_data.data(), index_data.size());
         mesh_ptr->texture = make_shared<Texture>(texPath);
 
         mesh_ptrs.push_back(mesh_ptr);
@@ -96,8 +110,8 @@ void AssetMesh::draw()
 {
     glColor4ub(255, 255, 255, 255);
 
-    // WIREFRAME MODE, comment the line below dor fill mode
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    // WIREFRAME MODE, comment the line below for fill mode
+    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -116,7 +130,7 @@ void AssetMesh::draw()
 
     case Formats::F_V3T2:
         glEnable(GL_TEXTURE_2D);
-        //if (texture.get()) texture->bind();
+        if (texture.get()) texture->bind();
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glVertexPointer(3, GL_FLOAT, sizeof(V3T2), nullptr);
         glTexCoordPointer(2, GL_FLOAT, sizeof(V3T2), (void*)sizeof(V3));

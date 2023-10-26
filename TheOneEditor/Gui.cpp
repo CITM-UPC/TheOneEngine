@@ -8,7 +8,6 @@ Gui::Gui(App* app) : Module(app)
     
 }
 
-// Destructor
 Gui::~Gui()
 {}
 

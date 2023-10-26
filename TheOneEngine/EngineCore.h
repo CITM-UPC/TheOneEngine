@@ -3,8 +3,8 @@
 #pragma once
 
 
-//hekbas: Include here all headers needed in Editor
-//Then Include on Editor: #include "../TheOneEngine/EngineCore.h"
+// hekbas: Include here all headers needed in Editor
+// Include in Editor when needed: #include "../TheOneEngine/EngineCore.h"
 #include "Defs.h"
 #include "Camera.h"
 #include "Asset.h"
@@ -20,10 +20,18 @@ public:
 
 	enum class RenderModes {RELEASE, DEBUG};
 
+	EngineCore();
+
+	void Awake();
+	void Start();
+
+	void Update(double dt);
+
+	void Render(RenderModes renderMode);
+
+public:
 	Camera camera;
 
-	void step(double dt);
-	void render(RenderModes renderMode);
 };
 
 #endif // !__ENGINE_CORE_H__

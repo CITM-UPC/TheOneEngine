@@ -1,14 +1,26 @@
 #include "EngineCore.h"
 #include <GL\glew.h>
 #include <glm/ext/matrix_transform.hpp>
+#include <IL/il.h>
 
-
-static double angle = 0.0;
-
-void EngineCore::step(double dt)
+EngineCore::EngineCore()
 {
-    const double angle_vel = 360.0; // 360 degrees per second
-	angle += angle_vel * dt;
+    
+}
+
+void EngineCore::Awake()
+{
+    
+}
+
+void EngineCore::Start()
+{
+    
+}
+
+void EngineCore::Update(double dt)
+{
+
 }
 
 static void drawAxis()
@@ -50,38 +62,33 @@ static void drawGrid(int grid_size, int grid_step)
     glEnd();
 }
 
-void EngineCore::render(RenderModes renderMode)
-{
+void EngineCore::Render(RenderModes renderMode)
+{  
+    ilInit();
+
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glClearDepth(1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_COLOR_MATERIAL);
+    //glEnable(GL_LIGHTING);
+
+    gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
+    
     gluLookAt( camera.eye.x, camera.eye.y, camera.eye.z,
         camera.center.x, camera.center.y, camera.center.z,
         camera.up.x, camera.up.y, camera.up.z);
 
-    if (renderMode == RenderModes::DEBUG) {
-        drawGrid(100, 1);
-        drawAxis();
-    }
+    drawGrid(100, 1);
+    drawAxis();
     
-#pragma region direct draw test    
 
-    /*glRotated(angle, 0, 0, 1);
-
-    glColor4ub(255, 0, 0, 255);
-    glBegin(GL_TRIANGLES);
-    glVertex3d(-0.25, -0.25, 0);
-    glVertex3d(0.25, -0.25, 0);
-    glVertex3d(0, 0.25, 0);
-
-    glVertex3d(0.25, 0.25, 0);
-    glVertex3d(-0.25, 0.25, 0);
-    glVertex3d(0, -0.25, 0);*/
-
-    glEnd();
-#pragma endregion
-
+    assert(glGetError() == GL_NONE);
 }
