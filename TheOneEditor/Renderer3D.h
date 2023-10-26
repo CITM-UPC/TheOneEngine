@@ -21,6 +21,11 @@ public:
     bool PostUpdate();
 
     bool CleanUp();
+
+private:
+
+    //hekbas test
+    double dtSum = 0;
 };
 
 #endif // !__RENDERER_3D__
