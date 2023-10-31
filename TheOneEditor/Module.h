@@ -1,5 +1,6 @@
 #ifndef __MODULE_H__
 #define __MODULE_H__
+#pragma once
 
 class App;
 
@@ -73,4 +74,4 @@ public:
 	App* app;
 };
 
-#endif // __MODULE_H__
+#endif // !__MODULE_H__

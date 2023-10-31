@@ -1,5 +1,5 @@
-#ifndef __UI_WINDOW__
-#define __UI_WINDOW__
+#ifndef __UI_WINDOW_H__
+#define __UI_WINDOW_H__
 #pragma once
 
 enum class UIWindowType
@@ -31,4 +31,4 @@ protected:
 	UIWindowType type = UIWindowType::UNKNOWN;
 };
 
-#endif // !__UI_WINDOW__
+#endif // !__UI_WINDOW_H__

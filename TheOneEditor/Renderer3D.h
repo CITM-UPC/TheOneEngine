@@ -1,5 +1,5 @@
-#ifndef __RENDERER_3D__
-#define __RENDERER_3D__
+#ifndef __RENDERER_3D_H__
+#define __RENDERER_3D_H__
 #pragma once
 
 #include "Module.h"
@@ -28,4 +28,4 @@ private:
     double dtSum = 0;
 };
 
-#endif // !__RENDERER_3D__
+#endif // !__RENDERER_3D_H__

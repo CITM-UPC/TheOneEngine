@@ -1,4 +1,7 @@
+#ifndef __GUI_H__
+#define __GUI_H__
 #pragma once
+
 #define _CRT_SECURE_NO_WARNINGS
 #pragma warning(disable:4996)
 
@@ -421,3 +424,4 @@ private:
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 };
 
+#endif // !__GUI_H__

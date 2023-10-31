@@ -1,5 +1,5 @@
-#ifndef __ASSET_MESH__
-#define __ASSET_MESH__
+#ifndef __ASSET_MESH_H__
+#define __ASSET_MESH_H__
 #pragma once
 
 #include "Asset.h"
@@ -45,4 +45,4 @@ private:
 	AssetMesh& operator=(const AssetMesh&);
 };
 
-#endif // !__ASSET_MESH__
+#endif // !__ASSET_MESH_H__
