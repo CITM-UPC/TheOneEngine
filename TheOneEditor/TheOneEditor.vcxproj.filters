@@ -14,6 +14,9 @@
     <Filter Include="Importers">
       <UniqueIdentifier>{a02db338-d43a-4456-9139-c05723651d56}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UIWindows">
+      <UniqueIdentifier>{51d12ac5-75fb-412a-bf54-07209ecf4871}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -52,6 +55,12 @@
     <ClCompile Include="ImporterMesh.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="UIWindow.cpp">
+      <Filter>UIWindows</Filter>
+    </ClCompile>
+    <ClCompile Include="UIWindowAbout.cpp">
+      <Filter>UIWindows</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -83,6 +92,12 @@
     </ClInclude>
     <ClInclude Include="ImporterMesh.h">
       <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="UIWindow.h">
+      <Filter>UIWindows</Filter>
+    </ClInclude>
+    <ClInclude Include="UIWindowAbout.h">
+      <Filter>UIWindows</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
