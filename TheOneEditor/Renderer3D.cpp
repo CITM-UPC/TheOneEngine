@@ -59,7 +59,7 @@ bool Renderer3D::PostUpdate()
     static auto mesh_ptrs = AssetMesh::loadFromFile("Assets/mf.fbx");
     for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();
 
-    app->gui->RenderGui();
+    app->gui->Draw();
 
     SDL_GL_SwapWindow(app->window->window);
 

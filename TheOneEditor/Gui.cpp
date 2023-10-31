@@ -31,10 +31,10 @@ bool Gui::Start()
     LOG("Starting IMGUI");
     bool ret = true;
 
-    // Setup Dear ImGui context should go on Init
     IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiContext* contextui = ImGui::GetCurrentContext();
+
+    ImGuiContext* contextui = ImGui::CreateContext();
+    
     IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing Dear ImGui context. Refer to examples app!");
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
@@ -58,21 +58,87 @@ bool Gui::PreUpdate()
 {
     bool ret = true;
 
-    /*Clears GUI*/
+    // Clears GUI
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    if (show_gui)
+    // hekbas TODO get input
+
+    // Dockspace
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        MainWindowDockspace();
+
+    return ret;
+}
+
+bool Gui::Update(double dt)
+{
+    bool ret = true;
+
+    // Creates the Main Menu Bar
+    if (ImGui::BeginMainMenuBar())
     {
-        GeneralWindowDockspace();
+        if (ImGui::BeginMenu("File"))
+        {
+            MainMenuFile();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Edit"))
+        {
+            MainMenuEdit();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Assets"))
+        {
+            MainMenuAssets();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("GameObject"))
+        {
+            MainMenuGameObject();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Component"))
+        {
+            MainMenuComponent();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Window"))
+        {
+            MainMenuWindow();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Help"))
+        {
+            MainMenuHelp();
+            ImGui::EndMenu();
+        }
+        
+        ImGui::EndMainMenuBar();
     }
+
+    return ret;
+}
+
+bool Gui::PostUpdate()
+{
+    bool ret = true;
+
+    // hekbas TODO iterate UIWindows + Draw
+
 
     if (show_guiwindow_1)
     {
         GUIWindow1();
     }
-    
+
     if (show_sceneView_window)
     {
         SceneViewWindow();
@@ -82,40 +148,25 @@ bool Gui::PreUpdate()
     {
         InspectorWindow();
     }
-    
+
     if (show_hierarchy_window)
     {
         HierarchyWindow();
     }
-    
+
     if (show_assets_window)
     {
         AssetsWindow();
     }
-    
+
     if (show_console_window)
     {
         ConsoleWindow();
     }
 
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        ImGui::End();
 
-    return ret;
-}
-
-bool Gui::Update(float dt)
-{
-    bool ret = true;
-
-
-
-    return ret;
-}
-
-bool Gui::PostUpdate()
-{
-    bool ret = true;
-
-    
     return ret;
 }
 
@@ -124,7 +175,6 @@ bool Gui::CleanUp()
     LOG("Cleaning up IMGUI");
     bool ret = true;
 
-    // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
@@ -132,11 +182,19 @@ bool Gui::CleanUp()
     return ret;
 }
 
-void Gui::RenderGui()
+void Gui::Draw()
 {
     ImGui::EndFrame();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui::EndFrame();
+
+    // hekbas look into this
+    /*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+    }*/
 }
 
 void Gui::HandleInput(SDL_Event* event) 
@@ -144,7 +202,7 @@ void Gui::HandleInput(SDL_Event* event)
     ImGui_ImplSDL2_ProcessEvent(event);
 }
 
-void Gui::GeneralWindowDockspace()
+void Gui::MainWindowDockspace()
 {
     static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
@@ -195,104 +253,116 @@ void Gui::GeneralWindowDockspace()
             ImGui::DockBuilderFinish(dockspace_id);
         }
     }
-
-    /*Creates the Main Menu Bar*/
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            GeneralMenuFile();
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Edit"))
-        {
-            GeneralMenuEdit();
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Windows"))
-        {
-            GeneralMenuWindows();
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("About"))
-        {
-            GeneralMenuAbout();
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
-
-
-    ImGui::End();
 }
 
-void Gui::GeneralMenuFile()
+
+// Main Menu Bar ----------------------------------------------
+
+void Gui::MainMenuFile()
 {
-    if (ImGui::MenuItem("New")) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+    if (ImGui::MenuItem("New", 0, false, false)) {}
+    if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
     if (ImGui::BeginMenu("Open Recent"))
     {
-        ImGui::MenuItem("fish_hat.c");
-        ImGui::MenuItem("fish_hat.inl");
-        ImGui::MenuItem("fish_hat.h");
-        if (ImGui::BeginMenu("More.."))
-        {
-            ImGui::MenuItem("Hello");
-            ImGui::MenuItem("Sailor");
-            ImGui::EndMenu();
-        }
         ImGui::EndMenu();
     }
-    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
-    if (ImGui::MenuItem("Save As..")) {}
-}
 
-void Gui::GeneralMenuEdit()
-{
-    if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-    if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
     ImGui::Separator();
-    if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-    if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-    if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+
+    if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
+    if (ImGui::MenuItem("Save As..", 0, false, false)) {}
+
+    ImGui::Separator();
+
+    if (ImGui::MenuItem("Exit")) {}
 }
 
-void Gui::GeneralMenuWindows()
+void Gui::MainMenuEdit()
 {
-    if (ImGui::MenuItem("New")) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-    if (ImGui::BeginMenu("Open Recent"))
+    if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
+    if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}  // Disabled item
+
+    ImGui::Separator();
+
+    if (ImGui::MenuItem("Cut", "Ctrl+X", false, false)) {}
+    if (ImGui::MenuItem("Copy", "Ctrl+C", false, false)) {}
+    if (ImGui::MenuItem("Paste", "Ctrl+V", false, false)) {}
+}
+
+void Gui::MainMenuAssets()
+{
+    if (ImGui::BeginMenu("Create"))
     {
-        ImGui::MenuItem("fish_hat.c");
-        ImGui::MenuItem("fish_hat.inl");
-        ImGui::MenuItem("fish_hat.h");
-        if (ImGui::BeginMenu("More.."))
-        {
-            ImGui::MenuItem("Hello");
-            ImGui::MenuItem("Sailor");
-            ImGui::EndMenu();
-        }
+        if (ImGui::MenuItem("Folder", 0, false, false)) {}
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Script", 0, false, false)) {}
+        if (ImGui::MenuItem("Shader", 0, false, false)) {}
         ImGui::EndMenu();
     }
-    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
-    if (ImGui::MenuItem("Save As..")) {}
+    ImGui::Separator();
 }
 
-void Gui::GeneralMenuAbout()
+void Gui::MainMenuGameObject()
 {
-    ImGui::SeparatorText("ABOUT THIS DEMO:");
-    ImGui::Text("This is a Demo of TheOneEngine created in OpenGL by two students, Hector Bascones Zamora and Arnau Jimenez Gallego for the subject Game Engines");
+    if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) {}
+
+    if (ImGui::BeginMenu("3D Object", "Ctrl+Shift+N"))
+    {
+        if (ImGui::MenuItem("Folder", 0, false, false)) {}
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Script", 0, false, false)) {}
+        if (ImGui::MenuItem("Shader", 0, false, false)) {}
+        ImGui::EndMenu();
+    }
+    ImGui::Separator();
+}
+
+void Gui::MainMenuComponent()
+{
+    if (ImGui::MenuItem("Mesh Renderer", 0, false, false)) {}
+}
+
+void Gui::MainMenuWindow()
+{
+    if (ImGui::MenuItem("Console")) {}
+    if (ImGui::MenuItem("Hierarchy")) {}
+    if (ImGui::MenuItem("Inspector")) {}
+    if (ImGui::MenuItem("Project")) {}
+    if (ImGui::MenuItem("Scene")) {}
+}
+
+void Gui::MainMenuHelp()
+{
+    if (ImGui::BeginMenu("About TheOneEngine"))
+    {
+        ImGui::Text("TheOneEngine by Hector Bascones Zamora & Arnau Jimenez Gallego.");
+        ImGui::Text("This is a demo for the subject of Game Engines, CITM - UPC");
+        ImGui::EndMenu();
+    }
+
+    ImGui::Separator();
+
+    if (ImGui::MenuItem("Documentation"))
+    {
+        //OpenURL("link here");
+    }
+    
+    ImGui::Separator();
 
     HardwareInfo hardware_info = app->hardware->GetInfo();
 
+    // SDL Version
     ImGui::Separator();
-    // --- SDL Version ---
     ImGui::Text("SDL Version:");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
     ImGui::Separator();
 
-    // --- CPU ---
+    // CPU 
     ImGui::Text("CPU Logic Cores:");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.cpu_count);
@@ -337,14 +407,14 @@ void Gui::GeneralMenuAbout()
     if (hardware_info.avx2)
         ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "avx2");
 
+    // RAM 
     ImGui::Separator();
-    // --- RAM ---
     ImGui::Text("RAM Memory (Gb)");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.ram_gb);
 
+    // GPU (Currently NVIDIA only)
     ImGui::Separator();
-    // --- GPU --- (Currently NVIDIA only)
     ImGui::Text("GPU Vendor");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_vendor.data());
@@ -369,6 +439,9 @@ void Gui::GeneralMenuAbout()
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_usage);
 }
+
+
+// Windows ----------------------------------------------------
 
 void Gui::GUIWindow1()
 {

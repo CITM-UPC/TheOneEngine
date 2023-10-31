@@ -6,8 +6,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	window = new Window(this);
 	input = new Input(this);
-	gui = new Gui(this);
 	hardware = new Hardware(this);
+	gui = new Gui(this);
 	renderer3D = new Renderer3D(this);
 
 	// Ordered for awake / Start / Update
@@ -16,10 +16,10 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window, true);
 	AddModule(input, true);
 	AddModule(hardware, true);
+	AddModule(gui, true);
 
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
-	AddModule(gui, true);
 
 }
 

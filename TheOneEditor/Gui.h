@@ -367,11 +367,11 @@ public:
 	bool Awake();
 	bool Start();
 	bool PreUpdate();
-	bool Update(float dt);
+	bool Update(double dt);
 	bool PostUpdate();
 	bool CleanUp();
 
-	void RenderGui();
+	void Draw();
 
 	void HandleInput(SDL_Event* event);
 
@@ -380,11 +380,14 @@ private:
 	/*Methods for windows*/
 
 	/*Main Dockspace*/
-	void GeneralWindowDockspace(); 
-	void GeneralMenuFile();
-	void GeneralMenuEdit();
-	void GeneralMenuWindows();
-	void GeneralMenuAbout();
+	void MainWindowDockspace(); 
+	void MainMenuFile();
+	void MainMenuEdit();
+	void MainMenuAssets();
+	void MainMenuGameObject();
+	void MainMenuComponent();
+	void MainMenuWindow();
+	void MainMenuHelp();
 
 	/*Windows*/
 	void GUIWindow1();
