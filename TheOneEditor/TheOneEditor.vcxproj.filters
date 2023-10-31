@@ -55,10 +55,10 @@
     <ClCompile Include="ImporterMesh.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="UIWindow.cpp">
+    <ClCompile Include="Panel.cpp">
       <Filter>UIWindows</Filter>
     </ClCompile>
-    <ClCompile Include="UIWindowAbout.cpp">
+    <ClCompile Include="PanelAbout.cpp">
       <Filter>UIWindows</Filter>
     </ClCompile>
   </ItemGroup>
@@ -93,10 +93,10 @@
     <ClInclude Include="ImporterMesh.h">
       <Filter>Importers</Filter>
     </ClInclude>
-    <ClInclude Include="UIWindow.h">
+    <ClInclude Include="Panel.h">
       <Filter>UIWindows</Filter>
     </ClInclude>
-    <ClInclude Include="UIWindowAbout.h">
+    <ClInclude Include="PanelAbout.h">
       <Filter>UIWindows</Filter>
     </ClInclude>
   </ItemGroup>

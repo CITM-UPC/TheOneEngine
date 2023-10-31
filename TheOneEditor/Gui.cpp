@@ -299,9 +299,9 @@ void Gui::MainMenuAssets()
 
         if (ImGui::MenuItem("Script", 0, false, false)) {}
         if (ImGui::MenuItem("Shader", 0, false, false)) {}
+
         ImGui::EndMenu();
     }
-    ImGui::Separator();
 }
 
 void Gui::MainMenuGameObject()
@@ -310,15 +310,11 @@ void Gui::MainMenuGameObject()
 
     if (ImGui::BeginMenu("3D Object", "Ctrl+Shift+N"))
     {
-        if (ImGui::MenuItem("Folder", 0, false, false)) {}
+        if (ImGui::MenuItem("Square", 0, false, false)) {}
+        if (ImGui::MenuItem("Sphere", 0, false, false)) {}
 
-        ImGui::Separator();
-
-        if (ImGui::MenuItem("Script", 0, false, false)) {}
-        if (ImGui::MenuItem("Shader", 0, false, false)) {}
         ImGui::EndMenu();
     }
-    ImGui::Separator();
 }
 
 void Gui::MainMenuComponent()
@@ -356,7 +352,6 @@ void Gui::MainMenuHelp()
     HardwareInfo hardware_info = app->hardware->GetInfo();
 
     // SDL Version
-    ImGui::Separator();
     ImGui::Text("SDL Version:");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
