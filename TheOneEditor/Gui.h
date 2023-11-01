@@ -381,7 +381,7 @@ private:
 
 	/*Main Dockspace*/
 	void MainWindowDockspace(); 
-	void MainMenuFile();
+	bool MainMenuFile();
 	void MainMenuEdit();
 	void MainMenuAssets();
 	void MainMenuGameObject();

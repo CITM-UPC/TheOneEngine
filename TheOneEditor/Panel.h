@@ -2,16 +2,20 @@
 #define __PANEL_H__
 #pragma once
 
+
 enum class PanelType
 {
+	ABOUT,
+
 	CONSOLE,
 	HIERARCHY,
 	INSPECTOR,
 	PROJECT,
 	SCENE,
+	STATS,
+
 	UNKNOWN
 };
-
 
 class Panel
 {

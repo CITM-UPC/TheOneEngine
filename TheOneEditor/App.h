@@ -50,18 +50,21 @@ public:
 	// Add a new module to handle
 	void AddModule(Module* module, bool activate);
 
+	void LogConsole(const char* entry);
+
 	// Exposing some properties for reading
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
 	float GetDT();
 
+
 private:
 
 	// Call modules before each loop iteration
 	void PrepareUpdate();
 
-	// Call modules before each loop iteration
+	// Call modules after each loop iteration
 	void FinishUpdate();
 
 	// Call modules before each loop iteration
@@ -84,9 +87,6 @@ public:
 	Gui* gui;
 	Renderer3D* renderer3D;
 
-	int musicValue = 100;
-	int sfxValue = 100;
-
 private:
 
 	int argc;
@@ -95,6 +95,10 @@ private:
 	string organization;
 
 	list<Module*> modules;
+
+	//Logs
+	std::string log;
+	std::vector<std::string> logs;
 
 	// Fps control
 	double targetFPS = 60;

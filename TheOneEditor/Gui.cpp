@@ -63,7 +63,7 @@ bool Gui::PreUpdate()
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 
-    // hekbas TODO get input
+    // hekbas TODO get input here?
 
     // Dockspace
     if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
@@ -81,7 +81,7 @@ bool Gui::Update(double dt)
     {
         if (ImGui::BeginMenu("File"))
         {
-            MainMenuFile();
+            ret = MainMenuFile();
             ImGui::EndMenu();
         }
 
@@ -258,8 +258,10 @@ void Gui::MainWindowDockspace()
 
 // Main Menu Bar ----------------------------------------------
 
-void Gui::MainMenuFile()
+bool Gui::MainMenuFile()
 {
+    bool ret = true;
+
     if (ImGui::MenuItem("New", 0, false, false)) {}
     if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
     if (ImGui::BeginMenu("Open Recent"))
@@ -274,7 +276,10 @@ void Gui::MainMenuFile()
 
     ImGui::Separator();
 
-    if (ImGui::MenuItem("Exit")) {}
+    if (ImGui::MenuItem("Exit"))
+        ret = false;
+
+    return ret;
 }
 
 void Gui::MainMenuEdit()

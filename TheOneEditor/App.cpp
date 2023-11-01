@@ -145,44 +145,45 @@ bool App::PreUpdate()
 		if (item->active == false)
 			continue;
 
-		ret = item->PreUpdate();
+		if (item->PreUpdate() == false)
+			return false;
 	}
 
-	return ret;
+	return true;
 }
 
 // Call modules on each loop iteration
 bool App::DoUpdate()
 {
 	//OPTICK_CATEGORY("DoUpdate", Optick::Category::GameLogic);
-	bool ret = true;
 
 	for (const auto& item : modules)
 	{
 		if (item->active == false)
 			continue;
 
-		ret = item->Update(dt);
+		if (item->Update(dt) == false)
+			return false;		
 	}
 
-	return ret;
+	return true;
 }
 
 // Call modules after each loop iteration
 bool App::PostUpdate()
 {
 	//OPTICK_CATEGORY("PostUpdate", Optick::Category::GameLogic);
-	bool ret = true;
 
 	for (const auto& item : modules)
 	{
 		if (item->active == false)
 			continue;
 
-		ret = item->PostUpdate();
+		if (item->PostUpdate() == false)
+			return false;
 	}
 
-	return ret;
+	return true;
 }
 
 // Called before quitting
@@ -197,6 +198,17 @@ bool App::CleanUp()
 	}
 
 	return ret;
+}
+
+void App::LogConsole(const char* entry)
+{
+	if (logs.size() > MAX_LOGS_CONSOLE)
+		logs.erase(logs.begin());
+
+	log.append(entry);
+
+	std::string toAdd = entry;
+	logs.push_back(toAdd);
 }
 
 // ---------------------------------------

@@ -6,5 +6,7 @@ PanelAbout::~PanelAbout() {}
 
 bool PanelAbout::Draw()
 {
+
+
 	return true;
 }
