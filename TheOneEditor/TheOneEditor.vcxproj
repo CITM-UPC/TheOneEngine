@@ -100,6 +100,12 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PanelConsole.cpp" />
+    <ClCompile Include="PanelHierarchy.cpp" />
+    <ClCompile Include="PanelInspector.cpp" />
+    <ClCompile Include="PanelProject.cpp" />
+    <ClCompile Include="PanelScene.cpp" />
+    <ClCompile Include="PanelStats.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Panel.cpp" />
@@ -121,6 +127,12 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClInclude Include="Input.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="PanelConsole.h" />
+    <ClInclude Include="PanelHierarchy.h" />
+    <ClInclude Include="PanelInspector.h" />
+    <ClInclude Include="PanelProject.h" />
+    <ClInclude Include="PanelScene.h" />
+    <ClInclude Include="PanelStats.h" />
     <ClInclude Include="Renderer3D.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Panel.h" />

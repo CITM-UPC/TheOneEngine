@@ -61,6 +61,24 @@
     <ClCompile Include="PanelAbout.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="PanelConsole.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelHierarchy.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelInspector.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelProject.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelScene.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelStats.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -97,6 +115,24 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="PanelAbout.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelHierarchy.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelInspector.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelProject.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelScene.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelStats.h">
       <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>

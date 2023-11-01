@@ -98,7 +98,7 @@ private:
 
 	//Logs
 	std::string log;
-	std::vector<std::string> logs;
+	std::list<std::string> logs;
 
 	// Fps control
 	double targetFPS = 60;

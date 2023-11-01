@@ -20,18 +20,20 @@ enum class PanelType
 class Panel
 {
 public:
+
 	Panel(PanelType type);
 	virtual ~Panel();
 
 	virtual bool Draw() = 0;
 
-	virtual void SetEnabled(bool enabled);
-
-	virtual bool isEnabled();
+	virtual bool GetState();
+	virtual void SetState(bool state);
+	virtual void SwitchState();
 
 	virtual PanelType GetType();
 
 protected:
+
 	bool enabled = false;
 	PanelType type = PanelType::UNKNOWN;
 };

@@ -4,8 +4,13 @@ Panel::Panel(PanelType type) : type(type) {}
 
 Panel::~Panel() {}
 
-void Panel::SetEnabled(bool enabled) { this->enabled = enabled; }
+bool Panel::GetState() { return enabled; }
 
-bool Panel::isEnabled() { return enabled; }
+void Panel::SetState(bool enabled) { this->enabled = enabled; }
+
+void Panel::SwitchState()
+{  
+	enabled = enabled == true ? false : true;
+}
 
 PanelType Panel::GetType() { return type; }

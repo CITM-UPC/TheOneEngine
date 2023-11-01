@@ -1,5 +1,5 @@
-#include "App.h"
 #include "Window.h"
+#include "App.h"
 
 
 Window::Window(App* app) : Module(app), window(nullptr), glContext(nullptr) {}

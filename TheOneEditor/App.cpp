@@ -140,12 +140,12 @@ bool App::PreUpdate()
 	//OPTICK_CATEGORY("PreUpdate", Optick::Category::GameLogic);
 	bool ret = true;
 
-	for (const auto& item : modules)
+	for (const auto& module : modules)
 	{
-		if (item->active == false)
+		if (module->active == false)
 			continue;
 
-		if (item->PreUpdate() == false)
+		if (module->PreUpdate() == false)
 			return false;
 	}
 
@@ -157,12 +157,12 @@ bool App::DoUpdate()
 {
 	//OPTICK_CATEGORY("DoUpdate", Optick::Category::GameLogic);
 
-	for (const auto& item : modules)
+	for (const auto& module : modules)
 	{
-		if (item->active == false)
+		if (module->active == false)
 			continue;
 
-		if (item->Update(dt) == false)
+		if (module->Update(dt) == false)
 			return false;		
 	}
 
@@ -174,12 +174,12 @@ bool App::PostUpdate()
 {
 	//OPTICK_CATEGORY("PostUpdate", Optick::Category::GameLogic);
 
-	for (const auto& item : modules)
+	for (const auto& module : modules)
 	{
-		if (item->active == false)
+		if (module->active == false)
 			continue;
 
-		if (item->PostUpdate() == false)
+		if (module->PostUpdate() == false)
 			return false;
 	}
 
