@@ -24,6 +24,7 @@ public:
     bool Awake();
 
     bool PreUpdate();
+    bool Update(double dt);
 
     bool processSDLEvents();
 	

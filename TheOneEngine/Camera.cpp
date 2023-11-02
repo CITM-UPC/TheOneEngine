@@ -1,12 +1,23 @@
 #include "Camera.h"
 
-#include <glm/ext/matrix_transform.hpp>
+Camera::Camera() : fov(60), aspect(4.0/3.0), zNear(0.1), zFar(100), eye(0, 0, 3), center(0, 0, -1), up(0, 1, 0), yaw(-90) {}
 
-Camera::Camera() : fov(60), aspect(4.0/3.0), zNear(0.1), zFar(100), eye(10, 2, 10), center(0, 1, 0), up(0, 1, 0) {}
+vec3 Camera::RightVector()
+{
+	return glm::normalize(glm::cross(center, up));
+}
+
+vec3 Camera::DirectionVector()
+{
+	direction.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+	direction.y = sin(glm::radians(pitch));
+	direction.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+	return direction;
+}
 
 glm::dmat4 Camera::LookAt() const
 {
-	return glm::lookAt(eye, center, up);
+	return glm::lookAt(eye, eye + center, up);
 }
 
 //glm::dmat4 Camera::Move() const
