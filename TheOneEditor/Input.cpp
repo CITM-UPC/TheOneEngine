@@ -128,47 +128,47 @@ bool Input::processSDLEvents()
     return true;
 }
 
-void Input::CameraInput(float dt)
+void Input::CameraInput(double dt)
 {
     //// Implement a debug camera with keys and mouse
     //// Now we can make this movememnt frame rate independant!
 
     //vec3 newPos(0, 0, 0);
-    //float speed = 3.0f * dt;
-    //if (App->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+    //double speed = 3.0f * dt;
+    //if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
     //    speed = 8.0f * dt;
 
-    //if (App->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
-    //if (App->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
+    //if (app->input->GetKey(SDL_SCANCODE_R) == KEY_REPEAT) newPos.y += speed;
+    //if (app->input->GetKey(SDL_SCANCODE_F) == KEY_REPEAT) newPos.y -= speed;
 
-    //if (App->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= Z * speed;
-    //if (App->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += Z * speed;
+    //if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT) newPos -= app->engine->camera.center * speed;
+    //if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT) newPos += app->engine->camera.center * speed;
 
 
-    //if (App->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= X * speed;
-    //if (App->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += X * speed;
+    //if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT) newPos -= app->engine->camera.eye * speed;
+    //if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT) newPos += app->engine->camera.eye * speed;
 
-    //Position += newPos;
-    //Reference += newPos;
+    ///*app->engine->camera.eye += newPos;
+    //app->engine->camera.center += newPos;*/
 
     //// Mouse motion ----------------
 
-    //if (App->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
+    //if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     //{
-    //    int dx = -App->input->GetMouseXMotion();
-    //    int dy = -App->input->GetMouseYMotion();
+    //    int dx = -app->input->GetMouseXMotion();
+    //    int dy = -app->input->GetMouseYMotion();
 
     //    float Sensitivity = 0.25f;
 
-    //    Position -= Reference;
+    //    app->engine->camera.eye -= app->engine->camera.center;
 
     //    if (dx != 0)
     //    {
     //        float DeltaX = (float)dx * Sensitivity;
 
-    //        X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+    //        /*X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
     //        Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-    //        Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+    //        Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));*/
     //    }
 
     //    if (dy != 0)

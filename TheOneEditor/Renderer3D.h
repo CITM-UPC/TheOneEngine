@@ -20,6 +20,8 @@ public:
     bool Update(double dt);
     bool PostUpdate();
 
+    void CameraMovement();
+
     bool CleanUp();
 
 private:

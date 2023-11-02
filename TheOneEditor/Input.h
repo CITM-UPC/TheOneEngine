@@ -27,7 +27,7 @@ public:
 
     bool processSDLEvents();
 	
-	void CameraInput(float dt);
+	void CameraInput(double dt);
 
 	KEY_STATE GetKey(int id) const
 	{
