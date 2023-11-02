@@ -200,6 +200,11 @@ bool App::CleanUp()
 	return ret;
 }
 
+std::vector<std::string> App::GetLogs()
+{
+	return logs;
+}
+
 void App::LogConsole(const char* entry)
 {
 	if (logs.size() > MAX_LOGS_CONSOLE)
@@ -209,6 +214,11 @@ void App::LogConsole(const char* entry)
 
 	std::string toAdd = entry;
 	logs.push_back(toAdd);
+}
+
+void App::CleanLogs()
+{
+	logs.clear();
 }
 
 // ---------------------------------------

@@ -82,6 +82,9 @@ bool Gui::Start()
     app->gui->panelInspector->SetState(true);
     app->gui->panelProject->SetState(true);
 
+    LOG("*Error test");
+    LOG("!Warning test");
+
     return true;
 }
 

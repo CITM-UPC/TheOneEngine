@@ -4,6 +4,9 @@
 
 #include "Panel.h"
 
+#define LOG_ERROR "*"
+#define LOG_WARNING "!"
+
 class PanelConsole : public Panel
 {
 public:

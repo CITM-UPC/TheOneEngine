@@ -50,7 +50,9 @@ public:
 	// Add a new module to handle
 	void AddModule(Module* module, bool activate);
 
+	std::vector<std::string> GetLogs();
 	void LogConsole(const char* entry);
+	void CleanLogs();
 
 	// Exposing some properties for reading
 	int GetArgc() const;
@@ -98,7 +100,7 @@ private:
 
 	//Logs
 	std::string log;
-	std::list<std::string> logs;
+	std::vector<std::string> logs;
 
 	// Fps control
 	double targetFPS = 60;
