@@ -54,10 +54,10 @@ static void drawGrid(int grid_size, int grid_step)
         glVertex2i( grid_size, i);*/
 
         //XZ plane
-        /*glVertex3i(i, 0, -grid_size);
+        glVertex3i(i, 0, -grid_size);
         glVertex3i(i, 0, grid_size);
         glVertex3i(-grid_size, 0, i);
-        glVertex3i( grid_size, 0, i);*/
+        glVertex3i( grid_size, 0, i);
     }
     glEnd();
 }
@@ -86,7 +86,7 @@ void EngineCore::Render(RenderModes renderMode)
         camera.center.x, camera.center.y, camera.center.z,
         camera.up.x, camera.up.y, camera.up.z);
 
-    drawGrid(10000, 10);
+    drawGrid(1000, 10);
     drawAxis();
     
 

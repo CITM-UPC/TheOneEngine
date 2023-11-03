@@ -178,14 +178,14 @@ void Input::CameraInput(double dt)
         if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
         {
             app->engine->camera.cameraRight = glm::normalize(glm::cross(app->engine->camera.center, app->engine->camera.up));
-            app->engine->camera.cameraRight.y = 0;
+            //app->engine->camera.cameraRight.y = 0;
             app->engine->camera.eye -= app->engine->camera.cameraRight * speed;
             //app->engine->camera.center -= normalizedVec;
         }
         if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
         {
             app->engine->camera.cameraRight = glm::normalize(glm::cross(app->engine->camera.center, app->engine->camera.up));
-            app->engine->camera.cameraRight.y = 0;
+            //ddapp->engine->camera.cameraRight.y = 0;
             app->engine->camera.eye += app->engine->camera.cameraRight * speed;
             //app->engine->camera.center += normalizedVec;
         } 
@@ -205,11 +205,12 @@ void Input::CameraInput(double dt)
         if (app->engine->camera.pitch < -89.0f)
             app->engine->camera.pitch = -89.0f;
 
-        // Update Camera's Focus view point vector to be recomputed in the renderer with gluLookAt()
-        glm::vec3 direction;
-        direction.x = cos(glm::radians(app->engine->camera.yaw)) * cos(glm::radians(app->engine->camera.pitch));
-        direction.y = sin(glm::radians(app->engine->camera.pitch));
-        direction.z = sin(glm::radians(app->engine->camera.yaw)) * cos(glm::radians(app->engine->camera.pitch));
-        app->engine->camera.center = glm::normalize(direction);
+        
     }
+    // Update Camera's Focus view point vector to be recomputed in the renderer with gluLookAt()
+    glm::vec3 direction;
+    direction.x = cos(glm::radians(app->engine->camera.yaw)) * cos(glm::radians(app->engine->camera.pitch));
+    direction.y = sin(glm::radians(app->engine->camera.pitch));
+    direction.z = sin(glm::radians(app->engine->camera.yaw)) * cos(glm::radians(app->engine->camera.pitch));
+    app->engine->camera.center = glm::normalize(direction);
 }
