@@ -11,21 +11,23 @@ PanelConsole::~PanelConsole() {}
 
 bool PanelConsole::Draw()
 {
-	ImGuiWindowFlags settingsFlags = 0;
-	settingsFlags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	ImGuiWindowFlags consoleFlags = 0;
+	consoleFlags |= ImGuiWindowFlags_NoFocusOnAppearing;
 
-	if (ImGui::Begin("Console", &enabled, settingsFlags))
+	if (ImGui::Begin("Console", &enabled, consoleFlags))
 	{
+		if (ImGui::SmallButton("Clear"))
+			app->CleanLogs();
+
+		ImGui::Separator();
+
 		ImGuiWindowFlags scrollFlags = 0;
 		scrollFlags |= ImGuiWindowFlags_HorizontalScrollbar;
 		scrollFlags |= ImGuiWindowFlags_AlwaysVerticalScrollbar;
 
 		if (ImGui::BeginChild("Scrollbar", ImVec2(0, 0), false, scrollFlags))
 		{
-			if (ImGui::SmallButton("Clear"))
-				app->CleanLogs();
-
-			ImGui::Separator();
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 1));
 
 			for (const auto& log : app->GetLogs())
 			{
@@ -37,9 +39,10 @@ bool PanelConsole::Draw()
 					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 255, 255));
 
 				ImGui::TextUnformatted(log.data());
-
 				ImGui::PopStyleColor();
 			}
+
+			ImGui::PopStyleVar();
 
 			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
 				ImGui::SetScrollHereY(1.0f);
