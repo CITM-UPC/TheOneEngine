@@ -17,7 +17,7 @@ class PanelHierarchy;
 class PanelInspector;
 class PanelProject;
 class PanelScene;
-class PanelStats;
+class PanelSettings;
 
 
 class Gui : public Module
@@ -59,7 +59,7 @@ public:
 	PanelInspector* panelInspector = nullptr;
 	PanelProject* panelProject = nullptr;
 	PanelScene* panelScene = nullptr;
-	PanelStats* panelStats = nullptr;
+	PanelSettings* panelSettings = nullptr;
 
 private:
 

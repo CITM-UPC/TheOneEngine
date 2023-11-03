@@ -10,7 +10,7 @@
 #include "PanelInspector.h"
 #include "PanelProject.h"
 #include "PanelScene.h"
-#include "PanelStats.h"
+#include "PanelSettings.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -48,8 +48,8 @@ bool Gui::Awake()
     panelScene = new PanelScene(PanelType::SCENE);
     panels.push_back(panelScene);
 
-    panelStats = new PanelStats(PanelType::STATS);
-    panels.push_back(panelStats);
+    panelSettings = new PanelSettings(PanelType::STATS);
+    panels.push_back(panelSettings);
 
     return true;
 }
@@ -352,7 +352,7 @@ void Gui::MainMenuWindow()
     if (ImGui::MenuItem("Inspector")) { app->gui->panelInspector->SwitchState(); }
     if (ImGui::MenuItem("Project")) { app->gui->panelProject->SwitchState(); }
     if (ImGui::MenuItem("Scene")) { app->gui->panelScene->SwitchState(); }
-    if (ImGui::MenuItem("Stats")) { app->gui->panelStats->SwitchState(); }
+    if (ImGui::MenuItem("Settings")) { app->gui->panelSettings->SwitchState(); }
 }
 
 void Gui::MainMenuHelp()
