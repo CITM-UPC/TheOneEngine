@@ -2,8 +2,19 @@
 
 #include "Defs.h"
 
-struct Camera
+class Camera
 {
+public:
+	Camera();
+	~Camera();
+
+	/*Returns view matrix*/
+	mat4 LookAt() const;
+
+	void updateCameraVectors();
+
+public:
+
 	double fov;
 	double aspect;
 	double zNear;
@@ -14,20 +25,9 @@ struct Camera
 	vec3 up;		// Orientation
 	vec3 direction;
 	vec3 cameraRight;
-	mat4 viewMatrix;
+	vec3 WorldUp;
 
 	double yaw, pitch;
-
-	/*We do a cross product to create a right vector and we move along the right vector accordingly. */
-	vec3 RightVector();
-	vec3 DirectionVector();
-
-	/*Returns view matrix*/
-	mat4 LookAt() const;
-
-	mat4 Move() const;
-	//mat4 Orbit() const;
-
-	Camera();
+	float zoom;
 };
 
