@@ -1,15 +1,15 @@
-#include "Defs.h"
+#include "App.h"
 #include "Hardware.h"
 
 
 Hardware::Hardware(App* app) : Module(app)
 {
-	// --- Retrieve SDL Version ---
+	// Retrieve Versions
 	SDL_version version;
 	SDL_GetVersion(&version);
 	sprintf_s(info.sdl_version, 25, "%i.%i.%i", version.major, version.minor, version.patch);
 
-	// --- Retrieve CPU and Memory Information ---
+	// Retrieve CPU and Memory 
 	info.ram_gb = (float)SDL_GetSystemRAM() / (1024.f);
 	info.cpu_count = SDL_GetCPUCount();
 	info.l1_cachekb = SDL_GetCPUCacheLineSize();
@@ -49,7 +49,7 @@ bool Hardware::CleanUp()
 
 const HardwareInfo& Hardware::GetInfo() const
 {
-	// --- Retrieve GPU Information ---
+	// Retrieve GPU
 	const GLubyte* GPUvendor = glGetString(GL_VENDOR);
 	const GLubyte* GPU = glGetString(GL_RENDERER);
 	const GLubyte* GPUdriver = glGetString(GL_VERSION);

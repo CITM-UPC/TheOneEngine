@@ -3,29 +3,20 @@
 #pragma once
 
 #include "Module.h"
-#include "App.h"
+#include "Log.h"
+#include "..\TheOneEngine\Defs.h"
 
 #include <SDL2/SDL.h>
-#include <stdexcept>
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <chrono>
-#include <thread>
 
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
 
-
-using namespace std;
-using namespace chrono;
 
 class Window : public Module
 {
 public:
     Window(App* app);
-
     virtual ~Window();
 
     bool Awake();
@@ -36,9 +27,14 @@ public:
     static SDL_GLContext createSdlGlContext(SDL_Window* window);
     static void initOpenGL();
 
+    uint GetDisplayRefreshRate();
+
 public:
     SDL_Window* window;
     SDL_GLContext glContext;
+
+private:
+    uint refreshRate;
 };
 
-#endif // __WINDOW_H__
+#endif // !__WINDOW_H__

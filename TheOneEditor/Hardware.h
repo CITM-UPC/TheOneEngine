@@ -1,8 +1,9 @@
-#ifndef __HARDWARE__
-#define __HARDWARE__
+#ifndef __HARDWARE_H__
+#define __HARDWARE_H__
 #pragma once
 
 #include "Module.h"
+#include "../TheOneEngine/Defs.h"
 
 #include <string>
 
@@ -50,4 +51,4 @@ private:
 	mutable HardwareInfo info;
 };
 
-#endif __RENDERER_3D__
+#endif // !__HARDWARE_H__

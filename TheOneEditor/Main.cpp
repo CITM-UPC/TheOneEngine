@@ -1,12 +1,12 @@
+#include "App.h"
+#include "Log.h"
+
 #include <iostream>
 #include <sstream>
 #include <vector>
 #include <chrono>
 #include <thread>
 #include <stdlib.h>
-
-#include "App.h"
-#include "Log.h"
 
 
 enum MainState
@@ -34,7 +34,7 @@ int main(int argc, char* args[])
 		//OPTICK_FRAME("MainLoop");
 		switch (state)
 		{
-			// Allocate the engine --------------------------------------------
+			// Allocate the engine ---------------------------------------------
 		case CREATE:
 			LOG("CREATION PHASE ===============================");
 
@@ -75,7 +75,7 @@ int main(int argc, char* args[])
 			}
 			break;
 
-			// Loop all modules until we are asked to leave ---------------------
+			// Loop all modules until we are asked to leave --------------------
 		case LOOP:
 		{
 			//OPTICK_FRAME("Main Loop");
@@ -84,7 +84,7 @@ int main(int argc, char* args[])
 		}
 		break;
 
-		// Cleanup allocated memory -----------------------------------------
+		// Cleanup allocated memory --------------------------------------------
 		case CLEAN:
 			LOG("CLEANUP PHASE ===============================");
 			if (app->CleanUp() == true)
@@ -98,7 +98,7 @@ int main(int argc, char* args[])
 
 			break;
 
-			// Exit with errors and shame ---------------------------------------
+			// Exit with errors and shame --------------------------------------
 		case FAIL:
 			LOG("Exiting with errors :(");
 			result = EXIT_FAILURE;

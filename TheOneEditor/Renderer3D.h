@@ -1,11 +1,10 @@
-#ifndef __RENDERER_3D__
-#define __RENDERER_3D__
+#ifndef __RENDERER_3D_H__
+#define __RENDERER_3D_H__
 #pragma once
 
 #include "Module.h"
-#include "App.h"
 
-#include "../TheOneEngine/TheOneEngine.h"
+class EngineCore;
 
 class Renderer3D : public Module
 {
@@ -24,8 +23,9 @@ public:
     bool CleanUp();
 
 private:
-    TheOneEngine engine;
 
+    //hekbas test
+    double dtSum = 0;
 };
 
-#endif __RENDERER_3D__
+#endif // !__RENDERER_3D_H__

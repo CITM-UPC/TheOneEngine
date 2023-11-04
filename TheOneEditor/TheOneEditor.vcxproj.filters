@@ -11,6 +11,12 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{0f7baf35-4ec3-4986-b7f8-3770131e5346}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Importers">
+      <UniqueIdentifier>{a02db338-d43a-4456-9139-c05723651d56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Panels">
+      <UniqueIdentifier>{51d12ac5-75fb-412a-bf54-07209ecf4871}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -40,6 +46,39 @@
     <ClCompile Include="Gui.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Importer.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterMesh.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Panel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelAbout.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelConsole.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelHierarchy.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelInspector.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelProject.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelScene.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelSettings.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -54,9 +93,6 @@
     <ClInclude Include="App.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="Defs.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer3D.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -65,6 +101,39 @@
     </ClInclude>
     <ClInclude Include="Hardware.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterMesh.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Panel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelAbout.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelConsole.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelHierarchy.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelInspector.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelProject.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelScene.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelSettings.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
