@@ -1,6 +1,8 @@
 #include "App.h"
 #include "Gui.h"
 #include "Window.h"
+#include "Hardware.h"
+
 #include "Log.h"
 
 #include "Panel.h"
@@ -17,14 +19,12 @@
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
 
+#include "implot.h"
 
-Gui::Gui(App* app) : Module(app)
-{
-    
-}
 
-Gui::~Gui()
-{}
+Gui::Gui(App* app) : Module(app) {}
+
+Gui::~Gui() {}
 
 bool Gui::Awake()
 {
@@ -61,6 +61,7 @@ bool Gui::Start()
     IMGUI_CHECKVERSION();
 
     ImGuiContext* contextui = ImGui::CreateContext();
+    ImPlotContext* contextplot = ImPlot::CreateContext();
     
     IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing Dear ImGui context. Refer to examples app!");
     ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -82,6 +83,7 @@ bool Gui::Start()
     app->gui->panelInspector->SetState(true);
     app->gui->panelProject->SetState(true);
 
+    // hekbas log test
     LOG("*Error test");
     LOG("!Warning test");
 
@@ -186,11 +188,13 @@ bool Gui::CleanUp()
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
+    ImPlot::DestroyContext();
 
     // hekbas check cleanup
 
     return ret;
 }
+
 
 void Gui::Draw()
 {
@@ -217,6 +221,20 @@ void Gui::OpenURL(const char* url) const
     // hekbas need shellapi
     //ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
 }
+
+void Gui::PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags plotFlags, ImPlotAxisFlags axisFlags)
+{
+    if (ImPlot::BeginPlot(label, "", "", ImVec2(-1, -1), plotFlags, axisFlags))
+    {
+        ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
+        ImPlot::PlotShaded("FPS Area", data.data(), data.size());
+        ImPlot::PlotLine("FPS", data.data(), data.size());
+        ImPlot::SetupAxesLimits(0, data.size(), 0, 250, ImGuiCond_Always);
+
+        ImPlot::EndPlot();
+    }
+}
+
 
 void Gui::MainWindowDockspace()
 {
@@ -254,7 +272,7 @@ void Gui::MainWindowDockspace()
         {
             first_time = false;
 
-            ImGui::DockBuilderRemoveNode(dockspace_id); // clear any previous layout
+            ImGui::DockBuilderRemoveNode(dockspace_id); // Clear any previous layout
             ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
             ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
 
@@ -263,11 +281,13 @@ void Gui::MainWindowDockspace()
             auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.15f, nullptr, &dockspace_id);
             auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.20f, nullptr, &dockspace_id);
 
-            ImGui::DockBuilderDockWindow("Scene", dockspace_id); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Inspector", dock_id_right); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Project", dock_id_down); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Console", dock_id_down); //Takes the name of a window
+            // Takes the name of a window
+            ImGui::DockBuilderDockWindow("Scene", dockspace_id);
+            ImGui::DockBuilderDockWindow("Inspector", dock_id_right);
+            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
+            ImGui::DockBuilderDockWindow("Project", dock_id_down);
+            ImGui::DockBuilderDockWindow("Console", dock_id_down);
+
             ImGui::DockBuilderFinish(dockspace_id);
         }
     }
@@ -347,12 +367,12 @@ void Gui::MainMenuComponent()
 
 void Gui::MainMenuWindow()
 {
-    if (ImGui::MenuItem("Console")) { app->gui->panelConsole->SwitchState(); }
-    if (ImGui::MenuItem("Hierarchy")) { app->gui->panelHierarchy->SwitchState(); }
-    if (ImGui::MenuItem("Inspector")) { app->gui->panelInspector->SwitchState(); }
-    if (ImGui::MenuItem("Project")) { app->gui->panelProject->SwitchState(); }
-    if (ImGui::MenuItem("Scene")) { app->gui->panelScene->SwitchState(); }
-    if (ImGui::MenuItem("Settings")) { app->gui->panelSettings->SwitchState(); }
+    if (ImGui::MenuItem("Console"))     app->gui->panelConsole->SwitchState();
+    if (ImGui::MenuItem("Hierarchy"))   app->gui->panelHierarchy->SwitchState();
+    if (ImGui::MenuItem("Inspector"))   app->gui->panelInspector->SwitchState();
+    if (ImGui::MenuItem("Project"))     app->gui->panelProject->SwitchState();
+    if (ImGui::MenuItem("Scene"))       app->gui->panelScene->SwitchState();
+    if (ImGui::MenuItem("Settings"))    app->gui->panelSettings->SwitchState();
 }
 
 void Gui::MainMenuHelp()

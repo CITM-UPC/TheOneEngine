@@ -2,14 +2,6 @@
 #define __APP_H__
 #pragma once
 
-#include "Module.h"
-
-#include "Window.h"
-#include "Input.h"
-#include "Hardware.h"
-#include "Gui.h"
-#include "Renderer3D.h"
-
 #include "..\TheOneEngine\EngineCore.h"
 
 #include <iostream>
@@ -21,92 +13,87 @@
 #include <list>
 
 
-using namespace std;
-using namespace chrono;
-
+// Forward declaration
+class Module;
+class Window;
+class Input;
+class Hardware;
+class Gui;
+class Renderer3D;
 
 class App
 {
 public:
 
-	// Constructor
 	App(int argc, char* args[]);
-
-	// Destructor
 	virtual ~App();
 
-	// Called before render is available
-	bool Awake();
-
-	// Called before the first frame
-	bool Start();
-
-	// Called each loop iteration
-	bool Update();
-
-	// Called before quitting
-	bool CleanUp();
+	bool Awake();	// Called before render is available
+	bool Start();	// Called before the first frame
+	bool Update();	// Called each loop iteration
+	bool CleanUp();	// Called before quitting
 
 	// Add a new module to handle
 	void AddModule(Module* module, bool activate);
-
-	std::vector<std::string> GetLogs();
-	void LogConsole(const char* entry);
-	void CleanLogs();
 
 	// Exposing some properties for reading
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
-	float GetDT();
+	int GetFrameRate() const;
+	void SetFrameRate(int refreshRate);
+
+	double GetDT() const;
+
+	std::vector<std::string> GetLogs();
+	void LogConsole(const char* entry);
+	void CleanLogs();
 
 
 private:
-
-	// Call modules before each loop iteration
+	
+	// Call order for each loop iteration
 	void PrepareUpdate();
-
-	// Call modules after each loop iteration
+	bool PreUpdate();
+	bool DoUpdate();
+	bool PostUpdate();
 	void FinishUpdate();
 
-	// Call modules before each loop iteration
-	bool PreUpdate();
-
-	// Call modules on each loop iteration
-	bool DoUpdate();
-
-	// Call modules after each loop iteration
-	bool PostUpdate();
 
 public:
 
-	EngineCore* engine;
+	EngineCore* engine = nullptr;
 
 	// Modules
-	Window* window;
-	Input* input;
-	Hardware* hardware;
-	Gui* gui;
-	Renderer3D* renderer3D;
+	Window* window = nullptr;
+	Input* input = nullptr;
+	Hardware* hardware = nullptr;
+	Gui* gui = nullptr;
+	Renderer3D* renderer3D = nullptr;
+
 
 private:
 
 	int argc;
 	char** args;
-	string title;
-	string organization;
+	std::string title;
+	std::string organization;
 
-	list<Module*> modules;
+	std::list<Module*> modules;
 
 	//Logs
 	std::string log;
 	std::vector<std::string> logs;
 
-	// Fps control
-	double targetFPS = 60;
+	// Fps contro
 	std::chrono::duration<double> targetFrameDuration;
 	std::chrono::steady_clock::time_point frameStart, frameEnd;
-	double dt;
+
+	int frameRate = 240;
+	double dt = 0;
+	double dtCount = 0;
+	int frameCount = 0;
+	int fps = 0;
 };
 
 extern App* app;

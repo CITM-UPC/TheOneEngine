@@ -1,16 +1,32 @@
 #include "PanelSettings.h"
 #include "App.h"
 #include "Gui.h"
-#include "imgui.h"
+#include "Window.h"
 
-PanelSettings::PanelSettings(PanelType type) : Panel(type) {}
+#include "imgui.h"
+#include "implot.h"
+#include "implot_internal.h"
+
+
+PanelSettings::PanelSettings(PanelType type) : Panel(type), fpsHistory(MAX_HISTORY_SIZE), delayHistory(MAX_HISTORY_SIZE) {}
 
 PanelSettings::~PanelSettings() {}
 
+
+void PanelSettings::AddFpsValue(int fps)
+{
+	fpsHistory.push_back(fps);
+
+	if (fpsHistory.size() > MAX_HISTORY_SIZE)
+	{
+		fpsHistory.erase(fpsHistory.begin());
+	}
+}
+
+
 bool PanelSettings::Draw()
 {
-	ImGuiWindowFlags settingsFlags = 0;
-	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+	ImGuiWindowFlags settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
@@ -42,7 +58,7 @@ bool PanelSettings::Draw()
 		// RIGHT - Display selected
 		settingsFlags &= ~(ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
 
-		if (ImGui::BeginChild("Selected", ImVec2(ImGui::GetWindowSize().x * 0.8f, ImGui::GetWindowSize().y), true, settingsFlags))
+		if (ImGui::BeginChild("Selected", ImVec2(ImGui::GetWindowSize().x * 0.8f, ImGui::GetWindowSize().y), false, settingsFlags))
 		{
 			switch (selected)
 			{
@@ -64,9 +80,23 @@ bool PanelSettings::Draw()
 	return true;
 }
 
+
+
+// Settings -----------------------------------------
 void PanelSettings::Performance()
 {
-	ImGui::Text("Performance");
+	// FPS cap
+	int frameRate = app->GetFrameRate();
+	ImGui::Text("Frame Rate");
+	ImGui::SameLine();
+	if (ImGui::SliderInt("", &frameRate, 0, app->window->GetDisplayRefreshRate()))
+		app->SetFrameRate(frameRate);
+
+	ImGui::Separator();
+
+	ImPlotFlags plotFlags = ImPlotFlags_NoInputs | ImPlotFlags_NoFrame | ImPlotFlags_NoLegend;
+	ImPlotAxisFlags axisFlags = ImPlotAxisFlags_NoTickMarks;
+	app->gui->PlotChart("FPS", fpsHistory, plotFlags, axisFlags);
 }
 
 void PanelSettings::Window()
@@ -83,3 +113,4 @@ void PanelSettings::Renderer()
 {
 	ImGui::Text("Renderer");
 }
+// --------------------------------------------------

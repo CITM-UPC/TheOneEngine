@@ -9,8 +9,7 @@ PanelAbout::~PanelAbout() {}
 
 bool PanelAbout::Draw()
 {
-	ImGuiWindowFlags settingsFlags = 0;
-	settingsFlags |= ImGuiWindowFlags_NoFocusOnAppearing;
+	ImGuiWindowFlags settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse;
 
 	if (ImGui::Begin("About TheOneEngine", &enabled, settingsFlags))
 	{

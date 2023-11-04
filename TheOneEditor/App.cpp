@@ -1,5 +1,20 @@
 #include "App.h"
 
+#include "Window.h"
+#include "Input.h"
+#include "Hardware.h"
+#include "Gui.h"
+#include "Renderer3D.h"
+
+#include "PanelAbout.h"
+#include "PanelConsole.h"
+#include "PanelHierarchy.h"
+#include "PanelInspector.h"
+#include "PanelProject.h"
+#include "PanelScene.h"
+#include "PanelSettings.h"
+
+
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	engine = new EngineCore();
@@ -42,7 +57,7 @@ bool App::Awake()
 {
 	bool ret = false;
 
-	targetFrameDuration = (std::chrono::duration<double>)1 / targetFPS;
+	targetFrameDuration = (std::chrono::duration<double>)1 / frameRate;
 
 	//Load config from XML
 	//ret = LoadConfig();
@@ -71,21 +86,20 @@ bool App::Awake()
 // Called before the first frame
 bool App::Start()
 {
-	bool ret = true;
+	dt = 0;
 
-	dt = 0.016; //hekbas
-
-	for (const auto& item : modules)
+	for (const auto& module : modules)
 	{
-		if (item->active == false)
+		if (module->active == false)
 			continue;
 
-		item->Start();
+		if (module->Start() == false)
+			return false;
 	}
 
 	//LOG("----------------- Time Start(): %f", timer.ReadMSec());
 
-	return ret;
+	return true;
 }
 
 // Called each loop iteration
@@ -111,30 +125,12 @@ bool App::Update()
 }
 
 
-// ---------------------------------------------
+// -------------------- LOOP ITERATION --------------------
 void App::PrepareUpdate()
 {	
 	frameStart = std::chrono::steady_clock::now();
 }
 
-// ---------------------------------------------
-void App::FinishUpdate()
-{
-	frameEnd = std::chrono::steady_clock::now();
-	auto frameDuration = std::chrono::duration_cast<std::chrono::duration<double>>(frameEnd - frameStart);
-
-	//dt = frameDuration.count();
-
-	if (frameDuration < targetFrameDuration)
-	{
-		std::chrono::duration<double> sleepTime = targetFrameDuration - frameDuration;
-		std::this_thread::sleep_for(sleepTime);
-
-		//dt = targetFrameDuration.count();
-	}
-}
-
-// Call modules before each loop iteration
 bool App::PreUpdate()
 {
 	//OPTICK_CATEGORY("PreUpdate", Optick::Category::GameLogic);
@@ -152,7 +148,6 @@ bool App::PreUpdate()
 	return true;
 }
 
-// Call modules on each loop iteration
 bool App::DoUpdate()
 {
 	//OPTICK_CATEGORY("DoUpdate", Optick::Category::GameLogic);
@@ -169,7 +164,6 @@ bool App::DoUpdate()
 	return true;
 }
 
-// Call modules after each loop iteration
 bool App::PostUpdate()
 {
 	//OPTICK_CATEGORY("PostUpdate", Optick::Category::GameLogic);
@@ -186,7 +180,38 @@ bool App::PostUpdate()
 	return true;
 }
 
-// Called before quitting
+void App::FinishUpdate()
+{
+	// dt calculation
+	frameEnd = std::chrono::steady_clock::now();
+	auto frameDuration = std::chrono::duration_cast<std::chrono::duration<double>>(frameEnd - frameStart);
+
+	dt = frameDuration.count();
+
+	if (frameDuration < targetFrameDuration)
+	{
+		std::chrono::duration<double> sleepTime = targetFrameDuration - frameDuration;
+		std::this_thread::sleep_for(sleepTime);
+
+		dt = targetFrameDuration.count();
+	}
+
+	// fps calculation
+	dtCount += dt;
+	frameCount++;
+
+	if (dtCount >= 1)
+	{
+		fps = frameCount;
+		frameCount = 0;
+		dtCount = 0;
+	}
+
+	app->gui->panelSettings->AddFpsValue(fps);
+}
+
+
+// -------------------- QUIT --------------------
 bool App::CleanUp()
 {
 	bool ret = true;
@@ -198,6 +223,37 @@ bool App::CleanUp()
 	}
 
 	return ret;
+}
+
+
+// -------------------- Get / Set / Funtionalities --------------------
+int App::GetArgc() const
+{
+	return argc;
+}
+
+const char* App::GetArgv(int index) const
+{
+	if (index < argc)
+		return args[index];
+	else
+		return NULL;
+}
+
+int App::GetFrameRate() const
+{
+	return frameRate;
+}
+
+void App::SetFrameRate(int frameRate)
+{
+	this->frameRate = frameRate == 0 ? app->window->GetDisplayRefreshRate() : frameRate;
+	targetFrameDuration = (std::chrono::duration<double>)1 / this->frameRate;
+}
+
+double App::GetDT() const
+{
+	return dt;
 }
 
 std::vector<std::string> App::GetLogs()
@@ -219,25 +275,4 @@ void App::LogConsole(const char* entry)
 void App::CleanLogs()
 {
 	logs.clear();
-}
-
-// ---------------------------------------
-int App::GetArgc() const
-{
-	return argc;
-}
-
-// ---------------------------------------
-const char* App::GetArgv(int index) const
-{
-	if (index < argc)
-		return args[index];
-	else
-		return NULL;
-}
-
-// ---------------------------------------
-float App::GetDT()
-{
-	return dt;
 }

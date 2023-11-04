@@ -1,5 +1,9 @@
 #include "App.h"
+#include "Input.h"
+#include "Gui.h"
+
 #include "Log.h"
+
 
 Input::Input(App* app) : Module(app) {}
 

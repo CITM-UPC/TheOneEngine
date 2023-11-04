@@ -1,4 +1,7 @@
 #include "App.h"
+
+#include "Window.h"
+#include "Gui.h"
 #include "Renderer3D.h"
 
 
