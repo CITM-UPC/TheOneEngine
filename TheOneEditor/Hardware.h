@@ -1,5 +1,5 @@
-#ifndef __HARDWARE__
-#define __HARDWARE__
+#ifndef __HARDWARE_H__
+#define __HARDWARE_H__
 #pragma once
 
 #include "Module.h"
@@ -51,4 +51,4 @@ private:
 	mutable HardwareInfo info;
 };
 
-#endif //! __RENDERER_3D__
+#endif // !__HARDWARE_H__

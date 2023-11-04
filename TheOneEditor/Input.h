@@ -76,4 +76,4 @@ private:
 
 };
 
-#endif // __INPUT_H__
+#endif // !__INPUT_H__

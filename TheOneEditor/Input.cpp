@@ -1,8 +1,13 @@
 #include "App.h"
+#include "Input.h"
+#include "Gui.h"
+
 #include "Log.h"
+
 
 #define MAX_KEYS 300
 #define SCREEN_SIZE 1
+
 
 Input::Input(App* app) : Module(app) 
 {

@@ -52,13 +52,13 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\vcpkg\installed\x64-windows\lib\;$(SolutionDir)\vcpkg\installed\x64-windows\lib\manual-link\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;imgui.lib;implot.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy $(SolutionDir)vcpkg\installed\x64-windows\bin\*.* $(OutDir)</Command>
@@ -79,13 +79,13 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)\vcpkg\installed\x64-windows\lib\;$(SolutionDir)\vcpkg\installed\x64-windows\lib\manual-link\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;imgui.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;imgui.lib;implot.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>copy $(SolutionDir)vcpkg\installed\x64-windows\bin\*.* $(OutDir)</Command>
@@ -100,8 +100,16 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="PanelConsole.cpp" />
+    <ClCompile Include="PanelHierarchy.cpp" />
+    <ClCompile Include="PanelInspector.cpp" />
+    <ClCompile Include="PanelProject.cpp" />
+    <ClCompile Include="PanelScene.cpp" />
+    <ClCompile Include="PanelSettings.cpp" />
     <ClCompile Include="Renderer3D.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Panel.cpp" />
+    <ClCompile Include="PanelAbout.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Window.h" />
   </ItemGroup>
@@ -119,8 +127,16 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClInclude Include="Input.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="PanelConsole.h" />
+    <ClInclude Include="PanelHierarchy.h" />
+    <ClInclude Include="PanelInspector.h" />
+    <ClInclude Include="PanelProject.h" />
+    <ClInclude Include="PanelScene.h" />
+    <ClInclude Include="PanelSettings.h" />
     <ClInclude Include="Renderer3D.h" />
     <ClInclude Include="AssetManager.h" />
+    <ClInclude Include="Panel.h" />
+    <ClInclude Include="PanelAbout.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

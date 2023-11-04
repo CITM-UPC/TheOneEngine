@@ -1,40 +1,68 @@
 #include "App.h"
 #include "Gui.h"
 #include "Window.h"
+#include "Hardware.h"
+
 #include "Log.h"
 
-Gui::Gui(App* app) : Module(app)
-{
-    
-}
+#include "Panel.h"
+#include "PanelAbout.h"
+#include "PanelConsole.h"
+#include "PanelHierarchy.h"
+#include "PanelInspector.h"
+#include "PanelProject.h"
+#include "PanelScene.h"
+#include "PanelSettings.h"
 
-Gui::~Gui()
-{}
+#include "imgui.h"
+#include "imgui_internal.h"
+#include "imgui_impl_sdl2.h"
+#include "imgui_impl_opengl3.h"
+
+#include "implot.h"
+
+
+Gui::Gui(App* app) : Module(app) {}
+
+Gui::~Gui() {}
 
 bool Gui::Awake()
 {
-    LOG("Creating IMGUI context");
-    bool ret = true;
+    LOG("Creating Panels");
 
-    show_guiwindow_1 = false;
-    show_sceneView_window = false;
-    show_inspector_window = true;
-    show_hierarchy_window = true;
-    show_assets_window = true;
-    show_console_window = true;
+    panelAbout = new PanelAbout(PanelType::ABOUT);
+    panels.push_back(panelAbout);
 
-    return ret;
+    panelConsole = new PanelConsole(PanelType::CONSOLE);
+    panels.push_back(panelConsole);
+
+    panelHierarchy = new PanelHierarchy(PanelType::HIERARCHY);
+    panels.push_back(panelHierarchy);
+
+    panelInspector = new PanelInspector(PanelType::INSPECTOR);
+    panels.push_back(panelInspector);
+
+    panelProject = new PanelProject(PanelType::PROJECT);
+    panels.push_back(panelProject);
+
+    panelScene = new PanelScene(PanelType::SCENE);
+    panels.push_back(panelScene);
+
+    panelSettings = new PanelSettings(PanelType::STATS);
+    panels.push_back(panelSettings);
+
+    return true;
 }
 
 bool Gui::Start()
 {
-    LOG("Starting IMGUI");
-    bool ret = true;
+    LOG("Creating IMGUI context");
 
-    // Setup Dear ImGui context should go on Init
     IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiContext* contextui = ImGui::GetCurrentContext();
+
+    ImGuiContext* contextui = ImGui::CreateContext();
+    ImPlotContext* contextplot = ImPlot::CreateContext();
+    
     IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing Dear ImGui context. Refer to examples app!");
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
@@ -49,64 +77,142 @@ bool Gui::Start()
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
-    ImGuiWindowFlags flags = 0;
+    // Enable Panels
+    app->gui->panelConsole->SetState(true);
+    app->gui->panelHierarchy->SetState(true);
+    app->gui->panelInspector->SetState(true);
+    app->gui->panelProject->SetState(true);
 
-    return ret;
+    // hekbas log test
+    LOG("*Error test");
+    LOG("!Warning test");
+
+    // Style
+    ImGuiStyle& style = ImGui::GetStyle();
+    style.Colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
+    style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
+    style.Colors[ImGuiCol_WindowBg] = ImVec4(0.13f, 0.14f, 0.15f, 1.00f);
+    style.Colors[ImGuiCol_ChildBg] = ImVec4(0.13f, 0.14f, 0.15f, 1.00f);
+    style.Colors[ImGuiCol_PopupBg] = ImVec4(0.13f, 0.14f, 0.15f, 1.00f);
+    style.Colors[ImGuiCol_Border] = ImVec4(0.43f, 0.43f, 0.50f, 0.50f);
+    style.Colors[ImGuiCol_BorderShadow] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+    style.Colors[ImGuiCol_FrameBg] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+    style.Colors[ImGuiCol_FrameBgHovered] = ImVec4(0.38f, 0.38f, 0.38f, 1.00f);
+    style.Colors[ImGuiCol_FrameBgActive] = ImVec4(0.67f, 0.67f, 0.67f, 0.39f);
+    style.Colors[ImGuiCol_TitleBg] = ImVec4(0.08f, 0.08f, 0.09f, 1.00f);
+    style.Colors[ImGuiCol_TitleBgActive] = ImVec4(0.08f, 0.08f, 0.09f, 1.00f);
+    style.Colors[ImGuiCol_TitleBgCollapsed] = ImVec4(0.00f, 0.00f, 0.00f, 0.51f);
+    style.Colors[ImGuiCol_MenuBarBg] = ImVec4(0.14f, 0.14f, 0.14f, 1.00f);
+    style.Colors[ImGuiCol_ScrollbarBg] = ImVec4(0.02f, 0.02f, 0.02f, 0.53f);
+    style.Colors[ImGuiCol_ScrollbarGrab] = ImVec4(0.31f, 0.31f, 0.31f, 1.00f);
+    style.Colors[ImGuiCol_ScrollbarGrabHovered] = ImVec4(0.41f, 0.41f, 0.41f, 1.00f);
+    style.Colors[ImGuiCol_ScrollbarGrabActive] = ImVec4(0.51f, 0.51f, 0.51f, 1.00f);
+    style.Colors[ImGuiCol_CheckMark] = ImVec4(0.11f, 0.64f, 0.92f, 1.00f);
+    style.Colors[ImGuiCol_SliderGrab] = ImVec4(0.11f, 0.64f, 0.92f, 1.00f);
+    style.Colors[ImGuiCol_SliderGrabActive] = ImVec4(0.08f, 0.50f, 0.72f, 1.00f);
+    style.Colors[ImGuiCol_Button] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+    style.Colors[ImGuiCol_ButtonHovered] = ImVec4(0.38f, 0.38f, 0.38f, 1.00f);
+    style.Colors[ImGuiCol_ButtonActive] = ImVec4(0.67f, 0.67f, 0.67f, 0.39f);
+    style.Colors[ImGuiCol_Header] = ImVec4(0.22f, 0.22f, 0.22f, 1.00f);
+    style.Colors[ImGuiCol_HeaderHovered] = ImVec4(0.25f, 0.25f, 0.25f, 1.00f);
+    style.Colors[ImGuiCol_HeaderActive] = ImVec4(0.67f, 0.67f, 0.67f, 0.39f);
+    style.Colors[ImGuiCol_Separator] = style.Colors[ImGuiCol_Border];
+    style.Colors[ImGuiCol_SeparatorHovered] = ImVec4(0.41f, 0.42f, 0.44f, 1.00f);
+    style.Colors[ImGuiCol_SeparatorActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
+    style.Colors[ImGuiCol_ResizeGrip] = ImVec4(0.00f, 0.00f, 0.00f, 0.00f);
+    style.Colors[ImGuiCol_ResizeGripHovered] = ImVec4(0.29f, 0.30f, 0.31f, 0.67f);
+    style.Colors[ImGuiCol_ResizeGripActive] = ImVec4(0.26f, 0.59f, 0.98f, 0.95f);
+    style.Colors[ImGuiCol_Tab] = ImVec4(0.08f, 0.08f, 0.09f, 0.83f);
+    style.Colors[ImGuiCol_TabHovered] = ImVec4(0.33f, 0.34f, 0.36f, 0.83f);
+    style.Colors[ImGuiCol_TabActive] = ImVec4(0.23f, 0.23f, 0.24f, 1.00f);
+    style.Colors[ImGuiCol_TabUnfocused] = ImVec4(0.08f, 0.08f, 0.09f, 1.00f);
+    style.Colors[ImGuiCol_TabUnfocusedActive] = ImVec4(0.13f, 0.14f, 0.15f, 1.00f);
+    style.Colors[ImGuiCol_DockingPreview] = ImVec4(0.26f, 0.59f, 0.98f, 0.70f);
+    style.Colors[ImGuiCol_DockingEmptyBg] = ImVec4(0.20f, 0.20f, 0.20f, 1.00f);
+    style.Colors[ImGuiCol_PlotLines] = ImVec4(0.61f, 0.61f, 0.61f, 1.00f);
+    style.Colors[ImGuiCol_PlotLinesHovered] = ImVec4(1.00f, 0.43f, 0.35f, 1.00f);
+    style.Colors[ImGuiCol_PlotHistogram] = ImVec4(0.90f, 0.70f, 0.00f, 1.00f);
+    style.Colors[ImGuiCol_PlotHistogramHovered] = ImVec4(1.00f, 0.60f, 0.00f, 1.00f);
+    style.Colors[ImGuiCol_TextSelectedBg] = ImVec4(0.26f, 0.59f, 0.98f, 0.35f);
+    style.Colors[ImGuiCol_DragDropTarget] = ImVec4(0.11f, 0.64f, 0.92f, 1.00f);
+    style.Colors[ImGuiCol_NavHighlight] = ImVec4(0.26f, 0.59f, 0.98f, 1.00f);
+    style.Colors[ImGuiCol_NavWindowingHighlight] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
+    style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
+    style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
+    style.GrabRounding = style.FrameRounding = 2.3f;
+
+    return true;
 }
 
 bool Gui::PreUpdate()
 {
     bool ret = true;
 
-    /*Clears GUI*/
+    // Clears GUI
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
+    ImGui_ImplSDL2_NewFrame(app->window->window);
     ImGui::NewFrame();
 
-    if (show_gui)
-    {
-        GeneralWindowDockspace();
-    }
+    // hekbas TODO get input here?
 
-    if (show_guiwindow_1)
-    {
-        GUIWindow1();
-    }
-    
-    if (show_sceneView_window)
-    {
-        SceneViewWindow();
-    }
-
-    if (show_inspector_window)
-    {
-        InspectorWindow();
-    }
-    
-    if (show_hierarchy_window)
-    {
-        HierarchyWindow();
-    }
-    
-    if (show_assets_window)
-    {
-        AssetsWindow();
-    }
-    
-    if (show_console_window)
-    {
-        ConsoleWindow();
-    }
-
+    // Dockspace
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        MainWindowDockspace();
 
     return ret;
 }
 
-bool Gui::Update(float dt)
+bool Gui::Update(double dt)
 {
     bool ret = true;
 
+    // Creates the Main Menu Bar
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            ret = MainMenuFile();
+            ImGui::EndMenu();
+        }
 
+        if (ImGui::BeginMenu("Edit"))
+        {
+            MainMenuEdit();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Assets"))
+        {
+            MainMenuAssets();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("GameObject"))
+        {
+            MainMenuGameObject();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Component"))
+        {
+            MainMenuComponent();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Window"))
+        {
+            MainMenuWindow();
+            ImGui::EndMenu();
+        }
+
+        if (ImGui::BeginMenu("Help"))
+        {
+            MainMenuHelp();
+            ImGui::EndMenu();
+        }
+        
+        ImGui::EndMainMenuBar();
+    }
 
     return ret;
 }
@@ -115,7 +221,16 @@ bool Gui::PostUpdate()
 {
     bool ret = true;
 
-    
+    // Iterate Panels & Draw
+    for (const auto& panel : panels)
+    {
+        if (panel->GetState())
+            panel->Draw();
+    }
+
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        ImGui::End();
+
     return ret;
 }
 
@@ -124,19 +239,30 @@ bool Gui::CleanUp()
     LOG("Cleaning up IMGUI");
     bool ret = true;
 
-    // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();
     ImGui::DestroyContext();
+    ImPlot::DestroyContext();
+
+    // hekbas check cleanup
 
     return ret;
 }
 
-void Gui::RenderGui()
+
+void Gui::Draw()
 {
     ImGui::EndFrame();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGui::EndFrame();
+
+    // hekbas look into this
+    /*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+    }*/
 }
 
 void Gui::HandleInput(SDL_Event* event) 
@@ -144,27 +270,49 @@ void Gui::HandleInput(SDL_Event* event)
     ImGui_ImplSDL2_ProcessEvent(event);
 }
 
-void Gui::GeneralWindowDockspace()
+void Gui::OpenURL(const char* url) const
 {
-    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
-    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+    // hekbas need shellapi
+    //ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+}
 
+void Gui::PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags plotFlags, ImPlotAxisFlags axisFlags)
+{
+    if (ImPlot::BeginPlot(label, "", "", ImVec2(-1, -1), plotFlags, axisFlags))
+    {
+        ImPlot::PushStyleVar(ImPlotStyleVar_FillAlpha, 0.25f);
+        ImPlot::PlotShaded("FPS Area", data.data(), data.size());
+        ImPlot::PlotLine("FPS", data.data(), data.size());
+        ImPlot::SetupAxesLimits(0, data.size(), 0, 250, ImGuiCond_Always);
+
+        ImPlot::EndPlot();
+    }
+}
+
+
+void Gui::MainWindowDockspace()
+{
+    // Resize
     ImGuiViewport* viewport = ImGui::GetMainViewport();
     ImGui::SetNextWindowPos(viewport->Pos);
     ImGui::SetNextWindowSize(viewport->Size);
     ImGui::SetNextWindowViewport(viewport->ID);
+    
+    // Flags
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+
+    ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+    window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+    window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
+
+    // Style
     ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
     ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
-    window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-    window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
-
-    if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
-        window_flags |= ImGuiWindowFlags_NoBackground;
-
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
-    ImGui::Begin("DockSpace", nullptr, window_flags);
-    ImGui::PopStyleVar();
-    ImGui::PopStyleVar(2);
+
+    static bool p_open = true;
+    ImGui::Begin("DockSpace", &p_open, window_flags);
+    ImGui::PopStyleVar(3);
 
     // DockSpace
     ImGuiIO& io = ImGui::GetIO();
@@ -178,121 +326,134 @@ void Gui::GeneralWindowDockspace()
         {
             first_time = false;
 
-            ImGui::DockBuilderRemoveNode(dockspace_id); // clear any previous layout
+            ImGui::DockBuilderRemoveNode(dockspace_id); // Clear any previous layout
             ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
             ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
 
             auto dock_id_top = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.2f, nullptr, &dockspace_id);
             auto dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.25f, nullptr, &dockspace_id);
-            auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.2f, nullptr, &dockspace_id);
-            auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.25f, nullptr, &dockspace_id);
+            auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.15f, nullptr, &dockspace_id);
+            auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.20f, nullptr, &dockspace_id);
 
-            ImGui::DockBuilderDockWindow("Scene", dockspace_id); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Inspector", dock_id_right); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Assets", dock_id_down); //Takes the name of a window
-            ImGui::DockBuilderDockWindow("Console", dock_id_down); //Takes the name of a window
+            // Takes the name of a window
+            ImGui::DockBuilderDockWindow("Scene", dockspace_id);
+            ImGui::DockBuilderDockWindow("Inspector", dock_id_right);
+            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
+            ImGui::DockBuilderDockWindow("Project", dock_id_down);
+            ImGui::DockBuilderDockWindow("Console", dock_id_down);
+
             ImGui::DockBuilderFinish(dockspace_id);
         }
     }
-
-    /*Creates the Main Menu Bar*/
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            GeneralMenuFile();
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Edit"))
-        {
-            GeneralMenuEdit();
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("Windows"))
-        {
-            GeneralMenuWindows();
-            ImGui::EndMenu();
-        }
-        if (ImGui::BeginMenu("About"))
-        {
-            GeneralMenuAbout();
-            ImGui::EndMenu();
-        }
-        ImGui::EndMainMenuBar();
-    }
-
-
-    ImGui::End();
 }
 
-void Gui::GeneralMenuFile()
+
+// Main Menu Bar ----------------------------------------------
+
+bool Gui::MainMenuFile()
 {
-    if (ImGui::MenuItem("New")) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
+    bool ret = true;
+
+    if (ImGui::MenuItem("New", 0, false, false)) {}
+    if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
     if (ImGui::BeginMenu("Open Recent"))
     {
-        ImGui::MenuItem("fish_hat.c");
-        ImGui::MenuItem("fish_hat.inl");
-        ImGui::MenuItem("fish_hat.h");
-        if (ImGui::BeginMenu("More.."))
-        {
-            ImGui::MenuItem("Hello");
-            ImGui::MenuItem("Sailor");
-            ImGui::EndMenu();
-        }
         ImGui::EndMenu();
     }
-    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
-    if (ImGui::MenuItem("Save As..")) {}
-}
 
-void Gui::GeneralMenuEdit()
-{
-    if (ImGui::MenuItem("Undo", "CTRL+Z")) {}
-    if (ImGui::MenuItem("Redo", "CTRL+Y", false, false)) {}  // Disabled item
     ImGui::Separator();
-    if (ImGui::MenuItem("Cut", "CTRL+X")) {}
-    if (ImGui::MenuItem("Copy", "CTRL+C")) {}
-    if (ImGui::MenuItem("Paste", "CTRL+V")) {}
+
+    if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
+    if (ImGui::MenuItem("Save As..", 0, false, false)) {}
+
+    ImGui::Separator();
+
+    if (ImGui::MenuItem("Exit"))
+        ret = false;
+
+    return ret;
 }
 
-void Gui::GeneralMenuWindows()
+void Gui::MainMenuEdit()
 {
-    if (ImGui::MenuItem("New")) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O")) {}
-    if (ImGui::BeginMenu("Open Recent"))
+    if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
+    if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}  // Disabled item
+
+    ImGui::Separator();
+
+    if (ImGui::MenuItem("Cut", "Ctrl+X", false, false)) {}
+    if (ImGui::MenuItem("Copy", "Ctrl+C", false, false)) {}
+    if (ImGui::MenuItem("Paste", "Ctrl+V", false, false)) {}
+}
+
+void Gui::MainMenuAssets()
+{
+    if (ImGui::BeginMenu("Create"))
     {
-        ImGui::MenuItem("fish_hat.c");
-        ImGui::MenuItem("fish_hat.inl");
-        ImGui::MenuItem("fish_hat.h");
-        if (ImGui::BeginMenu("More.."))
-        {
-            ImGui::MenuItem("Hello");
-            ImGui::MenuItem("Sailor");
-            ImGui::EndMenu();
-        }
+        if (ImGui::MenuItem("Folder", 0, false, false)) {}
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Script", 0, false, false)) {}
+        if (ImGui::MenuItem("Shader", 0, false, false)) {}
+
         ImGui::EndMenu();
     }
-    if (ImGui::MenuItem("Save", "Ctrl+S")) {}
-    if (ImGui::MenuItem("Save As..")) {}
 }
 
-void Gui::GeneralMenuAbout()
+void Gui::MainMenuGameObject()
 {
-    ImGui::SeparatorText("ABOUT THIS DEMO:");
-    ImGui::Text("This is a Demo of TheOneEngine created in OpenGL by two students, Hector Bascones Zamora and Arnau Jimenez Gallego for the subject Game Engines");
+    if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) {}
+
+    if (ImGui::BeginMenu("3D Object", "Ctrl+Shift+N"))
+    {
+        if (ImGui::MenuItem("Square", 0, false, false)) {}
+        if (ImGui::MenuItem("Sphere", 0, false, false)) {}
+
+        ImGui::EndMenu();
+    }
+}
+
+void Gui::MainMenuComponent()
+{
+    if (ImGui::MenuItem("Mesh Renderer", 0, false, false)) {}
+}
+
+void Gui::MainMenuWindow()
+{
+    if (ImGui::MenuItem("Console"))     app->gui->panelConsole->SwitchState();
+    if (ImGui::MenuItem("Hierarchy"))   app->gui->panelHierarchy->SwitchState();
+    if (ImGui::MenuItem("Inspector"))   app->gui->panelInspector->SwitchState();
+    if (ImGui::MenuItem("Project"))     app->gui->panelProject->SwitchState();
+    if (ImGui::MenuItem("Scene"))       app->gui->panelScene->SwitchState();
+    if (ImGui::MenuItem("Settings"))    app->gui->panelSettings->SwitchState();
+}
+
+void Gui::MainMenuHelp()
+{
+    if (ImGui::MenuItem("About TheOneEngine"))
+    {
+        app->gui->panelAbout->SwitchState();
+    }
+
+    ImGui::Separator();
+
+    if (ImGui::MenuItem("Documentation"))
+    {
+        OpenURL("link here");
+    }
+    
+    ImGui::Separator();
 
     HardwareInfo hardware_info = app->hardware->GetInfo();
 
-    ImGui::Separator();
-    // --- SDL Version ---
+    // SDL Version
     ImGui::Text("SDL Version:");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
     ImGui::Separator();
 
-    // --- CPU ---
+    // CPU 
     ImGui::Text("CPU Logic Cores:");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.cpu_count);
@@ -337,14 +498,14 @@ void Gui::GeneralMenuAbout()
     if (hardware_info.avx2)
         ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", "avx2");
 
+    // RAM 
     ImGui::Separator();
-    // --- RAM ---
     ImGui::Text("RAM Memory (Gb)");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.ram_gb);
 
+    // GPU (Currently NVIDIA only)
     ImGui::Separator();
-    // --- GPU --- (Currently NVIDIA only)
     ImGui::Text("GPU Vendor");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.gpu_vendor.data());
@@ -368,137 +529,4 @@ void Gui::GeneralMenuAbout()
     ImGui::Text("VRAM Usage");
     ImGui::SameLine();
     ImGui::TextColored(ImVec4(255, 255, 0, 255), "%f", hardware_info.vram_mb_usage);
-}
-
-void Gui::GUIWindow1()
-{
-    ImGuiIO& io = ImGui::GetIO();
-
-    clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-    static float f = 0.0f;
-    static int counter = 0;
-
-    ImGui::SetNextWindowSize(ImVec2(339, 180), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
-    ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
-
-    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-    ImGui::Checkbox("Full Desktop", &full_desktop);      // Edit bools storing our window open/close state
-    ImGui::Checkbox("Minimize Window", &minimize_window);
-
-    ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-    ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
-
-    if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-        counter++;
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", counter);
-
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-    ImGui::End();
-}
-
-void Gui::SceneViewWindow()
-{
-    ImGuiIO& io = ImGui::GetIO();
-
-    ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
-
-    ImGui::Begin("Scene");
-    //{
-    //    // Using a Child allow to fill all the space of the window.
-    //    // It also alows customization
-    //    ImGui::BeginChild("GameRender");
-    //    // Get the size of the child (i.e. the whole draw size of the windows).
-    //    ImVec2 wsize = ImGui::GetWindowSize();
-    //    // Because I use the texture from OpenGL, I need to invert the V from the UV.
-    //    ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
-    //    ImGui::EndChild();
-    //}
-    //ImGui::End();
-
-    ImGui::End();
-}
-
-void Gui::InspectorWindow()
-{
-    ImGuiIO& io = ImGui::GetIO();
-
-    clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
-
-    ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
-    ImGui::Begin("Inspector");
-    
-    /*Transform*/
-    ImGui::SeparatorText("Transform");
-    static char buf[5] = "0";
-    ImGui::Text("Position");
-    //ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::PushItemWidth(40.0f);
-    ImGui::SameLine();
-    ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
-    ImGui::SameLine();
-    ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
-    ImGui::SameLine();
-    ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
-    
-    ImGui::Text("Rotation");
-    //ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::PushItemWidth(40.0f);
-    ImGui::SameLine();
-    ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
-    ImGui::SameLine();
-    ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
-    ImGui::SameLine();
-    ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
-    
-    ImGui::Text("Scale   ");
-    //ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::PushItemWidth(40.0f);
-    ImGui::SameLine();
-    ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
-    ImGui::SameLine();
-    ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
-    ImGui::SameLine();
-    ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
-    
-    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::Text("Mesh");
-    static char mesh_name[32] = "house.fbx";
-    ImGui::PushItemWidth(150.0f);
-    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::InputText("", mesh_name, IM_ARRAYSIZE(mesh_name));
-
-    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::Text("Texture");
-    static char texture_name[32] = "texture.png";
-    ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-    ImGui::InputText("", texture_name, IM_ARRAYSIZE(texture_name));
-
-    ImGui::PopItemWidth();
-
-    ImGui::End();
-}
-
-void Gui::HierarchyWindow()
-{
-
-    ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
-    ImGui::Begin("Hierarchy");
-    
-    ImGui::End();
-}
-
-void Gui::AssetsWindow()
-{
-    ImGui::Begin("Assets");
-    
-    ImGui::End();
-}
-
-void Gui::ConsoleWindow()
-{
-    ImGui::Begin("Console");
-    //console.Draw("Console", &show_console_window);
-    ImGui::End();
 }
