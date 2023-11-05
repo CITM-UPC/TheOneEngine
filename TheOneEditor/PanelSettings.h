@@ -40,7 +40,24 @@ private:
 	std::vector<int> fpsHistory;
 	std::vector<double> delayHistory;
 
-	const char* items[4] = { "Windowed", "Full Screen", "Full Screen Desktop", "Borderless" };	
+	const char* displayModes[4] =
+	{
+		"Windowed",
+		"Full Screen",
+		"Full Screen Desktop",
+		"Borderless"
+	};
+	const char* resolutions[8] =
+	{
+		"3840x2160",
+		"2560x1440",
+		"1920x1080",
+		"1280x720",
+		"854x480",
+		"640x360",
+		"426x240",
+		"NATIVE"
+	};
 };
 
 #endif // !__PANEL_SETTINGS_H__

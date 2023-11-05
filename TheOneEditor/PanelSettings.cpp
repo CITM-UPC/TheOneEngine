@@ -101,17 +101,15 @@ void PanelSettings::Performance()
 
 void PanelSettings::Window()
 {
-	int displayMode = app->window->GetDisplayMode();
-
-	if (ImGui::Combo("Display Mode", &displayMode, items, 4))
-	{
+	int displayMode = (int)app->window->GetDisplayMode();
+	
+	if (ImGui::Combo("Display Mode", &displayMode, displayModes, 4))
 		app->window->SetDisplayMode((DisplayMode)displayMode);
-	}
 
-	/*if (ImGui::Combo("Resolution", &displayMode, items, 4))
-	{
-		app->window->SetDisplayMode((DisplayMode)displayMode);
-	}*/
+	int resolution = (int)app->window->GetResolution();
+
+	if (ImGui::Combo("Resolution", &resolution, resolutions, 8))
+		app->window->SetResolution((Resolution)resolution);
 }
 
 void PanelSettings::Input()

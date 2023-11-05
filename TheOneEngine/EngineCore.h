@@ -29,6 +29,8 @@ public:
 
 	void Render(RenderModes renderMode);
 
+	void OnWindowResize(int width, int height);
+
 public:
 	Camera camera;
 

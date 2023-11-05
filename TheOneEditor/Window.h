@@ -48,22 +48,24 @@ public:
 
     uint GetDisplayRefreshRate();
 
-    int GetDisplayMode();
-    void SetDisplayMode(DisplayMode properties);
+    DisplayMode GetDisplayMode();
+    void SetDisplayMode(DisplayMode mode);
 
-    int GetResolution();
+    Resolution GetResolution();
     void SetResolution(Resolution resolution);
 
 
 public:
-    SDL_Window* window;
+    SDL_Window* window = nullptr;
     SDL_GLContext glContext;
 
 private:
     uint refreshRate = 0;
 
-    int displayMode = 0;
+    DisplayMode displayMode;
     bool borderless = false;
+
+    Resolution resolution;
 };
 
 #endif // !__WINDOW_H__

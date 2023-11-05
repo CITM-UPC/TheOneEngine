@@ -92,3 +92,14 @@ void EngineCore::Render(RenderModes renderMode)
 
     assert(glGetError() == GL_NONE);
 }
+
+void EngineCore::OnWindowResize(int width, int height)
+{
+    glViewport(0, 0, width, height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+}

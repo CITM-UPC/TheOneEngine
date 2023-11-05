@@ -25,7 +25,8 @@ bool Window::Awake()
 
 bool Window::Start()
 {
-
+    displayMode = DisplayMode::WINDOWED;
+    resolution = Resolution::R_1920x1080;
     return true;
 }
 
@@ -150,57 +151,78 @@ uint Window::GetDisplayRefreshRate()
     return refreshRate;
 }
 
-int Window::GetDisplayMode()
+DisplayMode Window::GetDisplayMode()
 {
     return this->displayMode;
 }
 
-void Window::SetDisplayMode(DisplayMode properties)
+void Window::SetDisplayMode(DisplayMode mode)
 {
-    switch (properties)
+    switch (mode)
     {
-    case DisplayMode::WINDOWED:
-        if (SDL_SetWindowFullscreen(window, 0) != 0)
-            LOG(LogType::LOG_ERROR, "Setting Display Mode to Windowed", SDL_GetError());
+        case DisplayMode::WINDOWED:
+        {
+            if (SDL_SetWindowFullscreen(window, 0) != 0)
+                LOG(LogType::LOG_ERROR, "Unable to set Display Mode to Windowed", SDL_GetError());
 
-        //SDL_SetWindowSize(window, WINDOW_WIDTH, WINDOW_HEIGHT);
-        break;
+            SDL_SetWindowSize(window, WINDOW_WIDTH, WINDOW_HEIGHT);
+            app->engine->OnWindowResize(WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    case DisplayMode::FULLSCREEN:
-        if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
-            LOG(LogType::LOG_ERROR, "Setting Display Mode to Fullscreen Desktop", SDL_GetError());
-        break;
+            displayMode = DisplayMode::WINDOWED;
+            break;
+        }
+            
+        case DisplayMode::FULLSCREEN:
+        {
+            if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
+                LOG(LogType::LOG_ERROR, "Unable to set Display Mode to Fullscreen Desktop", SDL_GetError());
 
-    case DisplayMode::FULLSCREEN_DESKTOP:
-        if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0)
-            LOG(LogType::LOG_ERROR, "Setting Display Mode to Fullscreen", SDL_GetError());
-        break;
+            displayMode = DisplayMode::FULLSCREEN;
+            break;
+        }          
 
-    case DisplayMode::BORDERLESS:
-        SDL_SetWindowBordered(window, (SDL_bool)!borderless);
-        break;
+        case DisplayMode::FULLSCREEN_DESKTOP:
+        {
+            if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN) != 0)
+                LOG(LogType::LOG_ERROR, "Unable to set Display Mode to Fullscreen", SDL_GetError());
+
+            displayMode = DisplayMode::FULLSCREEN_DESKTOP;
+            break;
+        }
+            
+        case DisplayMode::BORDERLESS:
+        {
+            SDL_SetWindowBordered(window, (SDL_bool)!borderless);
+            displayMode = DisplayMode::BORDERLESS;
+            break;
+        }           
     }
+}
+
+Resolution Window::GetResolution()
+{
+    return resolution;
 }
 
 void Window::SetResolution(Resolution resolution)
 {
     switch (resolution)
     {
-    case Resolution::R_3840x2160:
-        break;
-    case Resolution::R_2560x1440:
-        break;
-    case Resolution::R_1920x1080:
-        break;
-    case Resolution::R_1280x720:
-        break;
-    case Resolution::R_854x480:
-        break;
-    case Resolution::R_640x360:
-        break;
-    case Resolution::R_426x240:
-        break;
-    case Resolution::R_NATIVE:
-        break;
+        case Resolution::R_3840x2160:
+            break;
+        case Resolution::R_2560x1440:
+            break;
+        case Resolution::R_1920x1080:
+            break;
+        case Resolution::R_1280x720:
+            break;
+        case Resolution::R_854x480:
+            break;
+        case Resolution::R_640x360:
+            break;
+        case Resolution::R_426x240:
+            break;
+        case Resolution::R_NATIVE:
+            break;
     }
 }
