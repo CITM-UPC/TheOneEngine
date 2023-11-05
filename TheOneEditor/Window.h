@@ -52,7 +52,7 @@ public:
     void SetDisplayMode(DisplayMode mode);
 
     Resolution GetResolution();
-    void SetResolution(Resolution resolution);
+    void SetResolution(Resolution res);
 
 
 public:
