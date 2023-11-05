@@ -12,6 +12,7 @@ public:
 
 	/*Returns view matrix*/
 	mat4 LookAt() const;
+	void UpdateDirection();
 
 	void updateCameraVectors();
 
@@ -23,7 +24,7 @@ public:
 	double zFar;
 
 	vec3 eye;		// Position
-	vec3 center;	// Target
+	vec3 center;	// LookAt
 	vec3 up;		// Orientation
 	vec3 direction;
 	vec3 cameraRight;

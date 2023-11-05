@@ -146,16 +146,23 @@ void Input::CameraInput(double dt)
 {
     // Implement a debug camera with keys and mouse
     // Now we can make this movememnt frame rate independant!
-    double speed = 10 * dt;
+    double speed = 20 * dt;
     if (GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
         speed = 45 * dt;
 
+    float mouseSensitivity = 10.0f * dt;
+
     if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
+        if (firstMouse)
+        {
+            /*lastX = ;
+            lastY = ypos;*/
+            firstMouse = false;
+        }
 
         /* MOUSE CAMERA MOVEMENT */
-       // Compute mouse input displacement
-        float mouseSensitivity = 10.0f * dt;
+        // Compute mouse input displacement
         int deltaX = GetMouseXMotion();
         int deltaY = -GetMouseYMotion();
 
@@ -163,10 +170,10 @@ void Input::CameraInput(double dt)
         app->engine->camera.pitch += deltaY * mouseSensitivity;
 
         // Limiting Camera Piitch to prevent flipping
-        if (app->engine->camera.pitch > 89.0f)
-            app->engine->camera.pitch = 89.0f;
-        if (app->engine->camera.pitch < -89.0f)
-            app->engine->camera.pitch = -89.0f;
+        if (app->engine->camera.pitch > 89.9f)
+            app->engine->camera.pitch = 89.9f;
+        if (app->engine->camera.pitch < -89.9f)
+            app->engine->camera.pitch = -89.9f;
 
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
@@ -184,29 +191,37 @@ void Input::CameraInput(double dt)
         {
             app->engine->camera.eye += app->engine->camera.cameraRight * speed;
         } 
-        
+        app->engine->camera.UpdateDirection();
     }
-
-    //Zooming Camera Input
-    app->engine->camera.eye += GetMouseZ();
-    /*if (app->engine->camera.fov < 1.0f)
-        app->engine->camera.fov = 1.0f;
-    if (app->engine->camera.fov > 115.0f)
-        app->engine->camera.fov = 115.0f;*/
+    else
+    {
+        //Zooming Camera Input
+        app->engine->camera.eye.x += GetMouseZ() * app->engine->camera.direction.x;
+        app->engine->camera.eye.y += GetMouseZ() * app->engine->camera.direction.y;
+        app->engine->camera.eye.z += GetMouseZ() * app->engine->camera.direction.z;
+    }
 
     //Orbit Object with Alt_Left + Left Click
     if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
-        float mouseSensitivity = 10.0f * dt;
-        int deltaX = GetMouseXMotion();
-        int deltaY = -GetMouseYMotion();
+        //Get selected GameObject         
         float radius = 500.0f;
-        double dtSum = 0;
-        dtSum += dt;
-        speed = 0.6*dtSum;
-        app->engine->camera.eye.x = sin(speed) * radius;
-        app->engine->camera.eye.z = cos(speed) * radius;
-    }
 
+        rotateOrbitX += (float)GetMouseXMotion() * mouseSensitivity;
+        app->engine->camera.eye.x = sin(glm::radians(rotateOrbitX)) * radius;
+        app->engine->camera.eye.z = cos(glm::radians(rotateOrbitX)) * radius;
+        app->engine->camera.yaw = rotateOrbitX;
+        
+        rotateOrbitY += (float)GetMouseYMotion() * mouseSensitivity;
+        app->engine->camera.eye.y = sin(glm::radians(rotateOrbitY)) * radius;
+        app->engine->camera.eye.z = cos(glm::radians(rotateOrbitY)) * radius;
+        app->engine->camera.pitch = -rotateOrbitY;
+    }
+    
+    if (GetKey(SDL_SCANCODE_F) == KEY_DOWN)
+    {
+        app->engine->camera.direction = { 0, 0, 0 };
+    }
+    LOG("Direction x: %f, y: %f, z: %f", app->engine->camera.direction.x, app->engine->camera.direction.y, app->engine->camera.direction.z);
     app->engine->camera.updateCameraVectors();
 }
