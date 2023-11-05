@@ -3,7 +3,7 @@
 #include "Gui.h"
 #include "imgui.h"
 
-PanelHierarchy::PanelHierarchy(PanelType type) : Panel(type) {}
+PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name) {}
 
 PanelHierarchy::~PanelHierarchy() {}
 

@@ -10,7 +10,7 @@
 // Get Assimp LOGS and print to console
 void MyAssimpCallback(const char* msg, char* userData)
 {
-	LOG("[Assimp]: %s", msg);
+	LOG(LogType::LOG_ASSIMP, " %s", msg);
 }
 
 AssetManager::AssetManager(App* app) : Module(app) {}

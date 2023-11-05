@@ -23,17 +23,24 @@ Input::~Input()
 
 bool Input::Awake()
 {
-    LOG("Init SDL input event system");
-    bool ret = true;
-    SDL_Init(0);
+    LOG(LogType::LOG_INFO, "# Initializing SDL Library");
+
+    if (SDL_Init(0) != 0)
+    {
+        LOG(LogType::LOG_ERROR, "-Initializing SDL Library: \n%s", SDL_GetError());
+        return false;
+    }
+    LOG(LogType::LOG_OK, "-Initializing SDL Library");
+    
 
     if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
     {
-        LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
-        ret = false;
+        LOG(LogType::LOG_ERROR, "-Initializing SDL_EVENTS Subsystem: \n%s", SDL_GetError());
+        return false;
     }
+    LOG(LogType::LOG_OK, "-Initializing SDL_EVENTS Subsystem");
 
-    return ret;
+    return true;
 }
 
 bool Input::PreUpdate()

@@ -3,7 +3,7 @@
 #include "Gui.h"
 #include "imgui.h"
 
-PanelScene::PanelScene(PanelType type) : Panel(type) {}
+PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name) {}
 
 PanelScene::~PanelScene() {}
 

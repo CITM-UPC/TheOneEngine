@@ -7,7 +7,7 @@
 class PanelInspector : public Panel
 {
 public:
-	PanelInspector(PanelType type);
+	PanelInspector(PanelType type, std::string name);
 	~PanelInspector();
 
 	bool Draw();

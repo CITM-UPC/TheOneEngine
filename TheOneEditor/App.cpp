@@ -1,4 +1,5 @@
 #include "App.h"
+#include "Log.h"
 
 #include "Window.h"
 #include "Input.h"
@@ -240,6 +241,29 @@ const char* App::GetArgv(int index) const
 		return NULL;
 }
 
+// Logs
+std::vector<LogInfo> App::GetLogs()
+{
+	return logs;
+}
+
+void App::AddLog(LogType type, const char* entry)
+{
+	if (logs.size() > MAX_LOGS_CONSOLE)
+		logs.erase(logs.begin());
+
+	std::string toAdd = entry;
+	LogInfo info = { type, toAdd };
+
+	logs.push_back(info);
+}
+
+void App::CleanLogs()
+{
+	logs.clear();
+}
+
+// Fps control
 int App::GetFrameRate() const
 {
 	return frameRate;
@@ -254,25 +278,4 @@ void App::SetFrameRate(int frameRate)
 double App::GetDT() const
 {
 	return dt;
-}
-
-std::vector<std::string> App::GetLogs()
-{
-	return logs;
-}
-
-void App::LogConsole(const char* entry)
-{
-	if (logs.size() > MAX_LOGS_CONSOLE)
-		logs.erase(logs.begin());
-
-	log.append(entry);
-
-	std::string toAdd = entry;
-	logs.push_back(toAdd);
-}
-
-void App::CleanLogs()
-{
-	logs.clear();
 }

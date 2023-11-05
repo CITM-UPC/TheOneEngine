@@ -19,7 +19,7 @@ class PanelSettings : public Panel
 {
 public:
 
-	PanelSettings(PanelType type);
+	PanelSettings(PanelType type, std::string name);
 	~PanelSettings();
 
 	bool Draw();
@@ -31,7 +31,6 @@ private:
 	void Window();
 	void Input();
 	void Renderer();
-
 	
 
 private:
@@ -40,6 +39,8 @@ private:
 
 	std::vector<int> fpsHistory;
 	std::vector<double> delayHistory;
+
+	const char* items[4] = { "Windowed", "Full Screen", "Full Screen Desktop", "Borderless" };	
 };
 
 #endif // !__PANEL_SETTINGS_H__

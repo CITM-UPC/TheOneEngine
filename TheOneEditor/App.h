@@ -2,6 +2,8 @@
 #define __APP_H__
 #pragma once
 
+#include "Log.h"
+
 #include "..\TheOneEngine\EngineCore.h"
 
 #include <iostream>
@@ -20,6 +22,7 @@ class Input;
 class Hardware;
 class Gui;
 class Renderer3D;
+
 
 class App
 {
@@ -40,14 +43,14 @@ public:
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
+	std::vector<LogInfo> GetLogs();
+	void AddLog(LogType type, const char* entry);
+	void CleanLogs();
+
 	int GetFrameRate() const;
 	void SetFrameRate(int refreshRate);
 
 	double GetDT() const;
-
-	std::vector<std::string> GetLogs();
-	void LogConsole(const char* entry);
-	void CleanLogs();
 
 
 private:
@@ -71,7 +74,6 @@ public:
 	Gui* gui = nullptr;
 	Renderer3D* renderer3D = nullptr;
 
-
 private:
 
 	int argc;
@@ -81,11 +83,11 @@ private:
 
 	std::list<Module*> modules;
 
-	//Logs
-	std::string log;
-	std::vector<std::string> logs;
+	// Logs
+	LogInfo logInfo;
+	std::vector<LogInfo> logs;
 
-	// Fps contro
+	// Fps control
 	std::chrono::duration<double> targetFrameDuration;
 	std::chrono::steady_clock::time_point frameStart, frameEnd;
 

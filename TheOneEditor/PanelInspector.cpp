@@ -5,7 +5,7 @@
 #include "imgui_internal.h"
 
 
-PanelInspector::PanelInspector(PanelType type) : Panel(type) {}
+PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) {}
 
 PanelInspector::~PanelInspector() {}
 

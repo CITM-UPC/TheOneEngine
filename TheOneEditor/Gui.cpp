@@ -28,47 +28,81 @@ Gui::~Gui() {}
 
 bool Gui::Awake()
 {
-    LOG("Creating Panels");
+    LOG(LogType::LOG_INFO, "# Initializing GUI Panels");
 
-    panelAbout = new PanelAbout(PanelType::ABOUT);
+    bool ret = true;
+
+    panelAbout = new PanelAbout(PanelType::ABOUT, "About");
     panels.push_back(panelAbout);
-
-    panelConsole = new PanelConsole(PanelType::CONSOLE);
+    ret *= isInitialized(panelAbout);
+   
+    panelConsole = new PanelConsole(PanelType::CONSOLE, "Console");
     panels.push_back(panelConsole);
+    ret *= isInitialized(panelConsole);
 
-    panelHierarchy = new PanelHierarchy(PanelType::HIERARCHY);
+    panelHierarchy = new PanelHierarchy(PanelType::HIERARCHY, "Hierarchy");
     panels.push_back(panelHierarchy);
+    ret *= isInitialized(panelHierarchy);
 
-    panelInspector = new PanelInspector(PanelType::INSPECTOR);
+    panelInspector = new PanelInspector(PanelType::INSPECTOR, "Inspector");
     panels.push_back(panelInspector);
+    ret *= isInitialized(panelInspector);
 
-    panelProject = new PanelProject(PanelType::PROJECT);
+    panelProject = new PanelProject(PanelType::PROJECT, "Project");
     panels.push_back(panelProject);
+    ret *= isInitialized(panelProject);
 
-    panelScene = new PanelScene(PanelType::SCENE);
+    panelScene = new PanelScene(PanelType::SCENE, "Scene");
     panels.push_back(panelScene);
+    ret *= isInitialized(panelScene);
 
-    panelSettings = new PanelSettings(PanelType::STATS);
+    panelSettings = new PanelSettings(PanelType::SETTINGS, "Settings");
     panels.push_back(panelSettings);
+    ret *= isInitialized(panelSettings);
 
+    return ret;
+}
+
+bool Gui::isInitialized(Panel* panel)
+{
+    if (!panel)
+    {
+        LOG(LogType::LOG_ERROR, "-%s", panel->GetName().c_str());
+        return false;
+    }
+    LOG(LogType::LOG_OK, "-%s", panel->GetName().c_str());
     return true;
 }
 
 bool Gui::Start()
 {
-    LOG("Creating IMGUI context");
+    LOG(LogType::LOG_INFO, "# Creating ImGui context");
 
     IMGUI_CHECKVERSION();
+    LOG(LogType::LOG_OK, "-ImGui version: %s", IMGUI_VERSION);
 
     ImGuiContext* contextui = ImGui::CreateContext();
     ImPlotContext* contextplot = ImPlot::CreateContext();
     
-    IM_ASSERT(ImGui::GetCurrentContext() != NULL && "Missing Dear ImGui context. Refer to examples app!");
+    if (!contextui)
+        LOG(LogType::LOG_ERROR, "-Missing Dear ImGui context. Refer to examples app!");   
+    LOG(LogType::LOG_OK, "-Creating ImGui Context");
+
+    if (!contextplot)
+        LOG(LogType::LOG_ERROR, "-Creating Implot context");
+    LOG(LogType::LOG_OK, "-Creating ImPlot Context");
+
+    //I/O
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+
+    if (!&io)
+        LOG(LogType::LOG_ERROR, "-Enabling I/O");
+    LOG(LogType::LOG_OK, "-Enabling I/O");
+
 
     // Setup Platform/Renderer backends
     ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->window->glContext);
@@ -83,11 +117,8 @@ bool Gui::Start()
     app->gui->panelInspector->SetState(true);
     app->gui->panelProject->SetState(true);
 
-    // hekbas log test
-    LOG("*Error test");
-    LOG("!Warning test");
-
     // Style
+    LOG(LogType::LOG_OK, "-Setting ImGui Custom Style");   
     ImGuiStyle& style = ImGui::GetStyle();
     style.Colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
@@ -149,7 +180,7 @@ bool Gui::PreUpdate()
     bool ret = true;
 
     // Clears GUI
-    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplOpenGL3_NewFrame();   // hekbas memory corruption ???
     ImGui_ImplSDL2_NewFrame(app->window->window);
     ImGui::NewFrame();
 
@@ -236,7 +267,7 @@ bool Gui::PostUpdate()
 
 bool Gui::CleanUp()
 {
-    LOG("Cleaning up IMGUI");
+    LOG(LogType::LOG_INFO, "Cleaning up IMGUI");
     bool ret = true;
 
     ImGui_ImplOpenGL3_Shutdown();

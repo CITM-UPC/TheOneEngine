@@ -39,6 +39,7 @@ public:
 	void HandleInput(SDL_Event* event);
 	void OpenURL(const char* url) const;
 	void PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags plotFlags = 0, ImPlotAxisFlags axisFlags = 0);
+	bool isInitialized(Panel* panel);
 
 
 private:

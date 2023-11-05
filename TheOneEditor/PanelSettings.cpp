@@ -8,7 +8,7 @@
 #include "implot_internal.h"
 
 
-PanelSettings::PanelSettings(PanelType type) : Panel(type), fpsHistory(MAX_HISTORY_SIZE), delayHistory(MAX_HISTORY_SIZE) {}
+PanelSettings::PanelSettings(PanelType type, std::string name) : Panel(type, name), fpsHistory(MAX_HISTORY_SIZE), delayHistory(MAX_HISTORY_SIZE) {}
 
 PanelSettings::~PanelSettings() {}
 
@@ -101,7 +101,17 @@ void PanelSettings::Performance()
 
 void PanelSettings::Window()
 {
-	ImGui::Text("Window");
+	int displayMode = app->window->GetDisplayMode();
+
+	if (ImGui::Combo("Display Mode", &displayMode, items, 4))
+	{
+		app->window->SetDisplayMode((DisplayMode)displayMode);
+	}
+
+	/*if (ImGui::Combo("Resolution", &displayMode, items, 4))
+	{
+		app->window->SetDisplayMode((DisplayMode)displayMode);
+	}*/
 }
 
 void PanelSettings::Input()

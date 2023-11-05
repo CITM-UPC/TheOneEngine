@@ -3,9 +3,9 @@
 #include "Gui.h"
 #include "imgui.h"
 
-#include "log.h"
+#include "Log.h"
 
-PanelConsole::PanelConsole(PanelType type) : Panel(type) {}
+PanelConsole::PanelConsole(PanelType type, std::string name) : Panel(type, name) {}
 
 PanelConsole::~PanelConsole() {}
 
@@ -27,19 +27,46 @@ bool PanelConsole::Draw()
 
 		if (ImGui::BeginChild("Scrollbar", ImVec2(0, 0), false, scrollFlags))
 		{
-			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(2, 1));
+			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(5, 15));
+
+			std::string logType;
 
 			for (const auto& log : app->GetLogs())
 			{
-				if (log[1] == *LOG_ERROR)
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 0, 0, 255));
-				else if (log[1] == *LOG_WARNING)
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 0, 255));
-				else
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 255, 255));
+				switch (log.type)
+				{
+				case LogType::LOG_INFO:
+					logType = "";
+					break;
 
-				ImGui::TextUnformatted(log.data());
+				case LogType::LOG_ASSIMP:
+					logType = "[ASSIMP] ";
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(190, 64, 190, 255));
+					break;
+
+				case LogType::LOG_OK:
+					logType = "[OK] ";
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 255, 0, 255));
+					break;
+
+				case LogType::LOG_WARNING:
+					logType = "[WARNING] ";
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 0, 255));
+					break;
+
+				case LogType::LOG_ERROR:
+					logType = "[ERROR] ";
+					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 0, 0, 255));
+					break;
+				}
+				
+				if (log.message[0] == '-')
+					logType.insert(0, "\t");
+
+				ImGui::Text(logType.c_str());
 				ImGui::PopStyleColor();
+				ImGui::SameLine();
+				ImGui::Text(log.message.c_str());
 			}
 
 			ImGui::PopStyleVar();

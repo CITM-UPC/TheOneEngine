@@ -24,7 +24,7 @@ App* app = NULL;
 
 int main(int argc, char* args[])
 {
-	LOG("Engine starting ...");
+	LOG(LogType::LOG_INFO, "Engine starting ...");
 
 	MainState state = CREATE;
 	int result = EXIT_FAILURE;
@@ -36,7 +36,7 @@ int main(int argc, char* args[])
 		{
 			// Allocate the engine ---------------------------------------------
 		case CREATE:
-			LOG("CREATION PHASE ===============================");
+			LOG(LogType::LOG_INFO, "CREATION PHASE ===============================");
 
 			app = new App(argc, args);
 
@@ -49,12 +49,12 @@ int main(int argc, char* args[])
 
 			// Awake all modules -----------------------------------------------
 		case AWAKE:
-			LOG("AWAKE PHASE ===============================");
+			LOG(LogType::LOG_INFO, "AWAKE PHASE ===============================");
 			if (app->Awake() == true)
 				state = START;
 			else
 			{
-				LOG("ERROR: Awake failed");
+				LOG(LogType::LOG_ERROR, "Awake phase");
 				state = FAIL;
 			}
 
@@ -62,16 +62,16 @@ int main(int argc, char* args[])
 
 			// Call all modules before first frame  ----------------------------
 		case START:
-			LOG("START PHASE ===============================");
+			LOG(LogType::LOG_INFO, "START PHASE ===============================");
 			if (app->Start() == true)
 			{
 				state = LOOP;
-				LOG("UPDATE PHASE ===============================");
+				LOG(LogType::LOG_INFO, "UPDATE PHASE ===============================");
 			}
 			else
 			{
 				state = FAIL;
-				LOG("ERROR: Start failed");
+				LOG(LogType::LOG_ERROR, "Start phase");
 			}
 			break;
 
@@ -86,7 +86,7 @@ int main(int argc, char* args[])
 
 		// Cleanup allocated memory --------------------------------------------
 		case CLEAN:
-			LOG("CLEANUP PHASE ===============================");
+			LOG(LogType::LOG_INFO, "CLEANUP PHASE ===============================");
 			if (app->CleanUp() == true)
 			{
 				RELEASE(app);
@@ -100,7 +100,7 @@ int main(int argc, char* args[])
 
 			// Exit with errors and shame --------------------------------------
 		case FAIL:
-			LOG("Exiting with errors :(");
+			LOG(LogType::LOG_ERROR, "Exiting with errors :(");
 			result = EXIT_FAILURE;
 			state = EXIT;
 			break;

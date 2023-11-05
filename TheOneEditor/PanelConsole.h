@@ -3,14 +3,14 @@
 #pragma once
 
 #include "Panel.h"
+#include <vector>
+#include <string.h>
 
-#define LOG_ERROR "*"
-#define LOG_WARNING "!"
 
 class PanelConsole : public Panel
 {
 public:
-	PanelConsole(PanelType type);
+	PanelConsole(PanelType type, std::string name);
 	~PanelConsole();
 
 	bool Draw();

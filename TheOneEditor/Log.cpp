@@ -4,8 +4,9 @@
 
 #include <windows.h>
 #include <stdio.h>
+#include <vector>
 
-void Log(const char file[], int line, const char* format, ...)
+void Log(const char file[], int line, LogType type, const char* format, ...)
 {
 	static char tmpString1[BUFFER_SIZE];
 	static char tmpString2[BUFFER_SIZE];
@@ -15,12 +16,14 @@ void Log(const char file[], int line, const char* format, ...)
 	va_start(ap, format);
 	vsprintf_s(tmpString1, BUFFER_SIZE, format, ap);
 	va_end(ap);
+
 	sprintf_s(tmpString2, BUFFER_SIZE, "\n%s(%d) : %s", file, line, tmpString1);
 	OutputDebugString(tmpString2);
 
-	if (app)
+	// Log to Editor Console
+	if (app != nullptr)
 	{
-		sprintf_s(tmpString2, BUFFER_SIZE, "\n%s", tmpString1);
-		app->LogConsole(tmpString2);
-	}
+		sprintf_s(tmpString2, BUFFER_SIZE, "%s", tmpString1);
+		app->AddLog(type, tmpString2);
+	}	
 }

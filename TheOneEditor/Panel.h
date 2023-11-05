@@ -2,6 +2,7 @@
 #define __PANEL_H__
 #pragma once
 
+#include <string>
 
 enum class PanelType
 {
@@ -12,7 +13,7 @@ enum class PanelType
 	INSPECTOR,
 	PROJECT,
 	SCENE,
-	STATS,
+	SETTINGS,
 
 	UNKNOWN
 };
@@ -21,21 +22,24 @@ class Panel
 {
 public:
 
-	Panel(PanelType type);
+	Panel(PanelType type, std::string name);
 	virtual ~Panel();
 
 	virtual bool Draw() = 0;
+
+	virtual PanelType GetType();
+	virtual std::string GetName();
 
 	virtual bool GetState();
 	virtual void SetState(bool state);
 	virtual void SwitchState();
 
-	virtual PanelType GetType();
 
 protected:
 
-	bool enabled = false;
 	PanelType type = PanelType::UNKNOWN;
+	std::string name;
+	bool enabled = false;
 };
 
 #endif // !__PANEL_H__

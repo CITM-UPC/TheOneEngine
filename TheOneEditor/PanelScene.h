@@ -7,7 +7,7 @@
 class PanelScene : public Panel
 {
 public:
-	PanelScene(PanelType type);
+	PanelScene(PanelType type, std::string name);
 	~PanelScene();
 
 	bool Draw();

@@ -3,7 +3,7 @@
 #include "Gui.h"
 #include "imgui.h"
 
-PanelProject::PanelProject(PanelType type) : Panel(type) {}
+PanelProject::PanelProject(PanelType type, std::string name) : Panel(type, name) {}
 
 PanelProject::~PanelProject() {}
 
