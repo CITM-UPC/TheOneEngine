@@ -2,6 +2,7 @@
 #include "App.h"
 #include "Gui.h"
 #include "Window.h"
+#include "Input.h"
 
 #include "imgui.h"
 #include "implot.h"
@@ -81,7 +82,6 @@ bool PanelSettings::Draw()
 }
 
 
-
 // Settings -----------------------------------------
 void PanelSettings::Performance()
 {
@@ -114,11 +114,30 @@ void PanelSettings::Window()
 
 void PanelSettings::Input()
 {
-	ImGui::Text("Input");
+	// Mouse position
+	int mouse_x, mouse_y;
+	mouse_x = app->input->GetMouseX();
+	mouse_y = app->input->GetMouseY();
+	ImGui::Text("Mouse Position:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(169, 169, 169, 255), "%i,%i", mouse_x, mouse_y);
+
+	// Mouse Speed
+	mouse_x = app->input->GetMouseXMotion();
+	mouse_y = app->input->GetMouseYMotion();
+	ImGui::Text("Mouse Speed:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(169, 169, 169, 255), "%i,%i", mouse_x, mouse_y);
+
+	// Mouse Wheel
+	int wheel = app->input->GetMouseZ();
+	ImGui::Text("Mouse Wheel:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(169, 169, 169, 255), "%i", wheel);
 }
 
 void PanelSettings::Renderer()
 {
-	ImGui::Text("Renderer");
+
 }
 // --------------------------------------------------

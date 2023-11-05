@@ -159,7 +159,6 @@ void Input::CameraInput(double dt)
 
     if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
-
         /* MOUSE CAMERA MOVEMENT */
        // Compute mouse input displacement
         float mouseSensitivity = 10.0f * dt;
