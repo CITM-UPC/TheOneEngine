@@ -30,6 +30,8 @@ public:
 	
 	void CameraInput(double dt);
 
+	void RotateCamera(float yaw, float pitch);
+
 	KEY_STATE GetKey(int id) const
 	{
 		return keyboard[id];
@@ -76,8 +78,8 @@ private:
 	bool firstMouse;
 	int lastX;
 	int lastY;
-	float rotateOrbitX;
-	float rotateOrbitY;
+	float dx;
+	float dy;
 };
 
 #endif // !__INPUT_H__
