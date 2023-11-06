@@ -3,6 +3,7 @@
 #include "Gui.h"
 #include "Window.h"
 #include "Input.h"
+#include "Hardware.h"
 
 #include "imgui.h"
 #include "implot.h"
@@ -51,6 +52,12 @@ bool PanelSettings::Draw()
 			if (ImGui::Button("Renderer", buttonSize))
 				selected = SelectedSetting::RENDERER;
 
+			if (ImGui::Button("Hardware", buttonSize))
+				selected = SelectedSetting::HARDWARE;
+
+			if (ImGui::Button("Software", buttonSize))
+				selected = SelectedSetting::SOFTWARE;
+
 			ImGui::EndChild();
 		}
 
@@ -67,6 +74,8 @@ bool PanelSettings::Draw()
 				case SelectedSetting::WINDOW:		Window();		break;
 				case SelectedSetting::INPUT:		Input();		break;
 				case SelectedSetting::RENDERER:		Renderer();		break;
+				case SelectedSetting::HARDWARE:		Hardware();		break;
+				case SelectedSetting::SOFTWARE:		Software();		break;
 				default: Performance(); break;
 			}
 
@@ -101,15 +110,26 @@ void PanelSettings::Performance()
 
 void PanelSettings::Window()
 {
+	// Display Mode
 	int displayMode = (int)app->window->GetDisplayMode();
 	
 	if (ImGui::Combo("Display Mode", &displayMode, displayModes, 4))
 		app->window->SetDisplayMode((DisplayMode)displayMode);
 
+	// Resolution
 	int resolution = (int)app->window->GetResolution();
 
 	if (ImGui::Combo("Resolution", &resolution, resolutions, 8))
 		app->window->SetResolution((Resolution)resolution);
+
+	// vsync
+
+
+	// fps
+	int maxFPS = (int)app->GetFrameRate();
+
+	if (ImGui::Combo("Maximum FPS", &maxFPS, fpsList, 8))
+		app->SetFrameRate(atoi(fpsList[maxFPS]));
 }
 
 void PanelSettings::Input()
@@ -139,5 +159,87 @@ void PanelSettings::Input()
 void PanelSettings::Renderer()
 {
 
+}
+
+void PanelSettings::Hardware()
+{
+	HardwareInfo hardware_info = app->hardware->GetInfo();
+
+	// CPU 
+	ImGui::Text("CPU Logic Cores:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.cpu_count);
+
+	ImGui::Text("CPU L1 Cache (Kb):");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 0, 0, 255), "%i", hardware_info.l1_cachekb);
+
+	ImGui::Text("CPU Instruction Support:");
+	ImGui::SameLine();
+
+	ImVec4 color = ImVec4(128, 128, 128, 255);
+
+	if (hardware_info.rdtsc) ImGui::TextColored(color, "%s", "rdtsc");
+	ImGui::SameLine();
+	if (hardware_info.altivec) ImGui::TextColored(color, "%s", "altivec");
+	ImGui::SameLine();
+	if (hardware_info.now3d) ImGui::TextColored(color, "%s", "now3d");
+	ImGui::SameLine();
+	if (hardware_info.mmx) ImGui::TextColored(color, "%s", "mmx");
+	ImGui::SameLine();
+	if (hardware_info.sse) ImGui::TextColored(color, "%s", "sse");
+	ImGui::SameLine();
+	if (hardware_info.sse2) ImGui::TextColored(color, "%s", "sse2");
+	ImGui::SameLine();
+	if (hardware_info.sse3) ImGui::TextColored(color, "%s", "sse3");
+	ImGui::SameLine();
+	if (hardware_info.sse41) ImGui::TextColored(color, "%s", "sse41");
+	ImGui::SameLine();
+	if (hardware_info.sse42) ImGui::TextColored(color, "%s", "sse42");
+	ImGui::SameLine();
+	if (hardware_info.avx) ImGui::TextColored(color, "%s", "avx");
+	ImGui::SameLine();
+	if (hardware_info.avx2)ImGui::TextColored(color, "%s", "avx2");
+
+	// RAM 
+	ImGui::Separator();
+	ImGui::Text("RAM Memory (Gb)");
+	ImGui::SameLine();
+	ImGui::TextColored(color, "%f", hardware_info.ram_gb);
+
+	// GPU (Currently NVIDIA only)
+	ImGui::Separator();
+	ImGui::Text("GPU Vendor");
+	ImGui::SameLine();
+	ImGui::TextColored(color, "%s", hardware_info.gpu_vendor.data());
+
+	ImGui::Text("GPU Model");
+	ImGui::SameLine();
+	ImGui::TextColored(color, "%s", hardware_info.gpu_brand.data());
+
+	ImGui::Text("GPU Driver");
+	ImGui::SameLine();
+	ImGui::TextColored(color, "%s", hardware_info.gpu_driver.data());
+
+	ImGui::Text("VRAM Budget");
+	ImGui::SameLine();
+	ImGui::TextColored(color, "%f", hardware_info.vram_mb_budget);
+
+	ImGui::Text("VRAM Available");
+	ImGui::SameLine();
+	ImGui::TextColored(color, "%f", hardware_info.vram_mb_available);
+
+	ImGui::Text("VRAM Usage");
+	ImGui::SameLine();
+	ImGui::TextColored(color, "%f", hardware_info.vram_mb_usage);
+}
+
+void PanelSettings::Software()
+{
+	// SDL Version
+	/*ImGui::Text("SDL Version:");
+	ImGui::SameLine();
+	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
+	ImGui::Separator();*/
 }
 // --------------------------------------------------

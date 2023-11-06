@@ -1,7 +1,8 @@
 #include "EngineCore.h"
+#include "..\TheOneEditor\Log.h"
 #include <GL\glew.h>
-#include <glm/ext/matrix_transform.hpp>
-#include <IL/il.h>
+#include <glm\ext\matrix_transform.hpp>
+#include <IL\il.h>
 
 EngineCore::EngineCore()
 {
@@ -102,4 +103,31 @@ void EngineCore::OnWindowResize(int width, int height)
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+}
+
+bool EngineCore::GetVSync()
+{
+    return vsync;
+}
+
+bool EngineCore::SetVSync(bool vsync)
+{
+    if (this->vsync)
+    {
+        if (SDL_GL_SetSwapInterval(1) == -1)
+        {
+            LOG(LogType::LOG_ERROR, "Unable to turn on V-Sync: %s", SDL_GetError());
+            return false;
+        }
+    }
+    else
+    {
+        if (SDL_GL_SetSwapInterval(0) == -1)
+        {
+            LOG(LogType::LOG_ERROR, "Unable to turn off V-Sync: %s", SDL_GetError());
+            return false;
+        }
+    }
+
+    return true;
 }

@@ -12,7 +12,9 @@ enum class SelectedSetting
 	PERFORMANCE,
 	WINDOW,
 	INPUT,
-	RENDERER
+	RENDERER,
+	HARDWARE,
+	SOFTWARE
 };
 
 class PanelSettings : public Panel
@@ -31,6 +33,8 @@ private:
 	void Window();
 	void Input();
 	void Renderer();
+	void Hardware();
+	void Software();
 	
 
 private:
@@ -56,7 +60,18 @@ private:
 		"854x480",
 		"640x360",
 		"426x240",
-		"NATIVE"
+		"Native"
+	};
+	const char* fpsList[8] =
+	{
+		"30",
+		"60",
+		"120",
+		"144",
+		"160",
+		"180",
+		"240",
+		"Unlimited"
 	};
 };
 

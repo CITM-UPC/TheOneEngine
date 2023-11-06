@@ -31,8 +31,12 @@ public:
 
 	void OnWindowResize(int width, int height);
 
+	bool GetVSync();
+	bool SetVSync(bool vsync);
+
 public:
 	Camera camera;
+	bool vsync;
 
 };
 
