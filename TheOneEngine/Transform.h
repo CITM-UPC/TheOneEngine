@@ -4,51 +4,27 @@
 
 #include "Defs.h"
 
-class Transform
-{
+class Transform {
 public:
-	enum class Space
-	{
-		LOCAL,
-		WORLD,
-	};
+    Transform();
 
-	Transform();
-	~Transform();
+    void translate(const vec3f& translation, bool local = true);
+    void rotate(const vec3f& axis, float angle, bool local = true);
+    void scaleBy(const vec3f& scaling, bool local = true);
 
-	//Moves the object to a position.
-	void MoveTo(vec3 position, Space referenceFrame = Space::WORLD);
+    mat4f getMatrix();
 
-	//Moves the object in his local space.
-	void Move(vec3 displacement, Space referenceFrame = Space::LOCAL);
+    void setPosition(const vec3f& newPosition);
+    void setLocalRotation(const quatf& newRotation);
+    void setScale(const vec3f& newScale);
 
-	//Rotates the object for its rotation to be the one given by 'axis'.
-	void RotateTo(vec3 axis);
-
-	//Rotates the object in 'axis' increments.
-	void Rotate(vec3 axis, Space referenceFrame = Space::LOCAL);
-
-	void ScaleTo(vec3 axis, Space referenceFrame = Space::WORLD);
-
-	void Scale(vec3 axis, Space referenceFrame = Space::LOCAL);
-
-public:
-
-	vec3 position;
-	
-	//Rotation should be Quaternion
-	vec4 rotation;
-	vec3 eulerAngles;
-
-	vec3 scale;
-
-	//Reference frame vectors
-	vec3 forward; //z
-	vec3 right; //x
-	vec3 up; //y
-
-	glm::mat3x3 referenceFrameMat;
-	mat4 transformMat;
+private:
+    vec3f position;
+    quatf localRotation;
+    vec3f scale;
+    mat4f localMatrix; // Stores the local transformations
+    mat4f globalMatrix; // Stores the global transformations
+    bool isDirty; // Flag to check if the global matrix needs updating
 };
 
 #endif //__TRANSFORM_H__

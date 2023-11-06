@@ -1,49 +1,72 @@
 #include "Transform.h"
 
-Transform::Transform()
+Transform::Transform() : position(0.0f), localRotation(1.0f, 0.0f, 0.0f, 0.0f), scale(1.0f), isDirty(true) 
 {
-	position = { 0, 0, 0 };
-	rotation = { 0, 0, 0, 1 };
-	scale	 = { 1, 1, 1 };
-
-	eulerAngles = { 0, 0, 0 };
-
-	right =	  { 1, 0, 0 };
-	up =	  { 0, 1, 0 };
-	forward = { 0, 0, 1 };
-
-	referenceFrameMat = glm::mat3(1); //Identity
-	transformMat = mat4(1);
+    globalMatrix = mat4f(1.0f);
 }
 
-Transform::~Transform(){}
-
-void Transform::MoveTo(vec3 position, Space referenceFrame)
+void Transform::translate(const vec3f& translation, bool local = true) 
 {
+    if (local) {
+        localMatrix = glm::translate(localMatrix, translation);
+    }
+    else {
+        globalMatrix = glm::translate(globalMatrix, translation);
+    }
+    isDirty = true;
 }
 
-void Transform::Move(vec3 displacement, Space referenceFrame)
+void Transform::rotate(const vec3f& axis, float angle, bool local = true) 
 {
-	transformMat[0].w = transformMat[0].w * displacement.x;
-	transformMat[1].w = transformMat[1].w * displacement.y;
-	transformMat[2].w = transformMat[2].w * displacement.z;
+    quatf rotationQuat = glm::angleAxis(glm::radians(angle), axis);
+    if (local) {
+        localRotation = rotationQuat * localRotation;
+        localRotation = glm::normalize(localRotation);
+        localMatrix *= glm::mat4_cast(rotationQuat);
+    }
+    else {
+        globalMatrix = glm::rotate(globalMatrix, glm::radians(angle), axis);
+    }
+    isDirty = true;
 }
 
-void Transform::RotateTo(vec3 axis)
-{
+void Transform::scaleBy(const vec3f& scaling, bool local = true) {
+    if (local) {
+        localMatrix = glm::scale(localMatrix, scaling);
+    }
+    else {
+        globalMatrix = glm::scale(globalMatrix, scaling);
+    }
+    isDirty = true;
 }
 
-void Transform::Rotate(vec3 axis, Space referenceFrame)
+mat4f Transform::getMatrix() 
 {
+    if (isDirty) {
+        globalMatrix = mat4f(1.0f);
+        globalMatrix = glm::translate(globalMatrix, position);
+        globalMatrix *= glm::mat4_cast(localRotation);
+        globalMatrix = glm::scale(globalMatrix, scale);
+        globalMatrix = globalMatrix * localMatrix;
+        isDirty = false;
+    }
+    return globalMatrix;
 }
 
-void Transform::ScaleTo(vec3 axis, Space referenceFrame)
+void Transform::setPosition(const vec3f& newPosition) 
 {
+    position = newPosition;
+    isDirty = true;
 }
 
-void Transform::Scale(vec3 axis, Space referenceFrame)
+void Transform::setLocalRotation(const quatf& newRotation) 
 {
-	transformMat[0].x = transformMat[0].x * axis.x;
-	transformMat[1].y = transformMat[1].y * axis.y;
-	transformMat[2].z = transformMat[2].z * axis.z;
+    localRotation = newRotation;
+    isDirty = true;
+}
+
+void Transform::setScale(const vec3f& newScale) 
+{
+    scale = newScale;
+    isDirty = true;
 }
