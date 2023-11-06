@@ -149,6 +149,7 @@ bool Input::processSDLEvents()
     return true;
 }
 
+// hekbas this should be on camera -------------------
 void Input::CameraInput(double dt)
 {
     // Implement a debug camera with keys and mouse
@@ -189,8 +190,7 @@ void Input::CameraInput(double dt)
         if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
         {
             app->engine->camera.eye += app->engine->camera.cameraRight * speed;
-        } 
-        
+        }         
     }
 
     //Zooming Camera Input

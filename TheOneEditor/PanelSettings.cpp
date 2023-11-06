@@ -164,82 +164,105 @@ void PanelSettings::Renderer()
 void PanelSettings::Hardware()
 {
 	HardwareInfo hardware_info = app->hardware->GetInfo();
+	ImVec4 grey = ImVec4(0.5, 0.5, 0.5, 1);
+	ImVec4 green = ImVec4(0, 0.8, 0, 1);
+	ImVec4 red = ImVec4(0.8, 0, 0, 1);
+	ImVec4 isSupported;
+
 
 	// CPU 
-	ImGui::Text("CPU Logic Cores:");
+	ImGui::Text("CPU");
+	ImGui::Text(" Logic Cores:");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%i", hardware_info.cpu_count);
+	ImGui::TextColored(grey, "%i", hardware_info.cpu_count);
 
-	ImGui::Text("CPU L1 Cache (Kb):");
+	ImGui::Text(" L1 Cache (Kb):");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(255, 0, 0, 255), "%i", hardware_info.l1_cachekb);
+	ImGui::TextColored(grey, "%i", hardware_info.l1_cachekb);
 
-	ImGui::Text("CPU Instruction Support:");
+	ImGui::Text(" Instruction Support:");
 	ImGui::SameLine();
+	isSupported = hardware_info.rdtsc == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "rdtsc");
+	ImGui::SameLine();
+	isSupported = hardware_info.altivec == true ? green : red;
+    ImGui::TextColored(isSupported, "%s", "altivec");
+	ImGui::SameLine();
+	isSupported = hardware_info.now3d == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "now3d");
+	ImGui::SameLine();
+	isSupported = hardware_info.mmx == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "mmx");
 
-	ImVec4 color = ImVec4(128, 128, 128, 255);
+	isSupported = hardware_info.sse == true ? green : red;
+	ImGui::TextColored(isSupported, "\t\t\t\t\t  %s", "sse");
+	ImGui::SameLine();
+	isSupported = hardware_info.sse2 == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "sse2");
+	ImGui::SameLine();
+	isSupported = hardware_info.sse3 == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "sse3");
+	ImGui::SameLine();
+	isSupported = hardware_info.sse41 == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "sse41");
+	ImGui::SameLine();
+	isSupported = hardware_info.sse42 == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "sse42");
 
-	if (hardware_info.rdtsc) ImGui::TextColored(color, "%s", "rdtsc");
+	isSupported = hardware_info.avx == true ? green : red;
+	ImGui::TextColored(isSupported, "\t\t\t\t\t  %s", "avx");
 	ImGui::SameLine();
-	if (hardware_info.altivec) ImGui::TextColored(color, "%s", "altivec");
-	ImGui::SameLine();
-	if (hardware_info.now3d) ImGui::TextColored(color, "%s", "now3d");
-	ImGui::SameLine();
-	if (hardware_info.mmx) ImGui::TextColored(color, "%s", "mmx");
-	ImGui::SameLine();
-	if (hardware_info.sse) ImGui::TextColored(color, "%s", "sse");
-	ImGui::SameLine();
-	if (hardware_info.sse2) ImGui::TextColored(color, "%s", "sse2");
-	ImGui::SameLine();
-	if (hardware_info.sse3) ImGui::TextColored(color, "%s", "sse3");
-	ImGui::SameLine();
-	if (hardware_info.sse41) ImGui::TextColored(color, "%s", "sse41");
-	ImGui::SameLine();
-	if (hardware_info.sse42) ImGui::TextColored(color, "%s", "sse42");
-	ImGui::SameLine();
-	if (hardware_info.avx) ImGui::TextColored(color, "%s", "avx");
-	ImGui::SameLine();
-	if (hardware_info.avx2)ImGui::TextColored(color, "%s", "avx2");
+	isSupported = hardware_info.avx2 == true ? green : red;
+	ImGui::TextColored(isSupported, "%s", "avx2");
+
 
 	// RAM 
 	ImGui::Separator();
-	ImGui::Text("RAM Memory (Gb)");
+	ImGui::Text("RAM");
+	ImGui::Text("  Memory");
 	ImGui::SameLine();
-	ImGui::TextColored(color, "%f", hardware_info.ram_gb);
+	ImGui::TextColored(grey, "%.1f GB", hardware_info.ram_gb);
+
 
 	// GPU (Currently NVIDIA only)
 	ImGui::Separator();
-	ImGui::Text("GPU Vendor");
+	ImGui::Text("GPU");
+	ImGui::Text(" Vendor");
 	ImGui::SameLine();
-	ImGui::TextColored(color, "%s", hardware_info.gpu_vendor.data());
+	ImGui::TextColored(grey, "%s", hardware_info.gpu_vendor.data());
 
-	ImGui::Text("GPU Model");
+	ImGui::Text(" Model");
 	ImGui::SameLine();
-	ImGui::TextColored(color, "%s", hardware_info.gpu_brand.data());
+	ImGui::TextColored(grey, "%s", hardware_info.gpu_brand.data());
 
-	ImGui::Text("GPU Driver");
+	ImGui::Text(" Driver");
 	ImGui::SameLine();
-	ImGui::TextColored(color, "%s", hardware_info.gpu_driver.data());
+	ImGui::TextColored(grey, "%s", hardware_info.gpu_driver.data());
 
-	ImGui::Text("VRAM Budget");
+	ImGui::Text(" VRAM Budget");
 	ImGui::SameLine();
-	ImGui::TextColored(color, "%f", hardware_info.vram_mb_budget);
+	ImGui::TextColored(grey, "%.1f MB", hardware_info.vram_mb_budget);
 
-	ImGui::Text("VRAM Available");
+	ImGui::Text(" VRAM Usage");
 	ImGui::SameLine();
-	ImGui::TextColored(color, "%f", hardware_info.vram_mb_available);
+	ImGui::TextColored(grey, "%.1f MB", hardware_info.vram_mb_usage);
 
-	ImGui::Text("VRAM Usage");
+	ImGui::Text(" VRAM Available");
 	ImGui::SameLine();
-	ImGui::TextColored(color, "%f", hardware_info.vram_mb_usage);
+	ImGui::TextColored(grey, "%.1f MB", hardware_info.vram_mb_available);
+
+	
 }
 
 void PanelSettings::Software()
 {
+	HardwareInfo hardware_info = app->hardware->GetInfo();
+	ImVec4 grey = ImVec4(0.5, 0.5, 0.5, 1);
+
 	// SDL Version
-	/*ImGui::Text("SDL Version:");
+	ImGui::Text("SDL Version");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(255, 255, 0, 255), "%s", hardware_info.sdl_version);
-	ImGui::Separator();*/
+	ImGui::TextColored(grey, "%s", hardware_info.sdl_version);
+	ImGui::Separator();
 }
 // --------------------------------------------------

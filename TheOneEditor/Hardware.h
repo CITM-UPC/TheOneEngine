@@ -26,8 +26,8 @@ struct HardwareInfo
 	bool avx = false;
 	bool avx2 = false;
 	std::string gpu_vendor;
-	std::string gpu_driver;
 	std::string gpu_brand;
+	std::string gpu_driver;
 	float vram_mb_budget = 0.f;
 	float vram_mb_usage = 0.f;
 	float vram_mb_available = 0.f;
