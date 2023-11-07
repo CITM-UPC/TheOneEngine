@@ -23,13 +23,13 @@ Input::~Input()
 
 bool Input::Awake()
 {
-    LOG("Init SDL input event system");
+    LOG(LogType::LOG_INFO, "Init SDL input event system");
     bool ret = true;
     SDL_Init(0);
 
     if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
     {
-        LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+        LOG(LogType::LOG_ERROR,"SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
         ret = false;
     }
 
@@ -161,7 +161,7 @@ void Input::CameraInput(double dt)
 
         app->engine->camera.rotate(vec3f(app->engine->camera.pitch, app->engine->camera.yaw, 0.0f), false);
         
-        LOG("Yaw: %f, Pitch: %f", app->engine->camera.yaw, app->engine->camera.pitch);
+        //LOG("Yaw: %f, Pitch: %f", app->engine->camera.yaw, app->engine->camera.pitch);
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
             app->engine->camera.translate(app->engine->camera.transform.getForward() * speed);
