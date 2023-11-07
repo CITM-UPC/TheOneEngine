@@ -3,7 +3,9 @@
 #include "Log.h"
 
 
-Window::Window(App* app) : Module(app), window(nullptr), glContext(), displayMode(DisplayMode::WINDOWED), resolution(Resolution::R_NATIVE) {}
+Window::Window(App* app) : Module(app), window(nullptr), glContext(), displayMode(DisplayMode::WINDOWED), 
+                            resolution(Resolution::R_NATIVE), borderless(false), refreshRate(0)
+{}
 
 Window::~Window() {}
 

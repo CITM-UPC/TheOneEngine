@@ -68,7 +68,7 @@ std::vector<AssetMesh::Ptr> AssetMesh::loadFromFile(const std::string& path)
 {
     vector<AssetMesh::Ptr> mesh_ptrs;
 
-    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
+    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
     for (size_t m = 0; m < scene->mNumMeshes; ++m) {
         auto mesh = scene->mMeshes[m];
