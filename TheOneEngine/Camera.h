@@ -42,12 +42,7 @@ public:
     }
 
 	void updateCameraVectors() {
-		/*eye = transform.getPosition();
-		center = eye + vec3f(glm::inverse(viewMatrix)[2]);
-		up = vec3f(glm::inverse(viewMatrix)[1]);
-        forward = glm::normalize(center - eye);
-        right = glm::normalize(glm::cross(up, forward));*/
-
+		
         // Update the forward, right, and up vectors based on the new orientation
         forward = transform.getForward();
         right = transform.getRight();

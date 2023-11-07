@@ -55,7 +55,11 @@ SDL_Window* Window::initSDLWindowWithOpenGL()
 
     std::string title = std::string(TITLE) + "_" + VERSION;
 
-    auto window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+    SDL_DisplayMode displayMode;
+    SDL_GetCurrentDisplayMode(0, &displayMode);
+    auto Width = displayMode.w;
+    auto Height = displayMode.h;
+    auto window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Width, Height, SDL_WINDOW_OPENGL);
     if (!window) throw std::exception(SDL_GetError());
 
     return window;
