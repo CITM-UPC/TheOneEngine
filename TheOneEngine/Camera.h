@@ -9,6 +9,7 @@ class Camera {
 public:
     Camera() : transform(), aspect(1), fov(60), zNear(0.1), zFar(1000), yaw(0), pitch(0) {
         viewMatrix = mat4f(1.0f);
+        worldUp = vec3f(0,1,0);
         forward = glm::normalize(center - eye);
         right = glm::normalize(glm::cross(up, forward));
     }
@@ -31,8 +32,8 @@ public:
         updateViewMatrix();
     }
     
-    void rotate(const vec3f& eulerRotation) {
-        transform.rotate(eulerRotation);
+    void rotate(const vec3f& eulerRotation, bool local = true) {
+        transform.rotate(eulerRotation, local);
         updateViewMatrix();
     }
     
@@ -52,13 +53,6 @@ public:
         eye = transform.getPosition();
         center = eye + forward;
 	}
-    
-    void updateForward() {
-        forward.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
-        forward.y = sin(glm::radians(pitch));
-        forward.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
-        center = eye + glm::normalize(forward);
-    }
 
 public:
     Transform transform; // The camera's transform
@@ -75,5 +69,6 @@ public:
 	vec3f up;		// Orientation
 	vec3f forward;
 	vec3f right;
+	vec3f worldUp;
 };
 #endif // !__CAMERA_H__

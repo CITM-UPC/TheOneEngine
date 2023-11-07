@@ -159,31 +159,24 @@ void Input::CameraInput(double dt)
         app->engine->camera.yaw += -GetMouseXMotion() * mouseSensitivity;
         app->engine->camera.pitch += GetMouseYMotion() * mouseSensitivity;
 
-        if (app->engine->camera.pitch > 89.0f) app->engine->camera.pitch = 89.0f;
-        if (app->engine->camera.pitch < -89.0f) app->engine->camera.pitch = -89.0f;
-
-        app->engine->camera.rotate(vec3f(app->engine->camera.pitch, app->engine->camera.yaw, 0.0f));
-
+        app->engine->camera.rotate(vec3f(app->engine->camera.pitch, app->engine->camera.yaw, 0.0f), false);
+        
         LOG("Yaw: %f, Pitch: %f", app->engine->camera.yaw, app->engine->camera.pitch);
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
             app->engine->camera.translate(app->engine->camera.transform.getForward() * speed);
-            LOG("Forward: %f, %f, %f", app->engine->camera.transform.getForward().x, app->engine->camera.transform.getForward().y, app->engine->camera.transform.getForward().z);
         }
         if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
         {
             app->engine->camera.translate(-app->engine->camera.transform.getForward() * speed);
-            LOG("Forward: %f, %f, %f", app->engine->camera.transform.getForward().x, app->engine->camera.transform.getForward().y, app->engine->camera.transform.getForward().z);
         }
         if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
         {
-            app->engine->camera.translate(-app->engine->camera.transform.getRight() * speed);
-            LOG("Right: %f, %f, %f", app->engine->camera.transform.getRight().x, app->engine->camera.transform.getRight().y, app->engine->camera.transform.getRight().z);
+            app->engine->camera.translate(app->engine->camera.transform.getRight() * speed);
         }
         if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
         {
-            app->engine->camera.translate(app->engine->camera.transform.getRight() * speed);
-            LOG("Right: %f, %f, %f", app->engine->camera.transform.getRight().x, app->engine->camera.transform.getRight().y, app->engine->camera.transform.getRight().z);
+            app->engine->camera.translate(-app->engine->camera.transform.getRight() * speed);
         } 
     }
     else
@@ -199,11 +192,11 @@ void Input::CameraInput(double dt)
         //Get selected GameObject         
         float radius = 500.0f;
 
-        app->engine->camera.yaw = -GetMouseXMotion() * mouseSensitivity;
-        app->engine->camera.pitch = GetMouseYMotion() * mouseSensitivity;
+        app->engine->camera.yaw += -GetMouseXMotion() * mouseSensitivity;
+        app->engine->camera.pitch += GetMouseYMotion() * mouseSensitivity;
 
-        /*app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), yaw, false);
-        app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), pitch, true);*/
+        app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), app->engine->camera.yaw, false);
+        app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), app->engine->camera.pitch, true);
     }
     
     if (GetKey(SDL_SCANCODE_F) == KEY_DOWN)

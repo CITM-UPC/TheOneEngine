@@ -10,8 +10,7 @@ public:
 
     void translate(const vec3f& translation, bool local = true);
     void rotate(const vec3f& axis, float angle, bool local = true);
-    void rotate(const vec3f& eulerAngles);
-    void rotateLocal(const glm::vec3& eulerAngles);
+    void rotate(const vec3f& eulerAngles, bool local = true);
     void scaleBy(const vec3f& scaling, bool local = true);
 
     vec3f getForward();
