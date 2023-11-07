@@ -1,6 +1,7 @@
 #include "Transform.h"
 
-Transform::Transform() : position(0.0f), scale(1.0f), localScale(1.0f), globalMatrix(1.0f) {
+Transform::Transform() : position(0.0f), scale(1.0f), localScale(1.0f), globalMatrix(1.0f) 
+{
     rotation = { 1, 0, 0, 0 };
     localRotation = { 1, 0, 0, 0 };
 }
@@ -41,7 +42,8 @@ void Transform::rotate(const vec3f& eulerAngles, bool local)
     }
 }
 
-void Transform::scaleBy(const vec3f& scaling, bool local) {
+void Transform::scaleBy(const vec3f& scaling, bool local) 
+{
     if (local) {
         localScale *= scaling;
     }
@@ -50,40 +52,33 @@ void Transform::scaleBy(const vec3f& scaling, bool local) {
     }
 }
 
-vec3f Transform::getForward() {
-    // Calculate the forward vector based on the current orientation
-    /*return glm::normalize(glm::vec3(2.0f * (rotation.x * rotation.z + rotation.w * rotation.y),
-        2.0f * (rotation.y * rotation.x - rotation.w * rotation.x),
-        1.0f - 2.0f * (rotation.x * rotation.x + rotation.y * rotation.y)));*/
-    
+vec3f Transform::getForward() 
+{
     return glm::normalize(globalMatrix[2]);
 }
 
-vec3f Transform::getUp() {
-    // Calculate the up vector based on the current orientation
-    /*return glm::normalize(glm::vec3(2.0f * (rotation.x * rotation.y - rotation.w * rotation.z),
-        1.0f - 2.0f * (rotation.x * rotation.x + rotation.z * rotation.z),
-        2.0f * (rotation.y * rotation.z + rotation.w * rotation.x)));*/
-    
+vec3f Transform::getUp() 
+{
     return glm::normalize(globalMatrix[1]);
 }
 
-vec3f Transform::getRight() {
-    /*return glm::normalize(glm::vec3(1.0f - 2.0f * (localRotation.y * localRotation.y + localRotation.z * localRotation.z),
-        2.0f * (localRotation.x * localRotation.y + localRotation.w * localRotation.z),
-        2.0f * (localRotation.x * localRotation.z - localRotation.w * localRotation.y)));*/
-
-    //return glm::normalize(glm::cross(getForward(), getUp()));
+vec3f Transform::getRight() 
+{
     return glm::normalize(globalMatrix[0]);
 }
 
-mat4f Transform::getMatrix() 
+void Transform::updateMatrix() 
 {
     globalMatrix = mat4f(1.0f);
     globalMatrix = glm::translate(globalMatrix, position);
     globalMatrix *= glm::mat4_cast(rotation * localRotation);
     globalMatrix = glm::scale(globalMatrix, localScale);
     globalMatrix = glm::scale(globalMatrix, scale);
+}
+
+mat4f Transform::getMatrix() 
+{
+    updateMatrix();
     return globalMatrix;
 }
 
@@ -107,12 +102,32 @@ quatf Transform::getRotation() const
     return rotation;
 }
 
+vec3f Transform::getEulerAngles() const
+{
+    vec3f eulerAngles = glm::eulerAngles(rotation);
+    return eulerAngles;
+}
+
 quatf Transform::getLocalRotation() const
 {
     return localRotation;
 }
 
+vec3f Transform::getLocalEulerAngles() const
+{
+    vec3f eulerAngles = glm::eulerAngles(localRotation);
+    return eulerAngles;
+}
+
 vec3f Transform::getScale() const
 {
     return scale;
+}
+
+quatf EulerAnglesToQuaternion(const vec3f& eulerAngles) {
+    quatf quaternion;
+    quaternion = glm::angleAxis(eulerAngles.z, glm::vec3(0, 0, 1)); // Rotate around the Z-axis (yaw)
+    quaternion *= glm::angleAxis(eulerAngles.y, glm::vec3(0, 1, 0)); // Rotate around the Y-axis (pitch)
+    quaternion *= glm::angleAxis(eulerAngles.x, glm::vec3(1, 0, 0)); // Rotate around the X-axis (roll)
+    return quaternion;
 }

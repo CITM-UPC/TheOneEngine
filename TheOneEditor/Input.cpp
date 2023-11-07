@@ -182,7 +182,7 @@ void Input::CameraInput(double dt)
     else
     {
         //Zooming Camera Input
-        //app->engine->camera.translate(app->engine->camera.forward * (float)GetMouseZ());
+        app->engine->camera.translate(app->engine->camera.transform.getForward() * (float)GetMouseZ());
         //LOG("MouseZ: %f", (float)GetMouseZ());
     }
 
@@ -195,8 +195,16 @@ void Input::CameraInput(double dt)
         app->engine->camera.yaw += -GetMouseXMotion() * mouseSensitivity;
         app->engine->camera.pitch += GetMouseYMotion() * mouseSensitivity;
 
-        app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), app->engine->camera.yaw, false);
+        vec3f finalPos = app->engine->camera.transform.getPosition() - app->engine->camera.transform.getForward();
+
+       /* app->engine->camera.transform.setPosition(vec3f(glm::cos(glm::radians(app->engine->camera.yaw)) * glm::cos(glm::radians(app->engine->camera.pitch)) * radius,
+            glm::sin(glm::radians(app->engine->camera.pitch)) * radius,
+            glm::sin(glm::radians(app->engine->camera.pitch)) * glm::cos(glm::radians(app->engine->camera.pitch)) * radius));*/
+
+        //app->engine->camera.transform.setPosition(vec3f(radius * glm::cos(glm::radians(angle))));
+        app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), app->engine->camera.yaw, true);
         app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), app->engine->camera.pitch, true);
+        //glm::lerp(app->engine->camera.transform.getRotation(), )
     }
     
     if (GetKey(SDL_SCANCODE_F) == KEY_DOWN)

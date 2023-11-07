@@ -24,10 +24,9 @@ bool Renderer3D::Start()
     app->engine->camera.aspect = static_cast<double>(WINDOW_WIDTH) / WINDOW_HEIGHT;
     app->engine->camera.zNear = 0.1;
     app->engine->camera.zFar = 15000;
-    app->engine->camera.eye = vec3(1, 0, 0);
+    app->engine->camera.eye = vec3(0, 0, 0);
     app->engine->camera.center = vec3(0, 0, 1);
     app->engine->camera.up = vec3(0, 1, 0);
-    //app->engine->camera.WorldUp = vec3(0, 1, 0);
 
     return true;
 }

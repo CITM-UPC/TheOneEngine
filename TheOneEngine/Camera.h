@@ -7,43 +7,44 @@
 
 class Camera {
 public:
-    Camera() : transform(), aspect(1), fov(60), zNear(0.1), zFar(1000), yaw(0), pitch(0) {
+    Camera() : transform(), aspect(1), fov(60), zNear(0.1), zFar(1000), yaw(0), pitch(0) 
+    {
         viewMatrix = mat4f(1.0f);
         worldUp = vec3f(0,1,0);
-        forward = glm::normalize(center - eye);
-        right = glm::normalize(glm::cross(up, forward));
+        forward = transform.getForward();
+        right = transform.getRight();
     }
 
-    void updateViewMatrix() {
+    void updateViewMatrix() 
+    {
         viewMatrix = glm::inverse(transform.getMatrix());
     }
 
-    const mat4f& getViewMatrix() {
+    const mat4f& getViewMatrix() 
+    {
         return viewMatrix;
     }
 
-    void translate(const vec3f& translation, bool local = true) {
+    void translate(const vec3f& translation, bool local = true) 
+    {
         transform.translate(translation, local);
         updateViewMatrix();
     }
 
-    void rotate(const vec3f& axis, float angle, bool local = true) {
+    void rotate(const vec3f& axis, float angle, bool local = true) 
+    {
         transform.rotate(axis, angle, local);
         updateViewMatrix();
     }
     
-    void rotate(const vec3f& eulerRotation, bool local = true) {
+    void rotate(const vec3f& eulerRotation, bool local = true) 
+    {
         transform.rotate(eulerRotation, local);
         updateViewMatrix();
     }
-    
-    void rotateLocal(const vec3f& eulerRotation) {
-        transform.rotate(eulerRotation);
-        updateViewMatrix();
-    }
 
-	void updateCameraVectors() {
-		
+	void updateCameraVectors() 
+    {
         // Update the forward, right, and up vectors based on the new orientation
         forward = transform.getForward();
         right = transform.getRight();
