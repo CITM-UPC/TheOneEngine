@@ -19,6 +19,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="EngineCore.h" />
+    <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Asset.cpp" />
@@ -28,6 +29,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="EngineCore.cpp" />
+    <ClCompile Include="Transform.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

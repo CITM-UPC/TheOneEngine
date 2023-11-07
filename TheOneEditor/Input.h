@@ -73,7 +73,11 @@ private:
 	int mouse_z;
 	int mouse_x_motion;
 	int mouse_y_motion;
-
+	bool firstMouse;
+	int lastX;
+	int lastY;
+	float dx;
+	float dy;
 };
 
 #endif // !__INPUT_H__

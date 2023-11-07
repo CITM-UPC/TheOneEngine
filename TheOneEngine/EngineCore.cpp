@@ -84,7 +84,7 @@ void EngineCore::Render(RenderModes renderMode)
     gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
     
     gluLookAt( camera.eye.x, camera.eye.y, camera.eye.z,
-        camera.eye.x + camera.center.x, camera.eye.y + camera.center.y, camera.eye.z + camera.center.z,
+        camera.center.x, camera.center.y, camera.center.z,
         camera.up.x, camera.up.y, camera.up.z);
 
     drawGrid(1000, 10);
