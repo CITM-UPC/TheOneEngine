@@ -10,8 +10,8 @@
 
 GameObject::GameObject(std::string name)
 	: name(name),
-	parent(nullptr),
-	childs(),
+	parent(),
+	children(),
 	components(),
 	enabled(true),
 	isStatic(false),
@@ -21,33 +21,20 @@ GameObject::GameObject(std::string name)
 	Enable();
 }
 
-GameObject::~GameObject()
+GameObject::~GameObject() {}
+
+void GameObject::Update(double dt)
 {
-	for (std::vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	// Update enabled Components
+	for (const auto& component : components)
 	{
-		if (*it)
-			delete* it;
-	}
-	components.clear();
-}
-
-void GameObject::Update(float dt)
-{
-	/*if (GetComponent<Transform>()->update_transform)
-		this->OnUpdateTransform();*/
-
-	// --- Update components ---
-	for (int i = 0; i < components.size(); ++i)
-	{
-		if (components[i] && components[i]->isEnabled())
-			components[i]->Update();
+		if (component && component->isEnabled())
+			component->Update();
 	}
 
-	// --- Update child game objects
-	for (std::vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
-	{
-		(*it)->Update(dt);
-	}
+	// Update childs
+	for (const auto& child : children)
+		child->Update(dt);
 }
 
 void GameObject::Draw()
@@ -59,51 +46,47 @@ void GameObject::Draw()
 	}
 }
 
-Component* GameObject::AddComponent(ComponentType type, int index)
+// Component ---------------------------------------
+std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int index)
 {
-	Component* component = nullptr;
+	std::shared_ptr<Component> component = nullptr;
 
-	// --- Check if there is already a component of the type given ---
-
+	// Check for already existing component of given type
 	if (HasComponent(type) == nullptr)
 	{
 		switch (type)
 		{
 		/*case ComponentType::Transform:
-			component = new Transform(this);
+			component = std::make_shared<Transform>(this);
 			break;
 		case ComponentType::Mesh:
-			component = new Mesh(this);
+			component = std::make_shared<Mesh>(this);
 			break;*/
 		}
 
 		if (component)
 		{
-			// if index is specified
 			if (index == -1)
-				components.push_back(component);
-			else
 			{
-				// Resize if needed
-				if (index + 1 > components.size())
-					components.resize(index + 1);
+				components.push_back(component);
+			}
+			else if (index >= 0 && index < static_cast<int>(components.size()))
+			{
+				components.insert(components.begin() + index, component);
+			}
+			// Hekbas: Handle cases where index is out of range
+			// ...
 
-				// Delete component at index
-				if (components[index])
-				{
-					delete components[index];
-					components[index] = nullptr;
-				}
-
-				// Insert component at index
-				components[index] = component;
-			}				
+			// Enable the component if necessary?
+			component->Enable();
 		}
 	}
 	else
 	{
+		std::shared_ptr<GameObject> parentSharedPtr = parent.lock();
+
 		LOG(LogType::LOG_ERROR, "Component already applied");
-		LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", parent->name);
+		LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", parentSharedPtr->GetName());
 		LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetType());
 		component = HasComponent(type);
 	}
@@ -115,59 +98,59 @@ void GameObject::RemoveComponent(ComponentType type)
 {
 	for (auto it = components.begin(); it != components.end(); ++it)
 	{
-		Component* component = *it;
-
-		if (component->GetType() == type)
+		if ((*it)->GetType() == type)
 		{
-			delete component;
 			it = components.erase(it);
 			break;
 		}
 	}
 }
 
-Component* GameObject::HasComponent(ComponentType type) const
+std::shared_ptr<Component> GameObject::HasComponent(ComponentType type) const
 {
-	// --- Search for given type of component ---
-	Component* component = nullptr;
-
-	for (uint i = 0; i < components.size(); ++i)
+	// Search the components vector for a component of the specified type
+	for (const auto& component : components)
 	{
-		if (components[i] && components[i]->GetType() == type)
-		{
-			component = components[i];
-			break;
-		}
+		if (component && component->GetType() == type)
+			return component;
 	}
 
-	return component;
+	// If no matching component is found, return nullptr
+	return std::shared_ptr<Component>();
 }
 
-std::vector<Component*>& GameObject::GetComponents()
+std::vector<std::shared_ptr<Component>>& GameObject::GetComponents()
 {
 	return components;
+}
+
+
+// Get/Set --------------------------------------------
+bool GameObject::IsEnabled() const
+{
+	return enabled;
 }
 
 void GameObject::Enable()
 {
 	enabled = true;
 
-	for (int i = 0; i < components.size(); ++i)
-		components[i]->Enable();
+	for (const auto& component : components)
+		component->Enable();
 
-	for (int i = 0; i < childs.size(); ++i)
-		childs[i]->Enable();
+	for (const auto& child : children)
+		child->Enable();
 }
 
 void GameObject::Disable()
 {
 	enabled = false;
 
-	for (int i = 0; i < components.size(); ++i)
-		components[i]->Disable();
+	for (const auto& component : components)
+		component->Disable();
 
-	for (int i = 0; i < childs.size(); ++i)
-		childs[i]->Disable();
+	for (const auto& child : children)
+		child->Disable();
 }
 
 std::string GameObject::GetName() const
@@ -175,13 +158,17 @@ std::string GameObject::GetName() const
 	return name;
 }
 
-bool GameObject::isEnabled() const
+void GameObject::SetName(const std::string& newName)
 {
-	return enabled;
+	name = newName;
 }
 
-void GameObject::SetName(const char* name)
+bool GameObject::IsStatic() const
 {
-	if (name && name != "root")
-		this->name = name;
+	return isStatic;
+}
+
+void GameObject::SetStatic(bool staticFlag)
+{
+	isStatic = staticFlag;
 }
