@@ -7,12 +7,14 @@
 
 class Camera {
 public:
-    Camera() : transform(), aspect(1), fov(60), zNear(0.1), zFar(1000), yaw(0), pitch(0) 
+    Camera() : transform(),
+        aspect(1.777), fov(65), zNear(0.1), zFar(15000),
+        yaw(0), pitch(0), 
+        viewMatrix(1.0f), 
+        forward(transform.getForward()), right(transform.getRight()),
+        eye(transform.getPosition()), center(eye-forward), up(transform.getUp())
     {
-        viewMatrix = mat4f(1.0f);
-        worldUp = vec3f(0,1,0);
-        forward = transform.getForward();
-        right = transform.getRight();
+        updateCameraVectors();
     }
 
     void updateViewMatrix() 
@@ -70,6 +72,5 @@ public:
 	vec3f up;		// Orientation
 	vec3f forward;
 	vec3f right;
-	vec3f worldUp;
 };
 #endif // !__CAMERA_H__

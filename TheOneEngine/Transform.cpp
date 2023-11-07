@@ -1,9 +1,9 @@
 #include "Transform.h"
 
-Transform::Transform() : position(0.0f), scale(1.0f), localScale(1.0f), globalMatrix(1.0f) 
+Transform::Transform() : globalMatrix(1.0f), position(0.0f), rotation(1, 0, 0, 0), scale(1.0f), 
+                         localScale(1.0f), localRotation(1, 0, 0, 0)
 {
-    rotation = { 1, 0, 0, 0 };
-    localRotation = { 1, 0, 0, 0 };
+
 }
 
 void Transform::translate(const vec3f& translation, bool local) 
