@@ -2,8 +2,8 @@
 #include "GameObject.h"
 
 
-Component::Component(GameObject* ContainerGO, ComponentType type)
-	: GO(ContainerGO),
+Component::Component(std::shared_ptr<GameObject> containerGO, ComponentType type)
+	: containerGO(containerGO),
 	type(type),
 	enabled(true)
 {}
@@ -23,7 +23,7 @@ void Component::Disable()
 	enabled = false;
 }
 
-bool Component::isEnabled() const
+bool Component::IsEnabled() const
 {
 	return enabled;
 }
@@ -33,7 +33,7 @@ ComponentType Component::GetType() const
 	return type;
 }
 
-GameObject* Component::GetContainerGameObject() const
+std::shared_ptr<GameObject> Component::GetContainerGameObject() const
 {
-	return GO;
+	return containerGO;
 }

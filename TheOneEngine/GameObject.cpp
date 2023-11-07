@@ -28,7 +28,7 @@ void GameObject::Update(double dt)
 	// Update enabled Components
 	for (const auto& component : components)
 	{
-		if (component && component->isEnabled())
+		if (component && component->IsEnabled())
 			component->Update();
 	}
 
@@ -41,12 +41,12 @@ void GameObject::Draw()
 {
 	for (const auto& component : components)
 	{
-		if (component && component->isEnabled())
+		if (component && component->IsEnabled())
 			component->DrawComponent();
 	}
 }
 
-// Component ---------------------------------------
+// Component ----------------------------------------
 std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int index)
 {
 	std::shared_ptr<Component> component = nullptr;
@@ -125,7 +125,7 @@ std::vector<std::shared_ptr<Component>>& GameObject::GetComponents()
 }
 
 
-// Get/Set --------------------------------------------
+// Get/Set ------------------------------------------
 bool GameObject::IsEnabled() const
 {
 	return enabled;
