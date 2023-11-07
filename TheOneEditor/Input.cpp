@@ -156,38 +156,41 @@ void Input::CameraInput(double dt)
     {
         /* MOUSE CAMERA MOVEMENT */
         // Compute mouse input displacement
-        app->engine->camera.yaw = -GetMouseXMotion() * mouseSensitivity;
-        app->engine->camera.pitch = GetMouseYMotion() * mouseSensitivity;
-        //app->engine->camera.updateForward();
-        //RotateCamera(app->engine->camera.yaw, app->engine->camera.pitch);
+        app->engine->camera.yaw += -GetMouseXMotion() * mouseSensitivity;
+        app->engine->camera.pitch += GetMouseYMotion() * mouseSensitivity;
 
-        /*app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), app->engine->camera.yaw, false);
-        app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), app->engine->camera.pitch, true);*/
-        
-        app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), app->engine->camera.yaw, false);
-        app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), app->engine->camera.pitch, true);
+        if (app->engine->camera.pitch > 89.0f) app->engine->camera.pitch = 89.0f;
+        if (app->engine->camera.pitch < -89.0f) app->engine->camera.pitch = -89.0f;
 
+        app->engine->camera.rotate(vec3f(app->engine->camera.pitch, app->engine->camera.yaw, 0.0f));
+
+        LOG("Yaw: %f, Pitch: %f", app->engine->camera.yaw, app->engine->camera.pitch);
         if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
-            app->engine->camera.translate(vec3f(0.0f, 0.0f, 0.1f));
+            app->engine->camera.translate(app->engine->camera.transform.getForward() * speed);
+            LOG("Forward: %f, %f, %f", app->engine->camera.transform.getForward().x, app->engine->camera.transform.getForward().y, app->engine->camera.transform.getForward().z);
         }
         if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
         {
-            app->engine->camera.translate(vec3f(0.0f, 0.0f, -0.1f));
+            app->engine->camera.translate(-app->engine->camera.transform.getForward() * speed);
+            LOG("Forward: %f, %f, %f", app->engine->camera.transform.getForward().x, app->engine->camera.transform.getForward().y, app->engine->camera.transform.getForward().z);
         }
         if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
         {
-            app->engine->camera.translate(vec3f(0.1f, 0.0f, 0.0f));
+            app->engine->camera.translate(-app->engine->camera.transform.getRight() * speed);
+            LOG("Right: %f, %f, %f", app->engine->camera.transform.getRight().x, app->engine->camera.transform.getRight().y, app->engine->camera.transform.getRight().z);
         }
         if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
         {
-            app->engine->camera.translate(vec3f(-0.1f, 0.0f, 0.0f));
+            app->engine->camera.translate(app->engine->camera.transform.getRight() * speed);
+            LOG("Right: %f, %f, %f", app->engine->camera.transform.getRight().x, app->engine->camera.transform.getRight().y, app->engine->camera.transform.getRight().z);
         } 
     }
     else
     {
         //Zooming Camera Input
-        app->engine->camera.translate(vec3f(0.0f, 0.0f, 0.1f) * (float)GetMouseZ());
+        //app->engine->camera.translate(app->engine->camera.forward * (float)GetMouseZ());
+        //LOG("MouseZ: %f", (float)GetMouseZ());
     }
 
     //Orbit Object with Alt_Left + Left Click
@@ -196,24 +199,19 @@ void Input::CameraInput(double dt)
         //Get selected GameObject         
         float radius = 500.0f;
 
-        float yaw = -GetMouseXMotion() * mouseSensitivity;
-        float pitch = GetMouseYMotion() * mouseSensitivity;
+        app->engine->camera.yaw = -GetMouseXMotion() * mouseSensitivity;
+        app->engine->camera.pitch = GetMouseYMotion() * mouseSensitivity;
 
-        app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), yaw, false);
-        app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), pitch, true);
+        /*app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), yaw, false);
+        app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), pitch, true);*/
     }
     
     if (GetKey(SDL_SCANCODE_F) == KEY_DOWN)
     {
-        app->engine->camera.transform.setLocalRotation(quatf(1, 0, 0, 0));
+        
     }
     
     app->engine->camera.updateCameraVectors();
 }
 
-void Input::RotateCamera(float yaw, float pitch)
-{
-    quatf yawRotation = glm::angleAxis(glm::radians(yaw), glm::vec3(0.0f, 1.0f, 0.0f));
-    quatf pitchRotation = glm::angleAxis(glm::radians(pitch), glm::vec3(1.0f, 0.0f, 0.0f));
-    app->engine->camera.transform.setLocalRotation(glm::normalize(yawRotation * pitchRotation * app->engine->camera.transform.getLocalRotation()));
-}
+

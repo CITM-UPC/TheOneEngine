@@ -7,7 +7,7 @@
 
 class Camera {
 public:
-    Camera() : transform(), aspect(1), fov(60), zNear(0.1), zFar(1000) {
+    Camera() : transform(), aspect(1), fov(60), zNear(0.1), zFar(1000), yaw(0), pitch(0) {
         viewMatrix = mat4f(1.0f);
         forward = glm::normalize(center - eye);
         right = glm::normalize(glm::cross(up, forward));
@@ -31,17 +31,31 @@ public:
         updateViewMatrix();
     }
     
-    void rotateEulerAngles(const vec3f& eulerRotation, bool local = true) {
-        transform.rotateEulerAngles(eulerRotation, local);
+    void rotate(const vec3f& eulerRotation) {
+        transform.rotate(eulerRotation);
+        updateViewMatrix();
+    }
+    
+    void rotateLocal(const vec3f& eulerRotation) {
+        transform.rotate(eulerRotation);
         updateViewMatrix();
     }
 
 	void updateCameraVectors() {
-		eye = vec3f(glm::inverse(viewMatrix)[3]);
+		/*eye = transform.getPosition();
 		center = eye + vec3f(glm::inverse(viewMatrix)[2]);
 		up = vec3f(glm::inverse(viewMatrix)[1]);
         forward = glm::normalize(center - eye);
-        right = glm::normalize(glm::cross(up, forward));
+        right = glm::normalize(glm::cross(up, forward));*/
+
+        // Update the forward, right, and up vectors based on the new orientation
+        forward = transform.getForward();
+        right = transform.getRight();
+        up = transform.getUp();
+
+        // Update the eye and center vectors
+        eye = transform.getPosition();
+        center = eye + forward;
 	}
     
     void updateForward() {

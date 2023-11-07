@@ -10,29 +10,31 @@ public:
 
     void translate(const vec3f& translation, bool local = true);
     void rotate(const vec3f& axis, float angle, bool local = true);
-    void rotateEulerAngles(const vec3f& eulerRotation, bool local = true);
+    void rotate(const vec3f& eulerAngles);
+    void rotateLocal(const glm::vec3& eulerAngles);
     void scaleBy(const vec3f& scaling, bool local = true);
+
+    vec3f getForward();
+    vec3f getUp();
+    vec3f getRight();
 
     mat4f getMatrix();
 
     void setPosition(const vec3f& newPosition);
-    void setLocalRotation(const quatf& newRotation);
-    void setGlobalRotation(quatf& newRotation);
     void setScale(const vec3f& newScale);
 
     vec3f getPosition() const;
+    quatf getRotation() const;
     quatf getLocalRotation() const;
-    quatf getGlobalRotation() const;
     vec3f getScale() const;
 
 private:
     vec3f position;
+    quatf rotation;
     quatf localRotation;
-    quatf globalRotation;
     vec3f scale;
-    mat4f localMatrix; // Stores the local transformations
+    vec3f localScale;
     mat4f globalMatrix; // Stores the global transformations
-    bool isDirty; // Flag to check if the global matrix needs updating
 };
 
 #endif //__TRANSFORM_H__
