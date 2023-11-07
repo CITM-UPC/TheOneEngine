@@ -51,6 +51,7 @@ private:
 		"Full Screen Desktop",
 		"Borderless"
 	};
+
 	const char* resolutions[8] =
 	{
 		"3840x2160",
@@ -62,6 +63,7 @@ private:
 		"426x240",
 		"Native"
 	};
+
 	const char* fpsList[8] =
 	{
 		"30",

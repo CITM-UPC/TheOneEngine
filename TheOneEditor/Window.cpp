@@ -87,7 +87,7 @@ bool Window::initSDLWindowWithOpenGL()
 // hekbas MUST move glContext and OpenGL Init to ENGINE
 bool Window::createSdlGlContext()
 {
-    LOG(LogType::LOG_INFO, "# Creating GLContext");
+    LOG(LogType::LOG_INFO, "# Initializing OpenGL");
 
     glContext = SDL_GL_CreateContext(window);
     if (!glContext)
@@ -153,7 +153,7 @@ uint Window::GetDisplayRefreshRate()
 
 DisplayMode Window::GetDisplayMode()
 {
-    return this->displayMode;
+    return displayMode;
 }
 
 void Window::SetDisplayMode(DisplayMode mode)
@@ -218,7 +218,7 @@ void Window::SetResolution(Resolution res)
         case Resolution::R_854x480: width = 854; height = 480; resolution = Resolution::R_854x480; break;
         case Resolution::R_640x360: width = 640; height = 360; resolution = Resolution::R_640x360; break;
         case Resolution::R_426x240: width = 426; height = 240; resolution = Resolution::R_426x240; break;
-        case Resolution::R_NATIVE: /* Get display resolution */resolution = Resolution::R_NATIVE; break;
+        case Resolution::R_NATIVE: /* Get native resolution */resolution = Resolution::R_NATIVE; break;
     }
 
     SDL_SetWindowSize(window, width, height);

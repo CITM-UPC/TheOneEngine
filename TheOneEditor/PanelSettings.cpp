@@ -111,49 +111,60 @@ void PanelSettings::Performance()
 void PanelSettings::Window()
 {
 	// Display Mode
-	int displayMode = (int)app->window->GetDisplayMode();
-	
-	if (ImGui::Combo("Display Mode", &displayMode, displayModes, 4))
+	int displayMode = (int)app->window->GetDisplayMode();	
+	ImGui::Text("Display Mode");
+	ImGui::SameLine();
+	if (ImGui::Combo("##Display Mode", &displayMode, displayModes, 4))
 		app->window->SetDisplayMode((DisplayMode)displayMode);
 
 	// Resolution
 	int resolution = (int)app->window->GetResolution();
-
-	if (ImGui::Combo("Resolution", &resolution, resolutions, 8))
+	ImGui::Text("Resolution");
+	ImGui::SameLine();
+	if (ImGui::Combo("##Resolution", &resolution, resolutions, 8))
 		app->window->SetResolution((Resolution)resolution);
 
-	// vsync
+	// Vsync
+	bool vsync = app->engine->GetVSync();
+	ImGui::Text("V-Sync");
+	ImGui::SameLine();
+	if (ImGui::Checkbox("##V-Sync", &vsync))
+		app->engine->SetVSync(vsync);
 
+	ImGui::SameLine();
 
-	// fps
+	// Fps
 	int maxFPS = (int)app->GetFrameRate();
-
-	if (ImGui::Combo("Maximum FPS", &maxFPS, fpsList, 8))
+	ImGui::Text("Maximum FPS");
+	ImGui::SameLine();
+	if (ImGui::Combo("##Maximum FPS", &maxFPS, fpsList, 8))
 		app->SetFrameRate(atoi(fpsList[maxFPS]));
 }
 
 void PanelSettings::Input()
 {
+	ImVec4 grey = ImVec4(0.5, 0.5, 0.5, 1);
+
 	// Mouse position
 	int mouse_x, mouse_y;
 	mouse_x = app->input->GetMouseX();
 	mouse_y = app->input->GetMouseY();
 	ImGui::Text("Mouse Position:");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(169, 169, 169, 255), "%i,%i", mouse_x, mouse_y);
+	ImGui::TextColored(grey, "%i,%i", mouse_x, mouse_y);
 
 	// Mouse Speed
 	mouse_x = app->input->GetMouseXMotion();
 	mouse_y = app->input->GetMouseYMotion();
 	ImGui::Text("Mouse Speed:");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(169, 169, 169, 255), "%i,%i", mouse_x, mouse_y);
+	ImGui::TextColored(grey, "%i,%i", mouse_x, mouse_y);
 
 	// Mouse Wheel
 	int wheel = app->input->GetMouseZ();
 	ImGui::Text("Mouse Wheel:");
 	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(169, 169, 169, 255), "%i", wheel);
+	ImGui::TextColored(grey, "%i", wheel);
 }
 
 void PanelSettings::Renderer()
@@ -164,10 +175,10 @@ void PanelSettings::Renderer()
 void PanelSettings::Hardware()
 {
 	HardwareInfo hardware_info = app->hardware->GetInfo();
+	ImVec4 isSupported;
 	ImVec4 grey = ImVec4(0.5, 0.5, 0.5, 1);
 	ImVec4 green = ImVec4(0, 0.8, 0, 1);
 	ImVec4 red = ImVec4(0.8, 0, 0, 1);
-	ImVec4 isSupported;
 
 
 	// CPU 

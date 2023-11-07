@@ -35,29 +35,29 @@ bool PanelConsole::Draw()
 			{
 				switch (log.type)
 				{
-				case LogType::LOG_INFO:
-					logType = "";
-					break;
+					case LogType::LOG_INFO:
+						logType = "";
+						break;
 
-				case LogType::LOG_ASSIMP:
-					logType = "[ASSIMP] ";
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(190, 64, 190, 255));
-					break;
+					case LogType::LOG_ASSIMP:
+						logType = "[ASSIMP] ";
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(190, 64, 190, 255));
+						break;
 
-				case LogType::LOG_OK:
-					logType = "[OK] ";
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 255, 0, 255));
-					break;
+					case LogType::LOG_OK:
+						logType = "[OK] ";
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 255, 0, 255));
+						break;
 
-				case LogType::LOG_WARNING:
-					logType = "[WARNING] ";
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 0, 255));
-					break;
+					case LogType::LOG_WARNING:
+						logType = "[WARNING] ";
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 255, 0, 255));
+						break;
 
-				case LogType::LOG_ERROR:
-					logType = "[ERROR] ";
-					ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 0, 0, 255));
-					break;
+					case LogType::LOG_ERROR:
+						logType = "[ERROR] ";
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(255, 0, 0, 255));
+						break;
 				}
 				
 				if (log.message[0] == '-')

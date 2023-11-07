@@ -20,20 +20,22 @@ AssetMesh::AssetMesh(uint ID, string path, Formats format, const void* vertex_da
     glGenBuffers(1, &vertex_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer_id);
 
-    switch (format) {
-    case Formats::F_V3:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * numVerts, vertex_data, GL_STATIC_DRAW);
-        break;
-    case Formats::F_V3C4:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * numVerts, vertex_data, GL_STATIC_DRAW);
-        break;
-    case Formats::F_V3T2:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * numVerts, vertex_data, GL_STATIC_DRAW);
-        break;
+    switch (format)
+    {
+        case Formats::F_V3:
+            glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * numVerts, vertex_data, GL_STATIC_DRAW);
+            break;
+        case Formats::F_V3C4:
+            glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * numVerts, vertex_data, GL_STATIC_DRAW);
+            break;
+        case Formats::F_V3T2:
+            glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * numVerts, vertex_data, GL_STATIC_DRAW);
+            break;
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    if (index_data) {
+    if (index_data)
+    {
         glGenBuffers(1, &indexs_buffer_id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexs_buffer_id);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * numIndexs, index_data, GL_STATIC_DRAW);

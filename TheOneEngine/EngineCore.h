@@ -36,7 +36,9 @@ public:
 
 public:
 	Camera camera;
-	bool vsync;
+	bool vsync = false;
+
+private:
 
 };
 
