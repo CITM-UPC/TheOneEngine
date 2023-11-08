@@ -2,11 +2,13 @@
 #include "GameObject.h"
 
 
-Component::Component(std::shared_ptr<GameObject> containerGO, ComponentType type)
-	: containerGO(containerGO),
+Component::Component(std::shared_ptr<GameObject> containerGO, ComponentType type) :
 	type(type),
 	enabled(true)
-{}
+{
+	std::weak_ptr<GameObject> weakPtr = containerGO;
+	this->containerGO = weakPtr;
+}
 
 Component::~Component()
 {
@@ -33,7 +35,7 @@ ComponentType Component::GetType() const
 	return type;
 }
 
-std::shared_ptr<GameObject> Component::GetContainerGameObject() const
+std::weak_ptr<GameObject> Component::GetContainerGameObject() const
 {
 	return containerGO;
 }

@@ -2,7 +2,6 @@
 #define __COMPONENT_H__
 
 #include "Defs.h"
-#include "Asset.h"
 
 #include <memory>
 
@@ -28,15 +27,16 @@ public:
     virtual void Update() {};
 
     ComponentType GetType() const;
-    std::shared_ptr<GameObject> GetContainerGameObject() const;
+    std::weak_ptr<GameObject> GetContainerGameObject() const;
 
     bool IsEnabled() const;
 
-    virtual void CreateInspectorNode() = 0;
+    //virtual void CreateInspectorNode() = 0;
+    //virtual void CreateInspectorNode();
     virtual void DrawComponent() {};
 
 protected:
-    std::shared_ptr<GameObject> containerGO;
+    std::weak_ptr<GameObject> containerGO;
     ComponentType type;
     bool enabled;
 };

@@ -4,9 +4,10 @@
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
 
+#include <memory>
+
 EngineCore::EngineCore()
 {
-    
 }
 
 void EngineCore::Awake()
@@ -63,7 +64,7 @@ static void drawGrid(int grid_size, int grid_step)
     glEnd();
 }
 
-void EngineCore::Render(RenderModes renderMode)
+void EngineCore::Render(RenderModes renderMode, std::shared_ptr<Camera> camera)
 {  
     ilInit();
 
@@ -81,11 +82,11 @@ void EngineCore::Render(RenderModes renderMode)
     glEnable(GL_COLOR_MATERIAL);
     //glEnable(GL_LIGHTING);
 
-    gluPerspective(camera.fov, camera.aspect, camera.zNear, camera.zFar);
+    gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
     
-    gluLookAt( camera.eye.x, camera.eye.y, camera.eye.z,
-        camera.center.x, camera.center.y, camera.center.z,
-        camera.up.x, camera.up.y, camera.up.z);
+    gluLookAt( camera->eye.x, camera->eye.y, camera->eye.z,
+        camera->center.x, camera->center.y, camera->center.z,
+        camera->up.x, camera->up.y, camera->up.z);
 
     drawGrid(1000, 10);
     drawAxis();

@@ -3,57 +3,53 @@
 #pragma once
 
 #include "Defs.h"
+#include "Component.h"
 
-class Transform {
+#include <memory>
+
+class GameObject;
+
+class Transform : public Component
+{
 public:
-    Transform();
 
+    Transform(std::shared_ptr<GameObject> containerGO);
+    virtual ~Transform();
+
+    // Transform ----------------------------------------------------
     void translate(const vec3f& translation, bool local = true);
     void rotate(const vec3f& axis, float angle, bool local = true);
     void rotate(const vec3f& eulerAngles, bool local = true);
     void scaleBy(const vec3f& scaling, bool local = true);
 
-    //Gets forward vector
-    vec3f getForward();
 
-    //Gets up vector
-    vec3f getUp(); 
+    // Get / Set -----------------------------------------------------
+    vec3f getForward(); // Gets forward vector   
+    vec3f getUp();      // Gets up vector  
+    vec3f getRight();   // Gets right vector
 
-    //Gets right vector
-    vec3f getRight();
-
-    /*Gets Transformation model Matrix*/
-    void updateMatrix();
+    // Gets Transformation model Matrix
     mat4f getMatrix();
+    void updateMatrix();
 
-    /*Sets position to a new position in the global space*/
-    void setPosition(const vec3f& newPosition);
+    vec3f getPosition() const;
+    void setPosition(const vec3f& newPosition); // Sets position in global space
+   
+    quatf getRotation() const;      // Gets global rotation in quaternion   
+    quatf getLocalRotation() const; // Gets local rotation in quaternion
+   
+    vec3f getEulerAngles() const;       // Gets global rotation of the object in Euler Angles   
+    vec3f getLocalEulerAngles() const;  // Gets local rotation of the object in Euler Angles
 
-    /*Sets scale to a new scale*/
+    vec3f getScale() const;
     void setScale(const vec3f& newScale);
 
-    /*Gets position*/
-    vec3f getPosition() const;
 
-    /*Gets global rotation of the object in quaternion*/
-    quatf getRotation() const;
+    quatf EulerAnglesToQuaternion(const vec3f& eulerAngles);    // Converts Euler Angles to Quaternion
 
-    /*Gets global rotation of the object in Euler Angles*/
-    vec3f getEulerAngles() const;
-
-    /*Gets local rotation of the object in quaternion*/
-    quatf getLocalRotation() const;
-
-    /*Gets local rotation of the object in Euler Angles*/
-    vec3f getLocalEulerAngles() const;
-
-    /*Gets scale*/
-    vec3f getScale() const;
-
-    /*Converts Euler Angles to Quaternion*/
-    quatf EulerAnglesToQuaternion(const vec3f& eulerAngles);
 
 private:
+
     vec3f position;
     quatf rotation;
     quatf localRotation;

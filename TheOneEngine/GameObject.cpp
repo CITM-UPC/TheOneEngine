@@ -1,9 +1,8 @@
 #include "GameObject.h"
+#include "Transform.h"
+#include "Camera.h"
+
 #include "..\TheOneEditor\Log.h"
-//#include "Transform.h"
-//#include "MeshRenderer.h"
-//hekbas add other components...
-#include "AssetMesh.h"
 
 #include "Math.h"
 
@@ -17,7 +16,8 @@ GameObject::GameObject(std::string name)
 	isStatic(false),
 	index(-1)
 {
-	AddComponent(ComponentType::Transform);
+	//hekbas - shared_from_this() should not be called in the constructor!!!
+	//AddComponent(ComponentType::Transform);
 	Enable();
 }
 
@@ -56,12 +56,15 @@ std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int inde
 	{
 		switch (type)
 		{
-		/*case ComponentType::Transform:
-			component = std::make_shared<Transform>(this);
-			break;
-		case ComponentType::Mesh:
-			component = std::make_shared<Mesh>(this);
-			break;*/
+			case ComponentType::Transform:
+				component = std::make_shared<Transform>(shared_from_this());
+				break;
+			case ComponentType::Camera:
+				component = std::make_shared<Camera>(shared_from_this());
+				break;
+			/*case ComponentType::Mesh:
+				component = std::make_shared<Mesh>(shared_from_this());
+				break;*/
 		}
 
 		if (component)
@@ -80,15 +83,19 @@ std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int inde
 			// Enable the component if necessary?
 			component->Enable();
 		}
+		else
+		{
+			LOG(LogType::LOG_ERROR, "Unable to add Component");
+		}
 	}
 	else
 	{
 		std::shared_ptr<GameObject> parentSharedPtr = parent.lock();
-
-		LOG(LogType::LOG_ERROR, "Component already applied");
-		LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", parentSharedPtr->GetName());
-		LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetType());
 		component = HasComponent(type);
+
+		LOG(LogType::LOG_WARNING, "Component already applied");
+		LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", parentSharedPtr.get()->GetName());
+		LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component.get()->GetType());		
 	}
 
 	return component;

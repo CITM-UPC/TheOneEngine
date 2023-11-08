@@ -49,8 +49,6 @@ bool Input::Update(double dt)
 {
     bool ret = true;
 
-    CameraInput(dt);
-
     return ret;
 }
 
@@ -141,78 +139,3 @@ bool Input::processSDLEvents()
     }
     return true;
 }
-
-void Input::CameraInput(double dt)
-{
-    // Implement a debug camera with keys and mouse
-    // Now we can make this movememnt frame rate independant!
-    float speed = 10 * dt;
-    if (GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-        speed = 20 * dt;
-
-    float mouseSensitivity = 10.0f * dt;
-
-    if (GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
-    {
-        /* MOUSE CAMERA MOVEMENT */
-        // Compute mouse input displacement
-        app->engine->camera.yaw += -GetMouseXMotion() * mouseSensitivity;
-        app->engine->camera.pitch += GetMouseYMotion() * mouseSensitivity;
-
-        app->engine->camera.rotate(vec3f(app->engine->camera.pitch, app->engine->camera.yaw, 0.0f), false);
-        
-        //LOG("Yaw: %f, Pitch: %f", app->engine->camera.yaw, app->engine->camera.pitch);
-        if (GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-        {
-            app->engine->camera.translate(app->engine->camera.transform.getForward() * speed);
-        }
-        if (GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-        {
-            app->engine->camera.translate(-app->engine->camera.transform.getForward() * speed);
-        }
-        if (GetKey(SDL_SCANCODE_A) == KEY_REPEAT) 
-        {
-            app->engine->camera.translate(app->engine->camera.transform.getRight() * speed);
-        }
-        if (GetKey(SDL_SCANCODE_D) == KEY_REPEAT) 
-        {
-            app->engine->camera.translate(-app->engine->camera.transform.getRight() * speed);
-        } 
-    }
-    else
-    {
-        //Zooming Camera Input
-        app->engine->camera.translate(app->engine->camera.transform.getForward() * (float)GetMouseZ());
-        //LOG("MouseZ: %f", (float)GetMouseZ());
-    }
-
-    //Orbit Object with Alt_Left + Left Click
-    if (GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
-    {
-        //Get selected GameObject         
-        float radius = 500.0f;
-
-        app->engine->camera.yaw += -GetMouseXMotion() * mouseSensitivity;
-        app->engine->camera.pitch += GetMouseYMotion() * mouseSensitivity;
-
-        vec3f finalPos = app->engine->camera.transform.getPosition() - app->engine->camera.transform.getForward();
-
-       /* app->engine->camera.transform.setPosition(vec3f(glm::cos(glm::radians(app->engine->camera.yaw)) * glm::cos(glm::radians(app->engine->camera.pitch)) * radius,
-            glm::sin(glm::radians(app->engine->camera.pitch)) * radius,
-            glm::sin(glm::radians(app->engine->camera.pitch)) * glm::cos(glm::radians(app->engine->camera.pitch)) * radius));*/
-
-        //app->engine->camera.transform.setPosition(vec3f(radius * glm::cos(glm::radians(angle))));
-        app->engine->camera.rotate(vec3f(0.0f, 1.0f, 0.0f), app->engine->camera.yaw, true);
-        app->engine->camera.rotate(vec3f(1.0f, 0.0f, 0.0f), app->engine->camera.pitch, true);
-        //glm::lerp(app->engine->camera.transform.getRotation(), )
-    }
-    
-    if (GetKey(SDL_SCANCODE_F) == KEY_DOWN)
-    {
-        
-    }
-    
-    app->engine->camera.updateCameraVectors();
-}
-
-

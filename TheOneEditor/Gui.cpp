@@ -92,7 +92,7 @@ bool Gui::Start()
         LOG(LogType::LOG_ERROR, "-Creating Implot context");
     LOG(LogType::LOG_OK, "-Creating ImPlot Context");
 
-    //I/O
+    // Input/Output
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls

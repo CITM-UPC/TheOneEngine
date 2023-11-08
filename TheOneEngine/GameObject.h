@@ -2,10 +2,8 @@
 #define __GAME_OBJECT_H__
 #pragma once
 
+#include "Defs.h"
 #include "Component.h"
-//#include "Transform.h"
-//#include "AssetMesh.h"
-//#include "Texture.h"
 
 #include <string>
 #include <vector>
@@ -13,11 +11,11 @@
 #include <memory>
 
 
-class GameObject
+class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 
-    GameObject(std::string name);
+    GameObject(std::string name = "gameObject");
     ~GameObject();
 
     void Update(double dt);

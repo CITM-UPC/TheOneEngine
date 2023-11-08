@@ -12,6 +12,7 @@
 #include "Texture.h"
 
 #include <chrono>
+#include <memory>
 
 
 class EngineCore
@@ -27,7 +28,7 @@ public:
 
 	void Update(double dt);
 
-	void Render(RenderModes renderMode);
+	void Render(RenderModes renderMode, std::shared_ptr<Camera> camera);
 
 	void OnWindowResize(int width, int height);
 
@@ -35,7 +36,7 @@ public:
 	bool SetVSync(bool vsync);
 
 public:
-	Camera camera;
+	
 	bool vsync = false;
 
 private:

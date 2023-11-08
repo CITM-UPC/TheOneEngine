@@ -27,8 +27,6 @@ public:
     bool Update(double dt);
 
     bool processSDLEvents();
-	
-	void CameraInput(double dt);
 
 	KEY_STATE GetKey(int id) const
 	{

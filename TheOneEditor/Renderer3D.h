@@ -4,7 +4,11 @@
 
 #include "Module.h"
 
+#include <memory>
+
+
 class EngineCore;
+class GameObject;
 
 class Renderer3D : public Module
 {
@@ -22,10 +26,14 @@ public:
 
     bool CleanUp();
 
+    void CameraInput(double dt);
+
 private:
 
     //hekbas test
     double dtSum = 0;
+
+    std::shared_ptr<GameObject> cameraGO;
 };
 
 #endif // !__RENDERER_3D_H__

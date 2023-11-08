@@ -3,62 +3,32 @@
 #pragma once
 
 #include "Defs.h"
+#include "GameObject.h"
 #include "Transform.h"
 
-class Camera {
+#include "..\TheOneEditor\Log.h"
+#include "..\TheOneEditor\Input.h"
+
+#include <memory>
+
+class Camera : public Component
+{
 public:
-    Camera() : transform(),
-        aspect(1.777), fov(65), zNear(0.1), zFar(15000),
-        yaw(0), pitch(0), 
-        viewMatrix(1.0f), 
-        forward(transform.getForward()), right(transform.getRight()),
-        eye(transform.getPosition()), center(eye-forward), up(transform.getUp())
-    {
-        updateCameraVectors();
-    }
 
-    void updateViewMatrix() 
-    {
-        viewMatrix = glm::inverse(transform.getMatrix());
-    }
+    Camera(std::shared_ptr<GameObject> containerGO);
+    ~Camera();
 
-    const mat4f& getViewMatrix() 
-    {
-        return viewMatrix;
-    }
+    void translate(const vec3f& translation, bool local = true);
+    void rotate(const vec3f& axis, float angle, bool local = true);  
+    void rotate(const vec3f& eulerRotation, bool local = true);
 
-    void translate(const vec3f& translation, bool local = true) 
-    {
-        transform.translate(translation, local);
-        updateViewMatrix();
-    }
+    const mat4f& getViewMatrix();
+    void updateViewMatrix();
 
-    void rotate(const vec3f& axis, float angle, bool local = true) 
-    {
-        transform.rotate(axis, angle, local);
-        updateViewMatrix();
-    }
-    
-    void rotate(const vec3f& eulerRotation, bool local = true) 
-    {
-        transform.rotate(eulerRotation, local);
-        updateViewMatrix();
-    }
-
-	void updateCameraVectors() 
-    {
-        // Update the forward, right, and up vectors based on the new orientation
-        forward = transform.getForward();
-        right = transform.getRight();
-        up = transform.getUp();
-
-        // Update the eye and center vectors
-        eye = transform.getPosition();
-        center = eye + forward;
-	}
+    void updateCameraVectors();
 
 public:
-    Transform transform; // The camera's transform
+
     double fov;
     double aspect;
     double zNear;
