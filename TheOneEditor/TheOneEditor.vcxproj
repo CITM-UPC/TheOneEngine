@@ -112,6 +112,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Window.cpp" />
     <ClCompile Include="Window.h" />
   </ItemGroup>
@@ -139,6 +140,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sd
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelAbout.h" />
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -79,6 +79,9 @@
     <ClCompile Include="PanelSettings.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="PanelSettings.h">
       <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
