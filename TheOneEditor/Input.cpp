@@ -1,6 +1,7 @@
 #include "App.h"
 #include "Input.h"
 #include "Gui.h"
+#include "Window.h"
 
 #include "Log.h"
 
@@ -131,8 +132,9 @@ bool Input::processSDLEvents()
 
             case SDL_WINDOWEVENT:
             {
-                /*if (event.window.event == SDL_WINDOWEVENT_RESIZED)
-                    App->renderer3D->OnResize(e.window.data1, e.window.data2);*/
+                if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+                    app->window->OnResizeWindow(event.window.data1, event.window.data2);
+                }
             }
         }
         

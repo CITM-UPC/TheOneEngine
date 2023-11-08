@@ -54,6 +54,7 @@ public:
     Resolution GetResolution();
     void SetResolution(Resolution res);
 
+    void OnResizeWindow(int width, int height);
 
 public:
     SDL_Window* window;

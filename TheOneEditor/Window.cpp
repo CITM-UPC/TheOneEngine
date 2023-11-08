@@ -4,7 +4,7 @@
 
 
 Window::Window(App* app) : Module(app), window(nullptr), glContext(), displayMode(DisplayMode::WINDOWED), 
-                            resolution(Resolution::R_NATIVE), borderless(false), refreshRate(0)
+                            resolution(Resolution::R_1280x720), borderless(false), refreshRate(0)
 {}
 
 Window::~Window() {}
@@ -27,8 +27,9 @@ bool Window::Awake()
 
 bool Window::Start()
 {
-    displayMode = DisplayMode::WINDOWED;
-    resolution = Resolution::R_1920x1080;
+    /*displayMode = DisplayMode::WINDOWED;
+    resolution = Resolution::R_1280x720;*/
+    SetResolution(resolution);
     return true;
 }
 
@@ -73,7 +74,7 @@ bool Window::initSDLWindowWithOpenGL()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
     std::string title = std::string(TITLE) + "_" + VERSION;
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL);
+    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     if (!window)
     {
@@ -167,8 +168,7 @@ void Window::SetDisplayMode(DisplayMode mode)
             if (SDL_SetWindowFullscreen(window, 0) != 0)
                 LOG(LogType::LOG_ERROR, "Unable to set Display Mode to Windowed", SDL_GetError());
 
-            SDL_SetWindowSize(window, WINDOW_WIDTH, WINDOW_HEIGHT);
-            app->engine->OnWindowResize(WINDOW_WIDTH, WINDOW_HEIGHT);
+            OnResizeWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
 
             displayMode = DisplayMode::WINDOWED;
             break;
@@ -223,6 +223,11 @@ void Window::SetResolution(Resolution res)
         case Resolution::R_NATIVE: /* Get native resolution */resolution = Resolution::R_NATIVE; break;
     }
 
+    OnResizeWindow(width, height);
+}
+
+void Window::OnResizeWindow(int width, int height)
+{
     SDL_SetWindowSize(window, width, height);
     app->engine->OnWindowResize(width, height);
 }
