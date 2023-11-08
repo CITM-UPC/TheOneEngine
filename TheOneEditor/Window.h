@@ -56,14 +56,14 @@ public:
 
 
 public:
-    SDL_Window* window = nullptr;
+    SDL_Window* window;
     SDL_GLContext glContext;
 
 private:
-    uint refreshRate = 0;
+    uint refreshRate;
 
     DisplayMode displayMode;
-    bool borderless = false;
+    bool borderless;
 
     Resolution resolution;
 };
