@@ -21,7 +21,7 @@ struct LogInfo
 	std::string message;
 };
 
-#define LOG(type, format, ...) Log(__FILE__, __LINE__, type, format, __VA_ARGS__)
+#define LOG(type, format, ...) Log(__FILE__, __LINE__, type, format, ## __VA_ARGS__)
 
 void Log(const char file[], int line, LogType type, const char* format, ...);
 

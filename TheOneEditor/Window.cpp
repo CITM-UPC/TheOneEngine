@@ -4,7 +4,7 @@
 
 
 Window::Window(App* app) : Module(app), window(nullptr), glContext(), displayMode(DisplayMode::WINDOWED), 
-                            resolution(Resolution::R_1280x720), borderless(false), refreshRate(0)
+                            resolution(Resolution::R_1920x1080), borderless(false), refreshRate(0)
 {}
 
 Window::~Window() {}
@@ -27,9 +27,8 @@ bool Window::Awake()
 
 bool Window::Start()
 {
-    /*displayMode = DisplayMode::WINDOWED;
-    resolution = Resolution::R_1280x720;*/
-    SetResolution(resolution);
+    displayMode = DisplayMode::WINDOWED;
+    resolution = Resolution::R_1280x720;
     return true;
 }
 
@@ -229,5 +228,5 @@ void Window::SetResolution(Resolution res)
 void Window::OnResizeWindow(int width, int height)
 {
     SDL_SetWindowSize(window, width, height);
-    app->engine->OnWindowResize(width, height);
+    //app->engine->OnWindowResize(width, height);
 }

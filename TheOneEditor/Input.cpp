@@ -140,12 +140,12 @@ bool Input::processSDLEvents()
             {      // In case if dropped file
                 dropped_filedir = event.drop.file;
 
-                if (dropped_filedir.ends_with(".fbx")) {
+                /*if (dropped_filedir.ends_with(".fbx")) {
                     std::filesystem::copy(dropped_filedir, "Assets");
                 }
                 else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
                     std::filesystem::copy(dropped_filedir, "Assets");
-                }
+                }*/
             }
         }
     }
