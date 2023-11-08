@@ -136,8 +136,18 @@ bool Input::processSDLEvents()
                     app->window->OnResizeWindow(event.window.data1, event.window.data2);
                 }
             }
+            case (SDL_DROPFILE):
+            {      // In case if dropped file
+                dropped_filedir = event.drop.file;
+
+                if (dropped_filedir.ends_with(".fbx")) {
+                    std::filesystem::copy(dropped_filedir, "Assets");
+                }
+                else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
+                    std::filesystem::copy(dropped_filedir, "Assets");
+                }
+            }
         }
-        
     }
     return true;
 }
