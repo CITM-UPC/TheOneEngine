@@ -72,9 +72,9 @@ std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int inde
 				component = std::make_shared<Mesh>(shared_from_this());
 				break;
 
-			case ComponentType::Texture:
-				component = std::make_shared<Texture>(shared_from_this());
-				break;
+			//case ComponentType::Texture:
+			//	component = std::make_shared<Texture>(shared_from_this());
+			//	break;
 		}
 
 		if (component)

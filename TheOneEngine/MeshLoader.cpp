@@ -1,13 +1,8 @@
 #include "MeshLoader.h"
-#include "Defs.h"
 
 #include <assimp/postprocess.h>
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
-
-#include <vector>
-#include <array>
-#include <string>
 
 
 MeshLoader::MeshLoader() {}
@@ -42,13 +37,16 @@ void MeshLoader::BufferData(MeshData meshData)
     switch (meshData.format)
     {
     case Formats::F_V3:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * meshBuffData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * meshData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        meshBuffData.format = Formats::F_V3;
         break;
     case Formats::F_V3C4:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * meshBuffData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * meshData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        meshBuffData.format = Formats::F_V3C4;
         break;
     case Formats::F_V3T2:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshBuffData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        meshBuffData.format = Formats::F_V3T2;
         break;
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -57,7 +55,7 @@ void MeshLoader::BufferData(MeshData meshData)
     {
         glGenBuffers(1, &meshBuffData.indexs_buffer_id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffData.indexs_buffer_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * meshBuffData.numIndexs, meshData.index_data, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * meshData.numIndexs, meshData.index_data, GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     else {
@@ -65,7 +63,7 @@ void MeshLoader::BufferData(MeshData meshData)
     }
 }
 
-std::vector<MeshLoader::MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path)
+std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path)
 {
     std::vector<MeshBufferedData> mehsesData;
 

@@ -42,11 +42,11 @@
     <ClInclude Include="Texture.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>GameObject\Components</Filter>
-    </ClInclude>
     <ClInclude Include="MeshLoader.h">
       <Filter>Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -68,11 +68,11 @@
     <ClCompile Include="Texture.cpp">
       <Filter>GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>GameObject\Components</Filter>
-    </ClCompile>
     <ClCompile Include="MeshLoader.cpp">
       <Filter>Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

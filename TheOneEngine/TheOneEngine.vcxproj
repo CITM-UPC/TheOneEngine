@@ -80,7 +80,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>call $(SolutionDir)\vcpkg\bootstrap-vcpkg.bat
+      <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
 $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
@@ -110,7 +110,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp devil[libjpeg,libp
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>call $(SolutionDir)\vcpkg\bootstrap-vcpkg.bat
+      <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
 $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>

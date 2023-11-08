@@ -1,6 +1,7 @@
 #include "App.h"
 #include "SceneManager.h"
 #include "..\TheOneEngine\MeshLoader.h"
+#include "..\TheOneEngine\Mesh.h"
 
 
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
@@ -21,9 +22,10 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
     //hekbas testing creation of GO
-    CreateEmptyGO();
+    /*CreateEmptyGO();
     CreateCube();
-    CreateSphere();
+    CreateSphere();*/
+    CreateMeshGO("Assets/mf.fbx");
 
     return true;
 }
@@ -40,6 +42,12 @@ bool SceneManager::Update(double dt)
 
 bool SceneManager::PostUpdate()
 {
+
+    for (const auto gameObject : gameObjects)
+    {
+        gameObject.get()->Draw();
+    }
+
     return true;
 }
 
@@ -63,7 +71,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
     std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
     meshGO.get()->AddComponent(ComponentType::Transform);
     meshGO.get()->AddComponent(ComponentType::Mesh);
-    meshGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(meshGO, "Assets/mf.fbx");    
+    meshGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(meshGO, path);
 
     gameObjects.push_back(meshGO);
 
