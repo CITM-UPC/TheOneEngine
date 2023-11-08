@@ -13,7 +13,11 @@ bool SceneManager::Awake()
 
 bool SceneManager::Start()
 {
-    std::shared_ptr<GameObject> empty = CreateEmptyGO();
+    //hekbas testing creation of GO
+    CreateEmptyGO();
+    CreateEmptyGO();
+    CreateEmptyGO();
+    CreateEmptyGO();
 
     return true;
 }
@@ -42,22 +46,33 @@ bool SceneManager::CleanUp()
 
 std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 {
-    std::string name = "Empty GameObject";
+    std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
+    emptyGO.get()->AddComponent(ComponentType::Transform);
 
-    std::shared_ptr<GameObject> newObject = std::make_shared<GameObject>();
+    gameObjects.push_back(emptyGO);
 
     return nullptr;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateCube()
 {
+    std::shared_ptr<GameObject> cubeGO = std::make_shared<GameObject>("Cube");
+    cubeGO.get()->AddComponent(ComponentType::Transform);
+    cubeGO.get()->AddComponent(ComponentType::Mesh);
 
+    gameObjects.push_back(cubeGO);
 
     return nullptr;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateSphere()
 {
+    std::shared_ptr<GameObject> sphereGO = std::make_shared<GameObject>("Sphere");
+    sphereGO.get()->AddComponent(ComponentType::Transform);
+    sphereGO.get()->AddComponent(ComponentType::Mesh);
+
+    gameObjects.push_back(sphereGO);
+
     return nullptr;
 }
 

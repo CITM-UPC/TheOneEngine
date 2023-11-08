@@ -32,6 +32,9 @@ bool PanelSettings::Draw()
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
 
+	ImVec2 mainViewportPos = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(ImVec2(mainViewportPos.x, mainViewportPos.y), ImGuiCond_Appearing, ImVec2(0.5, 0.8));
+
 	if (ImGui::Begin("Settings", &enabled, settingsFlags))
 	{
 		// LEFT - Buttons

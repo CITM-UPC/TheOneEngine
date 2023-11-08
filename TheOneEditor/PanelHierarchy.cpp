@@ -1,5 +1,6 @@
 #include "PanelHierarchy.h"
 #include "App.h"
+#include "SceneManager.h"
 #include "Gui.h"
 #include "imgui.h"
 
@@ -14,8 +15,12 @@ bool PanelHierarchy::Draw()
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
-		if (ImGui::BeginChild("GO_List", ImVec2(325, 0), true))
+		if (ImGui::BeginChild("GameObjects", ImVec2(325, 0), true))
 		{
+			for (const auto gameObject : app->sceneManager->GetGameObjects())
+			{
+
+			}
 
 			ImGui::EndChild();
 		}		
