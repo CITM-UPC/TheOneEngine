@@ -151,10 +151,7 @@ bool Input::processSDLEvents()
                         LOG(LogType::LOG_INFO, "FBX already exists: %s", dropped_filedir.c_str());
                     }*/
                     std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
-                    std::shared_ptr<GameObject> gameObject = std::make_shared<GameObject>("Game Object");
-                    gameObject.get()->AddComponent(ComponentType::Transform);
-                    //gameObject.get()->AddComponent(ComponentType::Mesh);
-                    app->sceneManager->GetGameObjects().push_back(gameObject);
+                    app->sceneManager->CreateMeshGO(dropped_filedir);
                     LOG(LogType::LOG_OK ,"FBX added and GameObject created: %s", dropped_filedir.c_str());
                 }
                 else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
