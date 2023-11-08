@@ -17,8 +17,7 @@ void EngineCore::Awake()
 
 void EngineCore::Start()
 {
-    /*Spawn camera inside Millennium Falcon cabin*/
-    camera.transform.setPosition(vec3f(-30.84f, 2.5f, 24));
+    
 }
 
 void EngineCore::Update(double dt)
