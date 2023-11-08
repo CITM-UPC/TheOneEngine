@@ -6,6 +6,7 @@
 #include "..\TheOneEngine\Defs.h"
 #include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Component.h"
+#include "..\TheOneEngine\MeshLoader.h"
 
 #include <vector>
 #include <string>
@@ -30,6 +31,7 @@ public:
 
     // Basic 3D 
     std::shared_ptr<GameObject> CreateEmptyGO();
+    std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateCube();
     std::shared_ptr<GameObject> CreateSphere();
 
@@ -42,6 +44,8 @@ public:
 private:
     uint selectedGameObject;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
+
+    MeshLoader* meshLoader;
 };
 
 #endif // !__SCENE_MANAGER_H__

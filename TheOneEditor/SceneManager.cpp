@@ -1,10 +1,18 @@
 #include "App.h"
 #include "SceneManager.h"
+#include "..\TheOneEngine\MeshLoader.h"
+#include "..\TheOneEngine\Mesh.h"
 
 
-SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0) {}
+SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
+{
+    meshLoader = new MeshLoader();
+}
 
-SceneManager::~SceneManager() {}
+SceneManager::~SceneManager()
+{
+    delete meshLoader;
+}
 
 bool SceneManager::Awake()
 {
@@ -14,10 +22,10 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
     //hekbas testing creation of GO
-    CreateEmptyGO();
-    CreateEmptyGO();
-    CreateEmptyGO();
-    CreateEmptyGO();
+    /*CreateEmptyGO();
+    CreateCube();
+    CreateSphere();*/
+    CreateMeshGO("Assets/mf.fbx");
 
     return true;
 }
@@ -29,19 +37,17 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-    for (size_t i = 0; i < gameObjects.size(); i++)
-    {
-        gameObjects.at(i).get()->Update(dt);
-    }
     return true;
 }
 
 bool SceneManager::PostUpdate()
 {
-    for (size_t i = 0; i < gameObjects.size(); i++)
+
+    for (const auto gameObject : gameObjects)
     {
-        gameObjects.at(i).get()->Draw();
+        gameObject.get()->Draw();
     }
+
     return true;
 }
 
@@ -56,6 +62,18 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
     emptyGO.get()->AddComponent(ComponentType::Transform);
 
     gameObjects.push_back(emptyGO);
+
+    return nullptr;
+}
+
+std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
+{
+    std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
+    meshGO.get()->AddComponent(ComponentType::Transform);
+    meshGO.get()->AddComponent(ComponentType::Mesh);
+    meshGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(meshGO, path);
+
+    gameObjects.push_back(meshGO);
 
     return nullptr;
 }

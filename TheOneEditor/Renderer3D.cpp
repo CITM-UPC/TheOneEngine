@@ -23,6 +23,7 @@ bool Renderer3D::Awake()
 
 bool Renderer3D::Start()
 {
+    // Creating Editor Camera GO (Outside hierarchy)
     cameraGO = std::make_shared<GameObject>("EDITOR CAMERA");
     cameraGO.get()->AddComponent(ComponentType::Transform);
     cameraGO.get()->AddComponent(ComponentType::Camera);
@@ -55,8 +56,8 @@ bool Renderer3D::PostUpdate()
     app->engine->Render(EngineCore::RenderModes::DEBUG, camera);
 
     // hekbas testing Mesh load/draw
-    static auto mesh_ptrs = AssetMesh::loadFromFile("Assets/mf.fbx");
-    for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();
+    /*static auto mesh_ptrs = MeshLoader::loadFromFile("Assets/mf.fbx");
+    for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
 
     app->gui->Draw();
 

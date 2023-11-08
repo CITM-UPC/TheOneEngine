@@ -11,9 +11,9 @@ class GameObject;
 enum class ComponentType
 {
 	Transform,
-	Mesh,
-	MeshRenderer,
 	Camera,
+	Mesh,
+    Texture,
 	Unknown
 };
 
@@ -32,7 +32,7 @@ public:
     void CreateNameFromType(ComponentType type);
 
     ComponentType GetType() const;
-    std::weak_ptr<GameObject> GetContainerGameObject() const;
+    std::shared_ptr<GameObject> GetContainerGO() const;
 
     bool IsEnabled() const;
 
