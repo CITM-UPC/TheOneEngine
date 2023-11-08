@@ -138,7 +138,7 @@ bool Input::processSDLEvents()
             }
             case (SDL_DROPFILE):
             {      // In case if dropped file
-                dropped_filedir = event.drop.file;
+                //dropped_filedir = event.drop.file;
 
                 /*if (dropped_filedir.ends_with(".fbx")) {
                     std::filesystem::copy(dropped_filedir, "Assets");

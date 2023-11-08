@@ -11,22 +11,22 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Asset.h" />
-    <ClInclude Include="AssetMesh.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Defs.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="EngineCore.h" />
     <ClInclude Include="Transform.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Asset.cpp" />
-    <ClCompile Include="AssetMesh.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="EngineCore.cpp" />
     <ClCompile Include="Transform.cpp" />
@@ -72,6 +72,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -99,6 +100,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp devil[libjpeg,libp
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
       <SubSystem>

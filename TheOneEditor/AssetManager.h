@@ -11,9 +11,15 @@
 
 
 class Asset;
-class AssetMesh;
+class MeshLoader;
 class AssetTexture;
 
+
+enum class AssetType
+{
+	MeshLoader,
+	Texture
+};
 
 class AssetManager : public Module
 {
@@ -51,8 +57,8 @@ public:
 
 	// Asset Handling
 	Asset* GetAsset(uint ID, bool loadinmemory = true);
-	Asset* CreateAsset(Asset::AssetType type, std::string source_file);
-	Asset* CreateAssetFromID(Asset::AssetType type, std::string source_file, uint ID);
+	Asset* CreateAsset(AssetType type, std::string source_file);
+	Asset* CreateAssetFromID(AssetType type, std::string source_file, uint ID);
 
 
 	// Getter
@@ -67,7 +73,7 @@ private:
 	uint fileFormatVersion = 2;
 
 	// Available resources
-	std::map<uint, AssetMesh*> meshes;
+	std::map<uint, MeshLoader*> meshes;
 	std::map<uint, AssetTexture*> textures;
 };
 

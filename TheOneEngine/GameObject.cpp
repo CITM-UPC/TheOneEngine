@@ -1,6 +1,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "Mesh.h"
+#include "Texture.h"
 
 #include "..\TheOneEditor\Log.h"
 
@@ -61,12 +63,18 @@ std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int inde
 			case ComponentType::Transform:
 				component = std::make_shared<Transform>(shared_from_this());
 				break;
+
 			case ComponentType::Camera:
 				component = std::make_shared<Camera>(shared_from_this());
 				break;
-			/*case ComponentType::Mesh:
+
+			case ComponentType::Mesh:
 				component = std::make_shared<Mesh>(shared_from_this());
-				break;*/
+				break;
+
+			case ComponentType::Texture:
+				component = std::make_shared<Texture>(shared_from_this());
+				break;
 		}
 
 		if (component)

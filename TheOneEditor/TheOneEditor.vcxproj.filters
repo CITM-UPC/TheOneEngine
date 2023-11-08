@@ -52,9 +52,6 @@
     <ClCompile Include="Importer.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
-    <ClCompile Include="ImporterMesh.cpp">
-      <Filter>Importers</Filter>
-    </ClCompile>
     <ClCompile Include="Panel.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
@@ -109,9 +106,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Importer.h">
-      <Filter>Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="ImporterMesh.h">
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="Panel.h">

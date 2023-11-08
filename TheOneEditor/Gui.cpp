@@ -112,10 +112,10 @@ bool Gui::Start()
     ImGui::StyleColorsDark();
 
     // Enable Panels
-    app->gui->panelConsole->SetState(true);
-    app->gui->panelHierarchy->SetState(true);
     app->gui->panelInspector->SetState(true);
     app->gui->panelProject->SetState(true);
+    app->gui->panelConsole->SetState(true);
+    app->gui->panelHierarchy->SetState(true);
 
     // Style
 #pragma region IMGUI_STYLE
@@ -373,9 +373,9 @@ void Gui::MainWindowDockspace()
             // Takes the name of a window
             ImGui::DockBuilderDockWindow("Scene", dockspace_id);
             ImGui::DockBuilderDockWindow("Inspector", dock_id_right);
-            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
             ImGui::DockBuilderDockWindow("Project", dock_id_down);
             ImGui::DockBuilderDockWindow("Console", dock_id_down);
+            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
 
             ImGui::DockBuilderFinish(dockspace_id);
         }

@@ -44,7 +44,7 @@ void Component::CreateNameFromType(ComponentType type)
 		case ComponentType::Transform: name = "Transform"; break;
 		case ComponentType::Camera: name = "Camera"; break;
 		case ComponentType::Mesh: name = "Mesh"; break;
-		case ComponentType::MeshRenderer: name = "MeshRenderer"; break;
+		case ComponentType::Texture: name = "Texture"; break;
 		case ComponentType::Unknown: name = "Unknown"; break;
 		default: name = "Specified Type was not found"; break;
 	}
@@ -55,7 +55,8 @@ ComponentType Component::GetType() const
 	return type;
 }
 
-std::weak_ptr<GameObject> Component::GetContainerGameObject() const
+std::shared_ptr<GameObject> Component::GetContainerGO() const
 {
-	return containerGO;
+	std::shared_ptr<GameObject> sharedPtr = containerGO.lock();
+	return sharedPtr;
 }

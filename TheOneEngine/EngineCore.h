@@ -7,8 +7,7 @@
 // Include in Editor when needed: #include "../TheOneEngine/EngineCore.h"
 #include "Defs.h"
 #include "Camera.h"
-#include "Asset.h"
-#include "AssetMesh.h"
+#include "Mesh.h"
 #include "Texture.h"
 
 #include <chrono>

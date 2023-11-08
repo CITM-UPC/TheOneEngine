@@ -51,7 +51,7 @@ bool AssetManager::CleanUp()
 	//static_assert(static_cast<int>(Asset::AssetType::UNKNOWN) == 2, "Asset Clean Up needs to be updated");
 
 	//// Delete assets 
-	//for (std::map<uint, AssetMesh*>::iterator it = meshes.begin(); it != meshes.end();)
+	//for (std::map<uint, MeshLoader*>::iterator it = meshes.begin(); it != meshes.end();)
 	//{
 	//	it->second->FreeMemory();
 	//	delete it->second;
@@ -158,8 +158,8 @@ bool AssetManager::CleanUp()
 //	switch (type)
 //	{
 //	case Asset::AssetType::MESH:
-//		asset = (Asset*)new AssetMesh(App->GetRandom().Int(), source_file);
-//		meshes[asset->GetID()] = (AssetMesh*)asset;
+//		asset = (Asset*)new MeshLoader(App->GetRandom().Int(), source_file);
+//		meshes[asset->GetID()] = (MeshLoader*)asset;
 //		break;
 //
 //	case Asset::AssetType::TEXTURE:
@@ -188,8 +188,8 @@ bool AssetManager::CleanUp()
 //	switch (type)
 //	{
 //	case Asset::AssetType::MESH:
-//		asset = (Asset*)new AssetMesh(ID, source_file);
-//		meshes[asset->GetID()] = (AssetMesh*)asset;
+//		asset = (Asset*)new MeshLoader(ID, source_file);
+//		meshes[asset->GetID()] = (MeshLoader*)asset;
 //		break;
 //
 //	case Asset::AssetType::TEXTURE:
