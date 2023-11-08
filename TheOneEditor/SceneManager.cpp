@@ -29,13 +29,19 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-
-
+    for (size_t i = 0; i < gameObjects.size(); i++)
+    {
+        gameObjects.at(i).get()->Update(dt);
+    }
     return true;
 }
 
 bool SceneManager::PostUpdate()
 {
+    for (size_t i = 0; i < gameObjects.size(); i++)
+    {
+        gameObjects.at(i).get()->Draw();
+    }
     return true;
 }
 

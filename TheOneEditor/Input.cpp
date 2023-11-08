@@ -2,9 +2,12 @@
 #include "Input.h"
 #include "Gui.h"
 #include "Window.h"
+#include "SceneManager.h"
 
 #include "Log.h"
-
+#include <filesystem>
+#include <string>
+#include <iostream>
 
 #define MAX_KEYS 300
 #define SCREEN_SIZE 1
@@ -104,7 +107,7 @@ bool Input::processSDLEvents()
     mouse_x_motion = mouse_y_motion = 0;
 
     static SDL_Event event;
-
+    
     while (SDL_PollEvent(&event) != 0)
     {
         app->gui->HandleInput(&event);
@@ -135,17 +138,30 @@ bool Input::processSDLEvents()
                 if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
                     app->window->OnResizeWindow(event.window.data1, event.window.data2);
                 }
+                break;
             }
             case (SDL_DROPFILE):
-            {      // In case if dropped file
-                dropped_filedir = event.drop.file;
+            {      
+                // In case if dropped file
+                std::string dropped_filedir = event.drop.file;
 
-                /*if (dropped_filedir.ends_with(".fbx")) {
-                    std::filesystem::copy(dropped_filedir, "Assets");
+                if (dropped_filedir.ends_with(".fbx")) {
+                    /*if (std::filesystem::exists(dropped_filedir))
+                    {
+                        LOG(LogType::LOG_INFO, "FBX already exists: %s", dropped_filedir.c_str());
+                    }*/
+                    std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
+                    std::shared_ptr<GameObject> gameObject = std::make_shared<GameObject>("Game Object");
+                    gameObject.get()->AddComponent(ComponentType::Transform);
+                    //gameObject.get()->AddComponent(ComponentType::Mesh);
+                    app->sceneManager->GetGameObjects().push_back(gameObject);
+                    LOG(LogType::LOG_OK ,"FBX added and GameObject created: %s", dropped_filedir.c_str());
                 }
                 else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
-                    std::filesystem::copy(dropped_filedir, "Assets");
-                }*/
+                    std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
+                }
+                SDL_free(event.drop.file);
+                break;
             }
         }
     }

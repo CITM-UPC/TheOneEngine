@@ -4,9 +4,6 @@
 
 #include "Module.h"
 
-#include <string>
-#include <filesystem>
-
 #define MAX_MOUSE_BUTTONS 5
 
 enum KEY_STATE
@@ -76,7 +73,6 @@ private:
 	int mouse_y_motion;
 	float dx;
 	float dy;
-	std::string dropped_filedir;
 };
 
 #endif // !__INPUT_H__
