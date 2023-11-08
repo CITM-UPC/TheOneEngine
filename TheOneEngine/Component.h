@@ -3,6 +3,7 @@
 
 #include "Defs.h"
 
+#include <string>
 #include <memory>
 
 class GameObject;
@@ -22,9 +23,13 @@ public:
 
     Component(std::shared_ptr<GameObject> containerGO, ComponentType type);
     virtual ~Component();
+
     virtual void Enable();
     virtual void Disable();
     virtual void Update() {};
+
+    std::string GetName();
+    void CreateNameFromType(ComponentType type);
 
     ComponentType GetType() const;
     std::weak_ptr<GameObject> GetContainerGameObject() const;
@@ -38,6 +43,7 @@ public:
 protected:
     std::weak_ptr<GameObject> containerGO;
     ComponentType type;
+    std::string name;
     bool enabled;
 };
 

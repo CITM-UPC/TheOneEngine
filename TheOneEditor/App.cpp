@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Hardware.h"
+#include "SceneManager.h"
 #include "Gui.h"
 #include "Renderer3D.h"
 
@@ -23,6 +24,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	window = new Window(this);
 	input = new Input(this);
 	hardware = new Hardware(this);
+	sceneManager = new SceneManager(this);
 	gui = new Gui(this);
 	renderer3D = new Renderer3D(this);
 
@@ -32,6 +34,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window, true);
 	AddModule(input, true);
 	AddModule(hardware, true);
+	AddModule(sceneManager, true);
 	AddModule(gui, true);
 
 	// Render last to swap buffer

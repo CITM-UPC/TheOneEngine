@@ -1,9 +1,9 @@
 #include "App.h"
+#include "Log.h"
+
 #include "Gui.h"
 #include "Window.h"
 #include "Hardware.h"
-
-#include "Log.h"
 
 #include "Panel.h"
 #include "PanelAbout.h"

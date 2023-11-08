@@ -20,6 +20,7 @@ class Module;
 class Window;
 class Input;
 class Hardware;
+class SceneManager;
 class Gui;
 class Renderer3D;
 
@@ -71,6 +72,7 @@ public:
 	Window* window = nullptr;
 	Input* input = nullptr;
 	Hardware* hardware = nullptr;
+	SceneManager* sceneManager = nullptr;
 	Gui* gui = nullptr;
 	Renderer3D* renderer3D = nullptr;
 
