@@ -23,8 +23,11 @@ bool Renderer3D::Awake()
 
 bool Renderer3D::Start()
 {
-    cameraGO = std::make_shared<GameObject>("[EDITOR CAMERA]");
+    cameraGO = std::make_shared<GameObject>("EDITOR CAMERA");
     cameraGO.get()->AddComponent(ComponentType::Transform);
+    cameraGO.get()->AddComponent(ComponentType::Camera);
+
+    // hekbas test adding same component
     cameraGO.get()->AddComponent(ComponentType::Camera);
 
     app->engine->Start();

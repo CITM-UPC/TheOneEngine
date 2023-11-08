@@ -16,7 +16,8 @@ GameObject::GameObject(std::string name)
 	isStatic(false),
 	index(-1)
 {
-	//hekbas - shared_from_this() should not be called in the constructor!!!
+	// hekbas - shared_from_this() should not be called in the constructor!!!
+	// uncomenting the following line causes undefined behaviour
 	//AddComponent(ComponentType::Transform);
 	Enable();
 }
@@ -50,9 +51,10 @@ void GameObject::Draw()
 std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int index)
 {
 	std::shared_ptr<Component> component = nullptr;
+	component = HasComponent(type);
 
 	// Check for already existing component of given type
-	if (HasComponent(type) == nullptr)
+	if (component == nullptr)
 	{
 		switch (type)
 		{
@@ -90,12 +92,9 @@ std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int inde
 	}
 	else
 	{
-		std::shared_ptr<GameObject> parentSharedPtr = parent.lock();
-		component = HasComponent(type);
-
 		LOG(LogType::LOG_WARNING, "Component already applied");
-		LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", parentSharedPtr.get()->GetName());
-		LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component.get()->GetType());		
+		LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.c_str());
+		LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component.get()->GetName().c_str());
 	}
 
 	return component;
