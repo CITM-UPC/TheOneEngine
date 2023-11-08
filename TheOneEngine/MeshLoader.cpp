@@ -30,32 +30,33 @@ void MeshLoader::BufferData(MeshData meshData)
 {
     //extension = ".fbx";
     //this->path = ASSETS_PATH + std::to_string(ID) + extension;
-
+    meshBuffData.numVerts = meshData.vertex_data.size();
+    meshBuffData.numIndexs = meshData.index_data.size();
     glGenBuffers(1, &meshBuffData.vertex_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, meshBuffData.vertex_buffer_id);
 
     switch (meshData.format)
     {
     case Formats::F_V3:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * meshData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         meshBuffData.format = Formats::F_V3;
         break;
     case Formats::F_V3C4:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * meshData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         meshBuffData.format = Formats::F_V3C4;
         break;
     case Formats::F_V3T2:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.numVerts, meshData.vertex_data, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         meshBuffData.format = Formats::F_V3T2;
         break;
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    if (meshData.index_data)
+    if (meshData.index_data.data())
     {
         glGenBuffers(1, &meshBuffData.indexs_buffer_id);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, meshBuffData.indexs_buffer_id);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * meshData.numIndexs, meshData.index_data, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * meshData.index_data.size(), meshData.index_data.data(), GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
     else {
@@ -102,10 +103,8 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
         meshData =
         {
             Formats::F_V3T2,
-            vertex_data.data(),
-            (uint)vertex_data.size(),
-            index_data.data(),
-            (uint)index_data.size(),
+            vertex_data,
+            index_data
         };
 
         BufferData(meshData);

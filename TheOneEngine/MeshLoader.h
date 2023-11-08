@@ -19,10 +19,8 @@ struct V3T2 { vec3f v; vec2f t; };
 struct MeshData
 {
 	Formats format;
-	const void* vertex_data = nullptr;
-	uint numVerts;
-	const uint* index_data = nullptr;
-	uint numIndexs = 0;
+	std::vector<V3T2> vertex_data;
+	std::vector<unsigned int> index_data;
 };
 
 struct MeshBufferedData
@@ -30,10 +28,10 @@ struct MeshBufferedData
 	Formats format;
 
 	uint vertex_buffer_id;
-	const uint numVerts = 0;
+	uint numVerts;
 
 	uint indexs_buffer_id;
-	const uint numIndexs = 0;
+	uint numIndexs;
 
 	std::string texturePath;
 };
