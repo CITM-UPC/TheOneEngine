@@ -34,6 +34,7 @@ public:
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateCube();
     std::shared_ptr<GameObject> CreateSphere();
+    std::shared_ptr<GameObject> CreateMF();
 
     // Get/Set
     uint GetNumberGO();

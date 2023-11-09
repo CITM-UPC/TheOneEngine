@@ -117,6 +117,18 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
     return nullptr;
 }
 
+std::shared_ptr<GameObject> SceneManager::CreateMF()
+{
+    std::shared_ptr<GameObject> mfGO = std::make_shared<GameObject>("Parsecs!");
+    mfGO.get()->AddComponent(ComponentType::Transform);
+    mfGO.get()->AddComponent(ComponentType::Mesh);
+    mfGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(mfGO, "Assets/mf.fbx");
+
+    gameObjects.push_back(mfGO);
+
+    return nullptr;
+}
+
 uint SceneManager::GetNumberGO()
 {
     return static_cast<uint>(gameObjects.size());

@@ -4,6 +4,7 @@
 #include "Gui.h"
 #include "Window.h"
 #include "Hardware.h"
+#include "SceneManager.h"
 
 #include "Panel.h"
 #include "PanelAbout.h"
@@ -444,6 +445,7 @@ void Gui::MainMenuGameObject()
     {
         if (ImGui::MenuItem("Square", 0, false, false)) {}
         if (ImGui::MenuItem("Sphere", 0, false, false)) {}
+        if (ImGui::MenuItem("Less than 12?")) { app->sceneManager->CreateMF(); }
 
         ImGui::EndMenu();
     }

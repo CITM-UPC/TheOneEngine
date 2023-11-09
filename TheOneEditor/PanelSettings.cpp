@@ -274,9 +274,28 @@ void PanelSettings::Software()
 	ImVec4 grey = ImVec4(0.5, 0.5, 0.5, 1);
 
 	// SDL Version
-	ImGui::Text("SDL Version");
+	ImGui::Text("SDL ");
 	ImGui::SameLine();
 	ImGui::TextColored(grey, "%s", hardware_info.sdl_version);
-	ImGui::Separator();
+
+	ImGui::Text("OpenGL ");
+	ImGui::SameLine();
+	ImGui::TextColored(grey, "2022-12-04#3");
+	
+	ImGui::Text("Glew ");
+	ImGui::SameLine();
+	ImGui::TextColored(grey, "2.2.0#3");
+
+	ImGui::Text("ImGui ");
+	ImGui::SameLine();
+	ImGui::TextColored(grey, "1.89.9");
+
+	ImGui::Text("DevIL ");
+	ImGui::SameLine();
+	ImGui::TextColored(grey, "1.8.0#11");
+
+	ImGui::Text("Assimp ");
+	ImGui::SameLine();
+	ImGui::TextColored(grey, "5.2.5");
 }
 // --------------------------------------------------

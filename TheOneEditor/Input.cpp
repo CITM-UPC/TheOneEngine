@@ -145,10 +145,13 @@ bool Input::processSDLEvents()
                 // In case if dropped file
                 std::string dropped_filedir = event.drop.file;
 
-                if (dropped_filedir.ends_with(".fbx")) {
+                if (dropped_filedir.ends_with(".fbx"))
+                {
+                    LOG(LogType::LOG_ASSIMP, "Importing Asset");
+
                     if (std::filesystem::exists(dropped_filedir))
                     {
-                        LOG(LogType::LOG_INFO, "FBX already exists: %s", dropped_filedir.c_str());
+                        LOG(LogType::LOG_WARNING, "-FBX already exists: %s", dropped_filedir.c_str());
                     }
                     else
                     {
@@ -156,7 +159,7 @@ bool Input::processSDLEvents()
                     }
 
                     app->sceneManager->CreateMeshGO(dropped_filedir);
-                    LOG(LogType::LOG_OK ,"FBX added and GameObject created: %s", dropped_filedir.c_str());
+                    LOG(LogType::LOG_OK ,"-FBX added and GameObject created: %s", dropped_filedir.c_str());
                 }
                 else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
                     std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
