@@ -25,7 +25,7 @@ bool SceneManager::Start()
     /*CreateEmptyGO();
     CreateCube();
     CreateSphere();*/
-    CreateMeshGO("Assets/mf.fbx");
+    CreateMeshGO("Assets/baker_house.fbx");
 
     return true;
 }
