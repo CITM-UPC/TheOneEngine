@@ -31,6 +31,7 @@ bool Renderer3D::Start()
 
     // hekbas test adding same component
     cameraGO.get()->AddComponent(ComponentType::Camera);
+    cameraGO.get()->GetComponent<Transform>().get()->setPosition(vec3f(0,2,-10));
 
     app->engine->Start();
     return true;
