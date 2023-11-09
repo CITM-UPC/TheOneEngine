@@ -3,7 +3,6 @@
 #include "Gui.h"
 #include "imgui.h"
 #include "imgui_internal.h"
-#include "imgui_stdlib.h"
 #include "SceneManager.h"
 
 
@@ -31,7 +30,7 @@ bool PanelInspector::Draw()
 
             ImGui::Checkbox("Enable", &app->sceneManager->GetSelectedGO().get()->enabled);
             ImGui::SameLine(); 
-            ImGui::InputText(" ", &app->sceneManager->GetSelectedGO().get()->name);
+            ImGui::InputText(" ", (char*)app->sceneManager->GetSelectedGO().get()->name.c_str(), app->sceneManager->GetSelectedGO().get()->name.capacity() + 1);
 
             ImGui::SetNextItemWidth(100.0f);
             if (ImGui::BeginCombo("Tag", "Untagged", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
