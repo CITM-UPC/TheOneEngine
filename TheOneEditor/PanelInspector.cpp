@@ -3,6 +3,7 @@
 #include "Gui.h"
 #include "imgui.h"
 #include "imgui_internal.h"
+#include "imgui_stdlib.h"
 #include "SceneManager.h"
 
 
@@ -25,9 +26,12 @@ bool PanelInspector::Draw()
 
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
-            //ImGui::Checkbox("Active", &gameObjSelected->isActive);
-            ImGui::SameLine(); ImGui::Text("GameObject");
-            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+            std::shared_ptr<Transform> transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
+            std::shared_ptr<Mesh> mesh = app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>();
+
+            ImGui::Checkbox("Enable", &app->sceneManager->GetSelectedGO().get()->enabled);
+            ImGui::SameLine(); 
+            ImGui::InputText(" ", &app->sceneManager->GetSelectedGO().get()->name);
 
             ImGui::SetNextItemWidth(100.0f);
             if (ImGui::BeginCombo("Tag", "Untagged", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
@@ -41,55 +45,41 @@ bool PanelInspector::Draw()
             if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
+                ImGui::Checkbox("Active", &transform->enabled);
                 if (ImGui::BeginTable("", 4))
                 {
-                    //ImGui::DragFloat("", &transform->sc.x, 0.005f, -FLT_MAX, +FLT_MAX, "%.3f");
                     ImGui::TableNextRow();
                     ImGui::TableSetColumnIndex(0);
-                    //ImGui::Checkbox("Active", &transform->isActive);
-                    ImGui::Text("");
+                    
                     ImGui::Text("Position");
                     ImGui::Text("Rotation");
                     ImGui::Text("Scale");
 
                     ImGui::TableSetColumnIndex(1);
-                    ImGui::Text("X");
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition().x).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getEulerAngles().x).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getScale().x).c_str());
+                    ImGui::InputFloat("x", &transform.get()->position.x);
+                    ImGui::InputFloat("x", &transform.get()->localEulerAngles.x);
+                    ImGui::InputFloat("x", &transform.get()->localScale.x);
 
                     ImGui::TableSetColumnIndex(2);
-                    ImGui::Text("Y");
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition().y).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getEulerAngles().y).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getScale().y).c_str());
+                    ImGui::InputFloat("y", &transform.get()->position.y);
+                    ImGui::InputFloat("y", &transform.get()->localEulerAngles.y);
+                    ImGui::InputFloat("y", &transform.get()->localScale.y);
 
                     ImGui::TableSetColumnIndex(3);
-                    ImGui::Text("Z");
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition().z).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getEulerAngles().z).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getScale().z).c_str());
+                    ImGui::InputFloat("z", &transform.get()->position.z);
+                    ImGui::InputFloat("z", &transform.get()->localEulerAngles.z);
+                    ImGui::InputFloat("z", &transform.get()->localScale.z);
 
                     ImGui::EndTable();
                 }
 
             }
-            //static char buf[5] = "0";
-            //ImGui::Text("Position");
-            ////ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-            //ImGui::PushItemWidth(40.0f);
-            //ImGui::SameLine();
-            //ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
-            //ImGui::SameLine();
-            //ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
-            //ImGui::SameLine();
-            //ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
-
+            
             /*Mesh Component*/
             if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
                 ImGui::SetItemTooltip("Displays and sets mesh data");
-                //ImGui::Checkbox("Active", &mesh->isActive);
+                ImGui::Checkbox("Active", &mesh->enabled);
                 //ImGui::SameLine();  
                 ImGui::Text("Name: ");
                 ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()->GetName().c_str());

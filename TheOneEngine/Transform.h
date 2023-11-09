@@ -44,15 +44,16 @@ public:
     vec3f getScale() const;
     void setScale(const vec3f& newScale);
 
-
     quatf EulerAnglesToQuaternion(const vec3f& eulerAngles);    // Converts Euler Angles to Quaternion
 
 
-private:
+public:
 
     vec3f position;
     quatf rotation;
     quatf localRotation;
+    vec3f eulerAngles;
+    vec3f localEulerAngles;
     vec3f scale;
     vec3f localScale;
     mat4f globalMatrix; // Stores the transformations

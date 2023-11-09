@@ -3,8 +3,8 @@
 Transform::Transform(std::shared_ptr<GameObject> containerGO)
     : Component(containerGO, ComponentType::Transform),
     globalMatrix(1.0f),
-    position(0.0f), rotation(1, 0, 0, 0), scale(1.0f),
-    localScale(1.0f), localRotation(1, 0, 0, 0)
+    position(0.0f), rotation(1, 0, 0, 0), scale(1.0f), eulerAngles(0,0,0),
+    localScale(1.0f), localRotation(1, 0, 0, 0), localEulerAngles(0, 0, 0)
 {}
 
 Transform::~Transform() {}
@@ -28,10 +28,12 @@ void Transform::rotate(const vec3f& axis, float angle, bool local)
     if (local) {
         localRotation = rotationQuat * localRotation;
         localRotation = glm::normalize(localRotation);
+        localEulerAngles = glm::eulerAngles(localRotation);
     }
     else {
         rotation = rotationQuat * rotation;
         rotation = glm::normalize(rotation);
+        this->eulerAngles = glm::eulerAngles(rotation);
     }
 }
 
@@ -42,10 +44,12 @@ void Transform::rotate(const vec3f& eulerAngles, bool local)
     if (local) {
         localRotation = rotationQuat * localRotation;
         localRotation = glm::normalize(localRotation);
+        localEulerAngles = glm::eulerAngles(localRotation);
     }
     else {
         rotation = rotationQuat * rotation;
         rotation = glm::normalize(rotation);
+        this->eulerAngles = glm::eulerAngles(rotation);
     }
 }
 

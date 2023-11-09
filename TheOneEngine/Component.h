@@ -44,6 +44,7 @@ protected:
     std::weak_ptr<GameObject> containerGO;
     ComponentType type;
     std::string name;
+public:
     bool enabled;
 };
 

@@ -39,8 +39,6 @@ public:
     // Get/Set
     uint GetNumberGO();
     std::vector<std::shared_ptr<GameObject>>GetGameObjects();
-    /*uint GetSelectedGO();
-    void SetSelectedGO(uint index);*/
     
     std::shared_ptr<GameObject> GetSelectedGO();
     void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
