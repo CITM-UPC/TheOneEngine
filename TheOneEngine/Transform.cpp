@@ -17,7 +17,7 @@ void Transform::translate(const vec3f& translation, bool local)
         position += localRotation * translation;
     }
     else {
-        position += translation;
+        position += rotation * translation;
     }
 }
 

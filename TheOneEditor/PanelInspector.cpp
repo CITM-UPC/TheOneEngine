@@ -30,7 +30,7 @@ bool PanelInspector::Draw()
 
             ImGui::Checkbox("Enable", &app->sceneManager->GetSelectedGO().get()->enabled);
             ImGui::SameLine(); 
-            ImGui::InputText(" ", (char*)app->sceneManager->GetSelectedGO().get()->name.c_str(), app->sceneManager->GetSelectedGO().get()->name.capacity() + 1);
+            ImGui::InputText(" ", (char*)app->sceneManager->GetSelectedGO().get()->name.c_str(), 19);
 
             ImGui::SetNextItemWidth(100.0f);
             if (ImGui::BeginCombo("Tag", "Untagged", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
