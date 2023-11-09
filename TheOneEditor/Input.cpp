@@ -146,11 +146,15 @@ bool Input::processSDLEvents()
                 std::string dropped_filedir = event.drop.file;
 
                 if (dropped_filedir.ends_with(".fbx")) {
-                    /*if (std::filesystem::exists(dropped_filedir))
+                    if (std::filesystem::exists(dropped_filedir))
                     {
                         LOG(LogType::LOG_INFO, "FBX already exists: %s", dropped_filedir.c_str());
-                    }*/
-                    std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
+                    }
+                    else
+                    {
+                        std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
+                    }
+
                     app->sceneManager->CreateMeshGO(dropped_filedir);
                     LOG(LogType::LOG_OK ,"FBX added and GameObject created: %s", dropped_filedir.c_str());
                 }
