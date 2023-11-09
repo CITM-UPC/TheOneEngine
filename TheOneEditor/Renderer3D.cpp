@@ -23,6 +23,8 @@ bool Renderer3D::Awake()
 
 bool Renderer3D::Start()
 {
+    app->engine->Start();
+
     // Creating Editor Camera GO (Outside hierarchy)
     cameraGO = std::make_shared<GameObject>("EDITOR CAMERA");
     cameraGO.get()->AddComponent(ComponentType::Transform);
@@ -31,7 +33,6 @@ bool Renderer3D::Start()
     // hekbas test adding same component
     cameraGO.get()->AddComponent(ComponentType::Camera);
 
-    app->engine->Start();
     return true;
 }
 

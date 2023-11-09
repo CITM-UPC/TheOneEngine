@@ -1,8 +1,34 @@
 #include "MeshLoader.h"
+#include "Texture.h"
 
 #include <assimp/postprocess.h>
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
+
+//#include <GL/glew.h>
+
+#include <span>
+#include <vector>
+#include <array>
+#include <filesystem>
+
+
+namespace fs = std::filesystem;
+using namespace std;
+
+struct aiMeshExt : aiMesh
+{
+    auto verts() const { return span((vec3f*)mVertices, mNumVertices); }
+    auto texCoords() const { return span((vec3f*)mTextureCoords[0], mNumVertices); }
+    auto faces() const { return span(mFaces, mNumFaces); }
+};
+
+struct aiSceneExt : aiScene
+{
+    auto materials() const { return span(mMaterials, mNumMaterials); }
+    auto meshes() const { return span((aiMeshExt**)mMeshes, mNumMeshes); }
+};
+
 
 
 MeshLoader::MeshLoader() {}
@@ -70,8 +96,10 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
 
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
+    
     for (size_t m = 0; m < scene->mNumMeshes; ++m)
     {
+        // MESH
         auto mesh = scene->mMeshes[m];
         auto faces = mesh->mFaces;
         vec3f* verts = (vec3f*)mesh->mVertices;
@@ -93,13 +121,6 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
             index_data.push_back(faces[f].mIndices[2]);
         }
 
-        auto material = scene->mMaterials[mesh->mMaterialIndex];
-        aiString aiPath;
-        material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
-
-        std::string folderPath = "Assets\\";
-        std::string texPath = folderPath + aiScene::GetShortFilename(aiPath.C_Str());
-
         meshData =
         {
             Formats::F_V3T2,
@@ -108,7 +129,37 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
         };
 
         BufferData(meshData);
-        meshBuffData.texturePath = texPath;
+
+
+        //TEXTURE
+        auto material = scene->mMaterials[mesh->mMaterialIndex];
+        aiString aiPath;
+        material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
+
+        std::string folderPath = "Assets\\";
+        std::string texName = aiScene::GetShortFilename(aiPath.C_Str());
+        std::string texPath = folderPath + texName;
+
+        /*size_t slash_pos = path.rfind('/');
+        if (slash_pos == std::string::npos) slash_pos = path.rfind('\\');
+        std::string folder_path = (slash_pos != std::string::npos) ? path.substr(0, slash_pos + 1) : "./";
+        std::string texPath = folder_path + aiScene::GetShortFilename(aiPath.C_Str());*/
+
+        auto texture_ptr = std::make_shared<Texture>(containerGO, texPath);
+        texture_ptr->path = path;
+
+        if (scene->HasTextures())
+        {
+            texture_ptr->height = scene->mTextures[0]->mHeight;
+            texture_ptr->width = scene->mTextures[0]->mWidth;
+        }
+        else
+        {
+            texture_ptr->height = 1024;
+            texture_ptr->width = 1024;
+        }
+
+        meshBuffData.texture = texture_ptr;
 
         mehsesData.push_back(meshBuffData);
     }
@@ -116,4 +167,45 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
     aiReleaseImport(scene);
 
     return mehsesData;
+}
+
+std::vector<std::shared_ptr<Texture>> MeshLoader::loadTextureFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path)
+{
+    std::vector<std::shared_ptr<Texture>> texture_ptrs;
+
+    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
+
+    for (size_t m = 0; m < scene->mNumMeshes; ++m)
+    {
+        auto mesh = scene->mMeshes[m];
+
+        auto material = scene->mMaterials[mesh->mMaterialIndex];
+        aiString aiPath;
+        material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
+
+        size_t slash_pos = path.rfind('/');
+        if (slash_pos == std::string::npos) slash_pos = path.rfind('\\');
+        std::string folder_path = (slash_pos != std::string::npos) ? path.substr(0, slash_pos + 1) : "./";
+        std::string texPath = folder_path + aiScene::GetShortFilename(aiPath.C_Str());
+
+        auto texture_ptr = std::make_shared<Texture>(containerGO, texPath);
+        texture_ptr->path = path;
+
+        if (scene->HasTextures())
+        {
+            texture_ptr->height = scene->mTextures[0]->mHeight;
+            texture_ptr->width = scene->mTextures[0]->mWidth;
+        }
+        else
+        {
+            texture_ptr->height = 1024;
+            texture_ptr->width = 1024;
+        }
+
+        texture_ptrs.push_back(texture_ptr);
+    }
+
+    aiReleaseImport(scene);
+
+    return texture_ptrs;
 }

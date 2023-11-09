@@ -10,6 +10,7 @@
 #include <string>
 
 class GameObject;
+class Texture;
 
 enum Formats { F_V3, F_V3C4, F_V3T2 };
 struct V3 { vec3f v; };
@@ -34,6 +35,10 @@ struct MeshBufferedData
 	uint numIndexs;
 
 	std::string texturePath;
+
+	std::string meshName;
+
+	std::shared_ptr<Texture> texture;
 };
 
 class MeshLoader
@@ -45,8 +50,10 @@ public:
 	virtual ~MeshLoader();
 
 	std::vector<MeshBufferedData> loadFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path);
-	void BufferData(MeshData meshData);
 
+	std::vector<std::shared_ptr<Texture>> loadTextureFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path);
+
+	void BufferData(MeshData meshData);
 
 private:
 

@@ -71,8 +71,9 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
     std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
     meshGO.get()->AddComponent(ComponentType::Transform);
     meshGO.get()->AddComponent(ComponentType::Mesh);
+    //meshGO.get()->AddComponent(ComponentType::Texture);
     meshGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(meshGO, path);
-
+    
     gameObjects.push_back(meshGO);
 
     return nullptr;

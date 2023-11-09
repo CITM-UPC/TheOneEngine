@@ -30,7 +30,7 @@ void Mesh::DrawComponent()
 
         case Formats::F_V3T2:
             glEnable(GL_TEXTURE_2D);
-            if (texture.get()) texture->bind();
+            if (mesh.texture.get()) mesh.texture->bind();
             glEnableClientState(GL_TEXTURE_COORD_ARRAY);
             glVertexPointer(3, GL_FLOAT, sizeof(V3T2), nullptr);
             glTexCoordPointer(2, GL_FLOAT, sizeof(V3T2), (void*)sizeof(V3));

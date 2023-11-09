@@ -4,20 +4,24 @@
 
 #include <algorithm>
 
-#define CHECKERS_HEIGHT 16
-#define CHECKERS_WIDTH 16
+#define CHECKERS_HEIGHT 32
+#define CHECKERS_WIDTH 32
 
 
 using namespace std;
 
-Texture::Texture(const std::string& path)
+Texture::Texture(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Texture), _id(0) {}
+
+Texture::Texture(std::shared_ptr<GameObject> containerGO, const std::string& path) : Component(containerGO, ComponentType::Texture)
 {
     //load image data using devil
     auto img = ilGenImage();
     ilBindImage(img);
-    ilLoadImage((wchar_t*)path.c_str());
+    ilLoadImage((const wchar_t*)path.c_str());
     auto width = ilGetInteger(IL_IMAGE_WIDTH);
+    this->width = static_cast<uint>(width);
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);
+    this->height = static_cast<uint>(height);
     auto channels = ilGetInteger(IL_IMAGE_CHANNELS);
     auto data = ilGetData();
 
@@ -36,9 +40,9 @@ Texture::Texture(const std::string& path)
     ilDeleteImage(img);
 }
 
-Texture::Texture(Texture&& tex) noexcept : _id(tex._id) {
-    tex._id = 0;
-}
+//Texture::Texture(Texture&& tex) noexcept : _id(tex._id) {
+//    tex._id = 0;
+//}
 
 Texture::~Texture() {
     if (_id) glDeleteTextures(1, &_id);
