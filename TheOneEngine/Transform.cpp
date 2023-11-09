@@ -26,12 +26,12 @@ void Transform::rotate(const vec3f& axis, float angle, bool local)
     glm::quat rotationQuat = glm::angleAxis(glm::radians(angle), axis);
 
     if (local) {
-        localRotation = rotationQuat * localRotation;
+        localRotation = rotationQuat;
         localRotation = glm::normalize(localRotation);
         localEulerAngles = glm::eulerAngles(localRotation);
     }
     else {
-        rotation = rotationQuat * rotation;
+        rotation = rotationQuat;
         rotation = glm::normalize(rotation);
         this->eulerAngles = glm::eulerAngles(rotation);
     }
@@ -42,12 +42,12 @@ void Transform::rotate(const vec3f& eulerAngles, bool local)
     glm::quat rotationQuat = glm::quat(glm::radians(eulerAngles));
 
     if (local) {
-        localRotation = rotationQuat * localRotation;
+        localRotation = rotationQuat;
         localRotation = glm::normalize(localRotation);
         localEulerAngles = glm::eulerAngles(localRotation);
     }
     else {
-        rotation = rotationQuat * rotation;
+        rotation = rotationQuat;
         rotation = glm::normalize(rotation);
         this->eulerAngles = glm::eulerAngles(rotation);
     }
@@ -67,16 +67,19 @@ void Transform::scaleBy(const vec3f& scaling, bool local)
 // Get / Set ----------------------------------------------------
 vec3f Transform::getForward() 
 {
+    updateMatrix();
     return glm::normalize(globalMatrix[2]);
 }
 
 vec3f Transform::getUp() 
 {
+    updateMatrix();
     return glm::normalize(globalMatrix[1]);
 }
 
 vec3f Transform::getRight() 
 {
+    updateMatrix();
     return glm::normalize(globalMatrix[0]);
 }
 
