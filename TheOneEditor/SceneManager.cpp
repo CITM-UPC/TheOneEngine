@@ -68,10 +68,26 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 {
+    int size = gameObjects.size();
+
     std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
     meshGO.get()->AddComponent(ComponentType::Transform);
     meshGO.get()->AddComponent(ComponentType::Mesh);
     meshGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(meshGO, path);
+
+    for (size_t i = 0; i < gameObjects.size(); i++)
+    {
+        if (meshGO.get()->GetName() == gameObjects[i].get()->GetName())
+        {
+            size++;
+            i = 0;
+        }
+    }
+
+    if (size != 0)
+    {
+        meshGO.get()->SetName("Mesh GameObject " + std::to_string(size));
+    }
 
     gameObjects.push_back(meshGO);
 
@@ -110,7 +126,22 @@ std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
     return gameObjects;
 }
 
-uint SceneManager::GetSelectedGO()
+//uint SceneManager::GetSelectedGO()
+//{
+//    return selectedGameObject;
+//}
+
+void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
+{
+    selectedGameObject = gameObj;
+}
+
+std::shared_ptr<GameObject> SceneManager::GetSelectedGO()
 {
     return selectedGameObject;
 }
+
+//void SceneManager::SetSelectedGO(uint index)
+//{
+//    selectedGameObject = index;
+//}

@@ -17,13 +17,12 @@ bool PanelHierarchy::Draw()
 	{
 		if (ImGui::BeginChild("GameObjects", ImVec2(325, 0), true))
 		{
-
-
+			uint counter = 0;
 			for (const auto gameObject : app->sceneManager->GetGameObjects())
 			{
-				if (ImGui::Selectable(gameObject.get()->GetName().data(), true))
+				if (ImGui::Selectable(gameObject.get()->GetName().data(), app->sceneManager->GetSelectedGO() == gameObject))
 				{
-
+					app->sceneManager->SetSelectedGO(gameObject);
 				}
 			}
 

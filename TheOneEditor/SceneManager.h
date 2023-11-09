@@ -38,13 +38,17 @@ public:
     // Get/Set
     uint GetNumberGO();
     std::vector<std::shared_ptr<GameObject>>GetGameObjects();
-    uint GetSelectedGO();
+    /*uint GetSelectedGO();
+    void SetSelectedGO(uint index);*/
+    
+    std::shared_ptr<GameObject> GetSelectedGO();
+    void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
 
 private:
-    uint selectedGameObject;
+    //uint selectedGameObject;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
-
+    std::shared_ptr<GameObject> selectedGameObject;
     MeshLoader* meshLoader;
 };
 

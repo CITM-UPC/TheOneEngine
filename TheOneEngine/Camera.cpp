@@ -41,6 +41,20 @@ void Camera::translate(const vec3f& translation, bool local)
     updateViewMatrix();
 }
 
+void Camera::setPosition(const vec3f& newPosition)
+{
+    if (auto sharedGO = this->containerGO.lock())
+    {
+        sharedGO.get()->GetComponent<Transform>().get()->setPosition(newPosition);
+    }
+    else
+    {
+        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+    }
+
+    updateViewMatrix();
+}
+
 void Camera::rotate(const vec3f& axis, float angle, bool local)
 {
     if (auto sharedGO = this->containerGO.lock())
