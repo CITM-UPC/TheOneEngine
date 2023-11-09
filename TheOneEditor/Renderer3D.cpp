@@ -24,6 +24,8 @@ bool Renderer3D::Awake()
 
 bool Renderer3D::Start()
 {
+    app->engine->Start();
+
     // Creating Editor Camera GO (Outside hierarchy)
     cameraGO = std::make_shared<GameObject>("EDITOR CAMERA");
     cameraGO.get()->AddComponent(ComponentType::Transform);
@@ -33,7 +35,6 @@ bool Renderer3D::Start()
     cameraGO.get()->AddComponent(ComponentType::Camera);
     cameraGO.get()->GetComponent<Transform>().get()->setPosition(vec3f(0,2,-10));
 
-    app->engine->Start();
     return true;
 }
 

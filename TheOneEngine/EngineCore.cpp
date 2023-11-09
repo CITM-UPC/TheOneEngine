@@ -12,7 +12,8 @@ EngineCore::EngineCore()
 
 void EngineCore::Awake()
 {
-    
+    LOG(LogType::LOG_OK, "Initializing DevIL");
+    ilInit();
 }
 
 void EngineCore::Start()
@@ -66,8 +67,6 @@ static void drawGrid(int grid_size, int grid_step)
 
 void EngineCore::Render(RenderModes renderMode, std::shared_ptr<Camera> camera)
 {  
-    ilInit();
-
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
