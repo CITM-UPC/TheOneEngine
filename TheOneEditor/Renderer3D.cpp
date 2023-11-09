@@ -89,10 +89,11 @@ void Renderer3D::CameraInput(double dt)
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
         /* MOUSE CAMERA MOVEMENT */
-        camera.get()->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
-        camera.get()->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
+        float dx = -app->input->GetMouseXMotion() * mouseSensitivity;
+        float dy = app->input->GetMouseYMotion() * mouseSensitivity;
 
-        camera.get()->rotate(vec3f(camera.get()->pitch, camera.get()->yaw, 0.0f), false);
+        camera.get()->rotate(vec3f(0.0f, dx, 0.0f), false);
+        camera.get()->rotate(vec3f(dy, 0.0f, 0.0f), true);
 
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
@@ -120,13 +121,13 @@ void Renderer3D::CameraInput(double dt)
     // Orbit Object with Alt + LMB
     if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
-        camera.get()->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
-        camera.get()->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
+        float dx = -app->input->GetMouseXMotion() * mouseSensitivity;
+        float dy = app->input->GetMouseYMotion() * mouseSensitivity;
 
         camera.get()->setPosition(camera.get()->center);
        
-        camera.get()->rotate(vec3f(0.0f, 1.0f, 0.0f), camera.get()->yaw, false);
-        camera.get()->rotate(vec3f(1.0f, 0.0f, 0.0f), camera.get()->pitch, true);
+        camera.get()->rotate(vec3f(0.0f, 1.0f, 0.0f), dx, false);
+        camera.get()->rotate(vec3f(1.0f, 0.0f, 0.0f), dy, true);
 
         vec3f finalPos;
         finalPos = transform.get()->getPosition() - transform.get()->getForward();
