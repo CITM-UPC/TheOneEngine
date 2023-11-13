@@ -13,9 +13,11 @@ bool Window::Awake()
 {
     bool ret = true;
 
+    LOG(LogType::LOG_INFO, "# Initializing SDL Window with OpenGL...");
     if (!initSDLWindowWithOpenGL())
         return false;
 
+    LOG(LogType::LOG_INFO, "# Initializing OpenGL...");
     if (!createSdlGlContext())
         return false;
 
@@ -43,14 +45,12 @@ bool Window::CleanUp()
 
 bool Window::initSDLWindowWithOpenGL()
 {
-    LOG(LogType::LOG_INFO, "# Initializing SDL Window with OpenGL");
-
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
-        LOG(LogType::LOG_ERROR, "-Initializing SDL video subsystem: %s", SDL_GetError());
+        LOG(LogType::LOG_ERROR, "-Init SDL video subsystem: %s", SDL_GetError());
         return false;
     }
-    LOG(LogType::LOG_OK, "-Initializing SDL video subsystem");
+    LOG(LogType::LOG_OK, "-Init SDL video subsystem");
 
 
     SDL_version compiled;
@@ -89,8 +89,6 @@ bool Window::initSDLWindowWithOpenGL()
 // hekbas MUST move glContext and OpenGL Init to ENGINE
 bool Window::createSdlGlContext()
 {
-    LOG(LogType::LOG_INFO, "# Initializing OpenGL");
-
     glContext = SDL_GL_CreateContext(window);
     if (!glContext)
     {
@@ -101,10 +99,10 @@ bool Window::createSdlGlContext()
 
     if (SDL_GL_MakeCurrent(window, glContext) != 0)
     {
-        LOG(LogType::LOG_ERROR, "-Setting the current OpenGL context : % s", SDL_GetError());
+        LOG(LogType::LOG_ERROR, "-Setting current OpenGL context : % s", SDL_GetError());
         return false;
     }
-    LOG(LogType::LOG_OK, "-Setting the current OpenGL context");
+    LOG(LogType::LOG_OK, "-Setting current OpenGL context");
 
     if (SDL_GL_SetSwapInterval(1) != 0)
     {
@@ -118,25 +116,25 @@ bool Window::createSdlGlContext()
 
 bool Window::initOpenGL()
 {
-    LOG(LogType::LOG_INFO, "# Initializing OpenGL");
-
     auto glew_init_error = glewInit();
     if (glew_init_error != GLEW_OK)
     {
-        LOG(LogType::LOG_ERROR, "-Initializing Glew: %s", glewGetErrorString(glew_init_error));
+        LOG(LogType::LOG_ERROR, "-Init Glew: %s", glewGetErrorString(glew_init_error));
         return false;
     }
+    LOG(LogType::LOG_OK, "-Init Glew");
 
     if (!GLEW_VERSION_3_1)
     {
         LOG(LogType::LOG_ERROR, "-OpenGL 3.1 Not Supported!");
         return false;
     }
+    LOG(LogType::LOG_OK, "-OpenGL 3.1 Supported");
 
     glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
     glClearColor(0.25, 0.25, .25, 1);
 
-    LOG(LogType::LOG_OK, "-Initializing OpenGL");
+    LOG(LogType::LOG_OK, "-Init OpenGL");
 
     return true;
 }

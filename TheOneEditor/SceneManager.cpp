@@ -42,7 +42,6 @@ bool SceneManager::Update(double dt)
 
 bool SceneManager::PostUpdate()
 {
-
     for (const auto gameObject : gameObjects)
     {
         gameObject.get()->Draw();

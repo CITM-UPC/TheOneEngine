@@ -29,7 +29,7 @@ Gui::~Gui() {}
 
 bool Gui::Awake()
 {
-    LOG(LogType::LOG_INFO, "# Initializing GUI Panels");
+    LOG(LogType::LOG_INFO, "# Initializing GUI Panels...");
 
     bool ret = true;
 
@@ -77,7 +77,7 @@ bool Gui::isInitialized(Panel* panel)
 
 bool Gui::Start()
 {
-    LOG(LogType::LOG_INFO, "# Creating ImGui context");
+    LOG(LogType::LOG_INFO, "# Initializing ImGui/ImPlot...");
 
     IMGUI_CHECKVERSION();
     LOG(LogType::LOG_OK, "-ImGui version: %s", IMGUI_VERSION);
