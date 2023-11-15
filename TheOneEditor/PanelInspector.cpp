@@ -1,9 +1,14 @@
 #include "PanelInspector.h"
 #include "App.h"
 #include "Gui.h"
+#include "SceneManager.h"
+
+#include "..\TheOneEngine\Transform.h"
+#include "..\TheOneEngine\Mesh.h"
+#include "..\TheOneEngine\Camera.h"
+
 #include "imgui.h"
 #include "imgui_internal.h"
-#include "SceneManager.h"
 
 
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) {}
@@ -41,6 +46,9 @@ bool PanelInspector::Draw()
             if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
+
+                Transform* transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
+
                 if (ImGui::BeginTable("", 4))
                 {
                     //ImGui::DragFloat("", &transform->sc.x, 0.005f, -FLT_MAX, +FLT_MAX, "%.3f");
@@ -54,25 +62,24 @@ bool PanelInspector::Draw()
 
                     ImGui::TableSetColumnIndex(1);
                     ImGui::Text("X");
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition().x).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getEulerAngles().x).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getScale().x).c_str());
+                    ImGui::Text(std::to_string(transform->getPosition().x).c_str());
+                    ImGui::Text(std::to_string(transform->getEulerAngles().x).c_str());
+                    ImGui::Text(std::to_string(transform->getScale().x).c_str());
 
                     ImGui::TableSetColumnIndex(2);
                     ImGui::Text("Y");
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition().y).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getEulerAngles().y).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getScale().y).c_str());
+                    ImGui::Text(std::to_string(transform->getPosition().y).c_str());
+                    ImGui::Text(std::to_string(transform->getEulerAngles().y).c_str());
+                    ImGui::Text(std::to_string(transform->getScale().y).c_str());
 
                     ImGui::TableSetColumnIndex(3);
                     ImGui::Text("Z");
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition().z).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getEulerAngles().z).c_str());
-                    ImGui::Text(std::to_string(app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getScale().z).c_str());
+                    ImGui::Text(std::to_string(transform->getPosition().z).c_str());
+                    ImGui::Text(std::to_string(transform->getEulerAngles().z).c_str());
+                    ImGui::Text(std::to_string(transform->getScale().z).c_str());
 
                     ImGui::EndTable();
                 }
-
             }
             //static char buf[5] = "0";
             //ImGui::Text("Position");
@@ -88,11 +95,13 @@ bool PanelInspector::Draw()
             /*Mesh Component*/
             if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
+                Mesh* mesh = app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>();
+
                 ImGui::SetItemTooltip("Displays and sets mesh data");
                 //ImGui::Checkbox("Active", &mesh->isActive);
                 //ImGui::SameLine();  
                 ImGui::Text("Name: ");
-                ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()->GetName().c_str());
+                ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->GetName().c_str());
                 ImGui::Separator();
                 ImGui::Text("Indexes: ");
                 ImGui::SameLine();  ImGui::Text(/*app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()*/"0");

@@ -5,6 +5,8 @@
 #include "Defs.h"
 #include "Component.h"
 
+#include "..\TheOneEditor\Log.h"
+
 #include <string>
 #include <vector>
 #include <list>
@@ -23,21 +25,39 @@ public:
 
     // Components
     template <typename TComponent>
-    std::shared_ptr<TComponent> GetComponent()
+    TComponent* GetComponent()
     {
         for (const auto& component : components)
         {
-            if (component && dynamic_cast<TComponent*>(component.get()))
-                return std::static_pointer_cast<TComponent>(component);
+            if (dynamic_cast<TComponent*>(component.get()))
+                return static_cast<TComponent*>(component.get());
         }
-
         return nullptr;
     }
 
-    std::shared_ptr<Component> AddComponent(ComponentType type, int index = -1);
+    template <typename TComponent>
+    bool AddComponent()
+    {
+        Component* component = this->GetComponent<TComponent>();
+
+        // Check for already existing Component
+        if (component != nullptr)
+        {
+            LOG(LogType::LOG_WARNING, "Component already applied");
+            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
+            LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
+
+            return false;
+        }
+
+        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());       
+        newComponent->Enable(); // hekbas: Enable the component if necessary?
+        components.push_back(std::move(newComponent));
+
+        return true;
+    }
+
     void RemoveComponent(ComponentType type);
-    std::shared_ptr<Component> HasComponent(ComponentType type) const;
-    std::vector<std::shared_ptr<Component>>& GetComponents();
 
     // Get/Set
     bool IsEnabled() const;
@@ -54,7 +74,7 @@ private:
     std::string name;
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;
-    std::vector<std::shared_ptr<Component>> components;
+    std::vector<std::unique_ptr<Component>> components;
     bool enabled;
     bool isStatic;
     int index;

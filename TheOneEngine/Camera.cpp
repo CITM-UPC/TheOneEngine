@@ -8,14 +8,24 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     forward(), right(), up(),
     eye(), center()
 {
-    if (auto sharedGO = this->containerGO.lock())
+    Transform* transform = containerGO.get()->GetComponent<Transform>();
+
+    if (transform)
     {
-        forward = sharedGO.get()->GetComponent<Transform>().get()->getForward();
-        right = sharedGO.get()->GetComponent<Transform>().get()->getRight();
-        up = sharedGO.get()->GetComponent<Transform>().get()->getUp();
-        eye = sharedGO.get()->GetComponent<Transform>().get()->getPosition();
+        forward = transform->getForward();
+        right = transform->getRight();
+        up = transform->getUp();
+        eye = transform->getPosition();
         center = eye - forward; //hekbas maybe +
     }
+    //if (auto sharedGO = this->containerGO.lock())
+    //{
+    //    forward = sharedGO.get()->GetComponent<Transform>().get()->getForward();
+    //    right = sharedGO.get()->GetComponent<Transform>().get()->getRight();
+    //    up = sharedGO.get()->GetComponent<Transform>().get()->getUp();
+    //    eye = sharedGO.get()->GetComponent<Transform>().get()->getPosition();
+    //    center = eye - forward; //hekbas maybe +
+    //}
     else
     {
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
@@ -31,7 +41,7 @@ void Camera::translate(const vec3f& translation, bool local)
 {
     if (auto sharedGO = this->containerGO.lock())
     {
-        sharedGO.get()->GetComponent<Transform>().get()->translate(translation, local);
+        sharedGO.get()->GetComponent<Transform>()->translate(translation, local);
     }
     else
     {
@@ -45,7 +55,7 @@ void Camera::setPosition(const vec3f& newPosition)
 {
     if (auto sharedGO = this->containerGO.lock())
     {
-        sharedGO.get()->GetComponent<Transform>().get()->setPosition(newPosition);
+        sharedGO.get()->GetComponent<Transform>()->setPosition(newPosition);
     }
     else
     {
@@ -59,7 +69,7 @@ void Camera::rotate(const vec3f& axis, float angle, bool local)
 {
     if (auto sharedGO = this->containerGO.lock())
     {
-        sharedGO.get()->GetComponent<Transform>().get()->rotate(axis, angle, local);
+        sharedGO.get()->GetComponent<Transform>()->rotate(axis, angle, local);
     }
     else
     {
@@ -73,7 +83,7 @@ void Camera::rotate(const vec3f& eulerRotation, bool local)
 {
     if (auto sharedGO = this->containerGO.lock())
     {
-        sharedGO.get()->GetComponent<Transform>().get()->rotate(eulerRotation, local);
+        sharedGO.get()->GetComponent<Transform>()->rotate(eulerRotation, local);
     }
     else
     {
@@ -93,7 +103,7 @@ void Camera::updateViewMatrix()
 {
     if (auto sharedGO = this->containerGO.lock())
     {
-        viewMatrix = glm::inverse(sharedGO.get()->GetComponent<Transform>().get()->getMatrix());
+        viewMatrix = glm::inverse(sharedGO.get()->GetComponent<Transform>()->getMatrix());
     }
     else
     {
@@ -106,13 +116,25 @@ void Camera::updateCameraVectors()
 {
     if (auto sharedGO = this->containerGO.lock())
     {
+        Transform* transform = sharedGO.get()->GetComponent<Transform>();
+
+        forward = transform->getForward();
+        right = transform->getRight();
+        up = transform->getUp();
+
+        eye = transform->getPosition();
+        center = eye + forward;
+    }
+
+    /*if (auto sharedGO = this->containerGO.lock())
+    {
         forward = sharedGO.get()->GetComponent<Transform>().get()->getForward();
         right = sharedGO.get()->GetComponent<Transform>().get()->getRight();
         up = sharedGO.get()->GetComponent<Transform>().get()->getUp();
 
         eye = sharedGO.get()->GetComponent<Transform>().get()->getPosition();
         center = eye + forward;
-    }
+    }*/
     else
     {
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
