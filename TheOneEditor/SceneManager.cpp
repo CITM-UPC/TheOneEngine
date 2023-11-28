@@ -1,7 +1,5 @@
 #include "App.h"
 #include "SceneManager.h"
-#include "..\TheOneEngine\MeshLoader.h"
-#include "..\TheOneEngine\Mesh.h"
 
 
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
@@ -42,7 +40,6 @@ bool SceneManager::Update(double dt)
 
 bool SceneManager::PostUpdate()
 {
-
     for (const auto gameObject : gameObjects)
     {
         if (gameObject.get()->IsEnabled())
@@ -62,7 +59,7 @@ bool SceneManager::CleanUp()
 std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 {
     std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
-    emptyGO.get()->AddComponent(ComponentType::Transform);
+    emptyGO.get()->AddComponent<Transform>();
 
     int size = gameObjects.size();
 
@@ -88,10 +85,12 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 {
     std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
-    meshGO.get()->AddComponent(ComponentType::Transform);
-    meshGO.get()->AddComponent(ComponentType::Mesh);
-    //meshGO.get()->AddComponent(ComponentType::Texture);
-    meshGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(meshGO, path);
+    meshGO.get()->AddComponent<Transform>();
+    meshGO.get()->AddComponent<Mesh>();
+    //meshGO.get()->AddComponent<Texture>();
+
+    Mesh* mesh = meshGO.get()->GetComponent<Mesh>();
+    mesh->meshes = meshLoader->loadFromFile(meshGO, path);
 
     int size = gameObjects.size();
 
@@ -117,8 +116,8 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 std::shared_ptr<GameObject> SceneManager::CreateCube()
 {
     std::shared_ptr<GameObject> cubeGO = std::make_shared<GameObject>("Cube");
-    cubeGO.get()->AddComponent(ComponentType::Transform);
-    cubeGO.get()->AddComponent(ComponentType::Mesh);
+    cubeGO.get()->AddComponent<Transform>();
+    cubeGO.get()->AddComponent<Mesh>();
 
     int size = gameObjects.size();
 
@@ -144,8 +143,8 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
 std::shared_ptr<GameObject> SceneManager::CreateSphere()
 {
     std::shared_ptr<GameObject> sphereGO = std::make_shared<GameObject>("Sphere");
-    sphereGO.get()->AddComponent(ComponentType::Transform);
-    sphereGO.get()->AddComponent(ComponentType::Mesh);
+    sphereGO.get()->AddComponent<Transform>();
+    sphereGO.get()->AddComponent<Mesh>();
 
     int size = gameObjects.size();
 
@@ -171,9 +170,11 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 std::shared_ptr<GameObject> SceneManager::CreateMF()
 {
     std::shared_ptr<GameObject> mfGO = std::make_shared<GameObject>("Parsecs!");
-    mfGO.get()->AddComponent(ComponentType::Transform);
-    mfGO.get()->AddComponent(ComponentType::Mesh);
-    mfGO.get()->GetComponent<Mesh>().get()->meshes = meshLoader->loadFromFile(mfGO, "Assets/mf.fbx");
+    mfGO.get()->AddComponent<Transform>();
+    mfGO.get()->AddComponent<Mesh>();
+
+    Mesh* mesh = mfGO.get()->GetComponent<Mesh>();
+    mesh->meshes = meshLoader->loadFromFile(mfGO, "Assets/mf.fbx");
 
     int size = gameObjects.size();
 

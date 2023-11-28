@@ -27,7 +27,7 @@ public:
 
 	void Update(double dt);
 
-	void Render(RenderModes renderMode, std::shared_ptr<Camera> camera);
+	void Render(RenderModes renderMode, Camera* camera);
 
 	void OnWindowResize(int width, int height);
 

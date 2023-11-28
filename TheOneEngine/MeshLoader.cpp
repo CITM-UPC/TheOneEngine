@@ -136,14 +136,14 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
         aiString aiPath;
         material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
 
-        std::string folderPath = "Assets\\";
+        /*std::string folderPath = ASSETS_PATH;
         std::string texName = aiScene::GetShortFilename(aiPath.C_Str());
-        std::string texPath = folderPath + texName;
+        std::string texPath = folderPath + texName;*/
 
-        /*size_t slash_pos = path.rfind('/');
+        size_t slash_pos = path.rfind('/');
         if (slash_pos == std::string::npos) slash_pos = path.rfind('\\');
         std::string folder_path = (slash_pos != std::string::npos) ? path.substr(0, slash_pos + 1) : "./";
-        std::string texPath = folder_path + aiScene::GetShortFilename(aiPath.C_Str());*/
+        std::string texPath = folder_path + aiScene::GetShortFilename(aiPath.C_Str());
 
         auto texture_ptr = std::make_shared<Texture>(containerGO, texPath);
         texture_ptr->path = path;

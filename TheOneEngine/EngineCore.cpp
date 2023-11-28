@@ -65,7 +65,7 @@ static void drawGrid(int grid_size, int grid_step)
     glEnd();
 }
 
-void EngineCore::Render(RenderModes renderMode, std::shared_ptr<Camera> camera)
+void EngineCore::Render(RenderModes renderMode, Camera* camera)
 {  
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

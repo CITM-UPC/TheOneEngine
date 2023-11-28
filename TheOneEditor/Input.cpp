@@ -5,13 +5,14 @@
 #include "SceneManager.h"
 
 #include "Log.h"
-#include <filesystem>
 #include <string>
 #include <iostream>
+#include <filesystem>
 
 #define MAX_KEYS 300
 #define SCREEN_SIZE 1
 
+namespace fs = std::filesystem;
 
 Input::Input(App* app) : Module(app) 
 {
@@ -27,16 +28,21 @@ Input::~Input()
 
 bool Input::Awake()
 {
-    LOG(LogType::LOG_INFO, "Init SDL input event system");
     bool ret = true;
-    SDL_Init(0);
+    LOG(LogType::LOG_INFO, "# Initializing Input Events...");
 
-    if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+    if (SDL_InitSubSystem(SDL_INIT_EVENTS) == 0)
     {
-        LOG(LogType::LOG_ERROR,"SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
+        LOG(LogType::LOG_OK, "-Init SDL Input Event subsystem");
+    }
+    else
+    {
+        LOG(LogType::LOG_ERROR, "-SDL Input Event subsystem could not be initialized! %s", SDL_GetError());
         ret = false;
     }
 
+    LOG(LogType::LOG_OK, "-File System current path: %s", std::filesystem::current_path().string().c_str());
+  
     return ret;
 }
 
@@ -140,29 +146,38 @@ bool Input::processSDLEvents()
                 }
                 break;
             }
-            case (SDL_DROPFILE):
-            {      
-                // In case if dropped file
-                std::string dropped_filedir = event.drop.file;
+            case SDL_DROPFILE:
+            {
+                // just flag event here
 
-                if (dropped_filedir.ends_with(".fbx"))
+                // this code elsewhere
+                std::string fileDir = event.drop.file;
+                std::string fileName = fileDir.substr(fileDir.find_last_of('\\') + 1);
+                fs::path assetsDir = fs::path(ASSETS_PATH) / fileName;
+
+                // FBX
+                if (fileDir.ends_with(".fbx"))
                 {
-                    LOG(LogType::LOG_ASSIMP, "Importing Asset");
+                    LOG(LogType::LOG_ASSIMP, "Importing %s from: %s", fileName.data(), fileDir.data());
 
-                    if (std::filesystem::exists(dropped_filedir))
+                    if (std::filesystem::exists(assetsDir))
                     {
-                        LOG(LogType::LOG_WARNING, "-FBX already exists: %s", dropped_filedir.c_str());
+                        LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileName.data(), assetsDir.string().data());
                     }
                     else
                     {
-                        std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
+                        LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileName.data(), assetsDir.string().data());
+                        std::filesystem::copy(fileDir, ASSETS_PATH, std::filesystem::copy_options::overwrite_existing);
                     }
 
-                    app->sceneManager->CreateMeshGO(dropped_filedir);
-                    LOG(LogType::LOG_OK ,"-FBX added and GameObject created: %s", dropped_filedir.c_str());
+                    app->sceneManager->CreateMeshGO(assetsDir.string());
+                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", fileName.data());
                 }
-                else if (dropped_filedir.ends_with(".png") || dropped_filedir.ends_with(".dds")) {
-                    std::filesystem::copy(dropped_filedir, "Assets", std::filesystem::copy_options::overwrite_existing);
+
+                // PNG / DDS
+                else if (fileDir.ends_with(".png") || fileDir.ends_with(".dds"))
+                {
+                    std::filesystem::copy(fileDir, "Assets", std::filesystem::copy_options::overwrite_existing);
                 }
                 SDL_free(event.drop.file);
                 break;

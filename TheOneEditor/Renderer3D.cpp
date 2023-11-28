@@ -7,6 +7,9 @@
 
 #include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Component.h"
+#include "..\TheOneEngine\Transform.h"
+#include "..\TheOneEngine\Mesh.h"
+#include "..\TheOneEngine\Camera.h"
 
 
 Renderer3D::Renderer3D(App* app) : Module(app)
@@ -28,12 +31,14 @@ bool Renderer3D::Start()
 
     // Creating Editor Camera GO (Outside hierarchy)
     cameraGO = std::make_shared<GameObject>("EDITOR CAMERA");
-    cameraGO.get()->AddComponent(ComponentType::Transform);
-    cameraGO.get()->AddComponent(ComponentType::Camera);
+    cameraGO.get()->AddComponent<Transform>();
+    cameraGO.get()->AddComponent<Camera>();
+    cameraGO.get()->GetComponent<Transform>()->setPosition(vec3f(0, 2, -10));
 
     // hekbas test adding same component
-    cameraGO.get()->AddComponent(ComponentType::Camera);
-    cameraGO.get()->GetComponent<Transform>().get()->setPosition(vec3f(0,2,-10));
+    LOG(LogType::LOG_INFO, "# Testing Component Duplication");
+    cameraGO.get()->AddComponent<Camera>();
+
 
     return true;
 }
@@ -55,7 +60,7 @@ bool Renderer3D::Update(double dt)
 
 bool Renderer3D::PostUpdate()
 { 
-    std::shared_ptr<Camera> camera = cameraGO.get()->GetComponent<Camera>();
+    Camera* camera = cameraGO.get()->GetComponent<Camera>();
     app->engine->Render(EngineCore::RenderModes::DEBUG, camera);
 
     // hekbas testing Mesh load/draw
@@ -77,8 +82,8 @@ bool Renderer3D::CleanUp()
 
 void Renderer3D::CameraInput(double dt)
 {
-    std::shared_ptr<Camera> camera = cameraGO.get()->GetComponent<Camera>();
-    std::shared_ptr<Transform> transform = cameraGO.get()->GetComponent<Transform>();
+    Camera* camera = cameraGO.get()->GetComponent<Camera>();
+    Transform* transform = cameraGO.get()->GetComponent<Transform>();
 
     float speed = 10 * dt;
     if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -89,62 +94,61 @@ void Renderer3D::CameraInput(double dt)
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
         /* MOUSE CAMERA MOVEMENT */
-        camera.get()->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
-        camera.get()->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
+        camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
+        camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
 
-        camera.get()->rotate(vec3f(0.0f, camera.get()->yaw, 0.0f), false);
-        camera.get()->rotate(vec3f(camera.get()->pitch, 0.0f, 0.0f), true);
+        camera->rotate(vec3f(camera->pitch, camera->yaw, 0.0f), false);
 
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
-            camera.get()->translate(transform.get()->getForward() * speed);
+            camera->translate(transform->getForward() * speed);
         }
         if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
         {
-            camera.get()->translate(-transform.get()->getForward() * speed);
+            camera->translate(-transform->getForward() * speed);
         }
         if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
         {
-            camera.get()->translate(transform.get()->getRight() * speed);
+            camera->translate(transform->getRight() * speed);
         }
         if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
         {
-            camera.get()->translate(-transform.get()->getRight() * speed);
+            camera->translate(-transform->getRight() * speed);
         }
     }
     else
     {
         // Zooming Camera Input
-        camera.get()->translate(transform.get()->getForward() * (float)app->input->GetMouseZ());
+        camera->translate(transform->getForward() * (float)app->input->GetMouseZ());
     }
 
     // Orbit Object with Alt + LMB
     if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
-        camera.get()->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
-        camera.get()->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
+        camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
+        camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
 
-        camera.get()->setPosition(camera.get()->center);
+        camera->setPosition(camera->center);
        
-        camera.get()->rotate(vec3f(0.0f, 1.0f, 0.0f), camera.get()->yaw, false);
-        camera.get()->rotate(vec3f(1.0f, 0.0f, 0.0f), camera.get()->pitch, true);
+        camera->rotate(vec3f(0.0f, 1.0f, 0.0f), camera->yaw, false);
+        camera->rotate(vec3f(1.0f, 0.0f, 0.0f), camera->pitch, true);
 
         vec3f finalPos;
-        finalPos = transform.get()->getPosition() - transform.get()->getForward();
+        finalPos = transform->getPosition() - transform->getForward();
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
-            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition() - (transform.get()->getForward() * 100.0f);
+            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0f);
         }
 
-        camera.get()->setPosition(finalPos);
+        camera->setPosition(finalPos);
     }
 
     if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->sceneManager->GetSelectedGO() != nullptr)
     {
-        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>().get()->getPosition() - transform.get()->getForward();
+        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - transform->getForward();
 
-        camera.get()->setPosition(targetPos * 100.0f);
+        camera->setPosition(targetPos * 100.0f);
     }
 
-    camera.get()->updateCameraVectors();
+    camera->updateCameraVectors();
 }

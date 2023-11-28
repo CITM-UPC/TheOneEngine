@@ -4,7 +4,7 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-#include "..\TheOneEditor\Log.h"
+
 
 #include "Math.h"
 
@@ -50,64 +50,6 @@ void GameObject::Draw()
 }
 
 // Component ----------------------------------------
-std::shared_ptr<Component> GameObject::AddComponent(ComponentType type, int index)
-{
-	std::shared_ptr<Component> component = nullptr;
-	component = HasComponent(type);
-
-	// Check for already existing component of given type
-	if (component == nullptr)
-	{
-		switch (type)
-		{
-			case ComponentType::Transform:
-				component = std::make_shared<Transform>(shared_from_this());
-				break;
-
-			case ComponentType::Camera:
-				component = std::make_shared<Camera>(shared_from_this());
-				break;
-
-			case ComponentType::Mesh:
-				component = std::make_shared<Mesh>(shared_from_this());
-				break;
-
-			case ComponentType::Texture:
-				component = std::make_shared<Texture>(shared_from_this());
-				break;
-		}
-
-		if (component)
-		{
-			if (index == -1)
-			{
-				components.push_back(component);
-			}
-			else if (index >= 0 && index < static_cast<int>(components.size()))
-			{
-				components.insert(components.begin() + index, component);
-			}
-			// Hekbas: Handle cases where index is out of range
-			// ...
-
-			// Enable the component if necessary?
-			component->Enable();
-		}
-		else
-		{
-			LOG(LogType::LOG_ERROR, "Unable to add Component");
-		}
-	}
-	else
-	{
-		LOG(LogType::LOG_WARNING, "Component already applied");
-		LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.c_str());
-		LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component.get()->GetName().c_str());
-	}
-
-	return component;
-}
-
 void GameObject::RemoveComponent(ComponentType type)
 {
 	for (auto it = components.begin(); it != components.end(); ++it)
@@ -120,23 +62,10 @@ void GameObject::RemoveComponent(ComponentType type)
 	}
 }
 
-std::shared_ptr<Component> GameObject::HasComponent(ComponentType type) const
-{
-	// Search the components vector for a component of the specified type
-	for (const auto& component : components)
-	{
-		if (component && component->GetType() == type)
-			return component;
-	}
-
-	// If no matching component is found, return nullptr
-	return std::shared_ptr<Component>();
-}
-
-std::vector<std::shared_ptr<Component>>& GameObject::GetComponents()
-{
-	return components;
-}
+//std::vector<std::shared_ptr<Component>>& GameObject::GetComponents()
+//{
+//	return components;
+//}
 
 
 // Get/Set ------------------------------------------

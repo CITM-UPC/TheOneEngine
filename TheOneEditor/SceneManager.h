@@ -7,6 +7,10 @@
 #include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Component.h"
 #include "..\TheOneEngine\MeshLoader.h"
+#include "..\TheOneEngine\Transform.h"
+#include "..\TheOneEngine\Camera.h"
+#include "..\TheOneEngine\Mesh.h"
+
 
 #include <vector>
 #include <string>
