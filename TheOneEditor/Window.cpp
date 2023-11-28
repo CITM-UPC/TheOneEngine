@@ -3,8 +3,14 @@
 #include "Log.h"
 
 
-Window::Window(App* app) : Module(app), window(nullptr), glContext(), displayMode(DisplayMode::WINDOWED), 
-                            resolution(Resolution::R_1920x1080), borderless(false), refreshRate(0)
+Window::Window(App* app) :
+    Module(app), 
+    window(nullptr),
+    glContext(),
+    displayMode(DisplayMode::WINDOWED),
+    resolution(Resolution::R_1280x720),
+    borderless(false),
+    refreshRate(0)
 {}
 
 Window::~Window() {}
@@ -31,6 +37,9 @@ bool Window::Start()
 {
     displayMode = DisplayMode::WINDOWED;
     resolution = Resolution::R_1280x720;
+
+    SetResolution(resolution);
+
     return true;
 }
 
