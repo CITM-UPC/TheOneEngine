@@ -4,10 +4,22 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-
-
 #include "Math.h"
 
+GameObject::GameObject()
+	: name(),
+	parent(),
+	children(),
+	components(),
+	enabled(true),
+	isStatic(false),
+	index(-1)
+{
+	// hekbas - shared_from_this() should not be called in the constructor!!!
+	// uncomenting the following line causes undefined behaviour
+	//AddComponent(ComponentType::Transform);
+	Enable();
+}
 
 GameObject::GameObject(std::string name)
 	: name(name),
@@ -23,6 +35,7 @@ GameObject::GameObject(std::string name)
 	//AddComponent(ComponentType::Transform);
 	Enable();
 }
+
 
 GameObject::~GameObject() {}
 

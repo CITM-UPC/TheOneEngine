@@ -226,7 +226,7 @@ void Window::SetResolution(Resolution res)
         case Resolution::R_854x480: width = 854; height = 480; resolution = Resolution::R_854x480; break;
         case Resolution::R_640x360: width = 640; height = 360; resolution = Resolution::R_640x360; break;
         case Resolution::R_426x240: width = 426; height = 240; resolution = Resolution::R_426x240; break;
-        case Resolution::R_NATIVE: /* Get native resolution */resolution = Resolution::R_NATIVE; break;
+        case Resolution::R_NATIVE: /* Get native resolution */ resolution = Resolution::R_NATIVE; break;
     }
 
     OnResizeWindow(width, height);

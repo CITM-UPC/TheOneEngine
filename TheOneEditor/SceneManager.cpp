@@ -53,6 +53,26 @@ bool SceneManager::CleanUp()
     return true;
 }
 
+void SceneManager::CreateName(GameObject GO, std::string name)
+{
+    int size = gameObjects.size();
+
+    for (size_t i = 0; i < gameObjects.size(); i++)
+    {
+        if (GO.GetName() == gameObjects[i].get()->GetName())
+        {
+            size++;
+            i = 0;
+        }
+    }
+
+    if (size != 0)
+    {
+        //std::string fileName = path.substr(fileDir.find_last_of('\\') + 1);
+        GO.SetName("Mesh GameObject " + std::to_string(size));
+    }
+}
+
 std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 {
     std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
@@ -65,8 +85,6 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 {
-    int size = gameObjects.size();
-
     std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
     meshGO.get()->AddComponent<Transform>();
     meshGO.get()->AddComponent<Mesh>();
@@ -75,19 +93,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
     Mesh* mesh = meshGO.get()->GetComponent<Mesh>();
     mesh->meshes = meshLoader->loadFromFile(meshGO, path);
 
-    for (size_t i = 0; i < gameObjects.size(); i++)
-    {
-        if (meshGO.get()->GetName() == gameObjects[i].get()->GetName())
-        {
-            size++;
-            i = 0;
-        }
-    }
-
-    if (size != 0)
-    {
-        meshGO.get()->SetName("Mesh GameObject " + std::to_string(size));
-    }
+    
 
     gameObjects.push_back(meshGO);
 

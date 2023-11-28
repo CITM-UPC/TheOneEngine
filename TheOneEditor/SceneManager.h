@@ -11,11 +11,11 @@
 #include "..\TheOneEngine\Camera.h"
 #include "..\TheOneEngine\Mesh.h"
 
-
 #include <vector>
 #include <string>
 #include <memory>
 
+#define NOT_SPECIFIED
 
 class SceneManager : public Module
 {
@@ -33,7 +33,8 @@ public:
 
     bool CleanUp();
 
-    // Basic 3D 
+    // Basic 3D
+    void CreateName(GameObject GO, std::string name = "");
     std::shared_ptr<GameObject> CreateEmptyGO();
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateCube();
