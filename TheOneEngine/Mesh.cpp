@@ -1,6 +1,10 @@
 #include "Mesh.h"
 
-Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh) {}
+Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh) 
+{
+    drawNormalsFaces = false;
+    drawNormalsVerts = false;
+}
 
 Mesh::~Mesh() {}
 
@@ -43,6 +47,37 @@ void Mesh::DrawComponent()
         }
         else {
             glDrawArrays(GL_TRIANGLES, 0, mesh.numVerts);
+        }
+
+        if (drawNormalsVerts && !meshVerts.empty() && !meshNorms.empty()) {
+            glLineWidth(normalLineWidth);
+            glBegin(GL_LINES);
+            glColor3f(1.0f, 1.0f, 0.0f);
+
+            for (int i = 0; i < _numVerts; i++) {
+                glVertex3f(meshVerts[i].x, meshVerts[i].y, meshVerts[i].z);
+                glVertex3f(meshVerts[i].x + meshNorms[i].x * normalLineLength,
+                    meshVerts[i].y + meshNorms[i].y * normalLineLength,
+                    meshVerts[i].z + meshNorms[i].z * normalLineLength);
+            }
+
+            glColor3f(1.0f, 1.0f, 0.0f);
+            glEnd();
+        }
+
+        if (drawNormalsFaces && !meshFaceCenters.empty() && !meshFaceNorms.empty()) {
+            glLineWidth(normalLineWidth);
+            glBegin(GL_LINES);
+            glColor3f(1.0f, 0.0f, 1.0f);
+
+            for (int i = 0; i < _numFaces; i++) {
+                glm::vec3 endPoint = meshFaceCenters[i] + normalLineLength * meshFaceNorms[i];
+                glVertex3f(meshFaceCenters[i].x, meshFaceCenters[i].y, meshFaceCenters[i].z);
+                glVertex3f(endPoint.x, endPoint.y, endPoint.z);
+            }
+
+            glColor3f(0.0f, 1.0f, 1.0f);
+            glEnd();
         }
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

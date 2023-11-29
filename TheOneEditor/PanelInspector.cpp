@@ -104,7 +104,7 @@ bool PanelInspector::Draw()
                 ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->GetName().c_str());
                 ImGui::Separator();
                 ImGui::Text("Indexes: ");
-                ImGui::SameLine();  ImGui::Text(/*app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()*/"0");
+                ImGui::SameLine();  ImGui::Text(/*app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()*/"1024");
                 ImGui::Text("Normals: ");
                 ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumNormals()).c_str()*/"244");
                 ImGui::Text("Vertexs: ");
@@ -118,8 +118,8 @@ bool PanelInspector::Draw()
                 //{
                 //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
                 //}
-                //ImGui::Checkbox("Draw vertex normals", /*&mesh->drawVertexNormals*/);
-                //ImGui::Checkbox("Draw face normals", /*&mesh->drawFaceNormals*/);
+                ImGui::Checkbox("Draw vertex normals", &mesh->drawNormalsVerts);
+                ImGui::Checkbox("Draw face normals", &mesh->drawNormalsFaces);
 
             }
             
