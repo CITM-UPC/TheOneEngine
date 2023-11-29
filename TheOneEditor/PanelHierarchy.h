@@ -4,11 +4,20 @@
 
 #include "Panel.h"
 
+#include "..\TheOneEngine\GameObject.h"
+
+#include <string>
+#include <vector>
+#include <list>
+#include <memory>
+
 class PanelHierarchy : public Panel
 {
 public:
 	PanelHierarchy(PanelType type, std::string name);
 	~PanelHierarchy();
+
+	void ShowChildren(std::shared_ptr<GameObject> parent);
 
 	bool Draw();
 };

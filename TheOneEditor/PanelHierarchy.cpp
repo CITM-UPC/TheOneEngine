@@ -8,6 +8,21 @@ PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, n
 
 PanelHierarchy::~PanelHierarchy() {}
 
+void PanelHierarchy::ShowChildren(std::shared_ptr<GameObject> parent)
+{
+	for (const auto childGO : parent.get()->GetChildren())
+	{
+		if (childGO.get()->GetChildren().capacity() != 0)
+		{
+			if (ImGui::Selectable(childGO.get()->GetName().data(), app->sceneManager->GetSelectedGO() == childGO))
+			{
+				app->sceneManager->SetSelectedGO(childGO);
+			}
+			ShowChildren(childGO);
+		}
+	}
+}
+
 bool PanelHierarchy::Draw()
 {
 	ImGuiWindowFlags settingsFlags = 0;
@@ -24,6 +39,7 @@ bool PanelHierarchy::Draw()
 				{
 					app->sceneManager->SetSelectedGO(gameObject);
 				}
+				ShowChildren(gameObject);
 			}
 
 			ImGui::EndChild();

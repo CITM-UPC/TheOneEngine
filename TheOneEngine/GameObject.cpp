@@ -62,6 +62,24 @@ void GameObject::RemoveComponent(ComponentType type)
 	}
 }
 
+bool GameObject::AddChild(std::shared_ptr<GameObject> childGO)
+{
+	children.push_back(std::move(childGO));
+	return true;
+}
+
+void GameObject::RemoveChild(int index)
+{
+	for (auto it = children.begin(); it != children.end(); ++it)
+	{
+		if ((*it)->index == index)
+		{
+			it = children.erase(it);
+			break;
+		}
+	}
+}
+
 //std::vector<std::shared_ptr<Component>>& GameObject::GetComponents()
 //{
 //	return components;

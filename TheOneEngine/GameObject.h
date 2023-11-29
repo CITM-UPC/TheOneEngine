@@ -59,6 +59,10 @@ public:
 
     void RemoveComponent(ComponentType type);
 
+    bool AddChild(std::shared_ptr<GameObject> childGO);
+    void RemoveChild(int index); // Historn: Change index by GUID
+    std::vector<std::shared_ptr<GameObject>> GetChildren() { return children; }
+
     // Get/Set
     bool IsEnabled() const;
     void Enable();
