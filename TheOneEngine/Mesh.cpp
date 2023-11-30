@@ -53,8 +53,8 @@ void Mesh::DrawComponent()
             glLineWidth(normalLineWidth);
             glBegin(GL_LINES);
             glColor3f(1.0f, 1.0f, 0.0f);
-
-            for (int i = 0; i < _numVerts; i++) {
+            
+            for (int i = 0; i < mesh.numVerts; i++) {
                 glVertex3f(meshVerts[i].x, meshVerts[i].y, meshVerts[i].z);
                 glVertex3f(meshVerts[i].x + meshNorms[i].x * normalLineLength,
                     meshVerts[i].y + meshNorms[i].y * normalLineLength,
@@ -70,7 +70,7 @@ void Mesh::DrawComponent()
             glBegin(GL_LINES);
             glColor3f(1.0f, 0.0f, 1.0f);
 
-            for (int i = 0; i < _numFaces; i++) {
+            for (int i = 0; i < mesh.numFaces; i++) {
                 glm::vec3 endPoint = meshFaceCenters[i] + normalLineLength * meshFaceNorms[i];
                 glVertex3f(meshFaceCenters[i].x, meshFaceCenters[i].y, meshFaceCenters[i].z);
                 glVertex3f(endPoint.x, endPoint.y, endPoint.z);
