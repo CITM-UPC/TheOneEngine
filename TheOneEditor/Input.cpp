@@ -152,26 +152,26 @@ bool Input::processSDLEvents()
 
                 // this code elsewhere
                 std::string fileDir = event.drop.file;
-                std::string fileName = fileDir.substr(fileDir.find_last_of('\\') + 1);
-                fs::path assetsDir = fs::path(ASSETS_PATH) / fileName;
+                std::string fileNameExt = fileDir.substr(fileDir.find_last_of('\\') + 1);
+                fs::path assetsDir = fs::path(ASSETS_PATH) / fileNameExt;
 
                 // FBX
                 if (fileDir.ends_with(".fbx"))
                 {
-                    LOG(LogType::LOG_ASSIMP, "Importing %s from: %s", fileName.data(), fileDir.data());
+                    LOG(LogType::LOG_ASSIMP, "Importing %s from: %s", fileNameExt.data(), fileDir.data());
 
                     if (std::filesystem::exists(assetsDir))
                     {
-                        LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileName.data(), assetsDir.string().data());
+                        LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileNameExt.data(), assetsDir.string().data());
                     }
                     else
                     {
-                        LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileName.data(), assetsDir.string().data());
+                        LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileNameExt.data(), assetsDir.string().data());
                         std::filesystem::copy(fileDir, ASSETS_PATH, std::filesystem::copy_options::overwrite_existing);
                     }
 
                     app->sceneManager->CreateMeshGO(assetsDir.string());
-                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", fileName.data());
+                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", fileNameExt.data());
                 }
 
                 // PNG / DDS

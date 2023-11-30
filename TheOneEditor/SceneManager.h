@@ -14,8 +14,9 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <algorithm>
 
-#define NOT_SPECIFIED
+#define NOT_SPECIFIED ""
 
 class SceneManager : public Module
 {
@@ -33,8 +34,9 @@ public:
 
     bool CleanUp();
 
+    std::string GenerateUniqueName(const std::string& baseName);
+
     // Basic 3D
-    void CreateName(GameObject GO, std::string name = "");
     std::shared_ptr<GameObject> CreateEmptyGO();
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateCube();

@@ -23,7 +23,7 @@ bool SceneManager::Start()
     /*CreateEmptyGO();
     CreateCube();
     CreateSphere();*/
-    CreateMeshGO("Assets/baker_house.fbx");
+    CreateMeshGO("Assets\\baker_house.fbx");
 
     return true;
 }
@@ -53,24 +53,21 @@ bool SceneManager::CleanUp()
     return true;
 }
 
-void SceneManager::CreateName(GameObject GO, std::string name)
+std::string SceneManager::GenerateUniqueName(const std::string& baseName)
 {
-    int size = gameObjects.size();
+    std::string uniqueName = baseName;
+    int counter = 1;
 
-    for (size_t i = 0; i < gameObjects.size(); i++)
+    while (std::any_of(
+        gameObjects.begin(), gameObjects.end(),
+        [&uniqueName](const std::shared_ptr<GameObject>& obj)
+        { return obj.get()->GetName() == uniqueName; }))
     {
-        if (GO.GetName() == gameObjects[i].get()->GetName())
-        {
-            size++;
-            i = 0;
-        }
+        uniqueName = baseName + "(" + std::to_string(counter) + ")";
+        ++counter;
     }
 
-    if (size != 0)
-    {
-        //std::string fileName = path.substr(fileDir.find_last_of('\\') + 1);
-        GO.SetName("Mesh GameObject " + std::to_string(size));
-    }
+    return uniqueName;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
@@ -85,15 +82,17 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 {
-    std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
+    std::string name = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
+
+    name = GenerateUniqueName(name);
+
+    std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(name);
     meshGO.get()->AddComponent<Transform>();
     meshGO.get()->AddComponent<Mesh>();
     //meshGO.get()->AddComponent<Texture>();
 
     Mesh* mesh = meshGO.get()->GetComponent<Mesh>();
     mesh->meshes = meshLoader->loadFromFile(meshGO, path);
-
-    
 
     gameObjects.push_back(meshGO);
 
