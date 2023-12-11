@@ -17,6 +17,7 @@ class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 
+    GameObject();
     GameObject(std::string name = "gameObject");
     ~GameObject();
 
@@ -50,7 +51,7 @@ public:
             return false;
         }
 
-        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());       
+        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());
         newComponent->Enable(); // hekbas: Enable the component if necessary?
         components.push_back(std::move(newComponent));
 
@@ -70,13 +71,15 @@ public:
     bool IsStatic() const;
     void SetStatic(bool isStatic);
 
-private:
-    std::string name;
+public:
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;
+    bool isStatic;
+
+private:
+    std::string name;
     std::vector<std::unique_ptr<Component>> components;
     bool enabled;
-    bool isStatic;
     int index;
 };
 

@@ -26,6 +26,9 @@ struct MeshData
 
 struct MeshBufferedData
 {
+	std::shared_ptr<GameObject> parent;
+
+	std::string meshName;
 	Formats format;
 
 	uint vertex_buffer_id;
@@ -35,9 +38,6 @@ struct MeshBufferedData
 	uint numIndexs;
 
 	std::string texturePath;
-
-	std::string meshName;
-
 	std::shared_ptr<Texture> texture;
 };
 
@@ -49,7 +49,8 @@ public:
 	//MeshLoader(MeshLoader&& b) noexcept;
 	virtual ~MeshLoader();
 
-	std::vector<MeshBufferedData> loadFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path);
+	std::vector<MeshBufferedData> LoadMesh(const std::string& path);
+	std::vector<std::shared_ptr<Texture>> LoadTexture(std::shared_ptr<GameObject> containerGO, const std::string& path);
 
 	std::vector<std::shared_ptr<Texture>> loadTextureFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path);
 
