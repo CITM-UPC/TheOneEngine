@@ -5,7 +5,6 @@
 #include "Texture.h"
 #include "UIDGen.h"
 
-
 #include "Math.h"
 
 
@@ -18,11 +17,12 @@ GameObject::GameObject(std::string name)
 	isStatic(false),
 	index(-1)
 {
-	// hekbas - shared_from_this() should not be called in the constructor!!!
+	// hekbas - shared_from_this() must NOT be called in the constructor!!!
 	// uncomenting the following line causes undefined behaviour
 	//AddComponent(ComponentType::Transform);
 	Enable();
 }
+
 
 GameObject::~GameObject() {}
 
@@ -57,25 +57,6 @@ void GameObject::RemoveComponent(ComponentType type)
 		if ((*it)->GetType() == type)
 		{
 			it = components.erase(it);
-			break;
-		}
-	}
-}
-
-bool GameObject::AddChild(std::shared_ptr<GameObject> childGO)
-{
-	//Fix children appearing as GO without parent in hierarchy
-	children.emplace_back(childGO);
-	return true;
-}
-
-void GameObject::RemoveChild(int index)
-{
-	for (auto it = children.begin(); it != children.end(); ++it)
-	{
-		if ((*it)->index == index)
-		{
-			it = children.erase(it);
 			break;
 		}
 	}

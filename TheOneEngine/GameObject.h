@@ -17,6 +17,7 @@ class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 
+    GameObject();
     GameObject(std::string name = "gameObject");
     ~GameObject();
 
@@ -50,7 +51,7 @@ public:
             return false;
         }
 
-        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());       
+        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());
         newComponent->Enable(); // hekbas: Enable the component if necessary?
         components.push_back(std::move(newComponent));
 
@@ -58,10 +59,6 @@ public:
     }
 
     void RemoveComponent(ComponentType type);
-
-    bool AddChild(std::shared_ptr<GameObject> childGO);
-    void RemoveChild(int index); // Historn: Change index by GUID
-    std::vector<std::shared_ptr<GameObject>> GetChildren() { return children; }
 
     // Get/Set
     bool IsEnabled() const;
@@ -74,17 +71,16 @@ public:
     bool IsStatic() const;
     void SetStatic(bool isStatic);
 
-    void CreateUID();
-    uint32 GetUID() { return UID; }
+public:
+    std::weak_ptr<GameObject> parent;
+    std::vector<std::shared_ptr<GameObject>> children;
+    bool isStatic;
 
 private:
     std::string name;
-    std::weak_ptr<GameObject> parent;
-    std::vector<std::shared_ptr<GameObject>> children;
     std::vector<std::unique_ptr<Component>> components;
     uint32 UID;
     bool enabled;
-    bool isStatic;
     int index;
 };
 

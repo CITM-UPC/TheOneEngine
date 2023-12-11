@@ -23,8 +23,8 @@ bool SceneManager::Start()
     /*CreateEmptyGO();
     CreateCube();
     CreateSphere();*/
-    CreateMeshGO("Assets/baker_house.fbx");
-    
+    CreateMeshGO("Assets\\baker_house.fbx");
+
     return true;
 }
 
@@ -35,12 +35,6 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-    if (selectedGameObject && app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
-    {
-        auto child = CreateMF();
-        selectedGameObject.get()->AddChild(child);
-    }
-
     return true;
 }
 
@@ -48,10 +42,7 @@ bool SceneManager::PostUpdate()
 {
     for (const auto gameObject : gameObjects)
     {
-        if (gameObject.get()->IsEnabled())
-        {
-            gameObject.get()->Draw();
-        }
+        gameObject.get()->Draw();
     }
 
     return true;
@@ -62,59 +53,57 @@ bool SceneManager::CleanUp()
     return true;
 }
 
+std::string SceneManager::GenerateUniqueName(const std::string& baseName)
+{
+    std::string uniqueName = baseName;
+    int counter = 1;
+
+    while (std::any_of(
+        gameObjects.begin(), gameObjects.end(),
+        [&uniqueName](const std::shared_ptr<GameObject>& obj)
+        { return obj.get()->GetName() == uniqueName; }))
+    {
+        uniqueName = baseName + "(" + std::to_string(counter) + ")";
+        ++counter;
+    }
+
+    return uniqueName;
+}
+
 std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 {
     std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
     emptyGO.get()->AddComponent<Transform>();
 
-    int size = gameObjects.size();
-
-    for (size_t i = 0; i < gameObjects.size(); i++)
-    {
-        if (emptyGO.get()->GetName() == gameObjects[i].get()->GetName())
-        {
-            size++;
-            i = 0;
-        }
-    }
-
-    if (size != 0)
-    {
-        emptyGO.get()->SetName("Empty GameObject " + std::to_string(size));
-    }
-
     gameObjects.push_back(emptyGO);
 
-    return nullptr;
+    return emptyGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 {
-    std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>("Mesh GameObject");
-    meshGO.get()->AddComponent<Transform>();
-    meshGO.get()->AddComponent<Mesh>();
-    //meshGO.get()->AddComponent<Texture>();
+    std::vector<MeshBufferedData> meshes = meshLoader->LoadMesh(path);
 
-    Mesh* mesh = meshGO.get()->GetComponent<Mesh>();
-    mesh->meshes = meshLoader->loadFromFile(meshGO, path);
+    // Create empty parent if meshes >1
+    std::shared_ptr<GameObject> root = meshes.size() > 1 ? CreateEmptyGO() : nullptr;
+    std::string name = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
+    //name = GenerateUniqueName(name);
+    if (root != nullptr) root.get()->SetName(name);
 
-    int size = gameObjects.size();
-
-    for (size_t i = 0; i < gameObjects.size(); i++)
+    for (auto& mesh : meshes)
     {
-        if (meshGO.get()->GetName() == gameObjects[i].get()->GetName())
-        {
-            size++;
-            i = 0;
-        }
-    }
+        std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
+        meshGO.get()->AddComponent<Transform>();
+        meshGO.get()->AddComponent<Mesh>();
+        meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
-    if (size != 0)
-    {
-        meshGO.get()->SetName("Mesh GameObject " + std::to_string(size));
-    }
+        mesh.parent = root;
+        root.get()->children.push_back(meshGO);
+        meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+        // hekbas: need to set Transform?
 
-    gameObjects.push_back(meshGO);
+        gameObjects.push_back(meshGO);
+    }
 
     return nullptr;
 }
@@ -124,22 +113,6 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     std::shared_ptr<GameObject> cubeGO = std::make_shared<GameObject>("Cube");
     cubeGO.get()->AddComponent<Transform>();
     cubeGO.get()->AddComponent<Mesh>();
-
-    int size = gameObjects.size();
-
-    for (size_t i = 0; i < gameObjects.size(); i++)
-    {
-        if (cubeGO.get()->GetName() == gameObjects[i].get()->GetName())
-        {
-            size++;
-            i = 0;
-        }
-    }
-
-    if (size != 0)
-    {
-        cubeGO.get()->SetName("Cube " + std::to_string(size));
-    }
 
     gameObjects.push_back(cubeGO);
 
@@ -152,22 +125,6 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
     sphereGO.get()->AddComponent<Transform>();
     sphereGO.get()->AddComponent<Mesh>();
 
-    int size = gameObjects.size();
-
-    for (size_t i = 0; i < gameObjects.size(); i++)
-    {
-        if (sphereGO.get()->GetName() == gameObjects[i].get()->GetName())
-        {
-            size++;
-            i = 0;
-        }
-    }
-
-    if (size != 0)
-    {
-        sphereGO.get()->SetName("Sphere " + std::to_string(size));
-    }
-
     gameObjects.push_back(sphereGO);
 
     return nullptr;
@@ -175,32 +132,17 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()
 {
-    std::shared_ptr<GameObject> mfGO = std::make_shared<GameObject>("Parsecs!");
+    CreateMeshGO("Assets/mf.fbx");
+    /*std::shared_ptr<GameObject> mfGO = std::make_shared<GameObject>("Parsecs!");
     mfGO.get()->AddComponent<Transform>();
     mfGO.get()->AddComponent<Mesh>();
 
     Mesh* mesh = mfGO.get()->GetComponent<Mesh>();
-    mesh->meshes = meshLoader->loadFromFile(mfGO, "Assets/mf.fbx");
+    mesh->meshes = meshLoader->LoadMesh(mfGO, "Assets/mf.fbx");
 
-    int size = gameObjects.size();
+    gameObjects.push_back(mfGO);*/
 
-    for (size_t i = 0; i < gameObjects.size(); i++)
-    {
-        if (mfGO.get()->GetName() == gameObjects[i].get()->GetName())
-        {
-            size++;
-            i = 0;
-        }
-    }
-
-    if (size != 0)
-    {
-        mfGO.get()->SetName("Parsecs! " + std::to_string(size));
-    }
-
-    gameObjects.push_back(mfGO);
-
-    return mfGO; //Should return the GO to be able to add as child?
+    return nullptr;
 }
 
 uint SceneManager::GetNumberGO()
@@ -213,6 +155,11 @@ std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
     return gameObjects;
 }
 
+//uint SceneManager::GetSelectedGO()
+//{
+//    return selectedGameObject;
+//}
+
 void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
     selectedGameObject = gameObj;
@@ -222,3 +169,8 @@ std::shared_ptr<GameObject> SceneManager::GetSelectedGO()
 {
     return selectedGameObject;
 }
+
+//void SceneManager::SetSelectedGO(uint index)
+//{
+//    selectedGameObject = index;
+//}

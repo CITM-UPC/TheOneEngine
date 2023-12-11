@@ -120,7 +120,7 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 #define ORGANIZATION "[CITM - UPC]"
 
 // Folder paths
-#define ASSETS_PATH "Assets/"
+#define ASSETS_PATH "Assets\\"
 
 //Logs
 #define BUFFER_SIZE 4096

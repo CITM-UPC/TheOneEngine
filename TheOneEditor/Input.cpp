@@ -148,30 +148,31 @@ bool Input::processSDLEvents()
             }
             case SDL_DROPFILE:
             {
-                // just flag event here
-
-                // this code elsewhere
+                // Just flag event here
+                // This code elsewhere
                 std::string fileDir = event.drop.file;
-                std::string fileName = fileDir.substr(fileDir.find_last_of('\\') + 1);
-                fs::path assetsDir = fs::path(ASSETS_PATH) / fileName;
+                std::string fileNameExt = fileDir.substr(fileDir.find_last_of('\\') + 1);
+                fs::path assetsDir = fs::path(ASSETS_PATH) / fileNameExt;
 
                 // FBX
                 if (fileDir.ends_with(".fbx"))
                 {
-                    LOG(LogType::LOG_ASSIMP, "Importing %s from: %s", fileName.data(), fileDir.data());
+                    LOG(LogType::LOG_ASSIMP, "Importing %s from: %s", fileNameExt.data(), fileDir.data());
 
+                    // Check if it already exists in Library
                     if (std::filesystem::exists(assetsDir))
                     {
-                        LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileName.data(), assetsDir.string().data());
+                        LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileNameExt.data(), assetsDir.string().data());
                     }
                     else
                     {
-                        LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileName.data(), assetsDir.string().data());
+                        LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileNameExt.data(), assetsDir.string().data());
                         std::filesystem::copy(fileDir, ASSETS_PATH, std::filesystem::copy_options::overwrite_existing);
                     }
 
+                    // Create GO instance from Library
                     app->sceneManager->CreateMeshGO(assetsDir.string());
-                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", fileName.data());
+                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", assetsDir.string().data());
                 }
 
                 // PNG / DDS
