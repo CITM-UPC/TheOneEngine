@@ -90,16 +90,14 @@ void MeshLoader::BufferData(MeshData meshData)
     }
 }
 
-std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path)
+std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 {
     std::vector<MeshBufferedData> mehsesData;
 
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
-    
     for (size_t m = 0; m < scene->mNumMeshes; ++m)
     {
-        // MESH
         auto mesh = scene->mMeshes[m];
         auto faces = mesh->mFaces;
         vec3f* verts = (vec3f*)mesh->mVertices;
@@ -129,37 +127,7 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
         };
 
         BufferData(meshData);
-
-
-        //TEXTURE
-        auto material = scene->mMaterials[mesh->mMaterialIndex];
-        aiString aiPath;
-        material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
-
-        /*std::string folderPath = ASSETS_PATH;
-        std::string texName = aiScene::GetShortFilename(aiPath.C_Str());
-        std::string texPath = folderPath + texName;*/
-
-        size_t slash_pos = path.rfind('/');
-        if (slash_pos == std::string::npos) slash_pos = path.rfind('\\');
-        std::string folder_path = (slash_pos != std::string::npos) ? path.substr(0, slash_pos + 1) : "./";
-        std::string texPath = folder_path + aiScene::GetShortFilename(aiPath.C_Str());
-
-        auto texture_ptr = std::make_shared<Texture>(containerGO, texPath);
-        texture_ptr->path = path;
-
-        if (scene->HasTextures())
-        {
-            texture_ptr->height = scene->mTextures[0]->mHeight;
-            texture_ptr->width = scene->mTextures[0]->mWidth;
-        }
-        else
-        {
-            texture_ptr->height = 1024;
-            texture_ptr->width = 1024;
-        }
-
-        meshBuffData.texture = texture_ptr;
+        meshBuffData.meshName = mesh->mName.C_Str();
 
         mehsesData.push_back(meshBuffData);
     }
@@ -169,19 +137,22 @@ std::vector<MeshBufferedData> MeshLoader::loadFromFile(std::shared_ptr<GameObjec
     return mehsesData;
 }
 
-std::vector<std::shared_ptr<Texture>> MeshLoader::loadTextureFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path)
+std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(std::shared_ptr<GameObject> containerGO, const std::string& path)
 {
     std::vector<std::shared_ptr<Texture>> texture_ptrs;
 
-    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
+    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
     for (size_t m = 0; m < scene->mNumMeshes; ++m)
     {
         auto mesh = scene->mMeshes[m];
-
         auto material = scene->mMaterials[mesh->mMaterialIndex];
         aiString aiPath;
         material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
+
+        /*std::string folderPath = ASSETS_PATH;
+        std::string texName = aiScene::GetShortFilename(aiPath.C_Str());
+        std::string texPath = folderPath + texName;*/
 
         size_t slash_pos = path.rfind('/');
         if (slash_pos == std::string::npos) slash_pos = path.rfind('\\');
