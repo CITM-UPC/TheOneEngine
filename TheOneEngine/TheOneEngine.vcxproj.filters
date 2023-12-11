@@ -48,6 +48,9 @@
     <ClInclude Include="Mesh.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Graphic.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">

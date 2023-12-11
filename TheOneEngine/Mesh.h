@@ -1,5 +1,5 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef __MESH_H__
+#define __MESH_H__
 #pragma once
 
 #include "Defs.h"
@@ -25,16 +25,12 @@ public:
 
 public:
 
-    std::vector<MeshBufferedData> meshes;
+    MeshBufferedData mesh;
 
     //now inside MeshBufferedData
     //std::vector<std::shared_ptr<Texture>> texture;
-    
-    std::vector<vec3f> meshVerts;
-    std::vector<vec3f> meshNorms;
-    std::vector<vec3f> meshFaceCenters;
-    std::vector<vec3f> meshFaceNorms;
-    
+
+public:
     bool drawActive;
     bool drawWireframe;
     bool drawAABB;
@@ -44,6 +40,18 @@ public:
     bool drawNormalsFaces;
     int normalLineWidth = 1;
     float normalLineLength = 0.1f;
+    std::vector<vec3f> meshVerts;
+    std::vector<vec3f> meshNorms;
+    std::vector<vec3f> meshFaceCenters;
+    std::vector<vec3f> meshFaceNorms;
+
+private:
+    //void DrawActive();
+    void DrawVertexNormals();
+    void DrawFaceNormals();
+    //void DrawWireframe();
+    void DrawAABB();
+    //void DrawOBB();
 };
 
-#endif // !MESH_H
+#endif // !__MESH_H__
