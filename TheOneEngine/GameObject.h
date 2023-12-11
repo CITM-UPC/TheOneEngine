@@ -71,6 +71,9 @@ public:
     bool IsStatic() const;
     void SetStatic(bool isStatic);
 
+    void CreateUID();
+    uint32 GetUID() { return UID; }
+
 public:
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;

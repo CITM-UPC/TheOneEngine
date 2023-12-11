@@ -20,6 +20,9 @@ public:
 	void ShowChildren(std::shared_ptr<GameObject> parent);
 
 	bool Draw();
+
+private:
+	std::shared_ptr<GameObject> drag;
 };
 
 #endif // !__PANEL_HIERARCHY_H__
