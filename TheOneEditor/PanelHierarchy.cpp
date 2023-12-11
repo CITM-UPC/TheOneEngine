@@ -49,20 +49,7 @@ bool PanelHierarchy::Draw()
 					}
 					ShowChildren(gameObject);
 
-					if (ImGui::BeginPopupContextItem())
-					{
-						if (ImGui::MenuItem("Duplicate"))
-						{
-							//Historn: Add Duplicate function
-						}
-							
-						if (ImGui::MenuItem("Remove"))
-						{
-							gameObject.get()->Disable(); //Historn: Change to remove function
-						}
-
-						ImGui::EndPopup();
-					}
+					ContextMenu(gameObject);
 
 					ImGui::TreePop();
 				}
@@ -80,4 +67,22 @@ bool PanelHierarchy::Draw()
 	}
 
 	return true;
+}
+
+void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
+{
+	if (ImGui::BeginPopupContextItem())
+	{
+		if (ImGui::MenuItem("Duplicate"))
+		{
+			//Historn: Add Duplicate function
+		}
+
+		if (ImGui::MenuItem("Remove"))
+		{
+			go.get()->Disable(); //Historn: Change to remove function
+		}
+
+		ImGui::EndPopup();
+	}
 }

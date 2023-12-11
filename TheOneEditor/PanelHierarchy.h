@@ -21,6 +21,8 @@ public:
 
 	bool Draw();
 
+	void ContextMenu(std::shared_ptr<GameObject> go);
+
 private:
 	std::shared_ptr<GameObject> drag;
 };
