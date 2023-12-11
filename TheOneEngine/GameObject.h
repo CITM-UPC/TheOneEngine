@@ -80,7 +80,6 @@ private:
     std::vector<std::shared_ptr<GameObject>> children;
     std::vector<std::unique_ptr<Component>> components;
     uint32 UID;
-    uint32 parentUID;
     bool enabled;
     bool isStatic;
     int index;
