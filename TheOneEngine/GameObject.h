@@ -71,13 +71,15 @@ public:
     bool IsStatic() const;
     void SetStatic(bool isStatic);
 
-private:
-    std::string name;
+public:
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;
+    bool isStatic;
+
+private:
+    std::string name;
     std::vector<std::unique_ptr<Component>> components;
     bool enabled;
-    bool isStatic;
     int index;
 };
 

@@ -148,9 +148,8 @@ bool Input::processSDLEvents()
             }
             case SDL_DROPFILE:
             {
-                // just flag event here
-
-                // this code elsewhere
+                // Just flag event here
+                // This code elsewhere
                 std::string fileDir = event.drop.file;
                 std::string fileNameExt = fileDir.substr(fileDir.find_last_of('\\') + 1);
                 fs::path assetsDir = fs::path(ASSETS_PATH) / fileNameExt;
@@ -160,6 +159,7 @@ bool Input::processSDLEvents()
                 {
                     LOG(LogType::LOG_ASSIMP, "Importing %s from: %s", fileNameExt.data(), fileDir.data());
 
+                    // Check if it already exists in Library
                     if (std::filesystem::exists(assetsDir))
                     {
                         LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileNameExt.data(), assetsDir.string().data());
@@ -170,8 +170,9 @@ bool Input::processSDLEvents()
                         std::filesystem::copy(fileDir, ASSETS_PATH, std::filesystem::copy_options::overwrite_existing);
                     }
 
+                    // Create GO instance from Library
                     app->sceneManager->CreateMeshGO(assetsDir.string());
-                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", fileNameExt.data());
+                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", assetsDir.string().data());
                 }
 
                 // PNG / DDS

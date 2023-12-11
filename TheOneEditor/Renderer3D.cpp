@@ -64,7 +64,7 @@ bool Renderer3D::PostUpdate()
     app->engine->Render(EngineCore::RenderModes::DEBUG, camera);
 
     // hekbas testing Mesh load/draw
-    /*static auto mesh_ptrs = MeshLoader::loadFromFile("Assets/mf.fbx");
+    /*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
     for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
 
     app->gui->Draw();

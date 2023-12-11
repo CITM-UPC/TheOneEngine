@@ -1,5 +1,5 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef __MESH_H__
+#define __MESH_H__
 #pragma once
 
 #include "Defs.h"
@@ -25,11 +25,11 @@ public:
 
 public:
 
-    std::vector<MeshBufferedData> meshes;
+    MeshBufferedData mesh;
 
     //now inside MeshBufferedData
     //std::vector<std::shared_ptr<Texture>> texture;
 
 };
 
-#endif // !MESH_H
+#endif // !__MESH_H__

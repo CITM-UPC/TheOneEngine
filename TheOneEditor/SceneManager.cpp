@@ -77,24 +77,33 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 
     gameObjects.push_back(emptyGO);
 
-    return nullptr;
+    return emptyGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 {
+    std::vector<MeshBufferedData> meshes = meshLoader->LoadMesh(path);
+
+    // Create empty parent if meshes >1
+    std::shared_ptr<GameObject> root = meshes.size() > 1 ? CreateEmptyGO() : nullptr;
     std::string name = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
+    //name = GenerateUniqueName(name);
+    if (root != nullptr) root.get()->SetName(name);
 
-    name = GenerateUniqueName(name);
+    for (auto& mesh : meshes)
+    {
+        std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
+        meshGO.get()->AddComponent<Transform>();
+        meshGO.get()->AddComponent<Mesh>();
+        meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
-    std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(name);
-    meshGO.get()->AddComponent<Transform>();
-    meshGO.get()->AddComponent<Mesh>();
-    //meshGO.get()->AddComponent<Texture>();
+        mesh.parent = root;
+        root.get()->children.push_back(meshGO);
+        meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+        // hekbas: need to set Transform?
 
-    Mesh* mesh = meshGO.get()->GetComponent<Mesh>();
-    mesh->meshes = meshLoader->loadFromFile(meshGO, path);
-
-    gameObjects.push_back(meshGO);
+        gameObjects.push_back(meshGO);
+    }
 
     return nullptr;
 }
@@ -123,14 +132,15 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()
 {
-    std::shared_ptr<GameObject> mfGO = std::make_shared<GameObject>("Parsecs!");
+    CreateMeshGO("Assets/mf.fbx");
+    /*std::shared_ptr<GameObject> mfGO = std::make_shared<GameObject>("Parsecs!");
     mfGO.get()->AddComponent<Transform>();
     mfGO.get()->AddComponent<Mesh>();
 
     Mesh* mesh = mfGO.get()->GetComponent<Mesh>();
-    mesh->meshes = meshLoader->loadFromFile(mfGO, "Assets/mf.fbx");
+    mesh->meshes = meshLoader->LoadMesh(mfGO, "Assets/mf.fbx");
 
-    gameObjects.push_back(mfGO);
+    gameObjects.push_back(mfGO);*/
 
     return nullptr;
 }
