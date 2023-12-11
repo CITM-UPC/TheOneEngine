@@ -31,7 +31,7 @@ private:
 public:
 	std::string path;
 	uint width, height;
-
+	bool active;
 };
 
 #endif // !__TEXTURE_H__

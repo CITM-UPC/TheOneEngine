@@ -6,6 +6,7 @@
 #include "MeshLoader.h"
 #include "Component.h"
 #include "Texture.h"
+#include "Graphic.h"
 
 #include <string>
 #include <vector>
@@ -31,7 +32,7 @@ public:
     //std::vector<std::shared_ptr<Texture>> texture;
 
 public:
-    bool drawActive;
+    bool active;
     bool drawWireframe;
     bool drawAABB;
     bool drawOBB;
@@ -46,12 +47,11 @@ public:
     std::vector<vec3f> meshFaceNorms;
 
 private:
-    //void DrawActive();
     void DrawVertexNormals();
     void DrawFaceNormals();
-    //void DrawWireframe();
+    void DrawWireframe();
     void DrawAABB();
-    //void DrawOBB();
+    void DrawOBB();
 };
 
 #endif // !__MESH_H__
