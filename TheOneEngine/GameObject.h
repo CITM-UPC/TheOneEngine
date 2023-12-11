@@ -74,6 +74,9 @@ public:
     bool IsStatic() const;
     void SetStatic(bool isStatic);
 
+    void CreateUID();
+    uint32 GetUID() { return UID; }
+
 private:
     std::string name;
     std::weak_ptr<GameObject> parent;

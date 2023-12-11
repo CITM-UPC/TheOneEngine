@@ -3,7 +3,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
-
+#include "UIDGen.h"
 
 
 #include "Math.h"
@@ -64,7 +64,8 @@ void GameObject::RemoveComponent(ComponentType type)
 
 bool GameObject::AddChild(std::shared_ptr<GameObject> childGO)
 {
-	children.push_back(std::move(childGO));
+	//Fix children appearing as GO without parent in hierarchy
+	children.emplace_back(childGO);
 	return true;
 }
 
@@ -132,4 +133,9 @@ bool GameObject::IsStatic() const
 void GameObject::SetStatic(bool staticFlag)
 {
 	isStatic = staticFlag;
+}
+
+void GameObject::CreateUID()
+{
+	UID = UIDGen::GenerateUID();
 }

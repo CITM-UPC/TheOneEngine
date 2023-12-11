@@ -24,7 +24,7 @@ bool SceneManager::Start()
     CreateCube();
     CreateSphere();*/
     CreateMeshGO("Assets/baker_house.fbx");
-
+    
     return true;
 }
 
@@ -35,6 +35,12 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
+    if (selectedGameObject && app->input->GetKey(SDL_SCANCODE_G) == KEY_DOWN)
+    {
+        auto child = CreateMF();
+        selectedGameObject.get()->AddChild(child);
+    }
+
     return true;
 }
 
@@ -194,7 +200,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMF()
 
     gameObjects.push_back(mfGO);
 
-    return nullptr;
+    return mfGO; //Should return the GO to be able to add as child?
 }
 
 uint SceneManager::GetNumberGO()

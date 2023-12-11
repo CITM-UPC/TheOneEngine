@@ -19,6 +19,9 @@
     <Filter Include="Loaders">
       <UniqueIdentifier>{ef205215-f4dd-4daf-80aa-0d87803bc3cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils\UIDGen">
+      <UniqueIdentifier>{d6257960-aea5-42cb-8322-e6fbb1938297}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -48,6 +51,9 @@
     <ClInclude Include="Mesh.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="UIDGen.h">
+      <Filter>Utils\UIDGen</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -73,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="UIDGen.cpp">
+      <Filter>Utils\UIDGen</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
