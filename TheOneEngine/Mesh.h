@@ -35,6 +35,11 @@ public:
     std::vector<vec3f> meshFaceCenters;
     std::vector<vec3f> meshFaceNorms;
     
+    bool drawActive;
+    bool drawWireframe;
+    bool drawAABB;
+    bool drawOBB;
+
     bool drawNormalsVerts;
     bool drawNormalsFaces;
     int normalLineWidth = 1;

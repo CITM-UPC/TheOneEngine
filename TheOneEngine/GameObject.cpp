@@ -4,8 +4,6 @@
 #include "Mesh.h"
 #include "Texture.h"
 
-
-
 #include "Math.h"
 
 
@@ -18,11 +16,12 @@ GameObject::GameObject(std::string name)
 	isStatic(false),
 	index(-1)
 {
-	// hekbas - shared_from_this() should not be called in the constructor!!!
+	// hekbas - shared_from_this() must NOT be called in the constructor!!!
 	// uncomenting the following line causes undefined behaviour
 	//AddComponent(ComponentType::Transform);
 	Enable();
 }
+
 
 GameObject::~GameObject() {}
 

@@ -37,6 +37,8 @@ struct MeshBufferedData
 	uint indexs_buffer_id;
 	uint numIndexs;
 
+	uint numFaces;
+
 	std::string texturePath;
 	std::shared_ptr<Texture> texture;
 };

@@ -118,9 +118,12 @@ bool PanelInspector::Draw()
                 //{
                 //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
                 //}
-                ImGui::Checkbox("Draw vertex normals", &mesh->drawNormalsVerts);
-                ImGui::Checkbox("Draw face normals", &mesh->drawNormalsFaces);
-
+                ImGui::Checkbox("Active Mesh", &mesh->drawActive);
+                ImGui::Checkbox("Active vertex normals", &mesh->drawNormalsVerts);
+                ImGui::Checkbox("Active face normals", &mesh->drawNormalsFaces);
+                ImGui::Checkbox("Active Wireframe", &mesh->drawWireframe);
+                ImGui::Checkbox("Active AABB", &mesh->drawAABB);
+                ImGui::Checkbox("Active OBB", &mesh->drawOBB);
             }
             
             /*Texture Component*/
