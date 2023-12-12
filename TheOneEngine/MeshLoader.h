@@ -37,9 +37,12 @@ struct MeshBufferedData
 	uint indexs_buffer_id;
 	uint numIndexs;
 
+	uint numFaces;
+
 	std::string texturePath;
 	std::shared_ptr<Texture> texture;
 	uint materialIndex;
+	//Texture::Ptr checkboard = std::shared_ptr<Texture>(new Texture); // JULS: for the checkers texture
 };
 
 class MeshLoader

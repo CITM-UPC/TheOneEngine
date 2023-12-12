@@ -97,61 +97,64 @@ bool PanelInspector::Draw()
             {
                 Mesh* mesh = app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>();
 
-                ImGui::SetItemTooltip("Displays and sets mesh data");
-                //ImGui::Checkbox("Active", &mesh->isActive);
-                //ImGui::SameLine();  
-                ImGui::Text("Name: ");
-                ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->GetName().c_str());
-                ImGui::Separator();
-                ImGui::Text("Indexes: ");
-                ImGui::SameLine();  ImGui::Text(/*app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()*/"0");
-                ImGui::Text("Normals: ");
-                ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumNormals()).c_str()*/"244");
-                ImGui::Text("Vertexs: ");
-                ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumVerts()).c_str()*/"244");
-                ImGui::Text("Faces: ");
-                ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumFaces()).c_str()*/"244");
-                ImGui::Text("Tex coords: ");
-                ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumTexCoords()).c_str()*/"244");
-                ImGui::Separator();
-                //if (ImGui::Checkbox("Use Texture", /*&mesh->usingTexture*/true))
-                //{
-                //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
-                //}
-                //ImGui::Checkbox("Draw vertex normals", /*&mesh->drawVertexNormals*/);
-                //ImGui::Checkbox("Draw face normals", /*&mesh->drawFaceNormals*/);
+                if (mesh != nullptr) {
+                    ImGui::SetItemTooltip("Displays and sets mesh data");
+                    //ImGui::Checkbox("Active", &mesh->isActive);
+                    //ImGui::SameLine();  
+                    ImGui::Text("Name: ");
+                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->GetName().c_str());
+                    ImGui::Separator();
+                    ImGui::Text("Indexes: ");
+                    ImGui::SameLine();  ImGui::Text((std::to_string(mesh->mesh.indexs_buffer_id)).c_str());
+                    //ImGui::Text("Normals: ");
+                    //ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumNormals()).c_str()*/"244");
+                    ImGui::Text("Vertexs: ");
+                    ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numVerts).c_str());
+                    ImGui::Text("Faces: ");
+                    ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numFaces).c_str());
+                    //ImGui::Text("Tex coords: ");
+                    //ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.getNumTexCoords()).c_str());
 
+                    //if (ImGui::Checkbox("Use Texture", /*&mesh->usingTexture*/true))
+                    //{
+                    //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
+                    //}
+                    ImGui::Checkbox("Active Mesh", &mesh->active);
+                    ImGui::Checkbox("Active vertex normals", &mesh->drawNormalsVerts);
+                    ImGui::Checkbox("Active face normals", &mesh->drawNormalsFaces);
+                    ImGui::Checkbox("Active Wireframe", &mesh->drawWireframe);
+                    ImGui::Checkbox("Active AABB", &mesh->drawAABB);
+                    ImGui::Checkbox("Active OBB", &mesh->drawOBB); 
+                    //ImGui::Checkbox("Active checkboard", &mesh->drawChecker);
+                    ImGui::Separator();
+                }
+                else {
+                    ImGui::Text("No meshes found");
+                }
             }
             
             /*Texture Component*/
             if (ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
-                ImGui::SetItemTooltip("Displays and sets texture data");  
-                ImGui::Text("Name: ");
-                ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, /*app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()->GetName().c_str()*/"Texture");
-                ImGui::Separator();
-                ImGui::Text("Width: ");
-                ImGui::SameLine();  ImGui::Text(/*app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>().get()*/"1024");
-                ImGui::Text("Height: ");
-                ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumNormals()).c_str()*/"1024");
-                ImGui::Separator();
+                Texture* tex = app->sceneManager->GetSelectedGO().get()->GetComponent<Texture>();
+                
+                if (tex != nullptr) {
+                    ImGui::SetItemTooltip("Displays and sets texture data");
+                    ImGui::Checkbox("Active Texture", &tex->active);
+                    ImGui::Text("Name: ");
+                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, (tex->GetName()).c_str());
+                    ImGui::Separator();
+                    ImGui::Text("Width: ");
+                    ImGui::SameLine();  ImGui::Text(std::to_string(tex->width).c_str());
+                    ImGui::Text("Height: ");
+                    ImGui::SameLine();  ImGui::Text(std::to_string(tex->height).c_str());
+
+                    ImGui::Separator();
+                }
+                else {
+                    ImGui::Text("No texture found");
+                }
             }
-
-            /*ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-            ImGui::Text("Mesh");
-            static char mesh_name[32] = "house.fbx";
-            ImGui::PushItemWidth(150.0f);
-            ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-            ImGui::InputText("", mesh_name, IM_ARRAYSIZE(mesh_name));
-
-            ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-            ImGui::Text("Texture");
-            static char texture_name[32] = "texture.png";
-            ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-            ImGui::InputText("", texture_name, IM_ARRAYSIZE(texture_name));
-
-            ImGui::PopItemWidth();*/
-
         }
 
         ImGui::End();

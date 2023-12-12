@@ -5,7 +5,7 @@
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 
-//#include <GL/glew.h>
+#include <GL/glew.h>
 
 #include <span>
 #include <vector>
@@ -117,6 +117,13 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             index_data.push_back(faces[f].mIndices[0]);
             index_data.push_back(faces[f].mIndices[1]);
             index_data.push_back(faces[f].mIndices[2]);
+
+            /*vec3f faceNormal = glm::cross(&index_data[1] - &index_data[0], &index_data[2] - &index_data[0]);
+            faceNormal = glm::normalize(faceNormal);
+            mesh_sptr->meshFaceNorms.push_back(faceNormal);
+
+            vec3f faceCenter = (index_data[0] + index_data[1] + index_data[2]) / 3.0f;
+            mesh_sptr->meshFaceCenters.push_back(faceCenter);*/
         }
 
         meshData =

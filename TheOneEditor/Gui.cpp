@@ -1,3 +1,5 @@
+#include <windows.h>
+#include <shellapi.h>
 #include "App.h"
 #include "Log.h"
 
@@ -21,6 +23,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include "implot.h"
+
 
 
 Gui::Gui(App* app) : Module(app) {}
@@ -309,7 +312,7 @@ void Gui::HandleInput(SDL_Event* event)
 void Gui::OpenURL(const char* url) const
 {
     // hekbas need shellapi
-    //ShellExecuteA(NULL, "open", url, NULL, NULL, SW_SHOWNORMAL);
+    ShellExecute(0, 0, url, 0, 0, SW_SHOW);
 }
 
 void Gui::PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags plotFlags, ImPlotAxisFlags axisFlags)
@@ -477,7 +480,7 @@ void Gui::MainMenuHelp()
 
     if (ImGui::MenuItem("Documentation"))
     {
-        OpenURL("link here");
+        OpenURL("https://github.com/CITM-UPC/TheOneEngine");
     }
     
     ImGui::Separator();
