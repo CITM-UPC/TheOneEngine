@@ -39,6 +39,7 @@ struct MeshBufferedData
 
 	std::string texturePath;
 	std::shared_ptr<Texture> texture;
+	uint materialIndex;
 };
 
 class MeshLoader
@@ -50,9 +51,7 @@ public:
 	virtual ~MeshLoader();
 
 	std::vector<MeshBufferedData> LoadMesh(const std::string& path);
-	std::vector<std::shared_ptr<Texture>> LoadTexture(std::shared_ptr<GameObject> containerGO, const std::string& path);
-
-	std::vector<std::shared_ptr<Texture>> loadTextureFromFile(std::shared_ptr<GameObject> containerGO, const std::string& path);
+	std::vector<std::shared_ptr<Texture>> LoadTexture(const std::string& path, std::shared_ptr<GameObject> containerGO = nullptr);
 
 	void BufferData(MeshData meshData);
 

@@ -10,9 +10,7 @@
 
 using namespace std;
 
-Texture::Texture(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Texture), _id(0) {}
-
-Texture::Texture(std::shared_ptr<GameObject> containerGO, const std::string& path) : Component(containerGO, ComponentType::Texture)
+Texture::Texture(const std::string& path, std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Texture)
 {
     //load image data using devil
     auto img = ilGenImage();

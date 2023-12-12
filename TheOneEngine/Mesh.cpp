@@ -2,7 +2,11 @@
 
 Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh) {}
 
-Mesh::~Mesh() {}
+Mesh::~Mesh()
+{
+    /*if (_vertex_buffer_id) glDeleteBuffers(1, &_vertex_buffer_id);
+    if (_indexs_buffer_id) glDeleteBuffers(1, &_indexs_buffer_id);*/
+}
 
 void Mesh::DrawComponent()
 {
