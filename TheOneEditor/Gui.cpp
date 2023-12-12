@@ -439,7 +439,7 @@ void Gui::MainMenuAssets()
 
 void Gui::MainMenuGameObject()
 {
-    if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) {}
+    if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) { app->sceneManager->CreateEmptyGO(); }
 
     if (ImGui::BeginMenu("3D Object", "Ctrl+Shift+N"))
     {

@@ -50,6 +50,8 @@ public:
     std::shared_ptr<GameObject> GetSelectedGO();
     void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
+private:
+    void DrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
     //uint selectedGameObject;

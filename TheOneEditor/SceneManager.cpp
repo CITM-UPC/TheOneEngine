@@ -43,6 +43,7 @@ bool SceneManager::PostUpdate()
     for (const auto gameObject : gameObjects)
     {
         gameObject.get()->Draw();
+        DrawChildren(gameObject);
     }
 
     return true;
@@ -75,7 +76,7 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
     std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
     emptyGO.get()->AddComponent<Transform>();
 
-    gameObjects.push_back(emptyGO);
+    gameObjects.emplace_back(emptyGO);
 
     return emptyGO;
 }
@@ -96,16 +97,18 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         meshGO.get()->AddComponent<Transform>();
         meshGO.get()->AddComponent<Mesh>();
         meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
-
+        
         mesh.parent = root;
-        root.get()->children.push_back(meshGO);
-        meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+        meshGO.get()->GetComponent<Mesh>()->mesh = mesh; //Historn: Add mesh info before emplacing as child in rootGO?
+        root.get()->children.emplace_back(meshGO);
+        
         // hekbas: need to set Transform?
 
-        gameObjects.push_back(meshGO);
     }
 
-    return nullptr;
+    //Not doing emplace back of the rootGO because is already done when creating EmptyGO
+
+    return root;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateCube()
@@ -114,9 +117,9 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     cubeGO.get()->AddComponent<Transform>();
     cubeGO.get()->AddComponent<Mesh>();
 
-    gameObjects.push_back(cubeGO);
+    gameObjects.emplace_back(cubeGO);
 
-    return nullptr;
+    return cubeGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateSphere()
@@ -125,9 +128,9 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
     sphereGO.get()->AddComponent<Transform>();
     sphereGO.get()->AddComponent<Mesh>();
 
-    gameObjects.push_back(sphereGO);
+    gameObjects.emplace_back(sphereGO);
 
-    return nullptr;
+    return sphereGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()
@@ -155,22 +158,23 @@ std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
     return gameObjects;
 }
 
-//uint SceneManager::GetSelectedGO()
-//{
-//    return selectedGameObject;
-//}
-
 void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
     selectedGameObject = gameObj;
 }
+
+
 
 std::shared_ptr<GameObject> SceneManager::GetSelectedGO()
 {
     return selectedGameObject;
 }
 
-//void SceneManager::SetSelectedGO(uint index)
-//{
-//    selectedGameObject = index;
-//}
+void SceneManager::DrawChildren(std::shared_ptr<GameObject> parentGO)
+{
+    for (const auto child : parentGO.get()->children)
+    {
+        child.get()->Draw();
+        DrawChildren(child);
+    }
+}

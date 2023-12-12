@@ -10,6 +10,7 @@ class UIDGen
 {
 public:
 
+	//Historn: Maybe try adding hexadecimal UUID
 	static uint32 GenerateUID()
 	{
 		// Seed with a real random value, if available

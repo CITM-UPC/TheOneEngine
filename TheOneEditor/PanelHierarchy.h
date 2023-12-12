@@ -17,7 +17,7 @@ public:
 	PanelHierarchy(PanelType type, std::string name);
 	~PanelHierarchy();
 
-	void ShowChildren(std::shared_ptr<GameObject> parent);
+	void RecurseShowChildren(std::shared_ptr<GameObject> parent);
 
 	bool Draw();
 
