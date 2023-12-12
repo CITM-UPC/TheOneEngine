@@ -124,7 +124,8 @@ bool PanelInspector::Draw()
                     ImGui::Checkbox("Active face normals", &mesh->drawNormalsFaces);
                     ImGui::Checkbox("Active Wireframe", &mesh->drawWireframe);
                     ImGui::Checkbox("Active AABB", &mesh->drawAABB);
-                    ImGui::Checkbox("Active OBB", &mesh->drawOBB);                    
+                    ImGui::Checkbox("Active OBB", &mesh->drawOBB); 
+                    //ImGui::Checkbox("Active checkboard", &mesh->drawChecker);
                     ImGui::Separator();
                 }
                 else {
@@ -147,6 +148,7 @@ bool PanelInspector::Draw()
                     ImGui::SameLine();  ImGui::Text(std::to_string(tex->width).c_str());
                     ImGui::Text("Height: ");
                     ImGui::SameLine();  ImGui::Text(std::to_string(tex->height).c_str());
+
                     ImGui::Separator();
                 }
                 else {

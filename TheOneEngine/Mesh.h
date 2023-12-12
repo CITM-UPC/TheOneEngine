@@ -36,6 +36,7 @@ public:
     bool drawWireframe;
     bool drawAABB;
     bool drawOBB;
+    bool drawChecker;
 
     bool drawNormalsVerts;
     bool drawNormalsFaces;

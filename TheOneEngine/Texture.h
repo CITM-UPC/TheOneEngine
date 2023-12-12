@@ -16,17 +16,18 @@ private:
 	unsigned int _id;
 
 public:
-
+	using Ptr = std::shared_ptr<Texture>;
 	Texture(std::shared_ptr<GameObject> containerGO);
 
 	explicit Texture(std::shared_ptr<GameObject> containerGO, const std::string& path);
-	//Texture(Texture&& tex) noexcept;
+	Texture(Texture&& tex) noexcept;
+	Texture();
 	void bind() const;
 	~Texture();
 
 private:
-	/*Texture(const Texture&);
-	Texture operator=(const Texture&);*/
+	Texture(const Texture&);
+	Texture operator=(const Texture&);
 
 public:
 	std::string path;
