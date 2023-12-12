@@ -1,5 +1,6 @@
 #include "MeshLoader.h"
 #include "Texture.h"
+#include "Mesh.h"
 
 #include <assimp/postprocess.h>
 #include <assimp/cimport.h>
@@ -117,13 +118,6 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             index_data.push_back(faces[f].mIndices[0]);
             index_data.push_back(faces[f].mIndices[1]);
             index_data.push_back(faces[f].mIndices[2]);
-
-            /*vec3f faceNormal = glm::cross(&index_data[1] - &index_data[0], &index_data[2] - &index_data[0]);
-            faceNormal = glm::normalize(faceNormal);
-            mesh_sptr->meshFaceNorms.push_back(faceNormal);
-
-            vec3f faceCenter = (index_data[0] + index_data[1] + index_data[2]) / 3.0f;
-            mesh_sptr->meshFaceCenters.push_back(faceCenter);*/
         }
 
         meshData =
@@ -132,6 +126,38 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             vertex_data,
             index_data
         };
+
+        auto mesh_sptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), vertex_data.size(), mesh->mNumFaces, index_data.data(), index_data.size());
+        //mesh_sptr->mesh.texture = texture_ptrs[mesh->mMaterialIndex];
+        mesh_sptr->mesh.texturePath = path;
+
+        for (size_t i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D normal = mesh->mNormals[i];
+            vec3f glmNormal(normal.x, normal.y, normal.z);
+            mesh_sptr->mesh.meshNorms.push_back(glmNormal);
+        }
+
+        for (size_t i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D vert = mesh->mVertices[i];
+            vec3f glmNormal(vert.x, vert.y, vert.z);
+            mesh_sptr->mesh.meshVerts.push_back(glmNormal);
+        }
+
+        for (size_t f = 0; f < mesh->mNumFaces; ++f)
+        {
+            aiFace face = mesh->mFaces[f];
+
+            vec3f v0(mesh->mVertices[face.mIndices[0]].x, mesh->mVertices[face.mIndices[0]].y, mesh->mVertices[face.mIndices[0]].z);
+            vec3f v1(mesh->mVertices[face.mIndices[1]].x, mesh->mVertices[face.mIndices[1]].y, mesh->mVertices[face.mIndices[1]].z);
+            vec3f v2(mesh->mVertices[face.mIndices[2]].x, mesh->mVertices[face.mIndices[2]].y, mesh->mVertices[face.mIndices[2]].z);
+
+            vec3f faceNormal = glm::cross(v1 - v0, v2 - v0);
+            faceNormal = glm::normalize(faceNormal);
+            mesh_sptr->mesh.meshFaceNorms.push_back(faceNormal);
+
+            vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
+            mesh_sptr->mesh.meshFaceCenters.push_back(faceCenter);
+        }
 
         BufferData(meshData);
         meshBuffData.meshName = mesh->mName.C_Str();
