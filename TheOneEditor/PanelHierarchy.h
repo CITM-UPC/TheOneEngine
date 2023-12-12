@@ -25,6 +25,7 @@ public:
 
 private:
 	std::shared_ptr<GameObject> drag;
+	bool open_selected;
 };
 
 #endif // !__PANEL_HIERARCHY_H__

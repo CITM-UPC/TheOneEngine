@@ -5,6 +5,7 @@
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 {
     meshLoader = new MeshLoader();
+    rootSceneGO = std::make_shared<GameObject>("RootScene GameObject");;
 }
 
 SceneManager::~SceneManager()
@@ -40,10 +41,7 @@ bool SceneManager::Update(double dt)
 
 bool SceneManager::PostUpdate()
 {
-    for (const auto gameObject : gameObjects)
-    {
-        gameObject.get()->Draw();
-    }
+    DrawChildren(rootSceneGO);
 
     return true;
 }
@@ -75,7 +73,7 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
     std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
     emptyGO.get()->AddComponent<Transform>();
 
-    gameObjects.push_back(emptyGO);
+    rootSceneGO.get()->children.emplace_back(emptyGO);
 
     return emptyGO;
 }
@@ -104,8 +102,6 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
 
         // hekbas: need to set Transform?
-
-        gameObjects.push_back(meshGO);
     }
 
     return nullptr;
@@ -117,7 +113,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     cubeGO.get()->AddComponent<Transform>();
     cubeGO.get()->AddComponent<Mesh>();
 
-    gameObjects.push_back(cubeGO);
+    rootSceneGO.get()->children.emplace_back(cubeGO);
 
     return nullptr;
 }
@@ -128,7 +124,7 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
     sphereGO.get()->AddComponent<Transform>();
     sphereGO.get()->AddComponent<Mesh>();
 
-    gameObjects.push_back(sphereGO);
+    rootSceneGO.get()->children.emplace_back(sphereGO);
 
     return nullptr;
 }
@@ -148,7 +144,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMF()
     return nullptr;
 }
 
-uint SceneManager::GetNumberGO()
+uint SceneManager::GetNumberGO() const
 {
     return static_cast<uint>(gameObjects.size());
 }
@@ -158,22 +154,26 @@ std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
     return gameObjects;
 }
 
-//uint SceneManager::GetSelectedGO()
-//{
-//    return selectedGameObject;
-//}
-
 void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
     selectedGameObject = gameObj;
 }
 
-std::shared_ptr<GameObject> SceneManager::GetSelectedGO()
+std::shared_ptr<GameObject> SceneManager::GetSelectedGO() const
 {
     return selectedGameObject;
 }
 
-//void SceneManager::SetSelectedGO(uint index)
-//{
-//    selectedGameObject = index;
-//}
+std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
+{
+    return rootSceneGO;
+}
+
+void SceneManager::DrawChildren(std::shared_ptr<GameObject> parentGO)
+{
+    for (const auto gameObject : parentGO.get()->children)
+    {
+        gameObject.get()->Draw();
+        DrawChildren(gameObject);
+    }
+}

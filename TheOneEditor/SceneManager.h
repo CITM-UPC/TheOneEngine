@@ -44,17 +44,20 @@ public:
     std::shared_ptr<GameObject> CreateMF();
 
     // Get/Set
-    uint GetNumberGO();
+    uint GetNumberGO() const;
     std::vector<std::shared_ptr<GameObject>>GetGameObjects();
     
-    std::shared_ptr<GameObject> GetSelectedGO();
+    std::shared_ptr<GameObject> GetSelectedGO() const;
     void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
+
+    std::shared_ptr<GameObject> GetRootSceneGO() const;
 
 private:
     void DrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
     //uint selectedGameObject;
+    std::shared_ptr<GameObject> rootSceneGO;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::shared_ptr<GameObject> selectedGameObject;
     MeshLoader* meshLoader;

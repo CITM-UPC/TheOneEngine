@@ -65,6 +65,8 @@ public:
     void Enable();
     void Disable();
 
+    void Delete();
+
     std::string GetName() const;
     void SetName(const std::string& name);
 

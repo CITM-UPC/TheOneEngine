@@ -4,26 +4,55 @@
 #include "Gui.h"
 #include "imgui.h"
 
-PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name) {}
+#include <variant>
+
+PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name), open_selected(false) {}
 
 PanelHierarchy::~PanelHierarchy() {}
 
 void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 {
-	uint treeFlags = 0;
+	uint treeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+
+	if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
+	{
+		app->sceneManager->SetSelectedGO(parent);
+		drag = parent;
+		LOG(LogType::LOG_INFO, "SelectedGO: %s", app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+	}
+	if (drag && ImGui::IsMouseReleased(0) && drag != parent)
+	{
+		drag.get()->parent = parent;
+		drag = nullptr;
+	}
+	if (parent == app->sceneManager->GetSelectedGO())
+	{
+		treeFlags |= ImGuiTreeNodeFlags_Selected;
+	}
+	ContextMenu(parent);
+	
 	for (const auto childGO : parent.get()->children)
 	{
 		if (childGO.get()->children.size() == 0)
 			treeFlags |= ImGuiTreeNodeFlags_Leaf;
 
+		//Parent is not detected if not opened
+		if (childGO == app->sceneManager->GetSelectedGO() || parent == app->sceneManager->GetSelectedGO())
+		{
+			treeFlags |= ImGuiTreeNodeFlags_Selected;
+		}
+		else
+		{
+			treeFlags &= ~ImGuiTreeNodeFlags_Selected;
+		}
+
 		if (ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags))
 		{
-
+			//treeFlags &= ~ImGuiTreeNodeFlags_Selected;
 			RecurseShowChildren(childGO);
 
 			ImGui::TreePop();
 		}
-		//ContextMenu(childGO);
 	}
 }
 
@@ -31,34 +60,20 @@ bool PanelHierarchy::Draw()
 {
 	ImGuiWindowFlags settingsFlags = 0;
 	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing;
-	uint treeFlags = 0;
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
 		if (ImGui::BeginChild("GameObjects", ImVec2(325, 0), true))
 		{
-			for (const auto gameObject : app->sceneManager->GetGameObjects())
-			{
-				if (gameObject.get()->children.size() == 0)
-					treeFlags |= ImGuiTreeNodeFlags_Leaf;
-
-				if (ImGui::TreeNodeEx(gameObject.get()->GetName().data(), treeFlags))
-				{
-
-					RecurseShowChildren(gameObject);
-
-					ImGui::TreePop();
-				}
-				ContextMenu(gameObject);
-			}
+			RecurseShowChildren(app->sceneManager->GetRootSceneGO());
 
 			ImGui::EndChild();
 		}
 		ImGui::SameLine();
 
 		//Release GameObject
-		if (drag && ImGui::IsMouseReleased(0))
-			drag = nullptr;
+		/*if (drag && ImGui::IsMouseReleased(0))
+			drag = nullptr;*/
 
 		ImGui::End();
 	}
@@ -77,7 +92,9 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 
 		if (ImGui::MenuItem("Remove"))
 		{
-			go.get()->Disable(); //Historn: Change to remove function
+			//Historn: Change to remove function
+			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
+			//go.get()->Delete();
 		}
 
 		ImGui::EndPopup();
