@@ -17,9 +17,9 @@ private:
 
 public:
 
-	Texture(std::shared_ptr<GameObject> containerGO);
+	//Texture(std::shared_ptr<GameObject> containerGO);
 
-	explicit Texture(std::shared_ptr<GameObject> containerGO, const std::string& path);
+	explicit Texture(const std::string& path, std::shared_ptr<GameObject> containerGO = nullptr);
 	//Texture(Texture&& tex) noexcept;
 	void bind() const;
 	~Texture();

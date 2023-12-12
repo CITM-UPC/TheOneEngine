@@ -83,11 +83,12 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 {
     std::vector<MeshBufferedData> meshes = meshLoader->LoadMesh(path);
+    std::vector<std::shared_ptr<Texture>> textures = meshLoader->LoadTexture(path);
 
-    // Create empty parent if meshes >1
+    // Create emptyGO parent if meshes >1
     std::shared_ptr<GameObject> root = meshes.size() > 1 ? CreateEmptyGO() : nullptr;
     std::string name = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
-    //name = GenerateUniqueName(name);
+    name = GenerateUniqueName(name);
     if (root != nullptr) root.get()->SetName(name);
 
     for (auto& mesh : meshes)
@@ -95,11 +96,13 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
         meshGO.get()->AddComponent<Transform>();
         meshGO.get()->AddComponent<Mesh>();
-        meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
+        //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
         mesh.parent = root;
         root.get()->children.push_back(meshGO);
         meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+        meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
+
         // hekbas: need to set Transform?
 
         gameObjects.push_back(meshGO);
