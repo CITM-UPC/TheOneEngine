@@ -203,7 +203,7 @@ void Window::SetDisplayMode(DisplayMode mode)
             SDL_SetWindowBordered(window, (SDL_bool)!borderless);
             displayMode = DisplayMode::BORDERLESS;
             break;
-        }           
+        }
     }
 }
 

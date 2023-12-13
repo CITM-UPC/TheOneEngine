@@ -101,7 +101,10 @@ bool Gui::Start()
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+
+    // Hekbas: Enableing viewports causes ImGui panels
+    // to disappear if not fully contained in main window
+    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
     if (!&io)
         LOG(LogType::LOG_ERROR, "-Enabling I/O");
@@ -120,6 +123,7 @@ bool Gui::Start()
     app->gui->panelProject->SetState(true);
     app->gui->panelConsole->SetState(true);
     app->gui->panelHierarchy->SetState(true);
+    app->gui->panelScene->SetState(true);
 
     // Style
 #pragma region IMGUI_STYLE
@@ -188,7 +192,7 @@ bool Gui::PreUpdate()
     bool ret = true;
 
     // Clears GUI
-    ImGui_ImplOpenGL3_NewFrame();   // hekbas memory corruption ???
+    ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame(app->window->window);
     ImGui::NewFrame();
 
@@ -338,7 +342,7 @@ void Gui::MainWindowDockspace()
     ImGui::SetNextWindowViewport(viewport->ID);
     
     // Flags
-    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_PassthruCentralNode;
+    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
 
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
     window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
@@ -360,30 +364,31 @@ void Gui::MainWindowDockspace()
         ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
 
-        static auto first_time = true;
-        if (first_time)
-        {
-            first_time = false;
+        //static auto first_time = true;
+        //if (first_time)
+        //{
+        //    first_time = false;
 
-            ImGui::DockBuilderRemoveNode(dockspace_id); // Clear any previous layout
-            ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
-            ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
+        //    ImGui::DockBuilderRemoveNode(dockspace_id); // Clear any previous layout
+        //    ImGui::DockBuilderAddNode(dockspace_id, dockspace_flags | ImGuiDockNodeFlags_DockSpace);
+        //    ImGui::DockBuilderSetNodeSize(dockspace_id, viewport->Size);
 
-            auto dock_id_top = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.2f, nullptr, &dockspace_id);
-            auto dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.25f, nullptr, &dockspace_id);
-            auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.15f, nullptr, &dockspace_id);
-            auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.20f, nullptr, &dockspace_id);
+        //    auto dock_id_top = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Up, 0.2f, nullptr, &dockspace_id);
+        //    auto dock_id_down = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Down, 0.25f, nullptr, &dockspace_id);
+        //    auto dock_id_left = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Left, 0.15f, nullptr, &dockspace_id);
+        //    auto dock_id_right = ImGui::DockBuilderSplitNode(dockspace_id, ImGuiDir_Right, 0.20f, nullptr, &dockspace_id);
 
-            // Takes the name of a window
-            ImGui::DockBuilderDockWindow("Scene", dockspace_id);
-            ImGui::DockBuilderDockWindow("Inspector", dock_id_right);
-            ImGui::DockBuilderDockWindow("Project", dock_id_down);
-            ImGui::DockBuilderDockWindow("Console", dock_id_down);
-            ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
+        //    // Takes the name of a window
+        //    ImGui::DockBuilderDockWindow("Scene", dockspace_id);
+        //    ImGui::DockBuilderDockWindow("Inspector", dock_id_right);
+        //    ImGui::DockBuilderDockWindow("Project", dock_id_down);
+        //    ImGui::DockBuilderDockWindow("Console", dock_id_down);
+        //    ImGui::DockBuilderDockWindow("Hierarchy", dock_id_left);
 
-            ImGui::DockBuilderFinish(dockspace_id);
-        }
+        //    ImGui::DockBuilderFinish(dockspace_id);
+        //}
     }
+    ImGui::End();
 }
 
 

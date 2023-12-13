@@ -16,7 +16,7 @@ bool PanelAbout::Draw()
 
 	if (ImGui::Begin("About TheOneEngine", &enabled, settingsFlags))
 	{
-		ImGui::Text("TheOneEngine by Hector Bascones Zamora & Arnau Jimenez Gallego.");
+		ImGui::Text("TheOneEngine by Hector Bascones Zamora, Arnau Jimenez Gallego & Julia Serra Trujillo.");
 		ImGui::Text("This is a demo for the subject of Game Engines, CITM - UPC");
 	}	
 

@@ -11,6 +11,8 @@ public:
 	~PanelScene();
 
 	bool Draw();
+
+	void CalculateMaxSize_16x9(int maxWidth, int maxHeight, int& width, int& height);
 };
 
 #endif // !__PANEL_SCENE_H__
