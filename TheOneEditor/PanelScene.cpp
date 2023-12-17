@@ -14,40 +14,45 @@ PanelScene::~PanelScene() {}
 bool PanelScene::Draw()
 {
 	ImGuiWindowFlags settingsFlags = 0;
-	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+    settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+
+    //ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(0.f, 0.f));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+    ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once);
 
     ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Scene", &enabled, settingsFlags))
 	{
-        ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
+        // SDL Window
+        int SDLWindowWidth, SDLWindowHeight;
+        app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
 
-        int width, height;
-        CalculateMaxSize_16x9(ImGui::GetWindowWidth(), ImGui::GetWindowHeight(), width, height);
-
-
+        // ImGui Window
         ImVec2 windowPos = ImGui::GetWindowPos();
         ImVec2 windowSize = ImGui::GetWindowSize();
+        ImVec2 regionSize = ImGui::GetContentRegionAvail();
 
-        
+        // Aspect Ratio Size
+        int width, height;
+        CalculateSizeAspectRatio(regionSize.x, regionSize.y, width, height);
+
+        // Viewport coordinates
         int x = static_cast<int>(windowPos.x);
-        int y = 720 - static_cast<int>(windowPos.y + windowSize.y);
-
-
-        //glViewport(x, y, width, height);
+        int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
         app->engine->OnWindowResize(x, y, width, height);
 
-
         Camera* camera = app->renderer3D->cameraGO.get()->GetComponent<Camera>();
         app->engine->Render(EngineCore::RenderModes::DEBUG, camera);
-
-        ImGui::End();
 	}
+
+    ImGui::End();
+    ImGui::PopStyleVar();
 
 	return true;
 }
 
-void PanelScene::CalculateMaxSize_16x9(int maxWidth, int maxHeight, int& width, int& height)
+void PanelScene::CalculateSizeAspectRatio(int maxWidth, int maxHeight, int& width, int& height)
 {
     // Calculate the aspect ratio of the given rectangle
     double aspectRatio = static_cast<double>(maxWidth) / static_cast<double>(maxHeight);
