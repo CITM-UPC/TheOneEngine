@@ -52,7 +52,7 @@ bool PanelHierarchy::Draw()
 
 	reparent = false;
 
-	uint treeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
+	uint treeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_DefaultOpen;
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
