@@ -5,7 +5,7 @@
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 {
     meshLoader = new MeshLoader();
-    rootSceneGO = std::make_shared<GameObject>("RootScene GameObject");;
+    rootSceneGO = std::make_shared<GameObject>("Scene");;
 }
 
 SceneManager::~SceneManager()
@@ -73,6 +73,8 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
     std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
     emptyGO.get()->AddComponent<Transform>();
 
+    emptyGO.get()->parent = rootSceneGO.get()->weak_from_this();
+
     rootSceneGO.get()->children.emplace_back(emptyGO);
 
     return emptyGO;
@@ -114,6 +116,8 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     cubeGO.get()->AddComponent<Transform>();
     cubeGO.get()->AddComponent<Mesh>();
 
+    cubeGO.get()->parent = rootSceneGO.get()->weak_from_this();
+
     rootSceneGO.get()->children.emplace_back(cubeGO);
 
     return nullptr;
@@ -124,6 +128,8 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
     std::shared_ptr<GameObject> sphereGO = std::make_shared<GameObject>("Sphere");
     sphereGO.get()->AddComponent<Transform>();
     sphereGO.get()->AddComponent<Mesh>();
+
+    sphereGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
     rootSceneGO.get()->children.emplace_back(sphereGO);
 

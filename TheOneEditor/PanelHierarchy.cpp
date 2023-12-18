@@ -6,7 +6,7 @@
 
 #include <variant>
 
-PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name), open_selected(false) {}
+PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name), open_selected(false), reparent(false){}
 
 PanelHierarchy::~PanelHierarchy() {}
 
@@ -24,7 +24,8 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 		bool isOpen = ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags);
 
-		Reparent(childGO);
+		if (ReparentDragDrop(childGO))
+			break;
 
 		if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
 		{
@@ -34,7 +35,7 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 		ContextMenu(childGO);
 
-		if (isOpen)
+		if (isOpen && !reparent)
 		{
 			//treeFlags &= ~ImGuiTreeNodeFlags_Selected;
 			RecurseShowChildren(childGO);
@@ -49,11 +50,21 @@ bool PanelHierarchy::Draw()
 	ImGuiWindowFlags settingsFlags = 0;
 	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing;
 
+	reparent = false;
+
+	uint treeFlags = ImGuiTreeNodeFlags_OpenOnArrow;
+
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
 		if (ImGui::BeginChild("GameObjects", ImVec2(325, 0), true))
 		{
-			RecurseShowChildren(app->sceneManager->GetRootSceneGO());
+			if(ImGui::TreeNodeEx(app->sceneManager->GetRootSceneGO().get()->GetName().data(), treeFlags))
+			{
+				reparent = false;
+				ReparentDragDrop(app->sceneManager->GetRootSceneGO());
+				RecurseShowChildren(app->sceneManager->GetRootSceneGO());
+				ImGui::TreePop();
+			}
 
 			ImGui::EndChild();
 		}
@@ -69,6 +80,11 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 {
 	if (ImGui::BeginPopupContextItem())
 	{
+		if (ImGui::MenuItem("Create Empty"))
+		{
+			//Historn: Add Duplicate function
+		}
+		
 		if (ImGui::MenuItem("Duplicate"))
 		{
 			//Historn: Add Duplicate function
@@ -85,12 +101,15 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 	}
 }
 
-void PanelHierarchy::Reparent(std::shared_ptr<GameObject> childGO)
+bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 {
 
 	if (ImGui::BeginDragDropSource())
 	{
-		ImGui::SetDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+		if (childGO != app->sceneManager->GetRootSceneGO())
+		{
+			ImGui::SetDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+		}
 
 		ImGui::EndDragDropSource();
 	}
@@ -105,22 +124,27 @@ void PanelHierarchy::Reparent(std::shared_ptr<GameObject> childGO)
 			{
 				if (currentParent == dragging)
 				{
-					return;
+					return false;
 				}
 				currentParent = currentParent->parent.lock().get();
 			}
-
+				
 			GameObject* oldParent = dragging->parent.lock().get();
+
 			dragging->parent = childGO.get()->weak_from_this();
 
 			std::shared_ptr<GameObject> newChild = dragging->weak_from_this().lock();
 
-			std::vector<std::shared_ptr<GameObject>>::iterator position = std::find(oldParent->children.begin(), oldParent->children.end(), newChild);
-			oldParent->children.erase(position);
+			if (oldParent != nullptr)
+			{
+				std::vector<std::shared_ptr<GameObject>>::iterator position = std::find(oldParent->children.begin(), oldParent->children.end(), newChild);
+				oldParent->children.erase(position);
+			}
 
 			childGO.get()->children.emplace_back(newChild);
+			reparent = true;
 		}
 		ImGui::EndDragDropTarget();
 	}
-
+	return reparent;
 }
