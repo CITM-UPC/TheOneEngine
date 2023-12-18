@@ -144,10 +144,12 @@ bool PanelInspector::Draw()
                     ImGui::Text("Name: ");
                     ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, (tex->GetName()).c_str());
                     ImGui::Separator();
-                    ImGui::Text("Width: ");
+                    ImGui::Text("Size: ");
                     ImGui::SameLine();  ImGui::Text(std::to_string(tex->width).c_str());
                     ImGui::Text("Height: ");
                     ImGui::SameLine();  ImGui::Text(std::to_string(tex->height).c_str());
+                    //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
+
 
                     ImGui::Separator();
                 }

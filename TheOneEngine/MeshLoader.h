@@ -22,6 +22,7 @@ struct MeshData
 	Formats format;
 	std::vector<V3T2> vertex_data;
 	std::vector<unsigned int> index_data;
+	Graphic meshAABB;
 };
 
 struct MeshBufferedData
@@ -72,7 +73,6 @@ private:
 
 	MeshData meshData;
 	MeshBufferedData meshBuffData;
-
 };
 
 #endif // !__MESH_LOADER_H__
