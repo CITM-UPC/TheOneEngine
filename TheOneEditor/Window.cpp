@@ -179,7 +179,7 @@ void Window::SetDisplayMode(DisplayMode mode)
             displayMode = DisplayMode::WINDOWED;
             break;
         }
-            
+        
         case DisplayMode::FULLSCREEN:
         {
             if (SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN_DESKTOP) != 0)
@@ -187,7 +187,7 @@ void Window::SetDisplayMode(DisplayMode mode)
 
             displayMode = DisplayMode::FULLSCREEN;
             break;
-        }          
+        }
 
         case DisplayMode::FULLSCREEN_DESKTOP:
         {
@@ -197,14 +197,19 @@ void Window::SetDisplayMode(DisplayMode mode)
             displayMode = DisplayMode::FULLSCREEN_DESKTOP;
             break;
         }
-            
+
         case DisplayMode::BORDERLESS:
         {
             SDL_SetWindowBordered(window, (SDL_bool)!borderless);
             displayMode = DisplayMode::BORDERLESS;
             break;
-        }           
+        }
     }
+}
+
+void Window::GetSDLWindowSize(int* w, int* h)
+{
+    SDL_GetWindowSize(window, w, h);
 }
 
 Resolution Window::GetResolution()
@@ -235,5 +240,5 @@ void Window::SetResolution(Resolution res)
 void Window::OnResizeWindow(int width, int height)
 {
     SDL_SetWindowSize(window, width, height);
-    //app->engine->OnWindowResize(width, height);
+    //app->engine->OnWindowResize(0, 0, width, height);
 }

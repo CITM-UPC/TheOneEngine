@@ -28,7 +28,7 @@ public:
 
     void CameraInput(double dt);
 
-private:
+public:
 
     //hekbas test
     double dtSum = 0;

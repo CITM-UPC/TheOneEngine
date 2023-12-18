@@ -29,7 +29,8 @@ public:
 
 	void Render(RenderModes renderMode, Camera* camera);
 
-	void OnWindowResize(int width, int height);
+	// (x, y) Indicate the bottom left corner1
+	void OnWindowResize(int x, int y, int width, int height);
 
 	bool GetVSync();
 	bool SetVSync(bool vsync);
