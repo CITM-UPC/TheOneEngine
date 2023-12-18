@@ -13,8 +13,11 @@ PanelScene::~PanelScene() {}
 
 bool PanelScene::Draw()
 {
+    // Flag to track whether Button 2 was clicked
+    static bool showCameraSettings = false;
+
 	ImGuiWindowFlags settingsFlags = 0;
-    settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse;
+    settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 
     //ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(0.f, 0.f));
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
@@ -23,13 +26,56 @@ bool PanelScene::Draw()
     ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Scene", &enabled, settingsFlags))
 	{
+        // Top Bar --------------------------
+        if (ImGui::BeginMenuBar())
+        {
+            //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
+
+            if (ImGui::BeginMenu("Camera"))
+            {
+                // Camera settings
+                ImGui::TextWrapped("Scene Camera");
+                
+                Camera* camera = app->renderer3D->cameraGO.get()->GetComponent<Camera>();
+
+                float fov = static_cast<float>(camera->fov);
+                float aspect = static_cast<float>(camera->aspect);
+                float zNear = static_cast<float>(camera->zNear);
+                float zFar = static_cast<float>(camera->zFar);
+
+                ImGui::SliderFloat("Field of View", &fov, 20.0, 120.0);
+                ImGui::SliderFloat("Aspect Ratio", &aspect, 0.1, 10.0);
+                ImGui::Text("Clipping Plane");
+                ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
+                ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
+
+                camera->fov = fov;
+                camera->aspect = aspect;
+                camera->zNear = zNear;
+                camera->zFar = zFar;
+
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Gizmo"))
+            {
+                ImGui::Text("Gizmo Options");
+                ImGui::Text("This section isn't finished, my precious...");
+                ImGui::EndMenu();
+            }
+
+            ImGui::PopStyleVar();
+            ImGui::EndMenuBar();
+        }
+
+
+        // Viewport Control --------------------------
         // SDL Window
         int SDLWindowWidth, SDLWindowHeight;
         app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
-
-        // ImGui Window
         ImVec2 windowPos = ImGui::GetWindowPos();
         ImVec2 windowSize = ImGui::GetWindowSize();
+
+        // ImGui Window
         ImVec2 regionSize = ImGui::GetContentRegionAvail();
 
         // Aspect Ratio Size

@@ -146,28 +146,63 @@ void PanelSettings::Window()
 
 void PanelSettings::Input()
 {
+	ImGuiIO& io = ImGui::GetIO();
 	ImVec4 grey = ImVec4(0.5, 0.5, 0.5, 1);
 
-	// Mouse position
-	int mouse_x, mouse_y;
-	mouse_x = app->input->GetMouseX();
-	mouse_y = app->input->GetMouseY();
-	ImGui::Text("Mouse Position:");
+	// Display inputs submitted to ImGuiIO
+	
+	// Mouse Position
+	ImGui::Text("Mouse pos:");
 	ImGui::SameLine();
-	ImGui::TextColored(grey, "%i,%i", mouse_x, mouse_y);
+	if (ImGui::IsMousePosValid())
+		ImGui::TextColored(grey, "%g, %g", io.MousePos.x, io.MousePos.y);
+	else
+		ImGui::TextColored(grey, "<INVALID>");
 
-	// Mouse Speed
-	mouse_x = app->input->GetMouseXMotion();
-	mouse_y = app->input->GetMouseYMotion();
-	ImGui::Text("Mouse Speed:");
+	// Mouse Movement
+	ImGui::Text("Mouse delta:");
 	ImGui::SameLine();
-	ImGui::TextColored(grey, "%i,%i", mouse_x, mouse_y);
+	ImGui::TextColored(grey, "%g, %g", io.MouseDelta.x, io.MouseDelta.y);
 
-	// Mouse Wheel
-	int wheel = app->input->GetMouseZ();
-	ImGui::Text("Mouse Wheel:");
+	// Mouse Down
+	ImGui::Text("Mouse down:");
+	for (int i = 0; i < IM_ARRAYSIZE(io.MouseDown); i++)
+		if (ImGui::IsMouseDown(i))
+		{ 
+			ImGui::SameLine();
+			ImGui::TextColored(grey, "b%d (%.02f secs)", i, io.MouseDownDuration[i]);
+		}
+
+	//Mouse Wheel
+	ImGui::Text("Mouse wheel:");
 	ImGui::SameLine();
-	ImGui::TextColored(grey, "%i", wheel);
+	ImGui::TextColored(grey, "%.1f", io.MouseWheel);
+
+	// Keys Down
+	struct funcs { static bool IsLegacyNativeDupe(ImGuiKey key) { return key < 512 && ImGui::GetIO().KeyMap[key] != -1; } }; // Hide Native<>ImGuiKey duplicates when both exists in the array
+	ImGuiKey start_key = (ImGuiKey)0;
+
+	ImGui::Text("Keys down:");
+	for (ImGuiKey key = start_key; key < ImGuiKey_NamedKey_END; key = (ImGuiKey)(key + 1))
+	{
+		if (funcs::IsLegacyNativeDupe(key) || !ImGui::IsKeyDown(key)) continue;
+		ImGui::SameLine();
+		ImGui::TextColored(grey, (key < ImGuiKey_NamedKey_BEGIN) ? "\"%s\"" : "\"%s\" %d", ImGui::GetKeyName(key), key);
+	}
+
+	// Key Mods
+	ImGui::Text("Keys mods:");
+	ImGui::SameLine();
+	ImGui::TextColored(grey, "%s%s%s%s", io.KeyCtrl ? "CTRL " : "", io.KeyShift ? "SHIFT " : "", io.KeyAlt ? "ALT " : "", io.KeySuper ? "SUPER " : "");
+
+	// Chars
+	ImGui::Text("Chars queue:");
+	for (int i = 0; i < io.InputQueueCharacters.Size; i++)
+	{
+		ImWchar c = io.InputQueueCharacters[i];
+		ImGui::SameLine();
+		ImGui::TextColored(grey, "\'%c\' (0x%04X)", (c > ' ' && c <= 255) ? (char)c : '?', c);
+	} // FIXME: We should convert 'c' to UTF-8 here but the functions are not public.
 }
 
 void PanelSettings::Renderer()

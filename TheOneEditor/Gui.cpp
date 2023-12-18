@@ -128,7 +128,7 @@ bool Gui::Start()
     // Style
 #pragma region IMGUI_STYLE
 
-    LOG(LogType::LOG_OK, "-Setting ImGui Custom Style");   
+    LOG(LogType::LOG_OK, "-Setting ImGui Custom Style");
     ImGuiStyle& style = ImGui::GetStyle();
     style.Colors[ImGuiCol_Text] = ImVec4(1.00f, 1.00f, 1.00f, 1.00f);
     style.Colors[ImGuiCol_TextDisabled] = ImVec4(0.50f, 0.50f, 0.50f, 1.00f);
