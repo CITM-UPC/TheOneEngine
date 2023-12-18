@@ -99,6 +99,17 @@ void PanelHierarchy::Reparent(std::shared_ptr<GameObject> childGO)
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str()))
 		{
 			GameObject* dragging = *(GameObject**)payload->Data;
+
+			GameObject* currentParent = childGO.get();
+			while (currentParent)
+			{
+				if (currentParent == dragging)
+				{
+					return;
+				}
+				currentParent = currentParent->parent.lock().get();
+			}
+
 			GameObject* oldParent = dragging->parent.lock().get();
 			dragging->parent = childGO.get()->weak_from_this();
 
@@ -107,7 +118,7 @@ void PanelHierarchy::Reparent(std::shared_ptr<GameObject> childGO)
 			std::vector<std::shared_ptr<GameObject>>::iterator position = std::find(oldParent->children.begin(), oldParent->children.end(), newChild);
 			oldParent->children.erase(position);
 
-			childGO.get()->children.push_back(std::move(newChild));
+			childGO.get()->children.emplace_back(newChild);
 		}
 		ImGui::EndDragDropTarget();
 	}
