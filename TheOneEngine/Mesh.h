@@ -42,10 +42,10 @@ public:
     bool drawNormalsFaces;
     int normalLineWidth = 1;
     float normalLineLength = 0.1f;
-    std::vector<vec3f> meshVerts;
+    /*std::vector<vec3f> meshVerts;
     std::vector<vec3f> meshNorms;
     std::vector<vec3f> meshFaceCenters;
-    std::vector<vec3f> meshFaceNorms;
+    std::vector<vec3f> meshFaceNorms;*/
 
 private:
     void DrawVertexNormals();

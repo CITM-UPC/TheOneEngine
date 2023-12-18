@@ -1,4 +1,5 @@
 #include "Mesh.h"
+#include "../TheOneEditor/Log.h"
 
 Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh) {
     drawNormalsFaces = false;
@@ -78,31 +79,31 @@ void Mesh::DrawComponent()
     else {
         glDrawArrays(GL_TRIANGLES, 0, mesh.numVerts);
     }
-
-    if (drawNormalsVerts && !meshVerts.empty() && !meshNorms.empty()) {
+    
+    if (drawNormalsVerts && !mesh.meshVerts.empty() && !mesh.meshNorms.empty()) {
         glLineWidth(normalLineWidth);
         glBegin(GL_LINES);
         glColor3f(1.0f, 1.0f, 0.0f);
-
-        for (int i = 0; i < mesh.numVerts; i++) {
-            glVertex3f(meshVerts[i].x, meshVerts[i].y, meshVerts[i].z);
-            glVertex3f(meshVerts[i].x + meshNorms[i].x * normalLineLength,
-                meshVerts[i].y + meshNorms[i].y * normalLineLength,
-                meshVerts[i].z + meshNorms[i].z * normalLineLength);
+        
+        for (int i = 0; i < mesh.meshVerts.size(); i++) {
+            glVertex3f(mesh.meshVerts[i].x, mesh.meshVerts[i].y, mesh.meshVerts[i].z);
+            glVertex3f(mesh.meshVerts[i].x + mesh.meshNorms[i].x * normalLineLength,
+                mesh.meshVerts[i].y + mesh.meshNorms[i].y * normalLineLength,
+                mesh.meshVerts[i].z + mesh.meshNorms[i].z * normalLineLength);
         }
-
+        
         glColor3f(1.0f, 1.0f, 0.0f);
         glEnd();
     }
-
-    if (drawNormalsFaces && !meshFaceCenters.empty() && !meshFaceNorms.empty()) {
+    LOG(LogType::LOG_INFO, " %d", mesh.meshFaceCenters);
+    if (drawNormalsFaces && !mesh.meshFaceCenters.empty() && !mesh.meshFaceNorms.empty()) {
         glLineWidth(normalLineWidth);
         glBegin(GL_LINES);
         glColor3f(1.0f, 0.0f, 1.0f);
 
-        for (int i = 0; i < mesh.numFaces; i++) {
-            glm::vec3 endPoint = meshFaceCenters[i] + normalLineLength * meshFaceNorms[i];
-            glVertex3f(meshFaceCenters[i].x, meshFaceCenters[i].y, meshFaceCenters[i].z);
+        for (int i = 0; i < mesh.meshFaceCenters.size(); i++) {
+            glm::vec3 endPoint = mesh.meshFaceCenters[i] + normalLineLength * mesh.meshFaceNorms[i];
+            glVertex3f(mesh.meshFaceCenters[i].x, mesh.meshFaceCenters[i].y, mesh.meshFaceCenters[i].z);
             glVertex3f(endPoint.x, endPoint.y, endPoint.z);
         }
 

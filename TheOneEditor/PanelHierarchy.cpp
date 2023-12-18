@@ -18,7 +18,10 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 		if (ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags))
 		{
-
+			if (ImGui::Selectable(childGO.get()->GetName().data(), app->sceneManager->GetSelectedGO() == childGO))
+			{
+				app->sceneManager->SetSelectedGO(childGO);
+			}
 			RecurseShowChildren(childGO);
 
 			ImGui::TreePop();
@@ -44,7 +47,10 @@ bool PanelHierarchy::Draw()
 
 				if (ImGui::TreeNodeEx(gameObject.get()->GetName().data(), treeFlags))
 				{
-
+					if (ImGui::Selectable(gameObject.get()->GetName().data(), app->sceneManager->GetSelectedGO() == gameObject))
+					{
+						app->sceneManager->SetSelectedGO(gameObject);
+					}
 					RecurseShowChildren(gameObject);
 
 					ImGui::TreePop();
