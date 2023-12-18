@@ -97,6 +97,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
         mesh.parent = root;
+        meshGO.get()->parent = root.get()->weak_from_this();
         root.get()->children.push_back(meshGO);
         meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
         meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];

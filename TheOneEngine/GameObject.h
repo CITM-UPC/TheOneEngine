@@ -84,7 +84,7 @@ public:
 private:
     std::string name;
     std::vector<std::unique_ptr<Component>> components;
-    uint32 UID;
+    uint32_t UID;
     bool enabled;
     int index;
 };
