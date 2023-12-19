@@ -16,6 +16,7 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="JSONParser.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="Texture.h" />
@@ -83,7 +84,7 @@
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
@@ -113,7 +114,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg devil[libjpeg,
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>

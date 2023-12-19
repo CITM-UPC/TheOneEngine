@@ -58,6 +58,9 @@ public:
 
 	void BufferData(MeshData meshData);
 
+	void serializeMeshBufferedData(const MeshBufferedData& data, const std::string& filename);
+	MeshBufferedData deserializeMeshBufferedData(const std::string& filename);
+
 private:
 
 	/*MeshLoader(const MeshLoader& cpy);

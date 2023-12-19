@@ -54,6 +54,9 @@
     <ClInclude Include="Graphic.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="JSONParser.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">

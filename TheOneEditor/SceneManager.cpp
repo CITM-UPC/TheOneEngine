@@ -1,6 +1,8 @@
 #include "App.h"
 #include "SceneManager.h"
 
+#include <fstream>
+#include <filesystem>
 
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 {
@@ -15,6 +17,7 @@ SceneManager::~SceneManager()
 
 bool SceneManager::Awake()
 {
+    std::filesystem::create_directories("Library/");
     return true;
 }
 
@@ -91,6 +94,10 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
     name = GenerateUniqueName(name);
     if (root != nullptr) root.get()->SetName(name);
 
+    std::string folderName = "Library/Models/" + name + "/";
+
+    std::filesystem::create_directories(folderName);
+
     for (auto& mesh : meshes)
     {
         std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
@@ -103,6 +110,9 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         root.get()->children.push_back(meshGO);
         meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
         meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
+
+        /*Save fbx mesh info into CUSTOM FORMAT file*/
+        meshLoader->serializeMeshBufferedData(mesh, folderName);
 
         // hekbas: need to set Transform?
     }
@@ -153,12 +163,12 @@ std::shared_ptr<GameObject> SceneManager::CreateMF()
 
 uint SceneManager::GetNumberGO() const
 {
-    return static_cast<uint>(gameObjects.size());
+    return static_cast<uint>(rootSceneGO.get()->children.size());
 }
 
 std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
 {
-    return gameObjects;
+    return rootSceneGO.get()->children;
 }
 
 void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)

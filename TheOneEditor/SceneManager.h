@@ -52,13 +52,15 @@ public:
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
 
+    /*SCENE SERIALIZATION*/
+    void serializeScene();
+
 private:
     void DrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
     //uint selectedGameObject;
     std::shared_ptr<GameObject> rootSceneGO;
-    std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::shared_ptr<GameObject> selectedGameObject;
     MeshLoader* meshLoader;
 };

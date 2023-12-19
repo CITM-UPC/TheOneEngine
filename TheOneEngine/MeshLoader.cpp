@@ -11,6 +11,7 @@
 #include <vector>
 #include <array>
 #include <filesystem>
+#include <fstream>
 
 
 namespace fs = std::filesystem;
@@ -175,4 +176,35 @@ std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string&
     aiReleaseImport(scene_ptr);
 
     return texture_ptrs;
+}
+
+void MeshLoader::serializeMeshBufferedData(const MeshBufferedData& data, const std::string& filename)
+{
+    std::ofstream outFile(filename, std::ios::binary);
+    // Serialize string members
+    size_t meshNameLength = data.meshName.size();
+    outFile.write(reinterpret_cast<const char*>(&meshNameLength), sizeof(size_t));
+    outFile.write(data.meshName.c_str(), meshNameLength);
+
+    // Serialize enum member
+    outFile.write(reinterpret_cast<const char*>(&data.format), sizeof(Formats));
+
+    // Serialize other members
+    outFile.write(reinterpret_cast<const char*>(&data.vertex_buffer_id), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.numVerts), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.indexs_buffer_id), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.numIndexs), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.numFaces), sizeof(uint));
+
+    size_t texturePathLength = data.texturePath.size();
+    outFile.write(reinterpret_cast<const char*>(&texturePathLength), sizeof(size_t));
+    outFile.write(data.texturePath.c_str(), texturePathLength);
+
+    outFile.write(reinterpret_cast<const char*>(data.texture.get()), sizeof(Texture)); // Assuming Texture has a serialize function
+
+    outFile.write(reinterpret_cast<const char*>(&data.materialIndex), sizeof(uint));
+
+    // Close the file
+    outFile.close();
+
 }
