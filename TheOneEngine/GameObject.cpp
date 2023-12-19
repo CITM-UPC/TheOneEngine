@@ -172,3 +172,14 @@ static void drawAABBox(const AABBox& aabb) {
 	glVec3(aabb.c());
 	glEnd();
 }
+
+//GameObject::GameObject() : _transform(glm::identity<mat4>()) {}
+//GameObject::GameObject(std::shared_ptr<Graphic> graphic) : _transform(glm::identity<mat4>()), _graphic(graphic) {}
+//
+//void GameObject::rotate(double degrees, const vec3& axis) {
+//	_transform = glm::rotate(_transform, glm::radians(degrees), axis);
+//}
+//
+//void GameObject::translate(const vec3& dv) {
+//	_transform = glm::translate(_transform, dv);
+//}

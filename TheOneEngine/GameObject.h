@@ -82,6 +82,10 @@ public:
     std::shared_ptr<Graphic> _graphic;
     AABBox aabb() const;
 
+    //inline const mat4& transform() { return _transform; }
+    //inline vec3& pos() { return _pos; }
+    //inline const vec3& pos() { return _pos; }
+
 private:
     std::string name;
     std::vector<std::unique_ptr<Component>> components;
