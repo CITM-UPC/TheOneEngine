@@ -6,15 +6,16 @@
 #include "MeshLoader.h"
 #include "Component.h"
 #include "Texture.h"
+#include "Graphic.h"
 
-#include <string>
 #include <vector>
 #include <memory>
+#include <string>
 
 class GameObject;
 struct MeshBufferData;
 
-class Mesh : public Component
+class Mesh : public Component, public Graphic
 {
 public:
 
@@ -26,6 +27,7 @@ public:
 public:
 
     MeshBufferedData mesh;
+    MeshData meshData;
 
     //now inside MeshBufferedData
     //std::vector<std::shared_ptr<Texture>> texture;
@@ -39,18 +41,17 @@ public:
 
     bool drawNormalsVerts;
     bool drawNormalsFaces;
-    int normalLineWidth = 1;
-    float normalLineLength = 0.1f;
-    /*std::vector<vec3f> meshVerts;
-    std::vector<vec3f> meshNorms;
-    std::vector<vec3f> meshFaceCenters;
-    std::vector<vec3f> meshFaceNorms;*/
+    int normalLineWidth;
+    float normalLineLength;
 
 private:
+    void GenerateAABB();
+    void DrawAABB();
+
     void DrawVertexNormals();
     void DrawFaceNormals();
-    void DrawWireframe();
-    void DrawAABB();
+
+    //void DrawWireframe();
     void DrawOBB();
 };
 

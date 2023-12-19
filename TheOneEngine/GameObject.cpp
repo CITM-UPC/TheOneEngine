@@ -51,8 +51,8 @@ void GameObject::Draw()
 		
 	}
 
-	drawAABBox(aabb());
-	if (_graphic.get()) _graphic->draw();
+	//drawAABBox(aabb());
+	//if (_graphic.get()) _graphic->draw();
 }
 
 // Component ----------------------------------------
@@ -127,51 +127,22 @@ void GameObject::CreateUID()
 	UID = UIDGen::GenerateUID();
 }
 
-AABBox GameObject::aabb() const {
-	AABBox aabbox;
-	if (_graphic.get()) aabbox = _graphic->aabb;
-	else if (children.empty()) {
-		aabbox.min = vec3(0);
-		aabbox.max = vec3(0);
-	}
-
-	for (const auto& child : children) {
-		const auto child_aabb = (child.transform() * child.aabb()).AABB();
-		aabbox.min = glm::min(aabbox.min, child_aabb.min);
-		aabbox.max = glm::max(aabbox.max, child_aabb.max);
-	}
-
-	return aabbox;
-}
-
-static inline void glVec3(const vec3& v) { glVertex3dv(&v.x); }
-
-static void drawAABBox(const AABBox& aabb) {
-	glLineWidth(2);
-	glBegin(GL_LINE_STRIP);
-
-	glVec3(aabb.a());
-	glVec3(aabb.b());
-	glVec3(aabb.c());
-	glVec3(aabb.d());
-	glVec3(aabb.a());
-
-	glVec3(aabb.e());
-	glVec3(aabb.f());
-	glVec3(aabb.g());
-	glVec3(aabb.h());
-	glVec3(aabb.e());
-	glEnd();
-
-	glBegin(GL_LINES);
-	glVec3(aabb.h());
-	glVec3(aabb.d());
-	glVec3(aabb.f());
-	glVec3(aabb.b());
-	glVec3(aabb.g());
-	glVec3(aabb.c());
-	glEnd();
-}
+//AABBox GameObject::aabb() const {
+//	AABBox aabbox;
+//	if (_graphic.get()) aabbox = _graphic->aabb;
+//	else if (children.empty()) {
+//		aabbox.min = vec3(0);
+//		aabbox.max = vec3(0);
+//	}
+//
+//	for (const auto& child : children) {
+//		const auto child_aabb = (child.transform() * child.aabb()).AABB();
+//		aabbox.min = glm::min(aabbox.min, child_aabb.min);
+//		aabbox.max = glm::max(aabbox.max, child_aabb.max);
+//	}
+//
+//	return aabbox;
+//}
 
 //GameObject::GameObject() : _transform(glm::identity<mat4>()) {}
 //GameObject::GameObject(std::shared_ptr<Graphic> graphic) : _transform(glm::identity<mat4>()), _graphic(graphic) {}

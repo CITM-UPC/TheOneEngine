@@ -67,24 +67,13 @@ void MeshLoader::BufferData(MeshData meshData)
     case Formats::F_V3:
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         meshBuffData.format = Formats::F_V3;
-
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
-        for (const auto& v : span((V3*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            meshData.AABB.aabb.min = glm::min(meshData.AABB.aabb.min, vec3(v.v));
-            meshData.AABB.aabb.max = glm::max(meshData.AABB.aabb.max, vec3(v.v));
-        }
         break;
+
     case Formats::F_V3C4:
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         meshBuffData.format = Formats::F_V3C4;
-
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
-        for (const auto& v : span((V3C4*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            meshData.AABB.aabb.min = glm::min(meshData.AABB.aabb.min, vec3(v.v));
-            meshData.AABB.aabb.max = glm::max(meshData.AABB.aabb.max, vec3(v.v));
-        }
-
         break;
+
     case Formats::F_V3T2:
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         meshBuffData.format = Formats::F_V3T2;
@@ -92,12 +81,6 @@ void MeshLoader::BufferData(MeshData meshData)
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glVertexPointer(3, GL_FLOAT, sizeof(V3T2), nullptr);
         glTexCoordPointer(2, GL_FLOAT, sizeof(V3T2), (void*)sizeof(V3));
-
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
-        for (const auto& v : span((V3T2*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            meshData.AABB.aabb.min = glm::min(meshData.AABB.aabb.min, vec3(v.v));
-            meshData.AABB.aabb.max = glm::max(meshData.AABB.aabb.max, vec3(v.v));
-        }
         break;
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -129,7 +112,6 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 
         std::vector<V3T2> vertex_data;
         std::vector<unsigned int> index_data;
-        Graphic AABB;
 
         for (size_t i = 0; i < mesh->mNumVertices; ++i)
         {
@@ -144,17 +126,11 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             index_data.push_back(faces[f].mIndices[2]);
         }
 
-        for (const auto& v : span((V3T2*)vertex_data.data(), vertex_data.size())) {
-            AABB.aabb.min = glm::min(AABB.aabb.min, vec3(v.v));
-            AABB.aabb.max = glm::max(AABB.aabb.max, vec3(v.v));
-        }
-
         meshData =
         {
             Formats::F_V3T2,
             vertex_data,
             index_data,
-            AABB
         };
 
         // JULS: Normals

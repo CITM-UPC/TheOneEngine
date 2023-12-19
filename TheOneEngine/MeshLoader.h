@@ -23,7 +23,6 @@ struct MeshData
 	Formats format;
 	std::vector<V3T2> vertex_data;
 	std::vector<unsigned int> index_data;
-	Graphic AABB;
 };
 
 struct MeshBufferedData
