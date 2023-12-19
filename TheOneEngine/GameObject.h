@@ -45,8 +45,8 @@ public:
         if (component != nullptr)
         {
             LOG(LogType::LOG_WARNING, "Component already applied");
-            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
-            LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
+            LOG(LogType::LOG_INFO, "- GameObject [Name: %s] ", name.data());
+            LOG(LogType::LOG_INFO, "- Component  [Type: %s] ", component->GetName().data());
 
             return false;
         }
@@ -78,6 +78,9 @@ public:
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;
     bool isStatic;
+
+    std::shared_ptr<Graphic> _graphic;
+    AABBox aabb() const;
 
 private:
     std::string name;
