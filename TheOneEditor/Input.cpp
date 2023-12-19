@@ -148,8 +148,7 @@ bool Input::processSDLEvents()
             }
             case SDL_DROPFILE:
             {
-                // Just flag event here
-                // This code elsewhere
+                // Hekbas: Just flag event here, this code elsewhere
                 std::string fileDir = event.drop.file;
                 std::string fileNameExt = fileDir.substr(fileDir.find_last_of('\\') + 1);
                 fs::path assetsDir = fs::path(ASSETS_PATH) / fileNameExt;
