@@ -11,7 +11,16 @@
 #include "imgui_internal.h"
 
 
-PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) {}
+PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) 
+{
+    needRefresh_pos = false; 
+    needRefresh_rot = false;
+    needRefresh_sca = false;
+
+    view_pos = { 0, 0, 0 };
+    view_rot = { 0, 0, 0 };
+    view_sca = { 0, 0, 0 };
+}
 
 PanelInspector::~PanelInspector() {}
 
@@ -49,9 +58,13 @@ bool PanelInspector::Draw()
 
                 Transform* transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
 
+                view_pos = transform->getPosition();
+                view_rot = transform->getEulerAngles();
+                view_sca = transform->getScale();
+
+
                 if (ImGui::BeginTable("", 4))
                 {
-                    //ImGui::DragFloat("", &transform->sc.x, 0.005f, -FLT_MAX, +FLT_MAX, "%.3f");
                     ImGui::TableNextRow();
                     ImGui::TableSetColumnIndex(0);
                     //ImGui::Checkbox("Active", &transform->isActive);
@@ -62,21 +75,58 @@ bool PanelInspector::Draw()
 
                     ImGui::TableSetColumnIndex(1);
                     ImGui::Text("X");
-                    ImGui::Text(std::to_string(transform->getPosition().x).c_str());
-                    ImGui::Text(std::to_string(transform->getEulerAngles().x).c_str());
-                    ImGui::Text(std::to_string(transform->getScale().x).c_str());
+                    //ImGui::Text(std::to_string(transform->getPosition().x).c_str());
+                    //ImGui::Text(std::to_string(transform->getEulerAngles().x).c_str());
+                    //ImGui::Text(std::to_string(transform->getScale().x).c_str());
+
+                    if (ImGui::DragFloat("X", &view_pos.x, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_pos = true;
+                    }
+                    if (ImGui::DragFloat("X", &view_rot.x, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_rot = true;
+                    }
+                    if (ImGui::DragFloat("X", &view_sca.x, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_sca = true;
+                    }
 
                     ImGui::TableSetColumnIndex(2);
                     ImGui::Text("Y");
-                    ImGui::Text(std::to_string(transform->getPosition().y).c_str());
-                    ImGui::Text(std::to_string(transform->getEulerAngles().y).c_str());
-                    ImGui::Text(std::to_string(transform->getScale().y).c_str());
+                    //ImGui::Text(std::to_string(transform->getPosition().y).c_str());
+                    //ImGui::Text(std::to_string(transform->getEulerAngles().y).c_str());
+                    //ImGui::Text(std::to_string(transform->getScale().y).c_str());
+                    if (ImGui::DragFloat("Y", &view_pos.y, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_pos = true;
+                    }
+                    if (ImGui::DragFloat("Y", &view_rot.y, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_rot = true;
+                    }
+                    if (ImGui::DragFloat("Y", &view_sca.y, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_sca = true;
+                    }
 
                     ImGui::TableSetColumnIndex(3);
                     ImGui::Text("Z");
-                    ImGui::Text(std::to_string(transform->getPosition().z).c_str());
-                    ImGui::Text(std::to_string(transform->getEulerAngles().z).c_str());
-                    ImGui::Text(std::to_string(transform->getScale().z).c_str());
+                    //ImGui::Text(std::to_string(transform->getPosition().z).c_str());
+                    //ImGui::Text(std::to_string(transform->getEulerAngles().z).c_str());
+                    //ImGui::Text(std::to_string(transform->getScale().z).c_str());
+                    if (ImGui::DragFloat("Z", &view_pos.z, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_pos = true;
+                    }
+                    if (ImGui::DragFloat("Z", &view_rot.z, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_rot = true;
+                    }
+                    if (ImGui::DragFloat("Z", &view_sca.z, 0.5F, 0, 0, "%.3f", 1)) {
+                        needRefresh_sca = true;
+                    }
+
+                    if (needRefresh_pos)
+                       transform->setPosition(view_pos /*- transform->getPosition()*/);
+                    else if (needRefresh_rot) {
+                       //transform->setR(view_rot - original_rot);
+
+                    }
+                    else if (needRefresh_sca)
+                       transform->setScale(view_sca /*- original_scale*/);
 
                     ImGui::EndTable();
                 }
