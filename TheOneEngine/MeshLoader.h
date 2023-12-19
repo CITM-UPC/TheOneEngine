@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Defs.h"
+#include "Graphic.h"
 
 #include <vector>
 #include <array>
@@ -22,7 +23,7 @@ struct MeshData
 	Formats format;
 	std::vector<V3T2> vertex_data;
 	std::vector<unsigned int> index_data;
-	Graphic meshAABB;
+	Graphic AABB;
 };
 
 struct MeshBufferedData

@@ -70,8 +70,8 @@ void MeshLoader::BufferData(MeshData meshData)
 
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         for (const auto& v : span((V3*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            aabb.min = glm::min(aabb.min, vec3(v.v));
-            aabb.max = glm::max(aabb.max, vec3(v.v));
+            meshData.AABB.aabb.min = glm::min(meshData.AABB.aabb.min, vec3(v.v));
+            meshData.AABB.aabb.max = glm::max(meshData.AABB.aabb.max, vec3(v.v));
         }
         break;
     case Formats::F_V3C4:
@@ -80,8 +80,8 @@ void MeshLoader::BufferData(MeshData meshData)
 
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         for (const auto& v : span((V3C4*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            aabb.min = glm::min(aabb.min, vec3(v.v));
-            aabb.max = glm::max(aabb.max, vec3(v.v));
+            meshData.AABB.aabb.min = glm::min(meshData.AABB.aabb.min, vec3(v.v));
+            meshData.AABB.aabb.max = glm::max(meshData.AABB.aabb.max, vec3(v.v));
         }
 
         break;
@@ -95,8 +95,8 @@ void MeshLoader::BufferData(MeshData meshData)
 
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         for (const auto& v : span((V3T2*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            aabb.min = glm::min(aabb.min, vec3(v.v));
-            aabb.max = glm::max(aabb.max, vec3(v.v));
+            meshData.AABB.aabb.min = glm::min(meshData.AABB.aabb.min, vec3(v.v));
+            meshData.AABB.aabb.max = glm::max(meshData.AABB.aabb.max, vec3(v.v));
         }
         break;
     }
@@ -129,6 +129,7 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 
         std::vector<V3T2> vertex_data;
         std::vector<unsigned int> index_data;
+        Graphic AABB;
 
         for (size_t i = 0; i < mesh->mNumVertices; ++i)
         {
@@ -143,18 +144,51 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             index_data.push_back(faces[f].mIndices[2]);
         }
 
+        for (const auto& v : span((V3T2*)vertex_data.data(), vertex_data.size())) {
+            AABB.aabb.min = glm::min(AABB.aabb.min, vec3(v.v));
+            AABB.aabb.max = glm::max(AABB.aabb.max, vec3(v.v));
+        }
+
         meshData =
         {
             Formats::F_V3T2,
             vertex_data,
-            index_data
+            index_data,
+            AABB
         };
 
-
         // JULS: Normals
-        /*auto mesh_sptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), vertex_data.size(), mesh->mNumFaces, index_data.data(), index_data.size());
-        //mesh_sptr->mesh.texture = texture_ptrs[mesh->mMaterialIndex];
-        mesh_sptr->mesh.texturePath = path;
+        //auto mesh_sptr = make_shared<Mesh>(Formats::F_V3T2, vertex_data.data(), vertex_data.size(), mesh->mNumFaces, index_data.data(), index_data.size());
+        ////mesh_sptr->mesh.texture = texture_ptrs[mesh->mMaterialIndex];
+        //mesh_sptr->mesh.texturePath = path;
+
+        //for (size_t i = 0; i < mesh->mNumVertices; i++) {
+        //    aiVector3D normal = mesh->mNormals[i];
+        //    vec3f glmNormal(normal.x, normal.y, normal.z);
+        //    mesh_sptr->mesh.meshNorms.push_back(glmNormal);
+        //}
+
+        //for (size_t i = 0; i < mesh->mNumVertices; i++) {
+        //    aiVector3D vert = mesh->mVertices[i];
+        //    vec3f glmNormal(vert.x, vert.y, vert.z);
+        //    mesh_sptr->mesh.meshVerts.push_back(glmNormal);
+        //}
+
+        //for (size_t f = 0; f < mesh->mNumFaces; ++f)
+        //{
+        //    aiFace face = mesh->mFaces[f];
+
+        //    vec3f v0(mesh->mVertices[face.mIndices[0]].x, mesh->mVertices[face.mIndices[0]].y, mesh->mVertices[face.mIndices[0]].z);
+        //    vec3f v1(mesh->mVertices[face.mIndices[1]].x, mesh->mVertices[face.mIndices[1]].y, mesh->mVertices[face.mIndices[1]].z);
+        //    vec3f v2(mesh->mVertices[face.mIndices[2]].x, mesh->mVertices[face.mIndices[2]].y, mesh->mVertices[face.mIndices[2]].z);
+
+        //    vec3f faceNormal = glm::cross(v1 - v0, v2 - v0);
+        //    faceNormal = glm::normalize(faceNormal);
+        //    mesh_sptr->mesh.meshFaceNorms.push_back(faceNormal);
+
+        //    vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
+        //    mesh_sptr->mesh.meshFaceCenters.push_back(faceCenter);
+        //}
 
         BufferData(meshData);
         meshBuffData.meshName = mesh->mName.C_Str();
@@ -182,12 +216,11 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             meshBuffData.meshFaceNorms.push_back(faceNormal);
 
             vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
-            mesh_sptr->mesh.meshFaceCenters.push_back(faceCenter);
-        }*/
+            meshBuffData.meshFaceCenters.push_back(faceCenter);
+        }
 
         mehsesData.push_back(meshBuffData);
     }
-    
 
     aiReleaseImport(scene);
 

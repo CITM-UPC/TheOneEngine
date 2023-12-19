@@ -4,7 +4,6 @@
 #include "../TheOneEditor/Log.h"
 
 
-
 Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh) {
     drawNormalsFaces = false;
     drawNormalsVerts = false;

@@ -6,7 +6,6 @@
 #include "MeshLoader.h"
 #include "Component.h"
 #include "Texture.h"
-#include "Graphic.h"
 
 #include <string>
 #include <vector>
