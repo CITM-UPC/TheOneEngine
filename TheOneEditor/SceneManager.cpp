@@ -68,9 +68,9 @@ std::string SceneManager::GenerateUniqueName(const std::string& baseName)
     return uniqueName;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
+std::shared_ptr<GameObject> SceneManager::CreateEmptyGO(std::string name)
 {
-    std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
+    std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>(name);
     emptyGO.get()->AddComponent<Transform>();
 
     emptyGO.get()->parent = rootSceneGO.get()->weak_from_this();
@@ -85,11 +85,13 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
     std::vector<MeshBufferedData> meshes = meshLoader->LoadMesh(path);
     std::vector<std::shared_ptr<Texture>> textures = meshLoader->LoadTexture(path);
 
-    // Create emptyGO parent if meshes >1
-    std::shared_ptr<GameObject> root = meshes.size() > 1 ? CreateEmptyGO() : nullptr;
     std::string name = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
     name = GenerateUniqueName(name);
-    if (root != nullptr) root.get()->SetName(name);
+
+    // Create emptyGO parent if meshes >1
+    bool isSingleMesh = meshes.size() > 1 ? false : true;
+    std::shared_ptr<GameObject> emptyParent = isSingleMesh ? nullptr : CreateEmptyGO();
+    if (!isSingleMesh) emptyParent.get()->SetName(name);
 
     for (auto& mesh : meshes)
     {
@@ -98,13 +100,20 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         meshGO.get()->AddComponent<Mesh>();
         //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
-        mesh.parent = root;
-        meshGO.get()->parent = root.get()->weak_from_this();
-        root.get()->children.push_back(meshGO);
         meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
         meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
-
         // hekbas: need to set Transform?
+
+        if (isSingleMesh)
+        {
+            meshGO.get()->parent = rootSceneGO;
+            rootSceneGO.get()->children.push_back(meshGO);
+        }
+        else
+        {
+            meshGO.get()->parent = emptyParent;
+            emptyParent.get()->children.push_back(meshGO);
+        }
     }
 
     return nullptr;
