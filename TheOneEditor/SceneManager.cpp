@@ -57,7 +57,7 @@ std::string SceneManager::GenerateUniqueName(const std::string& baseName)
     int counter = 1;
 
     while (std::any_of(
-        gameObjects.begin(), gameObjects.end(),
+        rootSceneGO.get()->children.begin(), rootSceneGO.get()->children.end(),
         [&uniqueName](const std::shared_ptr<GameObject>& obj)
         { return obj.get()->GetName() == uniqueName; }))
     {

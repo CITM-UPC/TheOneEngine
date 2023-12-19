@@ -106,10 +106,21 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
         std::vector<V3T2> vertex_data;
         std::vector<unsigned int> index_data;
 
-        for (size_t i = 0; i < mesh->mNumVertices; ++i)
+        if (texCoords != nullptr)
         {
-            V3T2 v = { verts[i], vec2f(texCoords[i].x, texCoords[i].y) };
-            vertex_data.push_back(v);
+            for (size_t i = 0; i < mesh->mNumVertices; ++i)
+            {
+                V3T2 v = { verts[i], vec2f(texCoords[i].x, texCoords[i].y) };
+                vertex_data.push_back(v);
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < mesh->mNumVertices; ++i)
+            {
+                V3T2 v = { verts[i], vec2f(0, 0) };
+                vertex_data.push_back(v);
+            }
         }
 
         for (size_t f = 0; f < mesh->mNumFaces; ++f)
