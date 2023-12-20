@@ -77,10 +77,6 @@ void MeshLoader::BufferData(MeshData meshData)
     case Formats::F_V3T2:
         glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
         meshBuffData.format = Formats::F_V3T2;
-
-        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        glVertexPointer(3, GL_FLOAT, sizeof(V3T2), nullptr);
-        glTexCoordPointer(2, GL_FLOAT, sizeof(V3T2), (void*)sizeof(V3));
         break;
     }
     glBindBuffer(GL_ARRAY_BUFFER, 0);

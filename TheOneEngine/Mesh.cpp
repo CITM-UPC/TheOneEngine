@@ -50,8 +50,12 @@ void Mesh::DrawComponent()
 
     case Formats::F_V3T2:
         glEnable(GL_TEXTURE_2D);
-        if (mesh.texture.get() /*&& !drawChecker*/) mesh.texture->bind();
+        if (mesh.texture.get() && !drawChecker) mesh.texture->bind();
         //else mesh.checkboard.get()->bind();
+
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        glVertexPointer(3, GL_FLOAT, sizeof(V3T2), nullptr);
+        glTexCoordPointer(2, GL_FLOAT, sizeof(V3T2), (void*)sizeof(V3));
         break;
     }
 
@@ -79,17 +83,17 @@ void Mesh::DrawComponent()
     glDisable(GL_TEXTURE_2D);
 
     GLenum error = glGetError();
-    if (error != GL_NO_ERROR) {
-        // Print the raw error code
-        fprintf(stderr, "OpenGL error code: %d\n", error);
 
-        // Print the corresponding error string
-        const char* errorString = reinterpret_cast<const char*>(gluErrorString(error));
-        fprintf(stderr, "OpenGL error: %s\n", errorString ? errorString : "Unknown");
+    //if (error != GL_NO_ERROR) {
+    //    // Print the raw error code
+    //    fprintf(stderr, "OpenGL error code: %d\n", error);
 
-        assert(false); // Trigger an assertion failure for debugging
-    }
+    //    // Print the corresponding error string
+    //    const char* errorString = reinterpret_cast<const char*>(gluErrorString(error));
+    //    fprintf(stderr, "OpenGL error: %s\n", errorString ? errorString : "Unknown");
 
+    //    assert(false); // Trigger an assertion failure for debugging
+    //}
 }
 
 void Mesh::DrawVertexNormals() 
