@@ -29,7 +29,7 @@ bool SceneManager::Start()
     /*CreateEmptyGO();
     CreateCube();
     CreateSphere();*/
-    CreateMeshGO("Assets\\baker_house.fbx");
+    //CreateMeshGO("Assets\\baker_house.fbx");
 
     return true;
 }
@@ -161,7 +161,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string fbxNa
         //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
         meshGO.get()->GetComponent<Mesh>()->meshData = mData;
-        //meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
+        meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
         //meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
         // hekbas: need to set Transform?
 
