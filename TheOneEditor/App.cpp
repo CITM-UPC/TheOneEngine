@@ -282,3 +282,8 @@ double App::GetDT() const
 {
 	return dt;
 }
+
+void App::SetDT(double dt)
+{
+	this->dt = dt;
+}

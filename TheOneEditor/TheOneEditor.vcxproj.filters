@@ -79,6 +79,12 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Time.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Input.h">
@@ -133,6 +139,12 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Time.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

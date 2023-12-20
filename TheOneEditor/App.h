@@ -24,6 +24,12 @@ class SceneManager;
 class Gui;
 class Renderer3D;
 
+enum class GameState {
+	NONE,
+	PLAY,
+	PAUSE,
+	PLAY_ONCE
+};
 
 class App
 {
@@ -52,7 +58,7 @@ public:
 	void SetFrameRate(int refreshRate);
 
 	double GetDT() const;
-
+	void SetDT(double dt);
 
 private:
 	
