@@ -26,8 +26,10 @@ void EngineCore::Update(double dt)
 
 }
 
-void EngineCore::Render(RenderModes renderMode, Camera* camera)
+void EngineCore::Render(Camera* camera)
 {
+    //glClearColor(0.7f, 0.7f, 1.0f, 1.0f);
+
     // Update Camera Matrix
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

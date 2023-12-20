@@ -13,6 +13,7 @@ enum class PanelType
 	INSPECTOR,
 	PROJECT,
 	SCENE,
+	GAME,
 	SETTINGS,
 
 	UNKNOWN
