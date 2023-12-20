@@ -68,6 +68,8 @@ public:
     void UpdateProjectionMatrix();
     void UpdateViewProjectionMatrix();
 
+    json SaveComponent();
+
 public:
 
     double fov;

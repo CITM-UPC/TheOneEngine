@@ -44,6 +44,8 @@ public:
     void CreateUID() { UID = UIDGen::GenerateUID(); }
     uint32 GetUID() { return UID; }
 
+    virtual json SaveComponent() = 0;
+
 protected:
     std::weak_ptr<GameObject> containerGO;
     ComponentType type;

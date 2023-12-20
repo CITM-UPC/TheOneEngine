@@ -42,6 +42,11 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
+    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+    {
+        SaveScene();
+    }
+
     return true;
 }
 
@@ -322,20 +327,23 @@ std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
 
 void SceneManager::SaveScene()
 {
-    nlohmann::json json;
-
     fs::path filename = fs::path(ASSETS_PATH) / "Scenes" / "scene.toe";
+    //string filename = "Assets/Scenes/";
+    fs::path folderName = fs::path(ASSETS_PATH) / "Scenes";
+    fs::create_directories(folderName);
 
+    json sceneJSON;
+
+    json gameObjectsJSON;
     /*Save all gameobjects*/
-    for (const auto& gO : GetGameObjects())
+    for (const auto& go : GetGameObjects())
     {
-        //gO.get()
+        gameObjectsJSON.push_back(go.get()->SaveGameObject());
     }
 
-    std::ofstream outFile(filename);
-    outFile << nlohmann::to_string(json) << std::endl;
-    outFile.close();
+    sceneJSON["GameObjects"] = gameObjectsJSON;
 
+    std::ofstream(filename) << sceneJSON;
 }
 
 void SceneManager::LoadScene(const std::string& filename)

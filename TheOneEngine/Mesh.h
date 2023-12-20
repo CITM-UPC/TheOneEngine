@@ -26,6 +26,8 @@ public:
 
     void GenerateAABB();
 
+    json SaveComponent();
+
 public:
 
     MeshBufferedData mesh;

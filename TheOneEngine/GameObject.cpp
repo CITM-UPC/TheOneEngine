@@ -132,9 +132,41 @@ void GameObject::CreateUID()
 	UID = UIDGen::GenerateUID();
 }
 
-void GameObject::SaveGameObject(const std::shared_ptr<GameObject>& gameObject, json& parentJson)
+json GameObject::SaveGameObject()
 {
+	json gameObjectJSON;
 
+	if (auto pGO = parent.lock())
+	{
+		gameObjectJSON["ParentUID"] = pGO.get()->UID;
+	}
 
+	gameObjectJSON["UID"] = UID;
+	gameObjectJSON["Name"] = name;
+	gameObjectJSON["Static"] = isStatic;
+	gameObjectJSON["Enabled"] = enabled;
 
+	if (!components.empty())
+	{
+		json componentsJSON;
+
+		for (const auto& component : components)
+		{
+			componentsJSON.push_back(component.get()->SaveComponent());
+		}
+		gameObjectJSON["Components"] = componentsJSON;
+	}
+
+	if (!children.empty())
+	{
+		json childrenGOJSON;
+
+		for (const auto& go : children)
+		{
+			childrenGOJSON.push_back(go.get()->SaveGameObject());
+		}
+		gameObjectJSON["GameObjects"] = childrenGOJSON;
+	}
+
+	return gameObjectJSON;
 }
