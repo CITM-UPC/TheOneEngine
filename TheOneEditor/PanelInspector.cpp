@@ -35,21 +35,24 @@ bool PanelInspector::Draw()
         ImVec4 clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
 
         ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
-        ImGui::Begin("Inspector");
 
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
+            /*Name*/
             //ImGui::Checkbox("Active", &gameObjSelected->isActive);
             ImGui::SameLine(); ImGui::Text("GameObject:");
             ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+            ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
+            /*Tag + Layer*/
             ImGui::SetNextItemWidth(100.0f);
             if (ImGui::BeginCombo("Tag", "Untagged", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
 
             ImGui::SameLine();
 
             ImGui::SetNextItemWidth(100.0f);
-            if (ImGui::BeginCombo("Layer", "Default", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
+            if (ImGui::BeginCombo("Layer", "Default", ImGuiComboFlags_HeightSmall)){ ImGui::EndCombo(); }
+            ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Transform Component*/
             Transform* transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
@@ -62,7 +65,9 @@ bool PanelInspector::Draw()
                 view_rot = transform->getEulerAngles();
                 view_sca = transform->getScale();
 
-                if (ImGui::BeginTable("", 4, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit))
+                ImGuiTableFlags tableFlags = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit;
+
+                if (ImGui::BeginTable("", 4, tableFlags))
                 {
                     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_WidthStretch);
@@ -173,6 +178,7 @@ bool PanelInspector::Draw()
                 needRefresh_rot = false;
                 needRefresh_sca = false;
 
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
 
             //static char buf[5] = "0";
@@ -191,33 +197,28 @@ bool PanelInspector::Draw()
 
             if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
+                ImGui::SetItemTooltip("Displays and sets mesh data");
+                //ImGui::Checkbox("Active", &mesh->isActive);
+                //ImGui::SameLine();  
+                ImGui::Text("Name: ");
+                ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->mesh.meshName.c_str());
+                ImGui::Separator();
+                ImGui::Text("Indexes: ");
+                ImGui::SameLine();  ImGui::Text((std::to_string(mesh->mesh.indexs_buffer_id)).c_str());
+                ImGui::Text("Vertexs: ");
+                ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numVerts).c_str());
+                ImGui::Text("Faces: ");
+                ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numFaces).c_str());
 
-                if (mesh != nullptr) {
-                    ImGui::SetItemTooltip("Displays and sets mesh data");
-                    //ImGui::Checkbox("Active", &mesh->isActive);
-                    //ImGui::SameLine();  
-                    ImGui::Text("Name: ");
-                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->mesh.meshName.c_str());
-                    ImGui::Separator();
-                    ImGui::Text("Indexes: ");
-                    ImGui::SameLine();  ImGui::Text((std::to_string(mesh->mesh.indexs_buffer_id)).c_str());
-                    ImGui::Text("Vertexs: ");
-                    ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numVerts).c_str());
-                    ImGui::Text("Faces: ");
-                    ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numFaces).c_str());
+                ImGui::Checkbox("Active Mesh", &mesh->active);
+                ImGui::Checkbox("Active vertex normals", &mesh->drawNormalsVerts);
+                ImGui::Checkbox("Active face normals", &mesh->drawNormalsFaces);
+                ImGui::Checkbox("Active Wireframe", &mesh->drawWireframe);
+                ImGui::Checkbox("Active AABB", &mesh->drawAABB);
+                ImGui::Checkbox("Active OBB", &mesh->drawOBB);
+                //ImGui::Checkbox("Active checkboard", &mesh->drawChecker);
 
-                    ImGui::Checkbox("Active Mesh", &mesh->active);
-                    ImGui::Checkbox("Active vertex normals", &mesh->drawNormalsVerts);
-                    ImGui::Checkbox("Active face normals", &mesh->drawNormalsFaces);
-                    ImGui::Checkbox("Active Wireframe", &mesh->drawWireframe);
-                    ImGui::Checkbox("Active AABB", &mesh->drawAABB);
-                    ImGui::Checkbox("Active OBB", &mesh->drawOBB); 
-                    //ImGui::Checkbox("Active checkboard", &mesh->drawChecker);
-                    ImGui::Separator();
-                }
-                else {
-                    ImGui::Text("No meshes found");
-                }
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
             
             /*Texture Component*/
@@ -225,44 +226,37 @@ bool PanelInspector::Draw()
 
             if (texture != nullptr && ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
-                
-                if (texture != nullptr)
-                {
-                    ImGui::SetItemTooltip("Displays and sets texture data");
-                    ImGui::Checkbox("Active Texture", &texture->active);
-                    ImGui::Text("Name: ");
-                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, (texture->GetName()).c_str());
-                    ImGui::Separator();
-                    ImGui::Text("Size: ");
-                    ImGui::SameLine();  ImGui::Text(std::to_string(texture->width).c_str());
-                    ImGui::Text("Height: ");
-                    ImGui::SameLine();  ImGui::Text(std::to_string(texture->height).c_str());
-                    
-                    //ImGui::Text("Tex coords: ");
-                    //ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.getNumTexCoords()).c_str());
-                    
-                    //if (ImGui::Checkbox("Use Texture", /*&mesh->usingTexture*/true))
-                    //{
-                    //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
-                    //}
-                    
-                    //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
+                ImGui::SetItemTooltip("Displays and sets texture data");
+                ImGui::Checkbox("Active Texture", &texture->active);
+                ImGui::Text("Name: ");
+                ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, (texture->GetName()).c_str());
+                ImGui::Separator();
+                ImGui::Text("Size: ");
+                ImGui::SameLine();  ImGui::Text(std::to_string(texture->width).c_str());
+                ImGui::Text("Height: ");
+                ImGui::SameLine();  ImGui::Text(std::to_string(texture->height).c_str());
 
-                    // JULS: To show the image of the texture, but need to look at it more.
-                    //ImTextureID my_tex_id;
-                    //glGenTextures(GL_TEXTURE_2D, 1, my_tex_id);
-                    //glTextureParameteri(my_tex_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-                    //glTextureParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-                    //glTextureParameteri(textureID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-                    //glTextureParameteri(textureID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-                    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, [width of your texture], [height of your texture], false, GL_RGBA, GL_FLOAT, [pointer to first element in array of texture pixel values]);
-                    //ImGui::Image()
+                //ImGui::Text("Tex coords: ");
+                //ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.getNumTexCoords()).c_str());
 
-                    ImGui::Separator();
-                }
-                else {
-                    ImGui::Text("No texture found");
-                }
+                //if (ImGui::Checkbox("Use Texture", /*&mesh->usingTexture*/true))
+                //{
+                //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
+                //}
+
+                //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
+
+                // JULS: To show the image of the texture, but need to look at it more.
+                //ImTextureID my_tex_id;
+                //glGenTextures(GL_TEXTURE_2D, 1, my_tex_id);
+                //glTextureParameteri(my_tex_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                //glTextureParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                //glTextureParameteri(textureID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+                //glTextureParameteri(textureID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+                //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, [width of your texture], [height of your texture], false, GL_RGBA, GL_FLOAT, [pointer to first element in array of texture pixel values]);
+                //ImGui::Image()
+
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
 
             /*Camera Component*/
@@ -270,27 +264,25 @@ bool PanelInspector::Draw()
 
             if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
+                float fov = static_cast<float>(camera->fov);
+                float aspect = static_cast<float>(camera->aspect);
+                float zNear = static_cast<float>(camera->zNear);
+                float zFar = static_cast<float>(camera->zFar);
 
-                if (camera != nullptr)
-                {
-                    float fov = static_cast<float>(camera->fov);
-                    float aspect = static_cast<float>(camera->aspect);
-                    float zNear = static_cast<float>(camera->zNear);
-                    float zFar = static_cast<float>(camera->zFar);
+                ImGui::SliderFloat("FOV", &fov, 20.0, 120.0);
+                ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0);
+                ImGui::Text("Clipping Plane");
+                ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
+                ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
 
-                    ImGui::SliderFloat("FOV", &fov, 20.0, 120.0);
-                    ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0);
-                    ImGui::Text("Clipping Plane");
-                    ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
-                    ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
-
-                    camera->fov = fov;
-                    camera->aspect = aspect;
-                    camera->zNear = zNear;
-                    camera->zFar = zFar;
-                }
+                camera->fov = fov;
+                camera->aspect = aspect;
+                camera->zNear = zNear;
+                camera->zFar = zFar;
 
                 ImGui::Checkbox("Draw Frustrum", &camera->drawFrustum);
+
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
         }
 
