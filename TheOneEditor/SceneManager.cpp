@@ -125,6 +125,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 
             meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
             meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
+            //meshGO.get()->GetComponent<Texture>() = &meshGO.get()->GetComponent<Mesh>()->mesh.texture;
 
             //Load MeshData from custom files
             for (const auto& file : fileNames)
@@ -154,6 +155,24 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                 emptyParent.get()->children.push_back(meshGO);
             }
         }
+
+       /* if (!textures.empty()) {
+            if (meshes.size() == 1) {
+
+                ComponentTexture* texture = (ComponentTexture*)GetComponent(ComponentType::TEXTURE);
+                textures->setTexture((*meshes.begin())->texture);
+                defaultTexture = texture->getTexture()->path;
+            }
+            else {
+                for (auto i = meshes.begin(); i != meshes.end(); ++i) {
+ 
+                    ComponentTexture* texturePart = (ComponentTexture*)GOPart->GetComponent(ComponentType::TEXTURE);
+                    texturePart->setTexture((*i)->texture);
+                    defaultTexture = texturePart->getTexture()->path;
+
+                }
+            }
+        }*/
     }
 
     return nullptr;

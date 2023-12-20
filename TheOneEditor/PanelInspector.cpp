@@ -157,14 +157,18 @@ bool PanelInspector::Draw()
                     ImGui::EndTable();
                 }
 
-                if (needRefresh_pos)
+                if (needRefresh_pos){
                     transform->setPosition(view_pos);
-                else if (needRefresh_rot)
+                    transform->updateMatrix();
+                }
+                else if (needRefresh_rot) {
                     transform->setRotation(view_rot);
-                else if (needRefresh_sca)
+                    transform->updateMatrix();
+                }
+                else if (needRefresh_sca) {
                     transform->setScale(view_sca);
-                
-                transform->getMatrix();
+                    transform->updateMatrix();
+                }
 
                 needRefresh_pos = false;
                 needRefresh_rot = false;
