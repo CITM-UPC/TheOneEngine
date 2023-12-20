@@ -18,6 +18,7 @@ class PanelHierarchy;
 class PanelInspector;
 class PanelProject;
 class PanelScene;
+class PanelGame;
 class PanelSettings;
 
 
@@ -41,6 +42,7 @@ public:
 	void PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags plotFlags = 0, ImPlotAxisFlags axisFlags = 0);
 	bool isInitialized(Panel* panel);
 
+	void CalculateSizeAspectRatio(int maxWidth, int maxHeight, int& width, int& height);
 
 private:
 
@@ -63,6 +65,7 @@ public:
 	PanelInspector* panelInspector = nullptr;
 	PanelProject* panelProject = nullptr;
 	PanelScene* panelScene = nullptr;
+	PanelGame* panelGame = nullptr;
 	PanelSettings* panelSettings = nullptr;
 
 private:

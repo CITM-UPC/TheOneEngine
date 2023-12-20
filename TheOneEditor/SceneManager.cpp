@@ -26,12 +26,16 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
     // hekbas testing creation of GO
+    
     //CreateEmptyGO();
     //CreateCube();
     //CreateSphere();
-    CreateCameraGO("Camera");
+    
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
     CreateMeshGO("Assets\\Meshes\\street.fbx");
+
+    std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
+    gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 4, 0 });
 
     return true;
 }

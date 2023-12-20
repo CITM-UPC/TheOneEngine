@@ -18,8 +18,6 @@ class EngineCore
 {
 public:
 
-	enum class RenderModes {RELEASE, DEBUG};
-
 	EngineCore();
 
 	void Awake();
@@ -27,7 +25,7 @@ public:
 
 	void Update(double dt);
 
-	void Render(RenderModes renderMode, Camera* camera);
+	void Render(Camera* camera);
 
 	void DrawAxis();
 	void DrawGrid(int grid_size, int grid_step);

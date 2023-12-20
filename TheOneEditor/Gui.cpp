@@ -16,6 +16,7 @@
 #include "PanelInspector.h"
 #include "PanelProject.h"
 #include "PanelScene.h"
+#include "PanelGame.h"
 #include "PanelSettings.h"
 
 #include "imgui.h"
@@ -60,6 +61,10 @@ bool Gui::Awake()
     panelScene = new PanelScene(PanelType::SCENE, "Scene");
     panels.push_back(panelScene);
     ret *= isInitialized(panelScene);
+
+    panelGame = new PanelGame(PanelType::GAME, "Game");
+    panels.push_back(panelGame);
+    ret *= isInitialized(panelGame);
 
     panelSettings = new PanelSettings(PanelType::SETTINGS, "Settings");
     panels.push_back(panelSettings);
@@ -125,6 +130,7 @@ bool Gui::Start()
     app->gui->panelConsole->SetState(true);
     app->gui->panelHierarchy->SetState(true);
     app->gui->panelScene->SetState(true);
+    app->gui->panelGame->SetState(true);
 
     // Style
 #pragma region IMGUI_STYLE
@@ -482,6 +488,7 @@ void Gui::MainMenuWindow()
     if (ImGui::MenuItem("Inspector"))   app->gui->panelInspector->SwitchState();
     if (ImGui::MenuItem("Project"))     app->gui->panelProject->SwitchState();
     if (ImGui::MenuItem("Scene"))       app->gui->panelScene->SwitchState();
+    if (ImGui::MenuItem("Game"))        app->gui->panelGame->SwitchState();
     if (ImGui::MenuItem("Settings"))    app->gui->panelSettings->SwitchState();
 }
 
@@ -500,4 +507,24 @@ void Gui::MainMenuHelp()
     }
     
     ImGui::Separator();
+}
+
+void Gui::CalculateSizeAspectRatio(int maxWidth, int maxHeight, int& width, int& height)
+{
+    // Calculate the aspect ratio of the given rectangle
+    double aspectRatio = static_cast<double>(maxWidth) / static_cast<double>(maxHeight);
+
+    // Calculate the aspect ratio of a 16:9 rectangle
+    double targetAspectRatio = 16.0 / 9.0;
+
+    if (aspectRatio <= targetAspectRatio) {
+        // The given rectangle is wider, so the width is limited
+        width = maxWidth;
+        height = static_cast<int>(std::round(width / targetAspectRatio));
+    }
+    else {
+        // The given rectangle is taller, so the height is limited
+        height = maxHeight;
+        width = static_cast<int>(std::round(height * targetAspectRatio));
+    }
 }
