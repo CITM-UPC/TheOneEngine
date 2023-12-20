@@ -156,7 +156,7 @@ bool Input::processSDLEvents()
                 std::string fbxName = fileDir.substr(fileDir.find_last_of("\\/") + 1, fileDir.find_last_of('.') - fileDir.find_last_of("\\/") - 1);
 
                 // FBX
-                if (fileDir.ends_with(".fbx"))
+                if (fileDir.ends_with(".fbx") || fileDir.ends_with(".FBX"))
                 {
                     fs::path assetsDir = fs::path(ASSETS_PATH) / "Meshes" / fileNameExt;
 
