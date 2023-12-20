@@ -98,9 +98,18 @@ void MeshLoader::BufferData(MeshData meshData)
 
 std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 {
-    std::vector<MeshBufferedData> meshesData;
+    std::vector<MeshBufferedData> meshesBufferedData;
+    std::vector<MeshData> meshesData;
 
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
+
+    std::string fileName = scene->GetShortFilename(path.c_str());
+
+    std::string sceneName = fileName.substr(fileName.find_last_of("\\/") + 1, fileName.find_last_of('.') - fileName.find_last_of("\\/") - 1);
+
+    std::string folderName = "Library/Meshes/" + sceneName + "/";
+
+    std::filesystem::create_directories(folderName);
 
     if (scene != NULL)
     {
@@ -176,13 +185,9 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
                 meshBuffData.meshFaceCenters.push_back(faceCenter);
             }
 
-            std::string folderName = "Library/Models/" + meshData.meshName + "/";
-
-            std::filesystem::create_directories(folderName);
-
             serializeMeshData(meshData, folderName + meshData.meshName + ".mesh");
 
-            meshesData.push_back(meshBuffData);
+            meshesBufferedData.push_back(meshBuffData);
         }
         aiReleaseImport(scene);
     }
@@ -192,7 +197,7 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
     }
     
 
-    return meshesData;
+    return meshesBufferedData;
 }
 
 std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string& path, std::shared_ptr<GameObject> containerGO)

@@ -74,6 +74,9 @@ public:
 	const MeshBufferedData GetBufferData() const { return meshBuffData; }
 	const MeshData GetMeshData() const { return meshData; }
 
+public:
+	//std::vector<MeshBufferedData>
+
 private:
 
 	/*MeshLoader(const MeshLoader& cpy);
