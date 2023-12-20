@@ -37,7 +37,7 @@ public:
     std::string GenerateUniqueName(const std::string& baseName);
 
     // Basic 3D
-    std::shared_ptr<GameObject> CreateEmptyGO();
+    std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateExistingMeshGO(std::string fbxName);
     std::shared_ptr<GameObject> CreateCube();

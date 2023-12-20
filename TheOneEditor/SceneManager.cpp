@@ -73,9 +73,9 @@ std::string SceneManager::GenerateUniqueName(const std::string& baseName)
     return uniqueName;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateEmptyGO()
+std::shared_ptr<GameObject> SceneManager::CreateEmptyGO(std::string name)
 {
-    std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>("Empty GameObject");
+    std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>(name);
     emptyGO.get()->AddComponent<Transform>();
 
     emptyGO.get()->parent = rootSceneGO.get()->weak_from_this();

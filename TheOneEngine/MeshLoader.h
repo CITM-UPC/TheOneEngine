@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Defs.h"
+#include "Graphic.h"
 
 #include <vector>
 #include <array>
@@ -30,7 +31,7 @@ struct MeshData
 
 struct MeshBufferedData
 {
-	std::shared_ptr<GameObject> parent;
+	//std::shared_ptr<GameObject> parent;
 
 	std::string meshName;
 	Formats format;
@@ -43,8 +44,13 @@ struct MeshBufferedData
 
 	uint numFaces;
 
-	std::shared_ptr<Texture> texture;
+	std::vector<vec3f> meshVerts;
+	std::vector<vec3f> meshNorms;
+	std::vector<vec3f> meshFaceCenters;
+	std::vector<vec3f> meshFaceNorms;
 
+	std::string texturePath;
+	std::shared_ptr<Texture> texture;
 	uint materialIndex;
 	//Texture::Ptr checkboard = std::shared_ptr<Texture>(new Texture); // JULS: for the checkers texture
 };
@@ -76,7 +82,6 @@ private:
 
 	MeshData meshData;
 	MeshBufferedData meshBuffData;
-
 };
 
 #endif // !__MESH_LOADER_H__

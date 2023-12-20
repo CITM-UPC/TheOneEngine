@@ -1,5 +1,7 @@
 #include "MeshLoader.h"
 #include "Texture.h"
+#include "Mesh.h"
+
 #include "nlohmann/json.hpp"
 
 #include <assimp/postprocess.h>
@@ -59,6 +61,8 @@ void MeshLoader::BufferData(MeshData meshData)
 {
     //extension = ".fbx";
     //this->path = ASSETS_PATH + std::to_string(ID) + extension;
+    meshBuffData.numVerts = meshData.vertex_data.size();
+    meshBuffData.numIndexs = meshData.index_data.size();
     glGenBuffers(1, &meshBuffData.vertex_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, meshBuffData.vertex_buffer_id);
 
@@ -129,13 +133,6 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             index_data.push_back(faces[f].mIndices[0]);
             index_data.push_back(faces[f].mIndices[1]);
             index_data.push_back(faces[f].mIndices[2]);
-
-            /*vec3f faceNormal = glm::cross(&index_data[1] - &index_data[0], &index_data[2] - &index_data[0]);
-            faceNormal = glm::normalize(faceNormal);
-            mesh_sptr->meshFaceNorms.push_back(faceNormal);
-
-            vec3f faceCenter = (index_data[0] + index_data[1] + index_data[2]) / 3.0f;
-            mesh_sptr->meshFaceCenters.push_back(faceCenter);*/
         }
 
         meshData =
@@ -147,7 +144,34 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
         };
 
         BufferData(meshData);
+        meshBuffData.meshName = mesh->mName.C_Str();
         meshBuffData.materialIndex = mesh->mMaterialIndex;
+
+        for (size_t i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D normal = mesh->mNormals[i];
+            vec3f glmNormal(normal.x, normal.y, normal.z);
+            meshBuffData.meshNorms.push_back(glmNormal);
+        }
+        for (size_t i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D vert = mesh->mVertices[i];
+            vec3f glmNormal(vert.x, vert.y, vert.z);
+            meshBuffData.meshVerts.push_back(glmNormal);
+        }
+        for (size_t f = 0; f < mesh->mNumFaces; ++f)
+        {
+            aiFace face = mesh->mFaces[f];
+
+            vec3f v0(mesh->mVertices[face.mIndices[0]].x, mesh->mVertices[face.mIndices[0]].y, mesh->mVertices[face.mIndices[0]].z);
+            vec3f v1(mesh->mVertices[face.mIndices[1]].x, mesh->mVertices[face.mIndices[1]].y, mesh->mVertices[face.mIndices[1]].z);
+            vec3f v2(mesh->mVertices[face.mIndices[2]].x, mesh->mVertices[face.mIndices[2]].y, mesh->mVertices[face.mIndices[2]].z);
+
+            vec3f faceNormal = glm::cross(v1 - v0, v2 - v0);
+            faceNormal = glm::normalize(faceNormal);
+            meshBuffData.meshFaceNorms.push_back(faceNormal);
+
+            vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
+            meshBuffData.meshFaceCenters.push_back(faceCenter);
+        }
 
         std::string folderName = "Library/Models/" + meshData.meshName + "/";
 

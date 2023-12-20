@@ -56,19 +56,13 @@ bool PanelHierarchy::Draw()
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
-		if (ImGui::BeginChild("GameObjects", ImVec2(325, 0), true))
+		if (ImGui::TreeNodeEx(app->sceneManager->GetRootSceneGO().get()->GetName().data(), treeFlags))
 		{
-			if(ImGui::TreeNodeEx(app->sceneManager->GetRootSceneGO().get()->GetName().data(), treeFlags))
-			{
-				reparent = false;
-				ReparentDragDrop(app->sceneManager->GetRootSceneGO());
-				RecurseShowChildren(app->sceneManager->GetRootSceneGO());
-				ImGui::TreePop();
-			}
-
-			ImGui::EndChild();
+			reparent = false;
+			ReparentDragDrop(app->sceneManager->GetRootSceneGO());
+			RecurseShowChildren(app->sceneManager->GetRootSceneGO());
+			ImGui::TreePop();
 		}
-		ImGui::SameLine();
 
 		ImGui::End();
 	}
