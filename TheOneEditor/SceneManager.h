@@ -10,6 +10,7 @@
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Camera.h"
 #include "..\TheOneEngine\Mesh.h"
+#include "..\TheOneEngine\Texture.h"
 
 #include <vector>
 #include <string>

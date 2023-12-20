@@ -138,11 +138,11 @@ void Renderer3D::CameraInput(double dt)
     Camera* camera = sceneCamera.get()->GetComponent<Camera>();
     Transform* transform = sceneCamera.get()->GetComponent<Transform>();
 
-    float speed = 10 * dt;
+    double speed = 10 * dt;
     if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
         speed = 20 * dt;
 
-    float mouseSensitivity = 10.0f * dt;
+    double mouseSensitivity = 10.0 * dt;
 
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
@@ -172,7 +172,7 @@ void Renderer3D::CameraInput(double dt)
     else
     {
         // Zooming Camera Input
-        camera->translate(transform->getForward() * (float)app->input->GetMouseZ());
+        camera->translate(transform->getForward() * (double)app->input->GetMouseZ());
     }
 
     // Orbit Object with Alt + LMB
@@ -190,7 +190,7 @@ void Renderer3D::CameraInput(double dt)
         finalPos = transform->getPosition() - transform->getForward();
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
-            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0f);
+            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0);
         }
 
         camera->setPosition(finalPos);

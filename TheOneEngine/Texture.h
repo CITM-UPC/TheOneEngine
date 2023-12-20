@@ -24,6 +24,9 @@ public:
 	void bind() const;
 	~Texture();
 
+	//void SetTexture(Ptr texture);
+
+
 private:
 	/*Texture(const Texture&);
 	Texture operator=(const Texture&);*/
@@ -32,6 +35,9 @@ public:
 	std::string path;
 	uint width, height;
 	bool active;
+
+	//using Ptr = std::shared_ptr<Texture>;
+	//Texture::Ptr _texture = nullptr;
 };
 
 #endif // !__TEXTURE_H__

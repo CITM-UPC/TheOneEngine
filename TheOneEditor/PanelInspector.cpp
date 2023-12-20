@@ -157,14 +157,18 @@ bool PanelInspector::Draw()
                     ImGui::EndTable();
                 }
 
-                if (needRefresh_pos)
+                if (needRefresh_pos){
                     transform->setPosition(view_pos);
-                else if (needRefresh_rot)
-                    transform->rotate(view_rot);
-                else if (needRefresh_sca)
+                    transform->updateMatrix();
+                }
+                else if (needRefresh_rot) {
+                    transform->setRotation(view_rot);
+                    transform->updateMatrix();
+                }
+                else if (needRefresh_sca) {
                     transform->setScale(view_sca);
-                
-                transform->getMatrix();
+                    transform->updateMatrix();
+                }
 
                 needRefresh_pos = false;
                 needRefresh_rot = false;
@@ -257,6 +261,32 @@ bool PanelInspector::Draw()
                 else {
                     ImGui::Text("No texture found");
                 }
+
+                if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen)) {
+                    
+                    Camera* cam = app->sceneManager->GetSelectedGO().get()->GetComponent<Camera>();
+
+                    if (cam != nullptr) {
+                        float fov = static_cast<float>(cam->fov);
+                        float aspect = static_cast<float>(cam->aspect);
+                        float zNear = static_cast<float>(cam->zNear);
+                        float zFar = static_cast<float>(cam->zFar);
+
+                        ImGui::SliderFloat("Field of View", &fov, 20.0, 120.0);
+                        ImGui::SliderFloat("Aspect Ratio", &aspect, 0.1, 10.0);
+                        ImGui::Text("Clipping Plane");
+                        ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
+                        ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
+
+                        cam->fov = fov;
+                        cam->aspect = aspect;
+                        cam->zNear = zNear;
+                        cam->zFar = zFar;
+                    }
+                    
+                    //ImGui::Checkbox("Draw Frustrum", );
+                }
+
             }
         }
 
