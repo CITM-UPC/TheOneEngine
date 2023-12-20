@@ -54,11 +54,11 @@ public:
     std::shared_ptr<GameObject> GetRootSceneGO() const;
 
     /*SCENE SERIALIZATION*/
-    void serializeScene();
-    void deserializeScene();
+    void SaveScene();
+    void LoadScene(const std::string& filename);
 
 private:
-    void DrawChildren(std::shared_ptr<GameObject> parentGO);
+    void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
     //uint selectedGameObject;
