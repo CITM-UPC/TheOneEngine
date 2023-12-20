@@ -168,7 +168,7 @@ bool Input::processSDLEvents()
                         LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileNameExt.data(), assetsDir.string().data());
 
                         //Find Meshes in Library
-                        app->sceneManager->CreateExistingMeshGO(fbxName);
+                        app->sceneManager->CreateExistingMeshGO(assetsDir.string());
                     }
                     else
                     {

@@ -159,60 +159,73 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
     return nullptr;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string fbxName)
+std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
 {
-    std::string folderName = "Library/Meshes/" + fbxName + "/";
+    std::string fbxName = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
 
-    std::string name = fbxName;
-    name = GenerateUniqueName(name);
+    std::string folderName = "Library/Meshes/" + fbxName + "/";
 
     std::vector<std::string> fileNames;
 
     uint fileCount = 0;
 
-    for (const auto& entry : fs::directory_iterator(folderName)) {
-        if (fs::is_regular_file(entry)) {
-            std::string path = entry.path().filename().string();
-            LOG(LogType::LOG_WARNING, "- %s is in", path.data());
-            fileNames.push_back(entry.path().string());
-            fileCount++;
-        }
-    }
-
-    // Create emptyGO parent if meshes >1
-    bool isSingleMesh = fileCount > 1 ? false : true;
-    std::shared_ptr<GameObject> emptyParent = isSingleMesh ? nullptr : CreateEmptyGO();
-    if (!isSingleMesh) emptyParent.get()->SetName(name);
-
-    for (const auto& file : fileNames)
+    if (fs::is_directory(folderName))
     {
-        MeshData mData = meshLoader->deserializeMeshData(file);
-
-        meshLoader->BufferData(mData);
-
-        std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mData.meshName);
-        meshGO.get()->AddComponent<Transform>();
-        meshGO.get()->AddComponent<Mesh>();
-        //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
-
-        meshGO.get()->GetComponent<Mesh>()->meshData = mData;
-        meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
-        //meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex]; //Implement texture deserialization
-        // hekbas: need to set Transform?
-
-        if (isSingleMesh)
-        {
-            meshGO.get()->parent = rootSceneGO;
-            rootSceneGO.get()->children.push_back(meshGO);
+        for (const auto& entry : fs::directory_iterator(folderName)) {
+            if (fs::is_regular_file(entry)) {
+                std::string path = entry.path().filename().string();
+                LOG(LogType::LOG_WARNING, "- %s is in", path.data());
+                fileNames.push_back(entry.path().string());
+                fileCount++;
+            }
         }
-        else
-        {
-            meshGO.get()->parent = emptyParent;
-            emptyParent.get()->children.push_back(meshGO);
-        }
-
     }
 
+    if (fileCount < 1)
+    {
+        CreateMeshGO(path);
+    }
+    else
+    {
+        std::string name = fbxName;
+        name = GenerateUniqueName(name);
+
+        // Create emptyGO parent if meshes >1
+        bool isSingleMesh = fileCount > 1 ? false : true;
+        std::shared_ptr<GameObject> emptyParent = isSingleMesh ? nullptr : CreateEmptyGO();
+        if (!isSingleMesh) emptyParent.get()->SetName(name);
+
+        for (const auto& file : fileNames)
+        {
+            MeshData mData = meshLoader->deserializeMeshData(file);
+
+            meshLoader->BufferData(mData);
+
+            std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mData.meshName);
+            meshGO.get()->AddComponent<Transform>();
+            meshGO.get()->AddComponent<Mesh>();
+            //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
+
+            meshGO.get()->GetComponent<Mesh>()->meshData = mData;
+            meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
+            //meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex]; //Implement texture deserialization
+            // hekbas: need to set Transform?
+
+            meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
+
+            if (isSingleMesh)
+            {
+                meshGO.get()->parent = rootSceneGO;
+                rootSceneGO.get()->children.push_back(meshGO);
+            }
+            else
+            {
+                meshGO.get()->parent = emptyParent;
+                emptyParent.get()->children.push_back(meshGO);
+            }
+
+        }
+    }
     return nullptr;
 }
 
