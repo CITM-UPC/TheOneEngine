@@ -1,5 +1,7 @@
 #include "Mesh.h"
 #include "../TheOneEditor/Log.h"
+#include "GameObject.h"
+#include "Transform.h"
 //#include <GL/glew.h>
 #include <span>
 #include <vector>
@@ -28,6 +30,12 @@ Mesh::~Mesh()
 
 void Mesh::DrawComponent()
 {
+    if (auto gameObject = GetContainerGO())
+    {
+        glPushMatrix();
+        glMultMatrixd(&gameObject.get()->GetComponent<Transform>()->getMatrix()[0].x);
+    }
+    
     glColor4ub(255, 255, 255, 255);
 
     // uncomment the line below for WIREFRAME MODE
@@ -84,18 +92,10 @@ void Mesh::DrawComponent()
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);
     glDisable(GL_TEXTURE_2D);
 
+
     GLenum error = glGetError();
 
-    //if (error != GL_NO_ERROR) {
-    //    // Print the raw error code
-    //    fprintf(stderr, "OpenGL error code: %d\n", error);
-
-    //    // Print the corresponding error string
-    //    const char* errorString = reinterpret_cast<const char*>(gluErrorString(error));
-    //    fprintf(stderr, "OpenGL error: %s\n", errorString ? errorString : "Unknown");
-
-    //    assert(false); // Trigger an assertion failure for debugging
-    //}
+    glPopMatrix();
 }
 
 void Mesh::DrawVertexNormals() 
