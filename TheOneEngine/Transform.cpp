@@ -130,6 +130,12 @@ vec3f Transform::getLocalEulerAngles() const
     return eulerAngles;
 }
 
+void Transform::setRotation(const vec3f& newRotation)
+{
+    eulerAngles = newRotation;
+    rotation = EulerAnglesToQuaternion(eulerAngles);
+}
+
 vec3f Transform::getScale() const
 {
     return scale;

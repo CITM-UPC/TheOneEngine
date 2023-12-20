@@ -40,9 +40,11 @@ public:
    
     vec3f getEulerAngles() const;       // Gets global rotation of the object in Euler Angles   
     vec3f getLocalEulerAngles() const;  // Gets local rotation of the object in Euler Angles
+    //void setRotation(const vec3f& newRotation); // Sets rotation 
+    void setRotation(const vec3f& newRotation); // Sets rotation 
 
     vec3f getScale() const;
-    void setScale(const vec3f& newScale);
+    void setScale(const vec3f& newScale); // Sets Scale
 
     quatf EulerAnglesToQuaternion(const vec3f& eulerAngles);    // Converts Euler Angles to Quaternion
 

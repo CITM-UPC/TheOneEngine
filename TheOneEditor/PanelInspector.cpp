@@ -160,7 +160,7 @@ bool PanelInspector::Draw()
                 if (needRefresh_pos)
                     transform->setPosition(view_pos);
                 else if (needRefresh_rot)
-                    transform->rotate(view_rot);
+                    transform->setRotation(view_rot);
                 else if (needRefresh_sca)
                     transform->setScale(view_sca);
                 
