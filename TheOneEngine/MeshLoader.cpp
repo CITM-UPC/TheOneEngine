@@ -1,5 +1,6 @@
 #include "MeshLoader.h"
 #include "Texture.h"
+#include "nlohmann/json.hpp"
 
 #include <assimp/postprocess.h>
 #include <assimp/cimport.h>
@@ -16,6 +17,7 @@
 
 namespace fs = std::filesystem;
 using namespace std;
+using namespace nlohmann::literals;
 
 struct aiMeshExt : aiMesh
 {
@@ -57,8 +59,6 @@ void MeshLoader::BufferData(MeshData meshData)
 {
     //extension = ".fbx";
     //this->path = ASSETS_PATH + std::to_string(ID) + extension;
-    meshBuffData.numVerts = meshData.vertex_data.size();
-    meshBuffData.numIndexs = meshData.index_data.size();
     glGenBuffers(1, &meshBuffData.vertex_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, meshBuffData.vertex_buffer_id);
 
@@ -93,7 +93,7 @@ void MeshLoader::BufferData(MeshData meshData)
 
 std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 {
-    std::vector<MeshBufferedData> mehsesData;
+    std::vector<MeshBufferedData> meshesData;
 
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
@@ -140,21 +140,27 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 
         meshData =
         {
+            mesh->mName.C_Str(),
             Formats::F_V3T2,
             vertex_data,
             index_data
         };
 
         BufferData(meshData);
-        meshBuffData.meshName = mesh->mName.C_Str();
         meshBuffData.materialIndex = mesh->mMaterialIndex;
 
-        mehsesData.push_back(meshBuffData);
+        std::string folderName = "Library/Models/" + meshData.meshName + "/";
+
+        std::filesystem::create_directories(folderName);
+
+        serializeMeshData(meshData, folderName + meshData.meshName + ".mesh");
+
+        meshesData.push_back(meshBuffData);
     }
 
     aiReleaseImport(scene);
 
-    return mehsesData;
+    return meshesData;
 }
 
 std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string& path, std::shared_ptr<GameObject> containerGO)
@@ -178,33 +184,64 @@ std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string&
     return texture_ptrs;
 }
 
-void MeshLoader::serializeMeshBufferedData(const MeshBufferedData& data, const std::string& filename)
+void MeshLoader::serializeMeshData(const MeshData& data, const std::string& filename)
 {
-    std::ofstream outFile(filename, std::ios::binary);
-    // Serialize string members
-    size_t meshNameLength = data.meshName.size();
-    outFile.write(reinterpret_cast<const char*>(&meshNameLength), sizeof(size_t));
-    outFile.write(data.meshName.c_str(), meshNameLength);
+    nlohmann::json json;
 
-    // Serialize enum member
-    outFile.write(reinterpret_cast<const char*>(&data.format), sizeof(Formats));
+    // Serialize MeshData members to JSON
+    json["meshName"] = data.meshName;
+    json["format"] = data.format;
 
-    // Serialize other members
-    outFile.write(reinterpret_cast<const char*>(&data.vertex_buffer_id), sizeof(uint));
-    outFile.write(reinterpret_cast<const char*>(&data.numVerts), sizeof(uint));
-    outFile.write(reinterpret_cast<const char*>(&data.indexs_buffer_id), sizeof(uint));
-    outFile.write(reinterpret_cast<const char*>(&data.numIndexs), sizeof(uint));
-    outFile.write(reinterpret_cast<const char*>(&data.numFaces), sizeof(uint));
+    // Serialize vertex_data to JSON array
+    for (const auto& vertex : data.vertex_data) {
+        nlohmann::json vertexJson;
+        vertexJson["v"]["x"] = vertex.v.x;
+        vertexJson["v"]["y"] = vertex.v.y;
+        vertexJson["v"]["z"] = vertex.v.z;
+        vertexJson["t"]["x"] = vertex.t.x;
+        vertexJson["t"]["y"] = vertex.t.y;
+        json["vertex_data"].push_back(vertexJson);
+    }
 
-    size_t texturePathLength = data.texturePath.size();
-    outFile.write(reinterpret_cast<const char*>(&texturePathLength), sizeof(size_t));
-    outFile.write(data.texturePath.c_str(), texturePathLength);
+    // Serialize index_data to JSON array
+    for (const auto& index : data.index_data) {
+        json["index_data"].push_back(index);
+    }
 
-    outFile.write(reinterpret_cast<const char*>(data.texture.get()), sizeof(Texture)); // Assuming Texture has a serialize function
-
-    outFile.write(reinterpret_cast<const char*>(&data.materialIndex), sizeof(uint));
-
-    // Close the file
+    std::ofstream outFile(filename);
+    outFile << nlohmann::to_string(json) << std::endl;
     outFile.close();
+}
 
+MeshData MeshLoader::deserializeMeshData(const std::string& filename)
+{
+    MeshData data;
+
+    // Load the JSON document from a file
+    std::ifstream inFile(filename);
+    nlohmann::json json;
+    inFile >> json;
+    inFile.close();
+
+    // Deserialize MeshData members from JSON
+    data.meshName = json["meshName"].get<std::string>();
+    data.format = json["format"].get<Formats>();
+
+    // Deserialize vertex_data from JSON array
+    for (const auto& vertexJson : json["vertex_data"]) {
+        V3T2 vertex;
+        vertex.v.x = vertexJson["v"]["x"].get<float>();
+        vertex.v.y = vertexJson["v"]["y"].get<float>();
+        vertex.v.z = vertexJson["v"]["z"].get<float>();
+        vertex.t.x = vertexJson["t"]["x"].get<float>();
+        vertex.t.y = vertexJson["t"]["y"].get<float>();
+        data.vertex_data.push_back(vertex);
+    }
+
+    // Deserialize index_data from JSON array
+    for (const auto& index : json["index_data"]) {
+        data.index_data.push_back(index.get<unsigned int>());
+    }
+
+    return data;
 }

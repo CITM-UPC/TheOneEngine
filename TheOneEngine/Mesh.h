@@ -27,7 +27,7 @@ public:
 public:
 
     MeshBufferedData mesh;
-
+    MeshData meshData;
     //now inside MeshBufferedData
     //std::vector<std::shared_ptr<Texture>> texture;
 

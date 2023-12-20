@@ -19,6 +19,10 @@ struct V3T2 { vec3f v; vec2f t; };
 
 struct MeshData
 {
+	std::string meshName;
+
+	//std::string texturePath;
+
 	Formats format;
 	std::vector<V3T2> vertex_data;
 	std::vector<unsigned int> index_data;
@@ -39,8 +43,8 @@ struct MeshBufferedData
 
 	uint numFaces;
 
-	std::string texturePath;
 	std::shared_ptr<Texture> texture;
+
 	uint materialIndex;
 	//Texture::Ptr checkboard = std::shared_ptr<Texture>(new Texture); // JULS: for the checkers texture
 };
@@ -58,8 +62,10 @@ public:
 
 	void BufferData(MeshData meshData);
 
-	void serializeMeshBufferedData(const MeshBufferedData& data, const std::string& filename);
-	MeshBufferedData deserializeMeshBufferedData(const std::string& filename);
+	void serializeMeshData(const MeshData& data, const std::string& filename);
+	MeshData deserializeMeshData(const std::string& filename);
+
+	const MeshBufferedData GetBufferData() const { return meshBuffData; }
 
 private:
 
