@@ -181,7 +181,7 @@ static inline void glVec3(const vec3& v) { glVertex3dv(&v.x); }
 void Mesh::DrawAABB() 
 {
     glLineWidth(2);
-    glColor3f(1.0f, 0.0f, 1.0f);
+    //glColor3f(1.0f, 0.0f, 1.0f);
     glBegin(GL_LINE_STRIP);
     
     glVec3(aabb.a());
@@ -206,7 +206,7 @@ void Mesh::DrawAABB()
     glVec3(aabb.c());
 
     glLineWidth(1);
-    glColor3f(1.0f, 0.0f, 1.0f);
+    //glColor3f(1.0f, 0.0f, 1.0f);
     glEnd();
 }
 

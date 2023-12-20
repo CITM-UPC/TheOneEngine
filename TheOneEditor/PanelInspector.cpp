@@ -166,6 +166,10 @@ bool PanelInspector::Draw()
                 
                 transform->getMatrix();
 
+                needRefresh_pos = false;
+                needRefresh_rot = false;
+                needRefresh_sca = false;
+
             }
 
             //static char buf[5] = "0";
@@ -197,13 +201,7 @@ bool PanelInspector::Draw()
                     ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numVerts).c_str());
                     ImGui::Text("Faces: ");
                     ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numFaces).c_str());
-                    //ImGui::Text("Tex coords: ");
-                    //ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.getNumTexCoords()).c_str());
 
-                    //if (ImGui::Checkbox("Use Texture", /*&mesh->usingTexture*/true))
-                    //{
-                    //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
-                    //}
                     ImGui::Checkbox("Active Mesh", &mesh->active);
                     ImGui::Checkbox("Active vertex normals", &mesh->drawNormalsVerts);
                     ImGui::Checkbox("Active face normals", &mesh->drawNormalsFaces);
@@ -233,6 +231,15 @@ bool PanelInspector::Draw()
                     ImGui::SameLine();  ImGui::Text(std::to_string(tex->width).c_str());
                     ImGui::Text("Height: ");
                     ImGui::SameLine();  ImGui::Text(std::to_string(tex->height).c_str());
+                    
+                    //ImGui::Text("Tex coords: ");
+                    //ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.getNumTexCoords()).c_str());
+                    
+                    //if (ImGui::Checkbox("Use Texture", /*&mesh->usingTexture*/true))
+                    //{
+                    //    //(mesh->usingTexture) ? mesh->texture = gameObjSelected->GetComponent<Texture2D>() : mesh->texture = nullptr;
+                    //}
+                    
                     //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
 
                     // JULS: To show the image of the texture, but need to look at it more.
