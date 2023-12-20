@@ -52,12 +52,11 @@ bool PanelInspector::Draw()
             if (ImGui::BeginCombo("Layer", "Default", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
 
             /*Transform Component*/
+            Transform* transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
 
-            if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            if (transform != nullptr && ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
-
-                Transform* transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
 
                 view_pos = transform->getPosition();
                 view_rot = transform->getEulerAngles();
@@ -188,9 +187,10 @@ bool PanelInspector::Draw()
             //ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
 
             /*Mesh Component*/
-            if (ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            Mesh* mesh = app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>();
+
+            if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
-                Mesh* mesh = app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>();
 
                 if (mesh != nullptr) {
                     ImGui::SetItemTooltip("Displays and sets mesh data");
@@ -221,20 +221,22 @@ bool PanelInspector::Draw()
             }
             
             /*Texture Component*/
-            if (ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            Texture* texture = app->sceneManager->GetSelectedGO().get()->GetComponent<Texture>();
+
+            if (texture != nullptr && ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
-                Texture* tex = app->sceneManager->GetSelectedGO().get()->GetComponent<Texture>();
                 
-                if (tex != nullptr) {
+                if (texture != nullptr)
+                {
                     ImGui::SetItemTooltip("Displays and sets texture data");
-                    ImGui::Checkbox("Active Texture", &tex->active);
+                    ImGui::Checkbox("Active Texture", &texture->active);
                     ImGui::Text("Name: ");
-                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, (tex->GetName()).c_str());
+                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, (texture->GetName()).c_str());
                     ImGui::Separator();
                     ImGui::Text("Size: ");
-                    ImGui::SameLine();  ImGui::Text(std::to_string(tex->width).c_str());
+                    ImGui::SameLine();  ImGui::Text(std::to_string(texture->width).c_str());
                     ImGui::Text("Height: ");
-                    ImGui::SameLine();  ImGui::Text(std::to_string(tex->height).c_str());
+                    ImGui::SameLine();  ImGui::Text(std::to_string(texture->height).c_str());
                     
                     //ImGui::Text("Tex coords: ");
                     //ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.getNumTexCoords()).c_str());
@@ -261,32 +263,34 @@ bool PanelInspector::Draw()
                 else {
                     ImGui::Text("No texture found");
                 }
+            }
 
-                if (ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen)) {
-                    
-                    Camera* cam = app->sceneManager->GetSelectedGO().get()->GetComponent<Camera>();
+            /*Camera Component*/
+            Camera* camera = app->sceneManager->GetSelectedGO().get()->GetComponent<Camera>();
 
-                    if (cam != nullptr) {
-                        float fov = static_cast<float>(cam->fov);
-                        float aspect = static_cast<float>(cam->aspect);
-                        float zNear = static_cast<float>(cam->zNear);
-                        float zFar = static_cast<float>(cam->zFar);
+            if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            {
 
-                        ImGui::SliderFloat("FOV", &fov, 20.0, 120.0);
-                        ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0);
-                        ImGui::Text("Clipping Plane");
-                        ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
-                        ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
+                if (camera != nullptr)
+                {
+                    float fov = static_cast<float>(camera->fov);
+                    float aspect = static_cast<float>(camera->aspect);
+                    float zNear = static_cast<float>(camera->zNear);
+                    float zFar = static_cast<float>(camera->zFar);
 
-                        cam->fov = fov;
-                        cam->aspect = aspect;
-                        cam->zNear = zNear;
-                        cam->zFar = zFar;
-                    }
-                    
-                    //ImGui::Checkbox("Draw Frustrum", );
+                    ImGui::SliderFloat("FOV", &fov, 20.0, 120.0);
+                    ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0);
+                    ImGui::Text("Clipping Plane");
+                    ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
+                    ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
+
+                    camera->fov = fov;
+                    camera->aspect = aspect;
+                    camera->zNear = zNear;
+                    camera->zFar = zFar;
                 }
 
+                ImGui::Checkbox("Draw Frustrum", &camera->drawFrustum);
             }
         }
 

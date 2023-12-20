@@ -87,5 +87,7 @@ public:
     mat4f viewMatrix;
     mat4 projectionMatrix;
     mat4 viewProjectionMatrix;
+
+    bool drawFrustum;
 };
 #endif // !__CAMERA_H__
