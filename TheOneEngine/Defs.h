@@ -7,6 +7,7 @@
 #include "GL/glew.h"
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_opengl.h"
+#include "nlohmann/json.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
@@ -92,6 +93,8 @@ using vec4f = glm::vec4;
 
 using quat = glm::dquat;
 using quatf = glm::quat;
+
+using json = nlohmann::json;
 // -------------------------------------------------------------------------------
 
 

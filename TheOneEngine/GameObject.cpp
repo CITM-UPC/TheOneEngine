@@ -131,3 +131,10 @@ void GameObject::CreateUID()
 {
 	UID = UIDGen::GenerateUID();
 }
+
+void GameObject::SaveGameObject(const std::shared_ptr<GameObject>& gameObject, json& parentJson)
+{
+
+
+
+}

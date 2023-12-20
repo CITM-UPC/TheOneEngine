@@ -47,7 +47,7 @@ bool SceneManager::Update(double dt)
 
 bool SceneManager::PostUpdate()
 {
-    DrawChildren(rootSceneGO);
+    RecurseDrawChildren(rootSceneGO);
 
     return true;
 }
@@ -291,14 +291,6 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 std::shared_ptr<GameObject> SceneManager::CreateMF()
 {
     CreateMeshGO("Assets/Meshes/mf.fbx");
-    /*std::shared_ptr<GameObject> mfGO = std::make_shared<GameObject>("Parsecs!");
-    mfGO.get()->AddComponent<Transform>();
-    mfGO.get()->AddComponent<Mesh>();
-
-    Mesh* mesh = mfGO.get()->GetComponent<Mesh>();
-    mesh->meshes = meshLoader->LoadMesh(mfGO, "Assets/mf.fbx");
-
-    gameObjects.push_back(mfGO);*/
 
     return nullptr;
 }
@@ -328,11 +320,60 @@ std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
     return rootSceneGO;
 }
 
-void SceneManager::DrawChildren(std::shared_ptr<GameObject> parentGO)
+void SceneManager::SaveScene()
+{
+    nlohmann::json json;
+
+    fs::path filename = fs::path(ASSETS_PATH) / "Scenes" / "scene.toe";
+
+    /*Save all gameobjects*/
+    for (const auto& gO : GetGameObjects())
+    {
+        //gO.get()
+    }
+
+    std::ofstream outFile(filename);
+    outFile << nlohmann::to_string(json) << std::endl;
+    outFile.close();
+
+}
+
+void SceneManager::LoadScene(const std::string& filename)
+{
+
+    // Load the JSON document from a file
+    std::ifstream inFile(filename);
+    nlohmann::json json;
+    inFile >> json;
+    inFile.close();
+
+    //// Deserialize MeshData members from JSON
+    //data.meshName = json["meshName"].get<std::string>();
+    //data.format = json["format"].get<Formats>();
+
+    //// Deserialize vertex_data from JSON array
+    //for (const auto& vertexJson : json["vertex_data"]) {
+    //    V3T2 vertex;
+    //    vertex.v.x = vertexJson["v"]["x"].get<float>();
+    //    vertex.v.y = vertexJson["v"]["y"].get<float>();
+    //    vertex.v.z = vertexJson["v"]["z"].get<float>();
+    //    vertex.t.x = vertexJson["t"]["x"].get<float>();
+    //    vertex.t.y = vertexJson["t"]["y"].get<float>();
+    //    data.vertex_data.push_back(vertex);
+    //}
+
+    //// Deserialize index_data from JSON array
+    //for (const auto& index : json["index_data"]) {
+    //    data.index_data.push_back(index.get<unsigned int>());
+    //}
+
+}
+
+void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 {
     for (const auto gameObject : parentGO.get()->children)
     {
         gameObject.get()->Draw();
-        DrawChildren(gameObject);
+        RecurseDrawChildren(gameObject);
     }
 }

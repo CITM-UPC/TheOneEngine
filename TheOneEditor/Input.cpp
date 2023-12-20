@@ -156,7 +156,7 @@ bool Input::processSDLEvents()
                 std::string fbxName = fileDir.substr(fileDir.find_last_of("\\/") + 1, fileDir.find_last_of('.') - fileDir.find_last_of("\\/") - 1);
 
                 // FBX
-                if (fileDir.ends_with(".fbx"))
+                if (fileDir.ends_with(".fbx") || fileDir.ends_with(".FBX"))
                 {
                     fs::path assetsDir = fs::path(ASSETS_PATH) / "Meshes" / fileNameExt;
 
@@ -173,16 +173,12 @@ bool Input::processSDLEvents()
                     else
                     {
                         LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileNameExt.data(), assetsDir.string().data());
-                        std::filesystem::copy(fileDir, ASSETS_PATH, std::filesystem::copy_options::overwrite_existing);
+                        std::filesystem::copy(fileDir, assetsDir, std::filesystem::copy_options::overwrite_existing);
 
                         //Creates GO and Serialize Meshes
                         app->sceneManager->CreateMeshGO(assetsDir.string());
                         LOG(LogType::LOG_OK, "-Created GameObject: %s", assetsDir.string().data());
                     }
-
-                    //// Create GO instance from Library
-                    //app->sceneManager->CreateMeshGO(assetsDir.string()); //Instead of FBX pass .mesh
-                    //LOG(LogType::LOG_OK ,"-Created GameObject: %s", assetsDir.string().data());
                 }
 
                 // PNG / DDS
