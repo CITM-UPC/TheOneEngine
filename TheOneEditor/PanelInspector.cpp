@@ -40,7 +40,7 @@ bool PanelInspector::Draw()
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
             //ImGui::Checkbox("Active", &gameObjSelected->isActive);
-            ImGui::SameLine(); ImGui::Text("GameObject");
+            ImGui::SameLine(); ImGui::Text("GameObject:");
             ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, app->sceneManager->GetSelectedGO().get()->GetName().c_str());
 
             ImGui::SetNextItemWidth(100.0f);
@@ -52,6 +52,7 @@ bool PanelInspector::Draw()
             if (ImGui::BeginCombo("Layer", "Default", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
 
             /*Transform Component*/
+
             if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
@@ -62,75 +63,111 @@ bool PanelInspector::Draw()
                 view_rot = transform->getEulerAngles();
                 view_sca = transform->getScale();
 
-
-                if (ImGui::BeginTable("", 4))
+                if (ImGui::BeginTable("", 4, ImGuiTableFlags_BordersInnerV | ImGuiTableFlags_BordersOuterV | ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit))
                 {
+                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableSetupColumn("Y", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableSetupColumn("Z", ImGuiTableColumnFlags_WidthStretch);
+
                     ImGui::TableNextRow();
+
+                    // Headers
                     ImGui::TableSetColumnIndex(0);
-                    //ImGui::Checkbox("Active", &transform->isActive);
-                    ImGui::Text("");
+                    ImGui::TableHeader("");
+                    ImGui::TableSetColumnIndex(1);
+                    ImGui::TableHeader("X");
+                    ImGui::TableSetColumnIndex(2);
+                    ImGui::TableHeader("Y");
+                    ImGui::TableSetColumnIndex(3);
+                    ImGui::TableHeader("Z");
+
+                    ImGui::TableNextRow();
+
+                    // Position
+                    ImGui::TableSetColumnIndex(0);
                     ImGui::Text("Position");
+
+                    ImGui::TableSetColumnIndex(1);
+                    if (ImGui::DragFloat("##PosX", &view_pos.x, 0.5F, 0, 0, "%.3f", 1))
+                    {
+                        needRefresh_pos = true;
+                    }
+
+                    ImGui::TableSetColumnIndex(2);
+                    if (ImGui::DragFloat("##PosY", &view_pos.y, 0.5F, 0, 0, "%.3f", 1))
+                    {
+                        needRefresh_pos = true;
+                    }
+
+                    ImGui::TableSetColumnIndex(3);
+                    if (ImGui::DragFloat("##PosZ", &view_pos.z, 0.5F, 0, 0, "%.3f", 1))
+                    {
+                        needRefresh_pos = true;
+                    }
+
+                    ImGui::TableNextRow();
+
+                    // Rotation
+                    ImGui::TableSetColumnIndex(0);
                     ImGui::Text("Rotation");
+
+                    ImGui::TableSetColumnIndex(1);
+                    if (ImGui::DragFloat("##RotX", &view_rot.x, 0.5F, 0, 0, "%.3f", 1))
+                    {
+                        needRefresh_rot = true;
+                    }
+
+                    ImGui::TableSetColumnIndex(2);
+                    if (ImGui::DragFloat("##RotY", &view_rot.y, 0.5F, 0, 0, "%.3f", 1))
+                    {
+                        needRefresh_rot = true;
+                    }
+
+                    ImGui::TableSetColumnIndex(3);
+                    if (ImGui::DragFloat("##RotZ", &view_rot.z, 0.5F, 0, 0, "%.3f", 1))
+                    {
+                        needRefresh_rot = true;
+                    }
+
+                    ImGui::TableNextRow();
+
+                    // Scale
+                    ImGui::TableSetColumnIndex(0);
                     ImGui::Text("Scale");
 
                     ImGui::TableSetColumnIndex(1);
-                    ImGui::Text("X");
-                    //ImGui::Text(std::to_string(transform->getPosition().x).c_str());
-                    //ImGui::Text(std::to_string(transform->getEulerAngles().x).c_str());
-                    //ImGui::Text(std::to_string(transform->getScale().x).c_str());
-
-                    if (ImGui::DragFloat("X", &view_pos.x, 0.5F, 0, 0, "%.3f", 1)) {
-                        needRefresh_pos = true;
-                    }
-                    if (ImGui::DragFloat("X", &view_rot.x, 0.5F, 0, 0, "%.3f", 1)) {
-                        needRefresh_rot = true;
-                    }
-                    if (ImGui::DragFloat("X", &view_sca.x, 0.5F, 0, 0, "%.3f", 1)) {
+                    if (ImGui::DragFloat("##ScaleX", &view_sca.x, 0.5F, 0, 0, "%.3f", 1))
+                    {
                         needRefresh_sca = true;
                     }
 
                     ImGui::TableSetColumnIndex(2);
-                    ImGui::Text("Y");
-                    //ImGui::Text(std::to_string(transform->getPosition().y).c_str());
-                    //ImGui::Text(std::to_string(transform->getEulerAngles().y).c_str());
-                    //ImGui::Text(std::to_string(transform->getScale().y).c_str());
-                    if (ImGui::DragFloat("Y", &view_pos.y, 0.5F, 0, 0, "%.3f", 1)) {
-                        needRefresh_pos = true;
-                    }
-                    if (ImGui::DragFloat("Y", &view_rot.y, 0.5F, 0, 0, "%.3f", 1)) {
-                        needRefresh_rot = true;
-                    }
-                    if (ImGui::DragFloat("Y", &view_sca.y, 0.5F, 0, 0, "%.3f", 1)) {
+                    if (ImGui::DragFloat("##ScaleY", &view_sca.y, 0.5F, 0, 0, "%.3f", 1))
+                    {
                         needRefresh_sca = true;
                     }
 
                     ImGui::TableSetColumnIndex(3);
-                    ImGui::Text("Z");
-                    //ImGui::Text(std::to_string(transform->getPosition().z).c_str());
-                    //ImGui::Text(std::to_string(transform->getEulerAngles().z).c_str());
-                    //ImGui::Text(std::to_string(transform->getScale().z).c_str());
-                    if (ImGui::DragFloat("Z", &view_pos.z, 0.5F, 0, 0, "%.3f", 1)) {
-                        needRefresh_pos = true;
-                    }
-                    if (ImGui::DragFloat("Z", &view_rot.z, 0.5F, 0, 0, "%.3f", 1)) {
-                        needRefresh_rot = true;
-                    }
-                    if (ImGui::DragFloat("Z", &view_sca.z, 0.5F, 0, 0, "%.3f", 1)) {
+                    if (ImGui::DragFloat("##ScaleZ", &view_sca.z, 0.5F, 0, 0, "%.3f", 1))
+                    {
                         needRefresh_sca = true;
                     }
 
-                    if (needRefresh_pos)
-                       transform->setPosition(view_pos /*- transform->getPosition()*/);
-                    else if (needRefresh_rot) {
-                       //transform->setR(view_rot - original_rot);
-
-                    }
-                    else if (needRefresh_sca)
-                       transform->setScale(view_sca /*- original_scale*/);
-
                     ImGui::EndTable();
                 }
+
+                if (needRefresh_pos)
+                    transform->setPosition(view_pos);
+                else if (needRefresh_rot)
+                    transform->rotate(view_rot);
+                else if (needRefresh_sca)
+                    transform->setScale(view_sca);
+                
+                transform->getMatrix();
+
             }
+
             //static char buf[5] = "0";
             //ImGui::Text("Position");
             ////ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
@@ -156,8 +193,6 @@ bool PanelInspector::Draw()
                     ImGui::Separator();
                     ImGui::Text("Indexes: ");
                     ImGui::SameLine();  ImGui::Text((std::to_string(mesh->mesh.indexs_buffer_id)).c_str());
-                    //ImGui::Text("Normals: ");
-                    //ImGui::SameLine();  ImGui::Text(/*std::to_string(mesh->getNumNormals()).c_str()*/"244");
                     ImGui::Text("Vertexs: ");
                     ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numVerts).c_str());
                     ImGui::Text("Faces: ");
@@ -200,6 +235,15 @@ bool PanelInspector::Draw()
                     ImGui::SameLine();  ImGui::Text(std::to_string(tex->height).c_str());
                     //ImGui::TextColored(ImVec4(1, 1, 0, 1), "%dpx x %dpx", s->getTexture()->width, s->getTexture()->height);
 
+                    // JULS: To show the image of the texture, but need to look at it more.
+                    //ImTextureID my_tex_id;
+                    //glGenTextures(GL_TEXTURE_2D, 1, my_tex_id);
+                    //glTextureParameteri(my_tex_id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+                    //glTextureParameteri(textureID, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+                    //glTextureParameteri(textureID, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+                    //glTextureParameteri(textureID, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+                    //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, [width of your texture], [height of your texture], false, GL_RGBA, GL_FLOAT, [pointer to first element in array of texture pixel values]);
+                    //ImGui::Image()
 
                     ImGui::Separator();
                 }
