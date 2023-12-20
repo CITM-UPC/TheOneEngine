@@ -28,12 +28,14 @@ public:
 
     void CameraInput(double dt);
 
+    void CreateRay();
+
 public:
 
     //hekbas test
     double dtSum = 0;
 
-    std::shared_ptr<GameObject> cameraGO;
+    std::shared_ptr<GameObject> sceneCamera;
 };
 
 #endif // !__RENDERER_3D_H__

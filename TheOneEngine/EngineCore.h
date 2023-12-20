@@ -29,6 +29,10 @@ public:
 
 	void Render(RenderModes renderMode, Camera* camera);
 
+	void DrawAxis();
+	void DrawGrid(int grid_size, int grid_step);
+	void DrawFrustum(const glm::mat4& viewProjectionMatrix);
+
 	// (x, y) Indicate the bottom left corner1
 	void OnWindowResize(int x, int y, int width, int height);
 

@@ -30,14 +30,14 @@ bool Renderer3D::Start()
     app->engine->Start();
 
     // Creating Editor Camera GO (Outside hierarchy)
-    cameraGO = std::make_shared<GameObject>("EDITOR CAMERA");
-    cameraGO.get()->AddComponent<Transform>();
-    cameraGO.get()->AddComponent<Camera>();
-    cameraGO.get()->GetComponent<Transform>()->setPosition(vec3f(0, 2, -10));
+    sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
+    sceneCamera.get()->AddComponent<Transform>();
+    sceneCamera.get()->AddComponent<Camera>();
+    sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 2, -10));
 
     // hekbas test adding same component
     LOG(LogType::LOG_INFO, "# Testing Component Duplication");
-    cameraGO.get()->AddComponent<Camera>();
+    sceneCamera.get()->AddComponent<Camera>();
 
 
     return true;
@@ -60,8 +60,9 @@ bool Renderer3D::Update(double dt)
 
 bool Renderer3D::PostUpdate()
 { 
-    Camera* camera = cameraGO.get()->GetComponent<Camera>();
+    Camera* camera = sceneCamera.get()->GetComponent<Camera>();
     app->engine->Render(EngineCore::RenderModes::DEBUG, camera);
+
 
     // hekbas testing Mesh load/draw
     /*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
@@ -80,10 +81,62 @@ bool Renderer3D::CleanUp()
     return true;
 }
 
+void Renderer3D::CreateRay()
+{
+    //if (app->sceneManager->GetGameObjects().empty())
+    //    return;
+
+    ////App->renderer3D->SetCameraToDraw(fake_camera);
+    //float2 origin = float2((App->input->GetMousePosition().x - App->ui->panel_scene->posX) / App->ui->panel_scene->width, (App->input->GetMousePosition().y - App->ui->panel_scene->posY) / App->ui->panel_scene->height);
+
+    //origin.x = (origin.x - 0.5F) * 2;
+    //origin.y = -(origin.y - 0.5F) * 2;
+
+    //if (origin.x > 1 || origin.x < -1 || origin.y > 1 || origin.y < -1)
+    //    return;
+
+    //ray = fake_camera->frustum.UnProjectLineSegment(origin.x, origin.y);
+
+    //std::vector<std::pair<float, GameObject*>> hits;
+
+    //// with octree to static objects
+    //CreateObjectsHitMap(&hits, App->objects->octree.root, ray);
+
+    //// without octree for the dynamics
+    //std::vector<GameObject*>::iterator item = App->objects->GetRoot(true)->children.begin();
+
+    //for (; item != App->objects->GetRoot(true)->children.end(); ++item)
+    //{
+    //    if (*item != nullptr && (*item)->IsEnabled()) {
+    //        CreateObjectsHitMap(&hits, (*item), ray);
+    //    }
+    //}
+    //// sort by pos
+    //std::sort(hits.begin(), hits.end(), ModuleCamera3D::SortByDistance);
+    //static bool hit = false;
+    //std::vector<std::pair<float, GameObject*>>::iterator it = hits.begin();
+
+    //for (; it != hits.end(); ++it)
+    //{
+    //    if ((*it).second != nullptr) {
+    //        if (TestTrianglesIntersections((*it).second, ray)) {
+    //            hit = true;
+    //            break;
+    //        }
+    //    }
+    //}
+
+    //if (!hit)
+    //    App->objects->DeselectObjects();
+
+    //hit = false;
+
+}
+
 void Renderer3D::CameraInput(double dt)
 {
-    Camera* camera = cameraGO.get()->GetComponent<Camera>();
-    Transform* transform = cameraGO.get()->GetComponent<Transform>();
+    Camera* camera = sceneCamera.get()->GetComponent<Camera>();
+    Transform* transform = sceneCamera.get()->GetComponent<Transform>();
 
     float speed = 10 * dt;
     if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)

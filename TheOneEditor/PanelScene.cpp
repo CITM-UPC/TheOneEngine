@@ -36,7 +36,7 @@ bool PanelScene::Draw()
                 // Camera settings
                 ImGui::TextWrapped("Scene Camera");
                 
-                Camera* camera = app->renderer3D->cameraGO.get()->GetComponent<Camera>();
+                Camera* camera = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
 
                 float fov = static_cast<float>(camera->fov);
                 float aspect = static_cast<float>(camera->aspect);
@@ -88,7 +88,7 @@ bool PanelScene::Draw()
 
         app->engine->OnWindowResize(x, y, width, height);
 
-        Camera* camera = app->renderer3D->cameraGO.get()->GetComponent<Camera>();
+        Camera* camera = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
         app->engine->Render(EngineCore::RenderModes::DEBUG, camera);
 	}
 

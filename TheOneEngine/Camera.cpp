@@ -109,6 +109,10 @@ void Camera::updateViewMatrix()
     {
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
+
+    UpdateProjectionMatrix();
+    UpdateViewProjectionMatrix();
+    UpdateFrustum();
 }
 
 
@@ -139,4 +143,19 @@ void Camera::updateCameraVectors()
     {
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
+}
+
+void Camera::UpdateFrustum()
+{
+    frustum.update(viewProjectionMatrix);
+}
+
+void Camera::UpdateProjectionMatrix()
+{
+    projectionMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+}
+
+void Camera::UpdateViewProjectionMatrix()
+{
+    viewProjectionMatrix = projectionMatrix * (mat4)viewMatrix;
 }

@@ -25,10 +25,11 @@ bool SceneManager::Awake()
 
 bool SceneManager::Start()
 {
-    //hekbas testing creation of GO
-    /*CreateEmptyGO();
-    CreateCube();
-    CreateSphere();*/
+    // hekbas testing creation of GO
+    //CreateEmptyGO();
+    //CreateCube();
+    //CreateSphere();
+    CreateCameraGO("Camera");
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
 
     return true;
@@ -83,6 +84,19 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO(std::string name)
     rootSceneGO.get()->children.emplace_back(emptyGO);
 
     return emptyGO;
+}
+
+std::shared_ptr<GameObject> SceneManager::CreateCameraGO(std::string name)
+{
+    std::shared_ptr<GameObject> cameraGO = std::make_shared<GameObject>(name);
+    cameraGO.get()->AddComponent<Transform>();
+    cameraGO.get()->AddComponent<Camera>();
+
+    cameraGO.get()->parent = rootSceneGO.get()->weak_from_this();
+
+    rootSceneGO.get()->children.emplace_back(cameraGO);
+
+    return cameraGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)

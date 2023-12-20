@@ -26,7 +26,38 @@ void EngineCore::Update(double dt)
 
 }
 
-static void drawAxis()
+void EngineCore::Render(RenderModes renderMode, Camera* camera)
+{
+    // Update Camera Matrix
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glClearDepth(1.0f);
+
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_COLOR_MATERIAL);
+    //glEnable(GL_LIGHTING);
+
+    gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
+
+    gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z,
+        camera->center.x, camera->center.y, camera->center.z,
+        camera->up.x, camera->up.y, camera->up.z);
+
+    DrawGrid(1000, 10);
+    DrawAxis();
+
+    //DrawFrustum(camera->viewMatrix);
+
+    assert(glGetError() == GL_NONE);
+}
+
+void EngineCore::DrawAxis()
 {
     glLineWidth(4.0);
     glBegin(GL_LINES);
@@ -42,7 +73,7 @@ static void drawAxis()
     glEnd();
 }
 
-static void drawGrid(int grid_size, int grid_step)
+void EngineCore::DrawGrid(int grid_size, int grid_step)
 {
     glLineWidth(1.0);
     glColor3ub(128, 128, 128);
@@ -65,34 +96,50 @@ static void drawGrid(int grid_size, int grid_step)
     glEnd();
 }
 
-void EngineCore::Render(RenderModes renderMode, Camera* camera)
-{  
-    // Update Camera Matrix
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+void EngineCore::DrawFrustum(const glm::mat4& viewProjectionMatrix)
+{
+    // Extract frustum vertices from the view-projection matrix
+    glm::vec4 frustumVertices[8] =
+    {
+        glm::vec4(-1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(1.0f, -1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, 1.0f, -1.0f, 1.0f),
+        glm::vec4(1.0f, 1.0f, -1.0f, 1.0f),
+        glm::vec4(-1.0f, -1.0f, 1.0f, 1.0f),
+        glm::vec4(1.0f, -1.0f, 1.0f, 1.0f),
+        glm::vec4(-1.0f, 1.0f, 1.0f, 1.0f),
+        glm::vec4(1.0f, 1.0f, 1.0f, 1.0f)
+    };
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
+    // Transform frustum vertices by the view-projection matrix
+    for (int i = 0; i < 8; ++i)
+    {
+        frustumVertices[i] = viewProjectionMatrix * frustumVertices[i];
+        frustumVertices[i] /= frustumVertices[i].w; // Perspective division
+    }
 
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    glClearDepth(1.0f);
+    // Draw frustum ---
+    glBegin(GL_LINES);
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_COLOR_MATERIAL);    
-    //glEnable(GL_LIGHTING);
+    // Near plane
+    for (int i = 0; i < 4; ++i) {
+        glVertex3f(frustumVertices[i].x, frustumVertices[i].y, frustumVertices[i].z);
+        glVertex3f(frustumVertices[(i + 1) % 4].x, frustumVertices[(i + 1) % 4].y, frustumVertices[(i + 1) % 4].z);
+    }
 
-    gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
-    
-    gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z,
-        camera->center.x, camera->center.y, camera->center.z,
-        camera->up.x, camera->up.y, camera->up.z);
+    // Far plane
+    for (int i = 4; i < 8; ++i) {
+        glVertex3f(frustumVertices[i].x, frustumVertices[i].y, frustumVertices[i].z);
+        glVertex3f(frustumVertices[(i + 1) % 4 + 4].x, frustumVertices[(i + 1) % 4 + 4].y, frustumVertices[(i + 1) % 4 + 4].z);
+    }
 
-    drawGrid(1000, 10);
-    drawAxis();
-    
+    // Lines connecting near and far planes
+    for (int i = 0; i < 4; ++i) {
+        glVertex3f(frustumVertices[i].x, frustumVertices[i].y, frustumVertices[i].z);
+        glVertex3f(frustumVertices[i + 4].x, frustumVertices[i + 4].y, frustumVertices[i + 4].z);
+    }
 
-    assert(glGetError() == GL_NONE);
+    glEnd();
 }
 
 void EngineCore::OnWindowResize(int x, int y, int width, int height)
