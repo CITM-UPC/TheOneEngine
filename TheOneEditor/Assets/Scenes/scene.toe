@@ -1,0 +1,1 @@
+{"GameObjects":[{"Components":[{"LocalRotation":[1.0,0.0,0.0,0.0],"LocalScale":[1.0,1.0,1.0],"Name":"Transform","ParentUID":3452816845,"Position":[0.0,0.0,0.0],"Rotation":[1.0,0.0,0.0,0.0],"Scale":[1.0,1.0,1.0],"Type":0,"UID":424704028},null],"Enabled":true,"Name":"Camera","ParentUID":3452816845,"Static":false,"UID":3452816845}]}

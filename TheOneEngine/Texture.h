@@ -26,6 +26,7 @@ public:
 
 	//void SetTexture(Ptr texture);
 
+	json SaveComponent();
 
 private:
 	/*Texture(const Texture&);

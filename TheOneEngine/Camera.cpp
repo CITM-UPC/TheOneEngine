@@ -160,3 +160,40 @@ void Camera::UpdateViewProjectionMatrix()
 {
     viewProjectionMatrix = projectionMatrix * (mat4)viewMatrix;
 }
+
+json Camera::SaveComponent()
+{
+    json cameraJSON;
+
+    cameraJSON["Name"] = name;
+    cameraJSON["Type"] = type;
+    if (auto pGO = containerGO.lock())
+    {
+        cameraJSON["ParentUID"] = pGO.get()->GetUID();
+    }
+    cameraJSON["UID"] = UID;
+    cameraJSON["FOV"] = fov;
+    cameraJSON["Aspect"] = aspect;
+    cameraJSON["zNear"] = zNear;
+    cameraJSON["zFar"] = zFar;
+    cameraJSON["Yaw"] = yaw;
+    cameraJSON["Pitch"] = pitch;
+
+    //Maybe not necessary to serialize
+    /*cameraJSON["Frustum"]["nearTopLeft"] = { frustum.nearTopLeft.x, frustum.nearTopLeft.y, frustum.nearTopLeft.z };
+    cameraJSON["Frustum"]["nearTopRight"] = { frustum.nearTopRight.x, frustum.nearTopRight.y, frustum.nearTopRight.z };
+    cameraJSON["Frustum"]["nearBottomLeft"] = { frustum.nearBottomLeft.x, frustum.nearBottomLeft.y, frustum.nearBottomLeft.z };
+    cameraJSON["Frustum"]["nearBottomRight"] = { frustum.nearBottomRight.x, frustum.nearBottomRight.y, frustum.nearBottomRight.z };
+
+    cameraJSON["Frustum"]["farTopLeft"] = { frustum.farTopLeft.x, frustum.farTopLeft.y, frustum.farTopLeft.z };
+    cameraJSON["Frustum"]["farTopRight"] = { frustum.farTopRight.x, frustum.farTopRight.y, frustum.farTopRight.z };
+    cameraJSON["Frustum"]["farBottomLeft"] = { frustum.farBottomLeft.x, frustum.farBottomLeft.y, frustum.farBottomLeft.z };
+    cameraJSON["Frustum"]["farBottomRight"] = { frustum.farBottomRight.x, frustum.farBottomRight.y, frustum.farBottomRight.z };*/
+
+    //Historn: Should add this functions when loading
+    /*UpdateProjectionMatrix();
+    UpdateViewProjectionMatrix();
+    UpdateFrustum();*/
+
+    return cameraJSON;
+}

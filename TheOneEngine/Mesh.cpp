@@ -175,6 +175,30 @@ void Mesh::GenerateAABB() {
 
 }
 
+json Mesh::SaveComponent()
+{
+    json meshJSON;
+
+    meshJSON["Name"] = name;
+    meshJSON["Type"] = type;
+    if (auto pGO = containerGO.lock())
+    {
+        meshJSON["ParentUID"] = pGO.get()->GetUID();
+    }
+    meshJSON["UID"] = UID;
+    meshJSON["Active"] = active;
+    meshJSON["DrawWireframe"] = drawWireframe;
+    meshJSON["DrawAABB"] = drawAABB;
+    meshJSON["DrawOBB"] = drawOBB;
+    meshJSON["DrawChecker"] = drawChecker;
+    meshJSON["DrawNormalsVerts"] = drawNormalsVerts;
+    meshJSON["DrawNormalsFaces"] = drawNormalsFaces;
+
+    //MeshData && MeshBufferedData are already serialized in .mesh files
+
+    return meshJSON;
+}
+
 
 static inline void glVec3(const vec3& v) { glVertex3dv(&v.x); }
 

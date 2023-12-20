@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "GameObject.h"
 
 Transform::Transform(std::shared_ptr<GameObject> containerGO)
     : Component(containerGO, ComponentType::Transform),
@@ -154,4 +155,24 @@ quat Transform::EulerAnglesToQuaternion(const vec3& eulerAngles)
     quaternion *= glm::angleAxis(eulerAngles.y, vec3(0, 1, 0));    // Rotate around the Y-axis (pitch)
     quaternion *= glm::angleAxis(eulerAngles.x, vec3(1, 0, 0));    // Rotate around the X-axis (roll)
     return quaternion;
+}
+
+json Transform::SaveComponent()
+{
+    json transformJSON;
+
+    transformJSON["Name"] = name;
+    transformJSON["Type"] = type;
+    if (auto pGO = containerGO.lock())
+    {
+        transformJSON["ParentUID"] = pGO.get()->GetUID();
+    }
+    transformJSON["UID"] = UID;
+    transformJSON["Position"] = { position.x, position.y, position.z };
+    transformJSON["Rotation"] = { rotation.w, rotation.x, rotation.y, rotation.z };
+    transformJSON["LocalRotation"] = { localRotation.w, localRotation.x, localRotation.y, localRotation.z };
+    transformJSON["Scale"] = { scale.x, scale.y, scale.z };
+    transformJSON["LocalScale"] = { localScale.x, localScale.y, localScale.z };
+
+    return transformJSON;
 }

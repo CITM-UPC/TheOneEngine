@@ -48,6 +48,9 @@ public:
 
     quat EulerAnglesToQuaternion(const vec3& eulerAngles);    // Converts Euler Angles to Quaternion
 
+public:
+
+    json SaveComponent();
 
 public:
 
