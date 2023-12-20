@@ -148,10 +148,12 @@ bool Input::processSDLEvents()
             }
             case SDL_DROPFILE:
             {
-                // Hekbas: Just flag event here, this code elsewhere
+                // Just flag event here
+                // This code elsewhere
                 std::string fileDir = event.drop.file;
                 std::string fileNameExt = fileDir.substr(fileDir.find_last_of('\\') + 1);
                 fs::path assetsDir = fs::path(ASSETS_PATH) / fileNameExt;
+                std::string fbxName = fileDir.substr(fileDir.find_last_of("\\/") + 1, fileDir.find_last_of('.') - fileDir.find_last_of("\\/") - 1);
 
                 // FBX
                 if (fileDir.ends_with(".fbx"))
@@ -162,16 +164,23 @@ bool Input::processSDLEvents()
                     if (std::filesystem::exists(assetsDir))
                     {
                         LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileNameExt.data(), assetsDir.string().data());
+
+                        //Find Meshes in Library
+                        app->sceneManager->CreateExistingMeshGO(fbxName);
                     }
                     else
                     {
                         LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileNameExt.data(), assetsDir.string().data());
                         std::filesystem::copy(fileDir, ASSETS_PATH, std::filesystem::copy_options::overwrite_existing);
+
+                        //Creates GO and Serialize Meshes
+                        app->sceneManager->CreateMeshGO(assetsDir.string());
+                        LOG(LogType::LOG_OK, "-Created GameObject: %s", assetsDir.string().data());
                     }
 
-                    // Create GO instance from Library
-                    app->sceneManager->CreateMeshGO(assetsDir.string());
-                    LOG(LogType::LOG_OK ,"-Created GameObject: %s", assetsDir.string().data());
+                    //// Create GO instance from Library
+                    //app->sceneManager->CreateMeshGO(assetsDir.string()); //Instead of FBX pass .mesh
+                    //LOG(LogType::LOG_OK ,"-Created GameObject: %s", assetsDir.string().data());
                 }
 
                 // PNG / DDS

@@ -121,6 +121,7 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 
 // Folder paths
 #define ASSETS_PATH "Assets\\"
+#define LIBRARY_PATH "Library\\"
 
 //Logs
 #define BUFFER_SIZE 4096
