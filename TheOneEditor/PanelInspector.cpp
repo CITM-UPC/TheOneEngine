@@ -272,8 +272,8 @@ bool PanelInspector::Draw()
                         float zNear = static_cast<float>(cam->zNear);
                         float zFar = static_cast<float>(cam->zFar);
 
-                        ImGui::SliderFloat("Field of View", &fov, 20.0, 120.0);
-                        ImGui::SliderFloat("Aspect Ratio", &aspect, 0.1, 10.0);
+                        ImGui::SliderFloat("FOV", &fov, 20.0, 120.0);
+                        ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0);
                         ImGui::Text("Clipping Plane");
                         ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
                         ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
