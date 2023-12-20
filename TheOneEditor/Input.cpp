@@ -152,12 +152,14 @@ bool Input::processSDLEvents()
                 // This code elsewhere
                 std::string fileDir = event.drop.file;
                 std::string fileNameExt = fileDir.substr(fileDir.find_last_of('\\') + 1);
-                fs::path assetsDir = fs::path(ASSETS_PATH) / fileNameExt;
+                
                 std::string fbxName = fileDir.substr(fileDir.find_last_of("\\/") + 1, fileDir.find_last_of('.') - fileDir.find_last_of("\\/") - 1);
 
                 // FBX
                 if (fileDir.ends_with(".fbx"))
                 {
+                    fs::path assetsDir = fs::path(ASSETS_PATH) / "Meshes" / fileNameExt;
+
                     LOG(LogType::LOG_ASSIMP, "Importing %s from: %s", fileNameExt.data(), fileDir.data());
 
                     // Check if it already exists in Library
