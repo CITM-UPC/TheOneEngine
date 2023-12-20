@@ -4,6 +4,8 @@
 
 #include "Panel.h"
 
+#include <filesystem>
+
 class PanelProject : public Panel
 {
 public:
@@ -11,6 +13,10 @@ public:
 	~PanelProject();
 
 	bool Draw();
+	std::pair<bool, uint32_t> DirectoryTreeViewRecursive(const std::filesystem::path& path, uint32_t* count, int* selection_mask);
+
+public:
+	std::string directoryPath;
 };
 
 #endif // !__PANEL_PROJECT_H__
