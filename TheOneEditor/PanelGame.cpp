@@ -1,4 +1,4 @@
-#include "PanelScene.h"
+#include "PanelGame.h"
 #include "App.h"
 #include "Gui.h"
 #include "Renderer3D.h"
@@ -8,16 +8,16 @@
 
 #include "..\TheOneEngine\EngineCore.h"
 
-PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name) {}
+PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name) {}
 
-PanelScene::~PanelScene() {}
+PanelGame::~PanelGame() {}
 
-bool PanelScene::Draw()
+bool PanelGame::Draw()
 {
     // Flag to track whether Button 2 was clicked
     static bool showCameraSettings = false;
 
-	ImGuiWindowFlags settingsFlags = 0;
+    ImGuiWindowFlags settingsFlags = 0;
     settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 
     //ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(0.f, 0.f));
@@ -25,42 +25,27 @@ bool PanelScene::Draw()
     ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once);
 
     ImGui::SetNextWindowBgAlpha(.0f);
-	if (ImGui::Begin("Scene", &enabled, settingsFlags))
-	{
+    if (ImGui::Begin("Game", &enabled, settingsFlags))
+    {
         // Top Bar --------------------------
         if (ImGui::BeginMenuBar())
         {
-            //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
+            //if (ImGui::Combo("##Camera", &resolution, gameCameras, 8))
+
+            //if (selectedItem != -1) {
+            //    // Do something with the selected item
+            //    ImGui::Text("Selected Object: %s", items[selectedItem]);
+            //}
 
             if (ImGui::BeginMenu("Camera"))
             {
-                // Camera settings
-                ImGui::TextWrapped("Scene Camera");
-                
-                Camera* camera = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
-
-                float fov = static_cast<float>(camera->fov);
-                float aspect = static_cast<float>(camera->aspect);
-                float zNear = static_cast<float>(camera->zNear);
-                float zFar = static_cast<float>(camera->zFar);
-
-                ImGui::SliderFloat("FOV", &fov, 20.0, 120.0);
-                ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0);
-                ImGui::Text("Clipping Plane");
-                ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
-                ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
-
-                camera->fov = fov;
-                camera->aspect = aspect;
-                camera->zNear = zNear;
-                camera->zFar = zFar;
 
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu("Gizmo"))
+
+            if (ImGui::BeginMenu("Aspect"))
             {
-                ImGui::Text("Gizmo Options");
-                ImGui::Text("This section isn't finished, my precious...");
+
                 ImGui::EndMenu();
             }
 
@@ -89,22 +74,18 @@ bool PanelScene::Draw()
 
         app->engine->OnWindowResize(x, y, width, height);
 
-        // Render Scene Camera 
-        Camera* sceneCam = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
-        app->engine->Render(sceneCam);
-
-        // Game cameras Frustum
+        // Render Game cameras
         for (const auto GO : app->sceneManager->GetGameObjects())
         {
             Camera* gameCam = GO.get()->GetComponent<Camera>();
 
-            if (gameCam != nullptr && gameCam->drawFrustum)
-                app->engine->DrawFrustum(gameCam->viewProjectionMatrix);
+            if (gameCam == nullptr) continue;
+            app->engine->Render(gameCam);
         }
-	}
+    }
 
     ImGui::End();
     ImGui::PopStyleVar();
 
-	return true;
+    return true;
 }
