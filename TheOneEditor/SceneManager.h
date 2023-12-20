@@ -39,6 +39,7 @@ public:
     // Basic 3D
     std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
+    std::shared_ptr<GameObject> CreateExistingMeshGO(std::string fbxName);
     std::shared_ptr<GameObject> CreateCube();
     std::shared_ptr<GameObject> CreateSphere();
     std::shared_ptr<GameObject> CreateMF();
@@ -52,13 +53,16 @@ public:
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
 
+    /*SCENE SERIALIZATION*/
+    void serializeScene();
+    void deserializeScene();
+
 private:
     void DrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
     //uint selectedGameObject;
     std::shared_ptr<GameObject> rootSceneGO;
-    std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::shared_ptr<GameObject> selectedGameObject;
     MeshLoader* meshLoader;
 };

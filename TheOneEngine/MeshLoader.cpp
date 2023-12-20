@@ -1,5 +1,8 @@
 #include "MeshLoader.h"
 #include "Texture.h"
+#include "Mesh.h"
+
+#include "nlohmann/json.hpp"
 
 #include <assimp/postprocess.h>
 #include <assimp/cimport.h>
@@ -11,10 +14,12 @@
 #include <vector>
 #include <array>
 #include <filesystem>
+#include <fstream>
 
 
 namespace fs = std::filesystem;
 using namespace std;
+using namespace nlohmann::literals;
 
 struct aiMeshExt : aiMesh
 {
@@ -92,7 +97,7 @@ void MeshLoader::BufferData(MeshData meshData)
 
 std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 {
-    std::vector<MeshBufferedData> mehsesData;
+    std::vector<MeshBufferedData> meshesData;
 
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
@@ -106,10 +111,21 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
         std::vector<V3T2> vertex_data;
         std::vector<unsigned int> index_data;
 
-        for (size_t i = 0; i < mesh->mNumVertices; ++i)
+        if (texCoords != nullptr)
         {
-            V3T2 v = { verts[i], vec2f(texCoords[i].x, texCoords[i].y) };
-            vertex_data.push_back(v);
+            for (size_t i = 0; i < mesh->mNumVertices; ++i)
+            {
+                V3T2 v = { verts[i], vec2f(texCoords[i].x, texCoords[i].y) };
+                vertex_data.push_back(v);
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < mesh->mNumVertices; ++i)
+            {
+                V3T2 v = { verts[i], vec2f(0, 0) };
+                vertex_data.push_back(v);
+            }
         }
 
         for (size_t f = 0; f < mesh->mNumFaces; ++f)
@@ -117,17 +133,11 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             index_data.push_back(faces[f].mIndices[0]);
             index_data.push_back(faces[f].mIndices[1]);
             index_data.push_back(faces[f].mIndices[2]);
-
-            /*vec3f faceNormal = glm::cross(&index_data[1] - &index_data[0], &index_data[2] - &index_data[0]);
-            faceNormal = glm::normalize(faceNormal);
-            mesh_sptr->meshFaceNorms.push_back(faceNormal);
-
-            vec3f faceCenter = (index_data[0] + index_data[1] + index_data[2]) / 3.0f;
-            mesh_sptr->meshFaceCenters.push_back(faceCenter);*/
         }
 
         meshData =
         {
+            mesh->mName.C_Str(),
             Formats::F_V3T2,
             vertex_data,
             index_data
@@ -137,12 +147,44 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
         meshBuffData.meshName = mesh->mName.C_Str();
         meshBuffData.materialIndex = mesh->mMaterialIndex;
 
-        mehsesData.push_back(meshBuffData);
+        for (size_t i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D normal = mesh->mNormals[i];
+            vec3f glmNormal(normal.x, normal.y, normal.z);
+            meshBuffData.meshNorms.push_back(glmNormal);
+        }
+        for (size_t i = 0; i < mesh->mNumVertices; i++) {
+            aiVector3D vert = mesh->mVertices[i];
+            vec3f glmNormal(vert.x, vert.y, vert.z);
+            meshBuffData.meshVerts.push_back(glmNormal);
+        }
+        for (size_t f = 0; f < mesh->mNumFaces; ++f)
+        {
+            aiFace face = mesh->mFaces[f];
+
+            vec3f v0(mesh->mVertices[face.mIndices[0]].x, mesh->mVertices[face.mIndices[0]].y, mesh->mVertices[face.mIndices[0]].z);
+            vec3f v1(mesh->mVertices[face.mIndices[1]].x, mesh->mVertices[face.mIndices[1]].y, mesh->mVertices[face.mIndices[1]].z);
+            vec3f v2(mesh->mVertices[face.mIndices[2]].x, mesh->mVertices[face.mIndices[2]].y, mesh->mVertices[face.mIndices[2]].z);
+
+            vec3f faceNormal = glm::cross(v1 - v0, v2 - v0);
+            faceNormal = glm::normalize(faceNormal);
+            meshBuffData.meshFaceNorms.push_back(faceNormal);
+
+            vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
+            meshBuffData.meshFaceCenters.push_back(faceCenter);
+        }
+
+        std::string folderName = "Library/Models/" + meshData.meshName + "/";
+
+        std::filesystem::create_directories(folderName);
+
+        serializeMeshData(meshData, folderName + meshData.meshName + ".mesh");
+
+        meshesData.push_back(meshBuffData);
     }
 
     aiReleaseImport(scene);
 
-    return mehsesData;
+    return meshesData;
 }
 
 std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string& path, std::shared_ptr<GameObject> containerGO)
@@ -164,4 +206,66 @@ std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string&
     aiReleaseImport(scene_ptr);
 
     return texture_ptrs;
+}
+
+void MeshLoader::serializeMeshData(const MeshData& data, const std::string& filename)
+{
+    nlohmann::json json;
+
+    // Serialize MeshData members to JSON
+    json["meshName"] = data.meshName;
+    json["format"] = data.format;
+
+    // Serialize vertex_data to JSON array
+    for (const auto& vertex : data.vertex_data) {
+        nlohmann::json vertexJson;
+        vertexJson["v"]["x"] = vertex.v.x;
+        vertexJson["v"]["y"] = vertex.v.y;
+        vertexJson["v"]["z"] = vertex.v.z;
+        vertexJson["t"]["x"] = vertex.t.x;
+        vertexJson["t"]["y"] = vertex.t.y;
+        json["vertex_data"].push_back(vertexJson);
+    }
+
+    // Serialize index_data to JSON array
+    for (const auto& index : data.index_data) {
+        json["index_data"].push_back(index);
+    }
+
+    std::ofstream outFile(filename);
+    outFile << nlohmann::to_string(json) << std::endl;
+    outFile.close();
+}
+
+MeshData MeshLoader::deserializeMeshData(const std::string& filename)
+{
+    MeshData data;
+
+    // Load the JSON document from a file
+    std::ifstream inFile(filename);
+    nlohmann::json json;
+    inFile >> json;
+    inFile.close();
+
+    // Deserialize MeshData members from JSON
+    data.meshName = json["meshName"].get<std::string>();
+    data.format = json["format"].get<Formats>();
+
+    // Deserialize vertex_data from JSON array
+    for (const auto& vertexJson : json["vertex_data"]) {
+        V3T2 vertex;
+        vertex.v.x = vertexJson["v"]["x"].get<float>();
+        vertex.v.y = vertexJson["v"]["y"].get<float>();
+        vertex.v.z = vertexJson["v"]["z"].get<float>();
+        vertex.t.x = vertexJson["t"]["x"].get<float>();
+        vertex.t.y = vertexJson["t"]["y"].get<float>();
+        data.vertex_data.push_back(vertex);
+    }
+
+    // Deserialize index_data from JSON array
+    for (const auto& index : json["index_data"]) {
+        data.index_data.push_back(index.get<unsigned int>());
+    }
+
+    return data;
 }

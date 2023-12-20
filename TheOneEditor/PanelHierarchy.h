@@ -26,7 +26,6 @@ public:
 	bool ReparentDragDrop(std::shared_ptr<GameObject> childGO);
 
 private:
-	std::shared_ptr<GameObject> drag;
 	bool open_selected;
 	bool reparent;
 };

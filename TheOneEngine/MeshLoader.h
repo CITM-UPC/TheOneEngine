@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Defs.h"
+#include "Graphic.h"
 
 #include <vector>
 #include <array>
@@ -19,6 +20,10 @@ struct V3T2 { vec3f v; vec2f t; };
 
 struct MeshData
 {
+	std::string meshName;
+
+	//std::string texturePath;
+
 	Formats format;
 	std::vector<V3T2> vertex_data;
 	std::vector<unsigned int> index_data;
@@ -39,6 +44,11 @@ struct MeshBufferedData
 
 	uint numFaces;
 
+	std::vector<vec3f> meshVerts;
+	std::vector<vec3f> meshNorms;
+	std::vector<vec3f> meshFaceCenters;
+	std::vector<vec3f> meshFaceNorms;
+
 	std::string texturePath;
 	std::shared_ptr<Texture> texture;
 	uint materialIndex;
@@ -58,6 +68,11 @@ public:
 
 	void BufferData(MeshData meshData);
 
+	void serializeMeshData(const MeshData& data, const std::string& filename);
+	MeshData deserializeMeshData(const std::string& filename);
+
+	const MeshBufferedData GetBufferData() const { return meshBuffData; }
+
 private:
 
 	/*MeshLoader(const MeshLoader& cpy);
@@ -67,7 +82,6 @@ private:
 
 	MeshData meshData;
 	MeshBufferedData meshBuffData;
-
 };
 
 #endif // !__MESH_LOADER_H__

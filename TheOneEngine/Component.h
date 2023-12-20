@@ -2,6 +2,7 @@
 #define __COMPONENT_H__
 
 #include "Defs.h"
+#include "UIDGen.h"
 
 #include <string>
 #include <memory>
@@ -40,10 +41,15 @@ public:
     //virtual void CreateInspectorNode();
     virtual void DrawComponent() {};
 
+    void CreateUID() { UID = UIDGen::GenerateUID(); }
+    uint32 GetUID() { return UID; }
+
 protected:
     std::weak_ptr<GameObject> containerGO;
     ComponentType type;
     std::string name;
+
+    uint32_t UID;
 public:
     bool enabled;
 };
