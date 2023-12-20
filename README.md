@@ -54,7 +54,7 @@ Our goals for this project were:
 We spent the first weeks designing our initial architecture, setting up the template with the libraries, and defining the rules to keep a maintainable code during the whole project.
 
 ## 2.4. Production
-The production made us realize that our idea of a game engine was naive. Our architecture evolved through the knoledgwe aquired in class.
+The production made us realize that our idea of a game engine was naive. Our architecture evolved through the knowledge acquired in class.
 
 <span name="features"></span>
 # 3. Features
@@ -69,7 +69,7 @@ Here is a non-exhaustive list of TheOne main features:
 - Custom file format
 - Scene serialization
 - Play / Stop
-- Mouse pick
+- Mouse picking
 - Frustum culling
 - Resource Management
 
