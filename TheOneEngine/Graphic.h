@@ -5,6 +5,6 @@
 class Graphic {
 public:
 	AABBox aabb;
-	virtual void draw() = 0;
+	void draw();
 	virtual ~Graphic() = default;
 };

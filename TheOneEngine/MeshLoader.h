@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Defs.h"
+#include "Graphic.h"
 
 #include <vector>
 #include <array>
@@ -39,6 +40,11 @@ struct MeshBufferedData
 
 	uint numFaces;
 
+	std::vector<vec3f> meshVerts;
+	std::vector<vec3f> meshNorms;
+	std::vector<vec3f> meshFaceCenters;
+	std::vector<vec3f> meshFaceNorms;
+
 	std::string texturePath;
 	std::shared_ptr<Texture> texture;
 	uint materialIndex;
@@ -67,7 +73,6 @@ private:
 
 	MeshData meshData;
 	MeshBufferedData meshBuffData;
-
 };
 
 #endif // !__MESH_LOADER_H__
