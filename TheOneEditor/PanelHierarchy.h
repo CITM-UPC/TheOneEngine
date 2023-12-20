@@ -23,8 +23,12 @@ public:
 
 	void ContextMenu(std::shared_ptr<GameObject> go);
 
+	bool ReparentDragDrop(std::shared_ptr<GameObject> childGO);
+
 private:
 	std::shared_ptr<GameObject> drag;
+	bool open_selected;
+	bool reparent;
 };
 
 #endif // !__PANEL_HIERARCHY_H__

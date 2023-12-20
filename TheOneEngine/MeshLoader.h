@@ -27,7 +27,7 @@ struct MeshData
 
 struct MeshBufferedData
 {
-	std::shared_ptr<GameObject> parent;
+	//std::shared_ptr<GameObject> parent;
 
 	std::string meshName;
 	Formats format;

@@ -45,8 +45,8 @@ public:
         if (component != nullptr)
         {
             LOG(LogType::LOG_WARNING, "Component already applied");
-            LOG(LogType::LOG_INFO, "- GameObject [Name: %s] ", name.data());
-            LOG(LogType::LOG_INFO, "- Component  [Type: %s] ", component->GetName().data());
+            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
+            LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
 
             return false;
         }
@@ -65,6 +65,8 @@ public:
     void Enable();
     void Disable();
 
+    void Delete();
+
     std::string GetName() const;
     void SetName(const std::string& name);
 
@@ -79,17 +81,10 @@ public:
     std::vector<std::shared_ptr<GameObject>> children;
     bool isStatic;
 
-    //std::shared_ptr<Graphic> _graphic;
-    //AABBox aabb() const;
-
-    //inline const mat4& transform() { return _transform; }
-    //inline vec3& pos() { return _pos; }
-    //inline const vec3& pos() { return _pos; }
-
 private:
     std::string name;
     std::vector<std::unique_ptr<Component>> components;
-    uint32 UID;
+    uint32_t UID;
     bool enabled;
     int index;
 };

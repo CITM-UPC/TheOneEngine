@@ -37,24 +37,27 @@ public:
     std::string GenerateUniqueName(const std::string& baseName);
 
     // Basic 3D
-    std::shared_ptr<GameObject> CreateEmptyGO();
+    std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateCube();
     std::shared_ptr<GameObject> CreateSphere();
     std::shared_ptr<GameObject> CreateMF();
 
     // Get/Set
-    uint GetNumberGO();
+    uint GetNumberGO() const;
     std::vector<std::shared_ptr<GameObject>>GetGameObjects();
     
-    std::shared_ptr<GameObject> GetSelectedGO();
+    std::shared_ptr<GameObject> GetSelectedGO() const;
     void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
+
+    std::shared_ptr<GameObject> GetRootSceneGO() const;
 
 private:
     void DrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
     //uint selectedGameObject;
+    std::shared_ptr<GameObject> rootSceneGO;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     std::shared_ptr<GameObject> selectedGameObject;
     MeshLoader* meshLoader;

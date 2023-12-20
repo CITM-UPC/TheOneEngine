@@ -152,7 +152,7 @@ bool PanelInspector::Draw()
                     //ImGui::Checkbox("Active", &mesh->isActive);
                     //ImGui::SameLine();  
                     ImGui::Text("Name: ");
-                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->GetName().c_str());
+                    ImGui::SameLine();  ImGui::TextColored({ 0.920f, 0.845f, 0.0184f, 1.0f }, mesh->mesh.meshName.c_str());
                     ImGui::Separator();
                     ImGui::Text("Indexes: ");
                     ImGui::SameLine();  ImGui::Text((std::to_string(mesh->mesh.indexs_buffer_id)).c_str());

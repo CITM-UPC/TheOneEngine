@@ -67,6 +67,7 @@ static void drawGrid(int grid_size, int grid_step)
 
 void EngineCore::Render(RenderModes renderMode, Camera* camera)
 {  
+    // Update Camera Matrix
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
 
@@ -78,12 +79,12 @@ void EngineCore::Render(RenderModes renderMode, Camera* camera)
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_COLOR_MATERIAL);    
     //glEnable(GL_LIGHTING);
 
     gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
     
-    gluLookAt( camera->eye.x, camera->eye.y, camera->eye.z,
+    gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z,
         camera->center.x, camera->center.y, camera->center.z,
         camera->up.x, camera->up.y, camera->up.z);
 
@@ -94,9 +95,9 @@ void EngineCore::Render(RenderModes renderMode, Camera* camera)
     assert(glGetError() == GL_NONE);
 }
 
-void EngineCore::OnWindowResize(int width, int height)
+void EngineCore::OnWindowResize(int x, int y, int width, int height)
 {
-    glViewport(0, 0, width, height);
+    glViewport(x, y, width, height);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

@@ -50,7 +50,7 @@ void Mesh::DrawComponent()
 
     case Formats::F_V3T2:
         glEnable(GL_TEXTURE_2D);
-        if (mesh.texture.get() && !drawChecker) mesh.texture->bind();
+        if (mesh.texture.get() /*&& !drawChecker*/) mesh.texture->bind();
         //else mesh.checkboard.get()->bind();
         break;
     }

@@ -1,6 +1,4 @@
 #include "GameObject.h"
-#include <GL/glew.h>
-#include <glm/ext/matrix_transform.hpp>
 #include "Transform.h"
 #include "Camera.h"
 #include "Mesh.h"
@@ -8,7 +6,7 @@
 #include "UIDGen.h"
 
 #include "Math.h"
-#include "BBox.hpp"
+
 
 GameObject::GameObject(std::string name)
 	: name(name),
@@ -48,11 +46,7 @@ void GameObject::Draw()
 	{
 		if (component && component->IsEnabled())
 			component->DrawComponent();
-		
 	}
-
-	//drawAABBox(aabb());
-	//if (_graphic.get()) _graphic->draw();
 }
 
 // Component ----------------------------------------
@@ -102,6 +96,17 @@ void GameObject::Disable()
 		child->Disable();
 }
 
+void GameObject::Delete()
+{
+
+
+	for (const auto& component : components)
+		component.get_deleter();
+
+	for (const auto& child : children)
+		child.~shared_ptr();
+}
+
 std::string GameObject::GetName() const
 {
 	return name;
@@ -126,31 +131,3 @@ void GameObject::CreateUID()
 {
 	UID = UIDGen::GenerateUID();
 }
-
-//AABBox GameObject::aabb() const {
-//	AABBox aabbox;
-//	if (_graphic.get()) aabbox = _graphic->aabb;
-//	else if (children.empty()) {
-//		aabbox.min = vec3(0);
-//		aabbox.max = vec3(0);
-//	}
-//
-//	for (const auto& child : children) {
-//		const auto child_aabb = (child.transform() * child.aabb()).AABB();
-//		aabbox.min = glm::min(aabbox.min, child_aabb.min);
-//		aabbox.max = glm::max(aabbox.max, child_aabb.max);
-//	}
-//
-//	return aabbox;
-//}
-
-//GameObject::GameObject() : _transform(glm::identity<mat4>()) {}
-//GameObject::GameObject(std::shared_ptr<Graphic> graphic) : _transform(glm::identity<mat4>()), _graphic(graphic) {}
-//
-//void GameObject::rotate(double degrees, const vec3& axis) {
-//	_transform = glm::rotate(_transform, glm::radians(degrees), axis);
-//}
-//
-//void GameObject::translate(const vec3& dv) {
-//	_transform = glm::translate(_transform, dv);
-//}

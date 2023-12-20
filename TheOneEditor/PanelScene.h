@@ -11,6 +11,8 @@ public:
 	~PanelScene();
 
 	bool Draw();
+
+	void CalculateSizeAspectRatio(int maxWidth, int maxHeight, int& width, int& height);
 };
 
 #endif // !__PANEL_SCENE_H__

@@ -6,26 +6,32 @@
 #include <random>
 #include <sstream>
 
+using UUID32 = uint32_t;
+
 class UIDGen
 {
 public:
 
 	//Historn: Maybe try adding hexadecimal UUID
-	static uint32 GenerateUID()
+	static UUID32 GenerateUID()
 	{
-		// Seed with a real random value, if available
-		pcg_extras::seed_seq_from<std::random_device> seed_source;
+		/* Historn: MAYBE THE ONE NOW IT DOESN'T WORK SO I LET HERE THE OTHER WAY */
 
-		// Make a random number engine
-		pcg32 rng(seed_source);
+		//// Seed with a real random value, if available
+		//pcg_extras::seed_seq_from<std::random_device> seed_source;
 
-		uint32 uid = -1;
+		//// Make a random number engine
+		//pcg32 rng(seed_source);
 
-		std::uniform_int_distribution<int> uniform_dist(100000000, 999999999);
+		//uint32 uid = -1;
 
-		uid = uniform_dist(rng);
+		//std::uniform_int_distribution<int> uniform_dist(100000000, 999999999);
 
-		return uid;
+		//uid = uniform_dist(rng);
+
+		pcg32 rng(std::random_device{}());
+
+		return rng();
 	}
 
 };

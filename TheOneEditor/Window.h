@@ -51,6 +51,8 @@ public:
     DisplayMode GetDisplayMode();
     void SetDisplayMode(DisplayMode mode);
 
+    void GetSDLWindowSize(int* w, int* h);
+
     Resolution GetResolution();
     void SetResolution(Resolution res);
 
