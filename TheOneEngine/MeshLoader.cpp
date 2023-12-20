@@ -99,7 +99,6 @@ void MeshLoader::BufferData(MeshData meshData)
 std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 {
     std::vector<MeshBufferedData> meshesBufferedData;
-    std::vector<MeshData> meshesData;
 
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
@@ -162,12 +161,12 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             for (size_t i = 0; i < mesh->mNumVertices; i++) {
                 aiVector3D normal = mesh->mNormals[i];
                 vec3f glmNormal(normal.x, normal.y, normal.z);
-                meshBuffData.meshNorms.push_back(glmNormal);
+                meshData.meshNorms.push_back(glmNormal);
             }
             for (size_t i = 0; i < mesh->mNumVertices; i++) {
                 aiVector3D vert = mesh->mVertices[i];
                 vec3f glmNormal(vert.x, vert.y, vert.z);
-                meshBuffData.meshVerts.push_back(glmNormal);
+                meshData.meshVerts.push_back(glmNormal);
             }
             for (size_t f = 0; f < mesh->mNumFaces; ++f)
             {
@@ -179,10 +178,10 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 
                 vec3f faceNormal = glm::cross(v1 - v0, v2 - v0);
                 faceNormal = glm::normalize(faceNormal);
-                meshBuffData.meshFaceNorms.push_back(faceNormal);
+                meshData.meshFaceNorms.push_back(faceNormal);
 
                 vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
-                meshBuffData.meshFaceCenters.push_back(faceCenter);
+                meshData.meshFaceCenters.push_back(faceCenter);
             }
 
             serializeMeshData(meshData, folderName + meshData.meshName + ".mesh");
@@ -250,6 +249,26 @@ void MeshLoader::serializeMeshData(const MeshData& data, const std::string& file
     uint numIndexs = static_cast<uint>(data.index_data.size());
     outFile.write(reinterpret_cast<const char*>(&numIndexs), sizeof(uint));
     outFile.write(reinterpret_cast<const char*>(&data.index_data[0]), numIndexs * sizeof(uint));
+    
+    // Write meshVerts size and data
+    uint numMeshVerts = static_cast<uint>(data.meshVerts.size());
+    outFile.write(reinterpret_cast<const char*>(&numMeshVerts), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.meshVerts[0]), numMeshVerts * sizeof(vec3f));
+
+    // Write meshNorms size and data
+    uint numMeshNorms = static_cast<uint>(data.meshNorms.size());
+    outFile.write(reinterpret_cast<const char*>(&numMeshNorms), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.meshNorms[0]), numMeshNorms * sizeof(vec3f));
+
+    // Write meshFaceCenters size and data
+    uint numMeshFaceCenters = static_cast<uint>(data.meshFaceCenters.size());
+    outFile.write(reinterpret_cast<const char*>(&numMeshFaceCenters), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.meshFaceCenters[0]), numMeshFaceCenters * sizeof(vec3f));
+
+    // Write meshFaceNorms size and data
+    uint numMeshFaceNorms = static_cast<uint>(data.meshFaceNorms.size());
+    outFile.write(reinterpret_cast<const char*>(&numMeshFaceNorms), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.meshFaceNorms[0]), numMeshFaceNorms * sizeof(vec3f));
 
     LOG(LogType::LOG_OK, "-%s created", filename.data());
 
@@ -288,6 +307,39 @@ MeshData MeshLoader::deserializeMeshData(const std::string& filename)
     // Read index_data
     inFile.read(reinterpret_cast<char*>(&data.index_data[0]), numIndexs * sizeof(uint));
 
+    // Read meshVerts size and allocate memory
+    uint numMeshVerts;
+    inFile.read(reinterpret_cast<char*>(&numMeshVerts), sizeof(uint));
+    data.meshVerts.resize(numMeshVerts);
+
+    // Read meshVerts
+    inFile.read(reinterpret_cast<char*>(&data.meshVerts[0]), numMeshVerts * sizeof(vec3f));
+
+    // Read meshNorms size and allocate memory
+    uint numMeshNorms;
+    inFile.read(reinterpret_cast<char*>(&numMeshNorms), sizeof(uint));
+    data.meshNorms.resize(numMeshNorms);
+
+    // Read meshNorms
+    inFile.read(reinterpret_cast<char*>(&data.meshNorms[0]), numMeshNorms * sizeof(vec3f));
+
+    // Read meshFaceCenters size and allocate memory
+    uint numMeshFaceCenters;
+    inFile.read(reinterpret_cast<char*>(&numMeshFaceCenters), sizeof(uint));
+    data.meshFaceCenters.resize(numMeshFaceCenters);
+
+    // Read meshFaceCenters
+    inFile.read(reinterpret_cast<char*>(&data.meshFaceCenters[0]), numMeshFaceCenters * sizeof(vec3f));
+
+    // Read meshFaceNorms size and allocate memory
+    uint numMeshFaceNorms;
+    inFile.read(reinterpret_cast<char*>(&numMeshFaceNorms), sizeof(uint));
+    data.meshFaceNorms.resize(numMeshFaceNorms);
+
+    // Read meshFaceNorms
+    inFile.read(reinterpret_cast<char*>(&data.meshFaceNorms[0]), numMeshFaceNorms * sizeof(vec3f));
+
+    LOG(LogType::LOG_INFO, "-%s loaded", filename.data());
     inFile.close();
 
     return data;

@@ -89,6 +89,7 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 			//Historn: Change to remove function
 			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
 			//go.get()->Delete();
+			go.get()->Disable();
 		}
 
 		ImGui::EndPopup();

@@ -27,6 +27,12 @@ struct MeshData
 	Formats format;
 	std::vector<V3T2> vertex_data;
 	std::vector<unsigned int> index_data;
+
+	std::vector<vec3f> meshVerts;
+	std::vector<vec3f> meshNorms;
+	std::vector<vec3f> meshFaceCenters;
+	std::vector<vec3f> meshFaceNorms;
+
 };
 
 struct MeshBufferedData
@@ -43,11 +49,6 @@ struct MeshBufferedData
 	uint numIndexs;
 
 	uint numFaces;
-
-	std::vector<vec3f> meshVerts;
-	std::vector<vec3f> meshNorms;
-	std::vector<vec3f> meshFaceCenters;
-	std::vector<vec3f> meshFaceNorms;
 
 	std::string texturePath;
 	std::shared_ptr<Texture> texture;

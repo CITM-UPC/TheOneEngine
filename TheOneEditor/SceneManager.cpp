@@ -29,7 +29,7 @@ bool SceneManager::Start()
     /*CreateEmptyGO();
     CreateCube();
     CreateSphere();*/
-    CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
+    //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
 
     return true;
 }
@@ -161,7 +161,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 
 std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string fbxName)
 {
-    std::string folderName = "Library/Models/" + fbxName + "/";
+    std::string folderName = "Library/Meshes/" + fbxName + "/";
 
     std::string name = fbxName;
     name = GenerateUniqueName(name);

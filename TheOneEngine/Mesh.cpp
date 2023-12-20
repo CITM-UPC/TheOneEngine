@@ -68,10 +68,10 @@ void Mesh::DrawComponent()
     else
         glDrawArrays(GL_TRIANGLES, 0, mesh.numVerts);
     
-    if (drawNormalsVerts && !mesh.meshVerts.empty() && !mesh.meshNorms.empty())
+    if (drawNormalsVerts && !meshData.meshVerts.empty() && !meshData.meshNorms.empty())
         DrawVertexNormals();
 
-    if (drawNormalsFaces && !mesh.meshFaceCenters.empty() && !mesh.meshFaceNorms.empty())
+    if (drawNormalsFaces && !meshData.meshFaceCenters.empty() && !meshData.meshFaceNorms.empty())
         DrawFaceNormals();
 
     
@@ -104,11 +104,11 @@ void Mesh::DrawVertexNormals()
     glBegin(GL_LINES);
     glColor3f(1.0f, 1.0f, 0.0f);
 
-    for (int i = 0; i < mesh.meshVerts.size(); i++) {
-        glVertex3f(mesh.meshVerts[i].x, mesh.meshVerts[i].y, mesh.meshVerts[i].z);
-        glVertex3f(mesh.meshVerts[i].x + mesh.meshNorms[i].x * normalLineLength,
-            mesh.meshVerts[i].y + mesh.meshNorms[i].y * normalLineLength,
-            mesh.meshVerts[i].z + mesh.meshNorms[i].z * normalLineLength);
+    for (int i = 0; i < meshData.meshVerts.size(); i++) {
+        glVertex3f(meshData.meshVerts[i].x, meshData.meshVerts[i].y, meshData.meshVerts[i].z);
+        glVertex3f(meshData.meshVerts[i].x + meshData.meshNorms[i].x * normalLineLength,
+            meshData.meshVerts[i].y + meshData.meshNorms[i].y * normalLineLength,
+            meshData.meshVerts[i].z + meshData.meshNorms[i].z * normalLineLength);
     }
 
     glColor3f(1.0f, 1.0f, 0.0f);
@@ -121,9 +121,9 @@ void Mesh::DrawFaceNormals()
     glBegin(GL_LINES);
     glColor3f(1.0f, 0.0f, 1.0f);
 
-    for (int i = 0; i < mesh.meshFaceCenters.size(); i++) {
-        glm::vec3 endPoint = mesh.meshFaceCenters[i] + normalLineLength * mesh.meshFaceNorms[i];
-        glVertex3f(mesh.meshFaceCenters[i].x, mesh.meshFaceCenters[i].y, mesh.meshFaceCenters[i].z);
+    for (int i = 0; i < meshData.meshFaceCenters.size(); i++) {
+        glm::vec3 endPoint = meshData.meshFaceCenters[i] + normalLineLength * meshData.meshFaceNorms[i];
+        glVertex3f(meshData.meshFaceCenters[i].x, meshData.meshFaceCenters[i].y, meshData.meshFaceCenters[i].z);
         glVertex3f(endPoint.x, endPoint.y, endPoint.z);
     }
 
