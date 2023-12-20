@@ -231,30 +231,28 @@ std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string&
 
 void MeshLoader::serializeMeshData(const MeshData& data, const std::string& filename)
 {
-    nlohmann::json json;
+    std::ofstream outFile(filename, ios::binary);
 
-    // Serialize MeshData members to JSON
-    json["meshName"] = data.meshName;
-    json["format"] = data.format;
+    // Write meshName size and data
+    size_t meshNameSize = data.meshName.size();
+    outFile.write(reinterpret_cast<const char*>(&meshNameSize), sizeof(size_t));
+    outFile.write(data.meshName.c_str(), meshNameSize);
 
-    // Serialize vertex_data to JSON array
-    for (const auto& vertex : data.vertex_data) {
-        nlohmann::json vertexJson;
-        vertexJson["v"]["x"] = vertex.v.x;
-        vertexJson["v"]["y"] = vertex.v.y;
-        vertexJson["v"]["z"] = vertex.v.z;
-        vertexJson["t"]["x"] = vertex.t.x;
-        vertexJson["t"]["y"] = vertex.t.y;
-        json["vertex_data"].push_back(vertexJson);
-    }
+    // Write format
+    outFile.write(reinterpret_cast<const char*>(&data.format), sizeof(Formats));
 
-    // Serialize index_data to JSON array
-    for (const auto& index : data.index_data) {
-        json["index_data"].push_back(index);
-    }
+    // Write vertex_data size and data
+    uint numVerts = static_cast<uint>(data.vertex_data.size());
+    outFile.write(reinterpret_cast<const char*>(&numVerts), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.vertex_data[0]), numVerts * sizeof(V3T2));
 
-    std::ofstream outFile(filename);
-    outFile << nlohmann::to_string(json) << std::endl;
+    // Write index_data size and data
+    uint numIndexs = static_cast<uint>(data.index_data.size());
+    outFile.write(reinterpret_cast<const char*>(&numIndexs), sizeof(uint));
+    outFile.write(reinterpret_cast<const char*>(&data.index_data[0]), numIndexs * sizeof(uint));
+
+    LOG(LogType::LOG_OK, "-%s created", filename.data());
+
     outFile.close();
 }
 
@@ -262,31 +260,35 @@ MeshData MeshLoader::deserializeMeshData(const std::string& filename)
 {
     MeshData data;
 
-    // Load the JSON document from a file
-    std::ifstream inFile(filename);
-    nlohmann::json json;
-    inFile >> json;
+    std::ifstream inFile(filename, ios::binary);
+
+    // Read meshName
+    size_t meshNameSize;
+    inFile.read(reinterpret_cast<char*>(&meshNameSize), sizeof(size_t));
+
+    data.meshName.resize(meshNameSize);
+    inFile.read(&data.meshName[0], meshNameSize);
+
+    // Read format
+    inFile.read(reinterpret_cast<char*>(&data.format), sizeof(Formats));
+
+    // Read vertex_data size and allocate memory
+    uint numVerts;
+    inFile.read(reinterpret_cast<char*>(&numVerts), sizeof(uint));
+    data.vertex_data.resize(numVerts);
+
+    // Read vertex_data
+    inFile.read(reinterpret_cast<char*>(&data.vertex_data[0]), numVerts * sizeof(V3T2));
+
+    // Read index_data size and allocate memory
+    uint numIndexs;
+    inFile.read(reinterpret_cast<char*>(&numIndexs), sizeof(uint));
+    data.index_data.resize(numIndexs);
+
+    // Read index_data
+    inFile.read(reinterpret_cast<char*>(&data.index_data[0]), numIndexs * sizeof(uint));
+
     inFile.close();
-
-    // Deserialize MeshData members from JSON
-    data.meshName = json["meshName"].get<std::string>();
-    data.format = json["format"].get<Formats>();
-
-    // Deserialize vertex_data from JSON array
-    for (const auto& vertexJson : json["vertex_data"]) {
-        V3T2 vertex;
-        vertex.v.x = vertexJson["v"]["x"].get<float>();
-        vertex.v.y = vertexJson["v"]["y"].get<float>();
-        vertex.v.z = vertexJson["v"]["z"].get<float>();
-        vertex.t.x = vertexJson["t"]["x"].get<float>();
-        vertex.t.y = vertexJson["t"]["y"].get<float>();
-        data.vertex_data.push_back(vertex);
-    }
-
-    // Deserialize index_data from JSON array
-    for (const auto& index : json["index_data"]) {
-        data.index_data.push_back(index.get<unsigned int>());
-    }
 
     return data;
 }
