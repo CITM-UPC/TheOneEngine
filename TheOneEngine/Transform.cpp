@@ -27,12 +27,12 @@ void Transform::rotate(const vec3f& axis, float angle, bool local)
 
     if (local) {
         localRotation = rotationQuat;
-        localRotation = glm::normalize(localRotation);
+        //localRotation = glm::normalize(localRotation);
         localEulerAngles = glm::eulerAngles(localRotation);
     }
     else {
         rotation = rotationQuat;
-        rotation = glm::normalize(rotation);
+        //rotation = glm::normalize(rotation);
         this->eulerAngles = glm::eulerAngles(rotation);
     }
 }
@@ -43,12 +43,12 @@ void Transform::rotate(const vec3f& eulerAngles, bool local)
 
     if (local) {
         localRotation = rotationQuat;
-        localRotation = glm::normalize(localRotation);
+        //localRotation = glm::normalize(localRotation);
         localEulerAngles = glm::eulerAngles(localRotation);
     }
     else {
         rotation = rotationQuat;
-        rotation = glm::normalize(rotation);
+        //rotation = glm::normalize(rotation);
         this->eulerAngles = glm::eulerAngles(rotation);
     }
 }

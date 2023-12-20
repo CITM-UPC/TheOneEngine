@@ -181,6 +181,7 @@ static inline void glVec3(const vec3& v) { glVertex3dv(&v.x); }
 void Mesh::DrawAABB() 
 {
     glLineWidth(2);
+    //glColor3f(1.0f, 0.0f, 1.0f);
     glBegin(GL_LINE_STRIP);
     
     glVec3(aabb.a());
@@ -203,9 +204,56 @@ void Mesh::DrawAABB()
     glVec3(aabb.b());
     glVec3(aabb.g());
     glVec3(aabb.c());
+
+    glLineWidth(1);
+    //glColor3f(1.0f, 0.0f, 1.0f);
     glEnd();
 }
 
 void Mesh::DrawOBB() {
-
+    glColor3f(1, 0, 1);
+    glLineWidth(2);
+    vec3f* obb_points = nullptr;
+    //obb.GetCornerPoints(obb_points);
+    //
+    //glBegin(GL_LINES);
+    //
+    //glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
+    //glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
+    //
+    //glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
+    //glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
+    //
+    //glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
+    //glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
+    //
+    //glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
+    //glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
+    //
+    //glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
+    //glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
+    //
+    //glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
+    //glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
+    //
+    //glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
+    //glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
+    //
+    //glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
+    //glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
+    //
+    //glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
+    //glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
+    //
+    //glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
+    //glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
+    //
+    //glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
+    //glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
+    //
+    //glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
+    //glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
+    //
+    //glLineWidth(1);
+    //glEnd();
 }
