@@ -24,6 +24,8 @@ public:
 
     void DrawComponent();
 
+    void GenerateAABB();
+
 public:
 
     MeshBufferedData mesh;
@@ -45,7 +47,7 @@ public:
     float normalLineLength;
 
 private:
-    void GenerateAABB();
+    
     void DrawAABB();
 
     void DrawVertexNormals();

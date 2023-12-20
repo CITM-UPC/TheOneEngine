@@ -17,7 +17,7 @@ Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, Com
     normalLineWidth = 1;
     normalLineLength = 0.1f;
 
-    GenerateAABB();
+    //GenerateAABB();
 }
 
 Mesh::~Mesh()
@@ -35,6 +35,8 @@ void Mesh::DrawComponent()
 
     glBindBuffer(GL_ARRAY_BUFFER, mesh.vertex_buffer_id);
     glEnableClientState(GL_VERTEX_ARRAY);
+
+    if (drawAABB) DrawAABB();
 
     switch (mesh.format)
     {
@@ -72,7 +74,7 @@ void Mesh::DrawComponent()
     if (drawNormalsFaces && !mesh.meshFaceCenters.empty() && !mesh.meshFaceNorms.empty())
         DrawFaceNormals();
 
-    if (drawAABB) DrawAABB();
+    
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);

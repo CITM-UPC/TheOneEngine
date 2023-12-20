@@ -72,6 +72,7 @@ public:
 	MeshData deserializeMeshData(const std::string& filename);
 
 	const MeshBufferedData GetBufferData() const { return meshBuffData; }
+	const MeshData GetMeshData() const { return meshData; }
 
 private:
 

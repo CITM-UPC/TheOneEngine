@@ -106,8 +106,11 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
         meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+        meshGO.get()->GetComponent<Mesh>()->meshData = meshLoader->GetMeshData();
         meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
         // hekbas: need to set Transform?
+
+        meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
 
         if (isSingleMesh)
         {
