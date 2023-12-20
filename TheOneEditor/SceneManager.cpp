@@ -31,6 +31,7 @@ bool SceneManager::Start()
     //CreateSphere();
     CreateCameraGO("Camera");
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
+    CreateMeshGO("Assets\\Meshes\\street.fbx");
 
     return true;
 }

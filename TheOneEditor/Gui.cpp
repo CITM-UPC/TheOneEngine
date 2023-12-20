@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Log.h"
 
+#include "Time.h"
 #include "Gui.h"
 #include "Window.h"
 #include "Hardware.h"
@@ -254,6 +255,16 @@ bool Gui::Update(double dt)
             ImGui::EndMenu();
         }
         
+        if (ImGui::Button("Start")) {
+            app->Play();
+        }
+        if (ImGui::Button("Pause")) {
+            app->Pause();
+        }
+        if (ImGui::Button("Stop")) {
+            app->Stop();
+        }
+
         ImGui::EndMainMenuBar();
     }
 

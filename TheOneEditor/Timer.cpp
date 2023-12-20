@@ -1,4 +1,5 @@
 #include "Timer.h"
+#include "SDL2/SDL_timer.h"
 
 // ---------------------------------------------
 Timer::Timer()
@@ -18,7 +19,7 @@ void Timer::Start()
 }
 
 // ---------------------------------------------
-unsigned __int32 Timer::Read() const
+uint Timer::Read() const
 {
 	return SDL_GetTicks() - started_at;
 }

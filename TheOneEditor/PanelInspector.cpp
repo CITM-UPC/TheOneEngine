@@ -221,6 +221,10 @@ bool PanelInspector::Draw()
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
             
+            /*Material Component*/
+
+
+
             /*Texture Component*/
             Texture* texture = app->sceneManager->GetSelectedGO().get()->GetComponent<Texture>();
 

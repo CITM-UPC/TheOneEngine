@@ -17,6 +17,9 @@
     <Filter Include="Panels">
       <UniqueIdentifier>{51d12ac5-75fb-412a-bf54-07209ecf4871}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{48f8f1ed-79e6-4708-afe7-151c9c8223ea}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -79,11 +82,8 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Time.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Modules</Filter>
+      <Filter>Time</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -141,11 +141,8 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Time.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Modules</Filter>
+      <Filter>Time</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

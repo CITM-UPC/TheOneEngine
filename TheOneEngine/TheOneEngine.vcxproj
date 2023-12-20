@@ -16,6 +16,7 @@
     <ClInclude Include="Defs.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="Texture.h" />
@@ -27,6 +28,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="Texture.cpp" />

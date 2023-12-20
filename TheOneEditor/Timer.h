@@ -11,20 +11,20 @@ public:
 	Timer();
 
 	void Start();
-	unsigned __int32 Read() const;
+	uint Read() const;
 	float ReadSec() const;
 	float ReadSec(float scale);
 	void Pause();
 	void Resume();
 
 private:
-	unsigned __int32 started_at;
-	unsigned __int32 time_pause;
-	unsigned __int32 offset = 0;
-	unsigned __int32 time_passed = 0;
-	float curr_time = 0;
-	float time_last_update = 0;
-	bool is_pause = false;
+	uint started_at;
+	uint time_pause;
+	uint offset;
+	uint time_passed;
+	float curr_time;
+	float time_last_update;
+	bool is_pause;
 };
 
 #endif //__TIMER_H__

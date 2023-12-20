@@ -54,6 +54,9 @@
     <ClInclude Include="Graphic.h">
       <Filter>GameObject</Filter>
     </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -78,6 +81,9 @@
       <Filter>Loaders</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
       <Filter>GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>

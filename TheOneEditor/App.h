@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Log.h"
-
+#include "Timer.h"
 #include "..\TheOneEngine\EngineCore.h"
 
 #include <iostream>
@@ -60,6 +60,13 @@ public:
 	double GetDT() const;
 	void SetDT(double dt);
 
+	void Play();
+	void Pause();
+	void PlayOnce();
+	bool IsPlaying();
+	bool IsInGameState();
+	void Stop();
+
 private:
 	
 	// Call order for each loop iteration
@@ -69,7 +76,14 @@ private:
 	bool PostUpdate();
 	void FinishUpdate();
 
+	Timer* game_timer;
+	Timer* start_timer;
 
+	GameState state;
+
+	float time_since_start;
+	float game_time;
+	float scale_time;
 public:
 
 	EngineCore* engine = nullptr;

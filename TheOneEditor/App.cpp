@@ -15,7 +15,7 @@
 #include "PanelProject.h"
 #include "PanelScene.h"
 #include "PanelSettings.h"
-
+#include "Timer.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -40,6 +40,12 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
 
+	state = GameState::NONE;
+	time_since_start = 0.0F;
+	game_time = 0.0F;
+	scale_time = 1.0F;
+	start_timer = new Timer();
+	game_timer = new Timer();
 }
 
 App::~App()
@@ -92,6 +98,8 @@ bool App::Start()
 {
 	dt = 0;
 
+	start_timer->Start();
+
 	for (const auto& module : modules)
 	{
 		if (module->active == false)
@@ -125,6 +133,13 @@ bool App::Update()
 		ret = PostUpdate();
 
 	FinishUpdate();
+
+	time_since_start = start_timer->ReadSec();
+
+	if (state == GameState::PLAY || state == GameState::PLAY_ONCE) {
+		game_time = game_timer->ReadSec(scale_time);
+	}
+
 	return ret;
 }
 
@@ -218,6 +233,11 @@ void App::FinishUpdate()
 // -------------------- QUIT --------------------
 bool App::CleanUp()
 {
+	if (start_timer != nullptr)
+		delete start_timer;
+	if (game_timer != nullptr)
+		delete game_timer;
+
 	bool ret = true;
 
 	for (auto item = modules.rbegin(); item != modules.rend(); ++item)
@@ -286,4 +306,83 @@ double App::GetDT() const
 void App::SetDT(double dt)
 {
 	this->dt = dt;
+}
+
+// -------------------- GAME --------------------
+
+void App::Play()
+{
+	static std::string actual_scene_name;
+	if (state == GameState::NONE) {
+
+		state = GameState::PLAY;
+
+		game_time = 0.0F;
+		game_timer->Start();
+
+		LOG(LogType::LOG_INFO, "GameState changed to PLAY");
+
+	}
+	else if (state == GameState::PAUSE) {
+		state = GameState::PLAY;
+		game_timer->Resume();
+
+		LOG(LogType::LOG_INFO, "GameState changed to PLAY");
+	}
+	else if (state == GameState::PLAY) {
+		state = GameState::NONE;
+		game_time = 0.0F;
+
+		LOG(LogType::LOG_INFO, "GameState changed to NONE");
+	}
+}
+
+void App::Pause()
+{
+	if (state == GameState::PAUSE) {
+		Play();
+	}
+	else if (state == GameState::PLAY || state == GameState::PLAY_ONCE) {
+		state = GameState::PAUSE;
+		game_timer->Pause();
+
+		LOG(LogType::LOG_INFO, "GameState changed to PAUSE");
+	}
+}
+
+void App::PlayOnce()
+{
+	if (state == GameState::PAUSE) {
+		game_timer->Resume();
+		state = GameState::PLAY_ONCE;
+
+		LOG(LogType::LOG_INFO, "GameState changed to PLAY_ONCE");
+	}
+	else if (state == GameState::PLAY) {
+		state = GameState::PLAY_ONCE;
+		LOG(LogType::LOG_INFO, "GameState changed to PLAY_ONCE");
+
+	}
+}
+
+bool App::IsPlaying()
+{
+	if (state == GameState::PLAY || state == GameState::PLAY_ONCE)
+		return true;
+	else
+		return false;
+}
+
+bool App::IsInGameState()
+{
+	return state != GameState::NONE;
+	LOG(LogType::LOG_INFO, "GameState changed to NONE");
+}
+
+void App::Stop()
+{
+	game_time = 0.0F;
+	state = GameState::NONE;
+	LOG(LogType::LOG_INFO, "GameState changed to NONE");
+
 }
