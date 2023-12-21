@@ -79,6 +79,11 @@ private:
     std::shared_ptr<GameObject> rootSceneGO;
     std::shared_ptr<GameObject> selectedGameObject;
     MeshLoader* meshLoader;
+
+    std::shared_ptr<GameObject> demo;
+    double rotationAngle;
+    double rotationSpeed;
+
 };
 
 #endif // !__SCENE_MANAGER_H__

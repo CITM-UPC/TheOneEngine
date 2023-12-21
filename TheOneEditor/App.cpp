@@ -16,6 +16,7 @@
 #include "PanelScene.h"
 #include "PanelSettings.h"
 #include "Timer.h"
+#include "..\TheOneEngine\Transform.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -335,6 +336,7 @@ void App::Play()
 
 		LOG(LogType::LOG_INFO, "GameState changed to NONE");
 	}
+
 }
 
 void App::Pause()
