@@ -1,59 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Main">
-      <UniqueIdentifier>{9f438aa3-0faa-45e9-999c-3a05faed27cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Utils">
-      <UniqueIdentifier>{0f7baf35-4ec3-4986-b7f8-3770131e5346}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Importers">
-      <UniqueIdentifier>{a02db338-d43a-4456-9139-c05723651d56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Panels">
-      <UniqueIdentifier>{51d12ac5-75fb-412a-bf54-07209ecf4871}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Time">
-      <UniqueIdentifier>{48f8f1ed-79e6-4708-afe7-151c9c8223ea}</UniqueIdentifier>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.h">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="App.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Renderer3D.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Hardware.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Gui.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="AssetManager.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Importer.cpp">
-      <Filter>Importers</Filter>
     </ClCompile>
     <ClCompile Include="Panel.cpp">
       <Filter>Panels</Filter>
@@ -62,6 +11,9 @@
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="PanelConsole.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="PanelGame.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
     <ClCompile Include="PanelHierarchy.cpp">
@@ -79,43 +31,46 @@
     <ClCompile Include="PanelSettings.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="App.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="PanelGame.cpp">
-      <Filter>Panels</Filter>
+    <ClCompile Include="Gui.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Hardware.cpp">
+      <Filter>Modules</Filter>
     </ClCompile>
     <ClCompile Include="Timer.cpp">
-      <Filter>Time</Filter>
+      <Filter>Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Importer.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer3D.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Window.h">
+      <Filter>Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Input.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Module.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="App.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="Renderer3D.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Gui.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Hardware.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="AssetManager.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Importer.h">
-      <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="Panel.h">
       <Filter>Panels</Filter>
@@ -124,6 +79,9 @@
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="PanelConsole.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelGame.h">
       <Filter>Panels</Filter>
     </ClInclude>
     <ClInclude Include="PanelHierarchy.h">
@@ -141,14 +99,55 @@
     <ClInclude Include="PanelSettings.h">
       <Filter>Panels</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
+    <ClInclude Include="App.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="PanelGame.h">
-      <Filter>Panels</Filter>
+    <ClInclude Include="Gui.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Hardware.h">
+      <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
-      <Filter>Time</Filter>
+      <Filter>Timer</Filter>
     </ClInclude>
+    <ClInclude Include="Importer.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Module.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer3D.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Panels">
+      <UniqueIdentifier>{e0b08bd5-662d-4a31-a710-81f318e3059f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{7dc5a596-0db5-4ebc-ab58-040c3565f4c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main">
+      <UniqueIdentifier>{5c983e3e-9dd8-4c83-95fd-ab58f87fd435}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules">
+      <UniqueIdentifier>{f3f0a725-ef0a-4cd3-938d-418650b2ce06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Importers">
+      <UniqueIdentifier>{5f5e434c-f91b-433a-9db7-bba2b2d92fb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Timer">
+      <UniqueIdentifier>{b74f5a04-4e4d-412c-a6db-646ebed46523}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
