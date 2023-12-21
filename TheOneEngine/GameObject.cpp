@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "UIDGen.h"
+#include "../TheOneEditor/SceneManager.h"
 
 #include "Math.h"
 
@@ -169,4 +170,73 @@ json GameObject::SaveGameObject()
 	}
 
 	return gameObjectJSON;
+}
+
+void GameObject::LoadGameObject(const json& gameObjectJSON)
+{
+	// Load basic properties
+	if (gameObjectJSON.contains("UID"))
+	{
+		UID = gameObjectJSON["UID"];
+	}
+
+	if (gameObjectJSON.contains("Name"))
+	{
+		name = gameObjectJSON["Name"];
+	}
+
+	if (gameObjectJSON.contains("Static"))
+	{
+		isStatic = gameObjectJSON["Static"];
+	}
+
+	if (gameObjectJSON.contains("Enabled"))
+	{
+		enabled = gameObjectJSON["Enabled"];
+	}
+
+	// Load components
+	if (gameObjectJSON.contains("Components"))
+	{
+		const json& componentsJSON = gameObjectJSON["Components"];
+
+		for (const auto& componentJSON : componentsJSON)
+		{
+			// Assuming each component has a LoadComponent function
+			if (componentJSON.contains("Transform"))
+			{
+				std::unique_ptr<Component> newComponent = std::make_unique<Transform>(shared_from_this());
+				newComponent.get()->LoadComponent(componentJSON);
+				components.push_back(std::move(newComponent));
+			}
+			else if (componentJSON.contains("Mesh"))
+			{
+				std::unique_ptr<Component> newComponent = std::make_unique<Mesh>(shared_from_this());
+				newComponent.get()->LoadComponent(componentJSON);
+				components.push_back(std::move(newComponent));
+			}
+			else if (componentJSON.contains("Camera"))
+			{
+				std::unique_ptr<Component> newComponent = std::make_unique<Camera>(shared_from_this());
+				newComponent.get()->LoadComponent(componentJSON);
+				components.push_back(std::move(newComponent));
+			}
+		}
+	}
+
+	// Load child game objects
+	if (gameObjectJSON.contains("GameObjects"))
+	{
+		const json& childrenGOJSON = gameObjectJSON["GameObjects"];
+
+		for (const auto& childJSON : childrenGOJSON)
+		{
+			auto childGameObject = std::make_shared<GameObject>("Empty GO");
+			childGameObject->LoadGameObject(childJSON);
+
+			// Add the loaded child game object to the current game object
+			childGameObject.get()->parent = this->weak_from_this().lock();
+			this->children.emplace_back(childGameObject);
+		}
+	}
 }

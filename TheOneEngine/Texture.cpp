@@ -65,6 +65,11 @@ json Texture::SaveComponent()
     return textureJSON;
 }
 
+void Texture::LoadComponent(const json& meshJSON)
+{
+
+}
+
 void Texture::bind() const {
     glBindTexture(GL_TEXTURE_2D, _id);
 }

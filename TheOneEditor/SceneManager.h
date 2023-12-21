@@ -55,11 +55,21 @@ public:
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
 
+    std::shared_ptr<GameObject> FindGOByUID(uint32_t _UID) const;
+
+    static SceneManager& GetInstance() {
+        static SceneManager instance; // Static instance of the class
+        return instance;
+    }
+
     /*SCENE SERIALIZATION*/
     void SaveScene();
     void LoadScene(const std::string& filename);
 
 private:
+    // Private constructor to enforce singleton pattern
+    SceneManager() {}
+
     void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:

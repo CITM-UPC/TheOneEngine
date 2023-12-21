@@ -1,5 +1,5 @@
 #include "Camera.h"
-
+#include "../TheOneEditor/SceneManager.h"
 
 Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Camera),
     aspect(1.777), fov(65), zNear(0.1), zFar(15000),
@@ -190,10 +190,68 @@ json Camera::SaveComponent()
     cameraJSON["Frustum"]["farBottomLeft"] = { frustum.farBottomLeft.x, frustum.farBottomLeft.y, frustum.farBottomLeft.z };
     cameraJSON["Frustum"]["farBottomRight"] = { frustum.farBottomRight.x, frustum.farBottomRight.y, frustum.farBottomRight.z };*/
 
-    //Historn: Should add this functions when loading
-    /*UpdateProjectionMatrix();
-    UpdateViewProjectionMatrix();
-    UpdateFrustum();*/
-
     return cameraJSON;
+}
+
+void Camera::LoadComponent(const json& cameraJSON)
+{
+    // Load basic properties
+    if (cameraJSON.contains("UID"))
+    {
+        UID = cameraJSON["UID"];
+    }
+
+    if (cameraJSON.contains("Name"))
+    {
+        name = cameraJSON["Name"];
+    }
+
+    // Load parent UID and set parent
+    if (cameraJSON.contains("ParentUID"))
+    {
+        uint32_t parentUID = cameraJSON["ParentUID"];
+        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
+        {
+            containerGO = parentGameObject;
+        }
+    }
+
+    // Load camera-specific properties
+    if (cameraJSON.contains("FOV"))
+    {
+        fov = cameraJSON["FOV"];
+    }
+
+    if (cameraJSON.contains("Aspect"))
+    {
+        aspect = cameraJSON["Aspect"];
+    }
+
+    if (cameraJSON.contains("zNear"))
+    {
+        zNear = cameraJSON["zNear"];
+    }
+
+    if (cameraJSON.contains("zFar"))
+    {
+        zFar = cameraJSON["zFar"];
+    }
+
+    if (cameraJSON.contains("Yaw"))
+    {
+        yaw = cameraJSON["Yaw"];
+    }
+
+    if (cameraJSON.contains("Pitch"))
+    {
+        pitch = cameraJSON["Pitch"];
+    }
+
+    // Implement additional logic to handle other camera-specific properties as needed
+    // ...
+
+    // Optional: Recalculate view and projection matrices based on loaded data
+    UpdateProjectionMatrix();
+    UpdateViewProjectionMatrix();
+    UpdateFrustum();
 }

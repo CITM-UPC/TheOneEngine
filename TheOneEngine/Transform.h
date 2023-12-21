@@ -51,6 +51,7 @@ public:
 public:
 
     json SaveComponent();
+    void LoadComponent(const json& transformJSON);
 
 public:
 

@@ -77,7 +77,7 @@ public:
     uint32 GetUID() { return UID; }
 
     json SaveGameObject();
-    json LoadGameObject();
+    void LoadGameObject(const json& gameObjectJSON);
 
 public:
     std::weak_ptr<GameObject> parent;

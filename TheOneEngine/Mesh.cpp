@@ -1,5 +1,6 @@
 #include "Mesh.h"
 #include "../TheOneEditor/Log.h"
+#include "../TheOneEditor/SceneManager.h"
 #include "GameObject.h"
 #include "Transform.h"
 //#include <GL/glew.h>
@@ -193,10 +194,82 @@ json Mesh::SaveComponent()
     meshJSON["DrawChecker"] = drawChecker;
     meshJSON["DrawNormalsVerts"] = drawNormalsVerts;
     meshJSON["DrawNormalsFaces"] = drawNormalsFaces;
+    meshJSON["Path"] = path;
 
     //MeshData && MeshBufferedData are already serialized in .mesh files
 
     return meshJSON;
+}
+
+void Mesh::LoadComponent(const json& meshJSON)
+{
+    // Load basic properties
+    if (meshJSON.contains("UID"))
+    {
+        UID = meshJSON["UID"];
+    }
+
+    if (meshJSON.contains("Name"))
+    {
+        name = meshJSON["Name"];
+    }
+
+    // Load parent UID and set parent
+    if (meshJSON.contains("ParentUID"))
+    {
+        uint32_t parentUID = meshJSON["ParentUID"];
+        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
+        {
+            containerGO = parentGameObject;
+        }
+    }
+
+    // Load mesh-specific properties
+    if (meshJSON.contains("Active"))
+    {
+        active = meshJSON["Active"];
+    }
+
+    if (meshJSON.contains("DrawWireframe"))
+    {
+        drawWireframe = meshJSON["DrawWireframe"];
+    }
+
+    if (meshJSON.contains("DrawAABB"))
+    {
+        drawAABB = meshJSON["DrawAABB"];
+    }
+
+    if (meshJSON.contains("DrawOBB"))
+    {
+        drawOBB = meshJSON["DrawOBB"];
+    }
+
+    if (meshJSON.contains("DrawChecker"))
+    {
+        drawChecker = meshJSON["DrawChecker"];
+    }
+
+    if (meshJSON.contains("DrawNormalsVerts"))
+    {
+        drawNormalsVerts = meshJSON["DrawNormalsVerts"];
+    }
+
+    if (meshJSON.contains("DrawNormalsFaces"))
+    {
+        drawNormalsFaces = meshJSON["DrawNormalsFaces"];
+    }
+
+    if (meshJSON.contains("Path"))
+    {
+        path = meshJSON["Path"];
+    }
+
+    // Implement additional logic to handle other mesh-specific properties as needed
+    // ...
+
+    // Optional: Reinitialize or update the mesh based on the loaded data
+    // ...
 }
 
 

@@ -27,6 +27,7 @@ public:
     void GenerateAABB();
 
     json SaveComponent();
+    void LoadComponent(const json& meshJSON);
 
 public:
 
@@ -57,6 +58,8 @@ private:
 
     //void DrawWireframe();
     void DrawOBB();
+
+    std::string path;
 };
 
 #endif // !__MESH_H__

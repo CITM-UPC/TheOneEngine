@@ -7,7 +7,8 @@ class App;
 class Module
 {
 public:
-
+	// Private constructor to enforce singleton pattern
+	Module() {}
 	Module(App* parent) : active(false), app(parent)
 	{}
 

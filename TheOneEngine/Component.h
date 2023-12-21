@@ -45,6 +45,7 @@ public:
     uint32 GetUID() { return UID; }
 
     virtual json SaveComponent() = 0;
+    virtual void LoadComponent(const json& transformJSON) = 0;
 
 protected:
     std::weak_ptr<GameObject> containerGO;
