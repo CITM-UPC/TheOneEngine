@@ -261,7 +261,7 @@ bool Gui::Update(double dt)
             ImGui::EndMenu();
         }
         
-        if (ImGui::Button("Start")) {
+        if (ImGui::Button("Play")) {
             app->Play();
         }
         if (ImGui::Button("Pause")) {

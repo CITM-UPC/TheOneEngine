@@ -60,6 +60,7 @@ public:
 	double GetDT() const;
 	void SetDT(double dt);
 
+	GameState state;
 	void Play();
 	void Pause();
 	void PlayOnce();
@@ -78,8 +79,6 @@ private:
 
 	Timer* game_timer;
 	Timer* start_timer;
-
-	GameState state;
 
 	float time_since_start;
 	float game_time;

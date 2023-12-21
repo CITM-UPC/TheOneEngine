@@ -33,6 +33,16 @@ bool SceneManager::Start()
     
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
     CreateMeshGO("Assets\\Meshes\\street.fbx");
+    CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
+
+    for (auto mesh : GetGameObjects()) {
+        if (mesh->GetName() == "Cadillac_CT4_V_2022_LowPoly") {
+            demo = mesh;
+        }
+    }
+
+    rotationAngle = 0.0f;
+    rotationSpeed = 30.0f;
 
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 4, 0 });
@@ -50,6 +60,21 @@ bool SceneManager::Update(double dt)
     if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
     {
         SaveScene();
+    }
+
+
+    if (app->IsPlaying()) {
+        demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, rotationAngle);
+
+        rotationAngle += rotationSpeed * dt;
+
+        if (rotationAngle >= 360.0f)
+            rotationAngle -= 360.0f;
+    }
+
+    if (app->state == GameState::NONE) {
+        demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, 0.0);
+        rotationAngle = 0.0;
     }
 
     return true;
@@ -300,9 +325,9 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()
 {
-    CreateMeshGO("Assets/Meshes/mf.fbx");
+ 
 
-    return nullptr;
+    return CreateMeshGO("Assets/Meshes/mf.fbx");;
 }
 
 uint SceneManager::GetNumberGO() const
