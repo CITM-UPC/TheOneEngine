@@ -399,7 +399,11 @@ bool Gui::MainMenuFile()
     bool ret = true;
 
     if (ImGui::MenuItem("New", 0, false, false)) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
+    if (ImGui::MenuItem("Open", "Ctrl+O", false)) 
+    {
+        std::string filename = "Assets/Scenes/scene.toe";
+        app->sceneManager->LoadScene(filename);
+    }
     if (ImGui::BeginMenu("Open Recent"))
     {
         ImGui::EndMenu();
@@ -407,7 +411,10 @@ bool Gui::MainMenuFile()
 
     ImGui::Separator();
 
-    if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
+    if (ImGui::MenuItem("Save", "Ctrl+S", false)) 
+    {
+        app->sceneManager->SaveScene();
+    }
     if (ImGui::MenuItem("Save As..", 0, false, false)) {}
 
     ImGui::Separator();

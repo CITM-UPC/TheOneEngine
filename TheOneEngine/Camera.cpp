@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include "../TheOneEditor/SceneManager.h"
 
 Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Camera),
     aspect(1.777), fov(65), zNear(0.1), zFar(15000),
@@ -207,14 +206,14 @@ void Camera::LoadComponent(const json& cameraJSON)
     }
 
     // Load parent UID and set parent
-    if (cameraJSON.contains("ParentUID"))
+    /*if (cameraJSON.contains("ParentUID"))
     {
         uint32_t parentUID = cameraJSON["ParentUID"];
         if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
         {
             containerGO = parentGameObject;
         }
-    }
+    }*/
 
     // Load camera-specific properties
     if (cameraJSON.contains("FOV"))

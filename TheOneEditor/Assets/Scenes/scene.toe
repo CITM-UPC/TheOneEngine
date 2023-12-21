@@ -33,7 +33,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 4264430728
+          "UID": 2825470617
         },
         {
           "Aspect": 1.777,
@@ -42,13 +42,71 @@
           "ParentUID": 3452816845,
           "Pitch": 0.0,
           "Type": 1,
-          "UID": 3403995194,
+          "UID": 3579837753,
           "Yaw": 0.0,
           "zFar": 15000.0,
           "zNear": 0.1
         }
       ],
       "Enabled": true,
+      "GameObjects": [
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1340223937
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/mf/Mesh_0067.mesh",
+              "Type": 2,
+              "UID": 1873703062
+            }
+          ],
+          "Enabled": true,
+          "Name": "Mesh_0067",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        }
+      ],
       "Name": "Camera",
       "ParentUID": 3452816845,
       "Static": false,
@@ -87,7 +145,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 3962211952
+          "UID": 1481541235
         }
       ],
       "Enabled": true,
@@ -125,7 +183,7 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 114194377
+              "UID": 1152424848
             },
             {
               "Active": false,
@@ -137,65 +195,9 @@
               "DrawWireframe": false,
               "Name": "Mesh",
               "ParentUID": 3452816845,
-              "Path": "",
+              "Path": "Library/Meshes/mf/Mesh_0068.mesh",
               "Type": 2,
-              "UID": 2187174798
-            }
-          ],
-          "Enabled": true,
-          "Name": "Mesh_0069",
-          "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
-        },
-        {
-          "Components": [
-            {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Name": "Transform",
-              "ParentUID": 3452816845,
-              "Position": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Rotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 2447512647
-            },
-            {
-              "Active": false,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "",
-              "Type": 2,
-              "UID": 2016813348
+              "UID": 3207374515
             }
           ],
           "Enabled": true,
@@ -243,7 +245,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 2755369293
+          "UID": 247404634
         },
         {
           "Active": false,
@@ -255,9 +257,9 @@
           "DrawWireframe": false,
           "Name": "Mesh",
           "ParentUID": 3452816845,
-          "Path": "",
+          "Path": "Library/Meshes/mf/Mesh_0069.mesh",
           "Type": 2,
-          "UID": 3149106314
+          "UID": 2663244580
         }
       ],
       "Enabled": true,
@@ -295,7 +297,7 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 294776918
+              "UID": 777984609
             },
             {
               "Active": false,
@@ -307,9 +309,9 @@
               "DrawWireframe": false,
               "Name": "Mesh",
               "ParentUID": 3452816845,
-              "Path": "",
+              "Path": "Library/Meshes/mf/Mesh_0546.mesh",
               "Type": 2,
-              "UID": 1883208508
+              "UID": 3939261832
             }
           ],
           "Enabled": true,
@@ -319,7 +321,7 @@
           "UID": 3452816845
         }
       ],
-      "Name": "Mesh_0067",
+      "Name": "Mesh_0069",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845

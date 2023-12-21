@@ -164,6 +164,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                     MeshData mData = meshLoader->deserializeMeshData(file);
 
                     meshGO.get()->GetComponent<Mesh>()->meshData = mData;
+                    meshGO.get()->GetComponent<Mesh>()->path = file;
                 }
                 
             }
@@ -255,6 +256,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
 
             meshGO.get()->GetComponent<Mesh>()->meshData = mData;
             meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
+            meshGO.get()->GetComponent<Mesh>()->path = file;
             //meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex]; //Implement texture deserialization
             // hekbas: need to set Transform?
 
@@ -403,6 +405,8 @@ void SceneManager::LoadScene(const std::string& filename)
 
     // Close the file
     file.close();
+
+    rootSceneGO.get()->children.clear();
 
     // Load game objects from the JSON data
     if (sceneJSON.contains("GameObjects"))

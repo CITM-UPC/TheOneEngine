@@ -1,6 +1,5 @@
 #include "Transform.h"
 #include "GameObject.h"
-#include "../TheOneEditor/SceneManager.h"
 
 Transform::Transform(std::shared_ptr<GameObject> containerGO)
     : Component(containerGO, ComponentType::Transform),
@@ -192,7 +191,7 @@ void Transform::LoadComponent(const json& transformJSON)
     }
 
     // Load parent UID and set parent
-    if (transformJSON.contains("ParentUID"))
+    /*if (transformJSON.contains("ParentUID"))
     {
         uint32_t parentUID = transformJSON["ParentUID"];
 
@@ -200,7 +199,7 @@ void Transform::LoadComponent(const json& transformJSON)
         {
             containerGO = parentGameObject;
         }
-    }
+    }*/
 
     // Load transformation properties
     if (transformJSON.contains("Position"))

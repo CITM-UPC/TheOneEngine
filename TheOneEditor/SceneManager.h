@@ -66,6 +66,8 @@ public:
     void SaveScene();
     void LoadScene(const std::string& filename);
 
+    //MeshLoader GetMeshLoader();
+
 private:
     // Private constructor to enforce singleton pattern
     SceneManager() {}

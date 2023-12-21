@@ -19,7 +19,7 @@ Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, Com
 
     normalLineWidth = 1;
     normalLineLength = 0.1f;
-
+    meshLoader = new MeshLoader();
     //GenerateAABB();
 }
 
@@ -214,16 +214,6 @@ void Mesh::LoadComponent(const json& meshJSON)
         name = meshJSON["Name"];
     }
 
-    // Load parent UID and set parent
-    if (meshJSON.contains("ParentUID"))
-    {
-        uint32_t parentUID = meshJSON["ParentUID"];
-        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
-        {
-            containerGO = parentGameObject;
-        }
-    }
-
     // Load mesh-specific properties
     if (meshJSON.contains("Active"))
     {
@@ -268,8 +258,15 @@ void Mesh::LoadComponent(const json& meshJSON)
     // Implement additional logic to handle other mesh-specific properties as needed
     // ...
 
-    // Optional: Reinitialize or update the mesh based on the loaded data
-    // ...
+    //Reinitialize or update the mesh based on the loaded data
+
+    if (!path.empty())
+    {
+        meshData = meshLoader->deserializeMeshData(path);
+        meshLoader->BufferData(meshData);
+        mesh = meshLoader->GetBufferData();
+    }
+    
 }
 
 

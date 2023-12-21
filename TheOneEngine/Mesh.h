@@ -49,6 +49,8 @@ public:
     int normalLineWidth;
     float normalLineLength;
 
+    std::string path;
+
 private:
     
     void DrawAABB();
@@ -59,7 +61,7 @@ private:
     //void DrawWireframe();
     void DrawOBB();
 
-    std::string path;
+    MeshLoader* meshLoader;
 };
 
 #endif // !__MESH_H__

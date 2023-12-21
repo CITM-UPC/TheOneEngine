@@ -202,24 +202,22 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 
 		for (const auto& componentJSON : componentsJSON)
 		{
+
 			// Assuming each component has a LoadComponent function
-			if (componentJSON.contains("Transform"))
+			if (componentJSON["Type"] == 0)
 			{
-				std::unique_ptr<Component> newComponent = std::make_unique<Transform>(shared_from_this());
-				newComponent.get()->LoadComponent(componentJSON);
-				components.push_back(std::move(newComponent));
+				this->AddComponent<Transform>();
+				this->GetComponent<Transform>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON.contains("Mesh"))
+			else if (componentJSON["Type"] == 1)
 			{
-				std::unique_ptr<Component> newComponent = std::make_unique<Mesh>(shared_from_this());
-				newComponent.get()->LoadComponent(componentJSON);
-				components.push_back(std::move(newComponent));
+				this->AddComponent<Camera>();
+				this->GetComponent<Camera>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON.contains("Camera"))
+			else if (componentJSON["Type"] == 2)
 			{
-				std::unique_ptr<Component> newComponent = std::make_unique<Camera>(shared_from_this());
-				newComponent.get()->LoadComponent(componentJSON);
-				components.push_back(std::move(newComponent));
+				this->AddComponent<Mesh>();
+				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
 			}
 		}
 	}
