@@ -39,7 +39,7 @@ bool PanelProject::Draw()
 
 			// Directory Tree View ----------------------------
 			ImGui::TableNextColumn();
-			if (ImGui::CollapsingHeader("Assets"))
+			if (ImGui::CollapsingHeader("Assets", ImGuiTreeNodeFlags_DefaultOpen))
 			{
 				uint32_t count = 0;
 				for (const auto& entry : fs::recursive_directory_iterator(directoryPath))

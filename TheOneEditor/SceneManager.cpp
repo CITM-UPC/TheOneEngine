@@ -126,8 +126,10 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 
         uint fileCount = 0;
 
-        for (const auto& entry : fs::directory_iterator(folderName)) {
-            if (fs::is_regular_file(entry)) {
+        for (const auto& entry : fs::directory_iterator(folderName))
+        {
+            if (fs::is_regular_file(entry))
+            {
                 std::string path = entry.path().filename().string();
                 fileNames.push_back(entry.path().string());
                 fileCount++;
@@ -154,8 +156,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                     MeshData mData = meshLoader->deserializeMeshData(file);
 
                     meshGO.get()->GetComponent<Mesh>()->meshData = mData;
-                }
-                
+                }              
             }
 
             // hekbas: need to set Transform?
@@ -174,20 +175,21 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             }
         }
 
-       /* if (!textures.empty()) {
-            if (meshes.size() == 1) {
-
+       /* if (!textures.empty())
+       {
+            if (meshes.size() == 1)
+            {
                 ComponentTexture* texture = (ComponentTexture*)GetComponent(ComponentType::TEXTURE);
                 textures->setTexture((*meshes.begin())->texture);
                 defaultTexture = texture->getTexture()->path;
             }
-            else {
-                for (auto i = meshes.begin(); i != meshes.end(); ++i) {
- 
+            else
+            {
+                for (auto i = meshes.begin(); i != meshes.end(); ++i)
+                {
                     ComponentTexture* texturePart = (ComponentTexture*)GOPart->GetComponent(ComponentType::TEXTURE);
                     texturePart->setTexture((*i)->texture);
                     defaultTexture = texturePart->getTexture()->path;
-
                 }
             }
         }*/

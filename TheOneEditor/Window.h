@@ -8,8 +8,8 @@
 #include <SDL2/SDL.h>
 
 
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 720
+//#define WINDOW_WIDTH 1280
+//#define WINDOW_HEIGHT 720
 
 
 enum class DisplayMode
@@ -69,6 +69,8 @@ private:
     bool borderless;
 
     Resolution resolution;
+    uint width;
+    uint height;
 };
 
 #endif // !__WINDOW_H__

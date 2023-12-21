@@ -8,7 +8,7 @@
 
 #include "..\TheOneEngine\EngineCore.h"
 
-PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name) {}
+PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), isHovered(false) {}
 
 PanelScene::~PanelScene() {}
 
@@ -27,6 +27,9 @@ bool PanelScene::Draw()
     ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Scene", &enabled, settingsFlags))
 	{
+        if (ImGui::IsWindowHovered())
+            isHovered = true;
+
         // Top Bar --------------------------
         if (ImGui::BeginMenuBar())
         {

@@ -11,6 +11,9 @@ public:
 	~PanelScene();
 
 	bool Draw();
+
+public:
+	bool isHovered;
 };
 
 #endif // !__PANEL_SCENE_H__
