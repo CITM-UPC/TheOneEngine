@@ -27,6 +27,7 @@ public:
     void GenerateAABB();
 
     json SaveComponent();
+    void LoadComponent(const json& meshJSON);
 
 public:
 
@@ -48,6 +49,8 @@ public:
     int normalLineWidth;
     float normalLineLength;
 
+    std::string path;
+
 private:
     
     void DrawAABB();
@@ -57,6 +60,8 @@ private:
 
     //void DrawWireframe();
     void DrawOBB();
+
+    MeshLoader* meshLoader;
 };
 
 #endif // !__MESH_H__

@@ -69,6 +69,7 @@ public:
     void UpdateViewProjectionMatrix();
 
     json SaveComponent();
+    void LoadComponent(const json& meshJSON);
 
 public:
 

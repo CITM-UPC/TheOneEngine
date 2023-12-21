@@ -176,3 +176,62 @@ json Transform::SaveComponent()
 
     return transformJSON;
 }
+
+void Transform::LoadComponent(const json& transformJSON)
+{
+    // Load basic properties
+    if (transformJSON.contains("UID"))
+    {
+        UID = transformJSON["UID"];
+    }
+
+    if (transformJSON.contains("Name"))
+    {
+        name = transformJSON["Name"];
+    }
+
+    // Load parent UID and set parent
+    /*if (transformJSON.contains("ParentUID"))
+    {
+        uint32_t parentUID = transformJSON["ParentUID"];
+
+        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
+        {
+            containerGO = parentGameObject;
+        }
+    }*/
+
+    // Load transformation properties
+    if (transformJSON.contains("Position"))
+    {
+        const auto& positionArray = transformJSON["Position"];
+        position = { positionArray[0], positionArray[1], positionArray[2] };
+    }
+
+    if (transformJSON.contains("Rotation"))
+    {
+        const auto& rotationArray = transformJSON["Rotation"];
+        rotation = quat(rotationArray[1], rotationArray[2], rotationArray[3], rotationArray[0]);
+    }
+
+    if (transformJSON.contains("LocalRotation"))
+    {
+        const auto& localRotationArray = transformJSON["LocalRotation"];
+        localRotation = quat(localRotationArray[1], localRotationArray[2], localRotationArray[3], localRotationArray[0]);
+    }
+
+    if (transformJSON.contains("Scale"))
+    {
+        const auto& scaleArray = transformJSON["Scale"];
+        scale = { scaleArray[0], scaleArray[1], scaleArray[2] };
+    }
+
+    if (transformJSON.contains("LocalScale"))
+    {
+        const auto& localScaleArray = transformJSON["LocalScale"];
+        localScale = { localScaleArray[0], localScaleArray[1], localScaleArray[2] };
+    }
+
+    // Update the transformation matrix
+    updateMatrix();
+}

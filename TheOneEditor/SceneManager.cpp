@@ -1,5 +1,6 @@
 #include "App.h"
 #include "SceneManager.h"
+#include "Log.h"
 
 #include <fstream>
 #include <filesystem>
@@ -47,9 +48,17 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+    //Save Scene
+    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
     {
         SaveScene();
+    }
+
+    //Load Scene
+    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
+    {
+        std::string filename = "Assets/Scenes/scene.toe";
+        LoadScene(filename);
     }
 
     return true;
@@ -160,6 +169,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                     MeshData mData = meshLoader->deserializeMeshData(file);
 
                     meshGO.get()->GetComponent<Mesh>()->meshData = mData;
+                    meshGO.get()->GetComponent<Mesh>()->path = file;
                 }
                 
             }
@@ -251,6 +261,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
 
             meshGO.get()->GetComponent<Mesh>()->meshData = mData;
             meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
+            meshGO.get()->GetComponent<Mesh>()->path = file;
             //meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex]; //Implement texture deserialization
             // hekbas: need to set Transform?
 
@@ -330,6 +341,23 @@ std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
     return rootSceneGO;
 }
 
+std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
+{
+    for (const auto& go : rootSceneGO.get()->children)
+    {
+        if (go.get()->GetUID() == _UID) 
+        {
+            return go;
+        }
+        else
+        {
+            FindGOByUID(_UID);
+        }
+    }
+
+    return nullptr;
+}
+
 void SceneManager::SaveScene()
 {
     fs::path filename = fs::path(ASSETS_PATH) / "Scenes" / "scene.toe";
@@ -348,37 +376,64 @@ void SceneManager::SaveScene()
 
     sceneJSON["GameObjects"] = gameObjectsJSON;
 
-    std::ofstream(filename) << sceneJSON;
+    std::ofstream(filename) << sceneJSON.dump(2);
+    LOG(LogType::LOG_OK, "SAVE SUCCESFUL");
 }
 
 void SceneManager::LoadScene(const std::string& filename)
 {
+    // Check if the scene file exists
+    if (!fs::exists(filename))
+    {
+        LOG(LogType::LOG_ERROR, "Scene file does not exist: {}", filename.data());
+        return;
+    }
 
-    // Load the JSON document from a file
-    std::ifstream inFile(filename);
-    nlohmann::json json;
-    inFile >> json;
-    inFile.close();
+    // Read the scene JSON from the file
+    std::ifstream file(filename);
+    if (!file.is_open())
+    {
+        LOG(LogType::LOG_ERROR, "Failed to open scene file: {}", filename.data());
+        return;
+    }
 
-    //// Deserialize MeshData members from JSON
-    //data.meshName = json["meshName"].get<std::string>();
-    //data.format = json["format"].get<Formats>();
+    json sceneJSON;
+    try
+    {
+        file >> sceneJSON;
+    }
+    catch (const json::parse_error& e)
+    {
+        LOG(LogType::LOG_ERROR, "Failed to parse scene JSON: {}", e.what());
+        return;
+    }
 
-    //// Deserialize vertex_data from JSON array
-    //for (const auto& vertexJson : json["vertex_data"]) {
-    //    V3T2 vertex;
-    //    vertex.v.x = vertexJson["v"]["x"].get<float>();
-    //    vertex.v.y = vertexJson["v"]["y"].get<float>();
-    //    vertex.v.z = vertexJson["v"]["z"].get<float>();
-    //    vertex.t.x = vertexJson["t"]["x"].get<float>();
-    //    vertex.t.y = vertexJson["t"]["y"].get<float>();
-    //    data.vertex_data.push_back(vertex);
-    //}
+    // Close the file
+    file.close();
 
-    //// Deserialize index_data from JSON array
-    //for (const auto& index : json["index_data"]) {
-    //    data.index_data.push_back(index.get<unsigned int>());
-    //}
+    rootSceneGO.get()->children.clear();
+
+    // Load game objects from the JSON data
+    if (sceneJSON.contains("GameObjects"))
+    {
+        const json& gameObjectsJSON = sceneJSON["GameObjects"];
+
+        for (const auto& gameObjectJSON : gameObjectsJSON)
+        {
+            // Create a new game object
+            auto newGameObject = CreateEmptyGO();
+
+            // Load the game object from JSON
+            newGameObject->LoadGameObject(gameObjectJSON);
+
+        }
+
+        LOG(LogType::LOG_OK, "LOAD SUCCESSFUL");
+    }
+    else
+    {
+        LOG(LogType::LOG_ERROR, "Scene file does not contain GameObjects information");
+    }
 
 }
 
