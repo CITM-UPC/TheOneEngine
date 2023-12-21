@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/CITM-UPC/TheOneEngine/blob/main/.github/images/TheOneEngine.png" />
+  <img src="https://github.com/CITM-UPC/TheOneEngine/blob/main/.github/images/TheOneLogo.png" />
   <br/>
   <br/>
   <br/>
@@ -34,7 +34,7 @@ TheOne pillars are:
 - `TheOneEngine`: Uses EngineCore, asset dependent, for any game built with TheOne
 - `TheOneEditor`: Uses EngineCore, expose game development to the end-user
 
-![Editor](https://github.com/CITM-UPC/TheOneEngine/blob/main/.github/images/Screenshot%202023-12-19%20222147.png)
+![Editor](https://github.com/CITM-UPC/TheOneEngine/blob/main/.github/images/TheOneEditor.png)
 
 # 2. History of TheOne
 ## 2.1. Context
