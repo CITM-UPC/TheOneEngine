@@ -3,6 +3,7 @@
 #include "Renderer3D.h"
 #include "Window.h"
 #include "Gui.h"
+#include "PanelScene.h"
 #include "SceneManager.h"
 
 #include "..\TheOneEngine\GameObject.h"
@@ -53,6 +54,8 @@ bool Renderer3D::PreUpdate()
 bool Renderer3D::Update(double dt)
 {
     CameraInput(dt);
+    app->gui->panelScene->isHovered = false;
+
     app->engine->Update(dt);
 
     return true;
@@ -135,14 +138,17 @@ void Renderer3D::CreateRay()
 
 void Renderer3D::CameraInput(double dt)
 {
+    if (!app->gui->panelScene->isHovered)
+        return;
+
     Camera* camera = sceneCamera.get()->GetComponent<Camera>();
     Transform* transform = sceneCamera.get()->GetComponent<Transform>();
 
-    double speed = 10 * dt;
+    double speed = 20 * dt;
     if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-        speed = 20 * dt;
+        speed = 35 * dt;
 
-    double mouseSensitivity = 10.0 * dt;
+    double mouseSensitivity = 18.0 * dt;
 
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {

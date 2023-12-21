@@ -8,7 +8,7 @@ Window::Window(App* app) :
     window(nullptr),
     glContext(),
     displayMode(DisplayMode::WINDOWED),
-    resolution(Resolution::R_1280x720),
+    resolution(Resolution::R_1920x1080),
     borderless(false),
     refreshRate(0)
 {}
@@ -18,6 +18,8 @@ Window::~Window() {}
 bool Window::Awake()
 {
     bool ret = true;
+
+    SetResolution(resolution);
 
     LOG(LogType::LOG_INFO, "# Initializing SDL Window with OpenGL...");
     if (!initSDLWindowWithOpenGL())
@@ -36,7 +38,7 @@ bool Window::Awake()
 bool Window::Start()
 {
     displayMode = DisplayMode::WINDOWED;
-    resolution = Resolution::R_1280x720;
+    resolution = Resolution::R_1920x1080;
 
     SetResolution(resolution);
 
@@ -82,7 +84,7 @@ bool Window::initSDLWindowWithOpenGL()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
     std::string title = std::string(TITLE) + "_" + VERSION;
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
     if (!window)
     {
@@ -140,7 +142,7 @@ bool Window::initOpenGL()
     }
     LOG(LogType::LOG_OK, "-OpenGL 3.1 Supported");
 
-    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    glViewport(0, 0, width, height);
     glClearColor(0.25, 0.25, .25, 1);
 
     LOG(LogType::LOG_OK, "-Init OpenGL");
@@ -174,7 +176,7 @@ void Window::SetDisplayMode(DisplayMode mode)
             if (SDL_SetWindowFullscreen(window, 0) != 0)
                 LOG(LogType::LOG_ERROR, "Unable to set Display Mode to Windowed", SDL_GetError());
 
-            OnResizeWindow(WINDOW_WIDTH, WINDOW_HEIGHT);
+            OnResizeWindow(width, height);
 
             displayMode = DisplayMode::WINDOWED;
             break;
@@ -219,9 +221,6 @@ Resolution Window::GetResolution()
 
 void Window::SetResolution(Resolution res)
 {
-    uint width = WINDOW_WIDTH;
-    uint height = WINDOW_HEIGHT;
-
     switch (res)
     {
         case Resolution::R_3840x2160: width = 3840; height = 2160; resolution = Resolution::R_3840x2160; break;
