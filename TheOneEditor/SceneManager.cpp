@@ -46,7 +46,7 @@ bool SceneManager::Start()
     rotationSpeed = 30.0f;
 
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
-    gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 4, 0 });
+    gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
 
     return true;
 }
@@ -72,7 +72,7 @@ bool SceneManager::Update(double dt)
 
 
     if (app->IsPlaying()) {
-        demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, rotationAngle);
+        demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);
 
         rotationAngle += rotationSpeed * dt;
 

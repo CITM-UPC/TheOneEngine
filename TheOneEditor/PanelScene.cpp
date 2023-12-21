@@ -14,9 +14,6 @@ PanelScene::~PanelScene() {}
 
 bool PanelScene::Draw()
 {
-    // Flag to track whether Button 2 was clicked
-    static bool showCameraSettings = false;
-
 	ImGuiWindowFlags settingsFlags = 0;
     settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 
@@ -97,13 +94,13 @@ bool PanelScene::Draw()
         app->engine->Render(sceneCam);
 
         // Game cameras Frustum
-        for (const auto GO : app->sceneManager->GetGameObjects())
+        /*for (const auto GO : app->sceneManager->GetGameObjects())
         {
             Camera* gameCam = GO.get()->GetComponent<Camera>();
 
             if (gameCam != nullptr && gameCam->drawFrustum)
                 app->engine->DrawFrustum(gameCam->viewProjectionMatrix);
-        }
+        }*/
 	}
 
     ImGui::End();

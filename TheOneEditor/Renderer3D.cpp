@@ -34,7 +34,10 @@ bool Renderer3D::Start()
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
     sceneCamera.get()->AddComponent<Transform>();
     sceneCamera.get()->AddComponent<Camera>();
-    sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 2, -10));
+    sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 15, -70));
+    //hekbas check this
+    /*sceneCamera.get()->GetComponent<Camera>()->center = {0, 0, 0};
+    sceneCamera.get()->GetComponent<Camera>()->updateViewMatrix();*/
 
     // hekbas test adding same component
     LOG(LogType::LOG_INFO, "# Testing Component Duplication");

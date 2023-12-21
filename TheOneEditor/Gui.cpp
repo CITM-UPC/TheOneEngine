@@ -261,6 +261,9 @@ bool Gui::Update(double dt)
             ImGui::EndMenu();
         }
         
+
+        // Play/Pause/Stop
+        ImGui::Dummy(ImVec2(250.0f, 0.0f));
         if (ImGui::Button("Play")) {
             app->Play();
         }
