@@ -8,7 +8,7 @@ Window::Window(App* app) :
     window(nullptr),
     glContext(),
     displayMode(DisplayMode::WINDOWED),
-    resolution(Resolution::R_1920x1080),
+    resolution(Resolution::R_1024x768),
     borderless(false),
     refreshRate(0)
 {}
@@ -37,11 +37,6 @@ bool Window::Awake()
 
 bool Window::Start()
 {
-    displayMode = DisplayMode::WINDOWED;
-    resolution = Resolution::R_1920x1080;
-
-    SetResolution(resolution);
-
     return true;
 }
 
@@ -227,6 +222,7 @@ void Window::SetResolution(Resolution res)
         case Resolution::R_2560x1440: width = 2560; height = 1440; resolution = Resolution::R_2560x1440; break;
         case Resolution::R_1920x1080: width = 1920; height = 1080; resolution = Resolution::R_1920x1080; break;
         case Resolution::R_1280x720: width = 1280; height = 720; resolution = Resolution::R_1280x720; break;
+        case Resolution::R_1024x768: width = 1024; height = 768; resolution = Resolution::R_1024x768; break;
         case Resolution::R_854x480: width = 854; height = 480; resolution = Resolution::R_854x480; break;
         case Resolution::R_640x360: width = 640; height = 360; resolution = Resolution::R_640x360; break;
         case Resolution::R_426x240: width = 426; height = 240; resolution = Resolution::R_426x240; break;
