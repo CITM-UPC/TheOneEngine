@@ -388,7 +388,6 @@ std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
 void SceneManager::SaveScene()
 {
     fs::path filename = fs::path(ASSETS_PATH) / "Scenes" / "scene.toe";
-    //string filename = "Assets/Scenes/";
     fs::path folderName = fs::path(ASSETS_PATH) / "Scenes";
     fs::create_directories(folderName);
 

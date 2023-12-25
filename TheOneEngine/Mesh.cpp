@@ -265,6 +265,7 @@ void Mesh::LoadComponent(const json& meshJSON)
         meshData = meshLoader->deserializeMeshData(path);
         meshLoader->BufferData(meshData);
         mesh = meshLoader->GetBufferData();
+        GenerateAABB();
     }
     
 }

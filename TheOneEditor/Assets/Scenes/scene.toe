@@ -33,19 +33,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 2825470617
-        },
-        {
-          "Aspect": 1.777,
-          "FOV": 65.0,
-          "Name": "Camera",
-          "ParentUID": 3452816845,
-          "Pitch": 0.0,
-          "Type": 1,
-          "UID": 3579837753,
-          "Yaw": 0.0,
-          "zFar": 15000.0,
-          "zNear": 0.1
+          "UID": 184793862
         }
       ],
       "Enabled": true,
@@ -83,7 +71,1841 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 1340223937
+              "UID": 3895267950
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_004.mesh",
+              "Type": 2,
+              "UID": 1088233809
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_004",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2114187717
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_001.mesh",
+              "Type": 2,
+              "UID": 1936606219
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_001",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 3190316500
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_007.mesh",
+              "Type": 2,
+              "UID": 2748579313
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_007",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2647521411
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_008.mesh",
+              "Type": 2,
+              "UID": 234554900
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_008",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2829787247
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/Line002.mesh",
+              "Type": 2,
+              "UID": 827231497
+            }
+          ],
+          "Enabled": true,
+          "Name": "Line002",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2026086890
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/Plane001.mesh",
+              "Type": 2,
+              "UID": 263404275
+            }
+          ],
+          "Enabled": true,
+          "Name": "Plane001",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 3489773125
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_010.mesh",
+              "Type": 2,
+              "UID": 2765501058
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_010",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1388425208
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_011.mesh",
+              "Type": 2,
+              "UID": 4286725546
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_011",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 4178295701
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_013.mesh",
+              "Type": 2,
+              "UID": 39117854
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_013",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1944484610
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_014.mesh",
+              "Type": 2,
+              "UID": 1512120568
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_014",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 3629679680
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_016.mesh",
+              "Type": 2,
+              "UID": 1208532461
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_016",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2531182904
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_017.mesh",
+              "Type": 2,
+              "UID": 1395652140
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_017",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1520126670
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_022.mesh",
+              "Type": 2,
+              "UID": 951500937
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_022",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1532807121
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_023.mesh",
+              "Type": 2,
+              "UID": 2822412040
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_023",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 3998059742
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_024.mesh",
+              "Type": 2,
+              "UID": 3175499532
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_024",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1811141581
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_026.mesh",
+              "Type": 2,
+              "UID": 2097135643
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_026",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 517214722
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_028.mesh",
+              "Type": 2,
+              "UID": 2502509499
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_028",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1887130114
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/Object010.mesh",
+              "Type": 2,
+              "UID": 1531568413
+            }
+          ],
+          "Enabled": true,
+          "Name": "Object010",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2389120235
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_030.mesh",
+              "Type": 2,
+              "UID": 2936399574
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_030",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2547966106
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_031.mesh",
+              "Type": 2,
+              "UID": 1824895255
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_031",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 224923078
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_032.mesh",
+              "Type": 2,
+              "UID": 3614832458
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_032",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 4204734700
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_033.mesh",
+              "Type": 2,
+              "UID": 3515101650
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_033",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2675924973
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_034.mesh",
+              "Type": 2,
+              "UID": 3463638293
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_034",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1686393818
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_035.mesh",
+              "Type": 2,
+              "UID": 2482972875
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_035",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2756885136
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_036.mesh",
+              "Type": 2,
+              "UID": 3538067732
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_036",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 3597454520
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_037.mesh",
+              "Type": 2,
+              "UID": 2780097207
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_037",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2022687716
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_038.mesh",
+              "Type": 2,
+              "UID": 1066105150
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_038",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 735307340
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_039.mesh",
+              "Type": 2,
+              "UID": 1145935821
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_039",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2962615140
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_040.mesh",
+              "Type": 2,
+              "UID": 4060751046
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_040",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 167738833
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/street/City_building_041.mesh",
+              "Type": 2,
+              "UID": 3868243436
+            }
+          ],
+          "Enabled": true,
+          "Name": "City_building_041",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        }
+      ],
+      "Name": "street",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "LocalRotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LocalScale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Name": "Transform",
+          "ParentUID": 3452816845,
+          "Position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 2869717637
+        },
+        {
+          "Active": false,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/Cadillac_CT4_V_2022/Cadillac_CT4_V_2022_LowPoly.mesh",
+          "Type": 2,
+          "UID": 2423738333
+        }
+      ],
+      "Enabled": true,
+      "Name": "Cadillac_CT4_V_2022_LowPoly",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "LocalRotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LocalScale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Name": "Transform",
+          "ParentUID": 3452816845,
+          "Position": [
+            -10.0,
+            8.0,
+            0.0
+          ],
+          "Rotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 394762512
+        },
+        {
+          "Aspect": 1.777,
+          "FOV": 65.0,
+          "Name": "Camera",
+          "ParentUID": 3452816845,
+          "Pitch": 0.0,
+          "Type": 1,
+          "UID": 2702818148,
+          "Yaw": 0.0,
+          "zFar": 15000.0,
+          "zNear": 0.1
+        }
+      ],
+      "Enabled": true,
+      "Name": "Game Camera",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "LocalRotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LocalScale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Name": "Transform",
+          "ParentUID": 3452816845,
+          "Position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 1895246306
+        }
+      ],
+      "Enabled": true,
+      "GameObjects": [
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1527401355
             },
             {
               "Active": false,
@@ -97,7 +1919,7 @@
               "ParentUID": 3452816845,
               "Path": "Library/Meshes/mf/Mesh_0067.mesh",
               "Type": 2,
-              "UID": 1873703062
+              "UID": 3160028037
             }
           ],
           "Enabled": true,
@@ -105,51 +1927,7 @@
           "ParentUID": 3452816845,
           "Static": false,
           "UID": 3452816845
-        }
-      ],
-      "Name": "Camera",
-      "ParentUID": 3452816845,
-      "Static": false,
-      "UID": 3452816845
-    },
-    {
-      "Components": [
-        {
-          "LocalRotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "LocalScale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Name": "Transform",
-          "ParentUID": 3452816845,
-          "Position": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Rotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Type": 0,
-          "UID": 1481541235
-        }
-      ],
-      "Enabled": true,
-      "GameObjects": [
+        },
         {
           "Components": [
             {
@@ -183,7 +1961,63 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 1152424848
+              "UID": 2603137852
+            },
+            {
+              "Active": false,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/mf/Mesh_0069.mesh",
+              "Type": 2,
+              "UID": 4033378968
+            }
+          ],
+          "Enabled": true,
+          "Name": "Mesh_0069",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 997329193
             },
             {
               "Active": false,
@@ -197,7 +2031,7 @@
               "ParentUID": 3452816845,
               "Path": "Library/Meshes/mf/Mesh_0068.mesh",
               "Type": 2,
-              "UID": 3207374515
+              "UID": 3281373853
             }
           ],
           "Enabled": true,
@@ -205,65 +2039,7 @@
           "ParentUID": 3452816845,
           "Static": false,
           "UID": 3452816845
-        }
-      ],
-      "Name": "mf",
-      "ParentUID": 3452816845,
-      "Static": false,
-      "UID": 3452816845
-    },
-    {
-      "Components": [
-        {
-          "LocalRotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "LocalScale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Name": "Transform",
-          "ParentUID": 3452816845,
-          "Position": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Rotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Type": 0,
-          "UID": 247404634
         },
-        {
-          "Active": false,
-          "DrawAABB": true,
-          "DrawChecker": false,
-          "DrawNormalsFaces": false,
-          "DrawNormalsVerts": false,
-          "DrawOBB": false,
-          "DrawWireframe": false,
-          "Name": "Mesh",
-          "ParentUID": 3452816845,
-          "Path": "Library/Meshes/mf/Mesh_0069.mesh",
-          "Type": 2,
-          "UID": 2663244580
-        }
-      ],
-      "Enabled": true,
-      "GameObjects": [
         {
           "Components": [
             {
@@ -297,7 +2073,7 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 777984609
+              "UID": 3093664374
             },
             {
               "Active": false,
@@ -311,7 +2087,7 @@
               "ParentUID": 3452816845,
               "Path": "Library/Meshes/mf/Mesh_0546.mesh",
               "Type": 2,
-              "UID": 3939261832
+              "UID": 1609672665
             }
           ],
           "Enabled": true,
@@ -321,7 +2097,7 @@
           "UID": 3452816845
         }
       ],
-      "Name": "Mesh_0069",
+      "Name": "mf",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845
