@@ -91,8 +91,8 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 			goPtr->Delete();
 			goPtr->~GameObject();*/
 			go.get()->Delete();
-			go.~shared_ptr();
 			reparent = true;
+			go.~shared_ptr();
 		}
 
 		ImGui::EndPopup();

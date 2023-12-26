@@ -16,6 +16,7 @@ SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 SceneManager::~SceneManager()
 {
     delete meshLoader;
+    delete demo;
 }
 
 bool SceneManager::Awake()
@@ -38,7 +39,7 @@ bool SceneManager::Start()
 
     for (auto mesh : GetGameObjects()) {
         if (mesh->GetName() == "Cadillac_CT4_V_2022_LowPoly") {
-            demo = mesh;
+            demo = mesh.get();
         }
     }
 
@@ -71,7 +72,7 @@ bool SceneManager::Update(double dt)
     }
 
 
-    if (app->IsPlaying()) {
+    if (app->IsPlaying() && demo != nullptr) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);
 
         rotationAngle += rotationSpeed * dt;
@@ -80,7 +81,7 @@ bool SceneManager::Update(double dt)
             rotationAngle -= 360.0f;
     }
 
-    if (app->state == GameState::NONE) {
+    if (app->state == GameState::NONE && demo != nullptr) {
         demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, 0.0);
         rotationAngle = 0.0;
     }

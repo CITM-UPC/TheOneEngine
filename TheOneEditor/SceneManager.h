@@ -80,7 +80,7 @@ private:
     GameObject* selectedGameObject;
     MeshLoader* meshLoader;
 
-    std::shared_ptr<GameObject> demo;
+    GameObject* demo;
     double rotationAngle;
     double rotationSpeed;
 
