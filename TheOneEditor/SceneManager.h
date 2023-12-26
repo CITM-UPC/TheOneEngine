@@ -50,7 +50,7 @@ public:
     uint GetNumberGO() const;
     std::vector<std::shared_ptr<GameObject>>GetGameObjects();
     
-    std::shared_ptr<GameObject> GetSelectedGO() const;
+    GameObject* GetSelectedGO() const;
     void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
@@ -77,7 +77,7 @@ private:
 private:
     //uint selectedGameObject;
     std::shared_ptr<GameObject> rootSceneGO;
-    std::shared_ptr<GameObject> selectedGameObject;
+    GameObject* selectedGameObject;
     MeshLoader* meshLoader;
 
     std::shared_ptr<GameObject> demo;

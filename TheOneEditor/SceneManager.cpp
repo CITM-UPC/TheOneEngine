@@ -355,10 +355,10 @@ std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
 
 void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
-    selectedGameObject = gameObj;
+    selectedGameObject = gameObj.get();
 }
 
-std::shared_ptr<GameObject> SceneManager::GetSelectedGO() const
+GameObject* SceneManager::GetSelectedGO() const
 {
     return selectedGameObject;
 }

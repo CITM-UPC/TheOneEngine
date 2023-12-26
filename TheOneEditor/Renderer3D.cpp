@@ -199,7 +199,7 @@ void Renderer3D::CameraInput(double dt)
         finalPos = transform->getPosition() - transform->getForward();
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
-            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0);
+            finalPos = app->sceneManager->GetSelectedGO()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0);
         }
 
         camera->setPosition(finalPos);
@@ -207,7 +207,7 @@ void Renderer3D::CameraInput(double dt)
 
     if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->sceneManager->GetSelectedGO() != nullptr)
     {
-        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - transform->getForward();
+        vec3f targetPos = app->sceneManager->GetSelectedGO()->GetComponent<Transform>()->getPosition() - transform->getForward();
 
         camera->setPosition(targetPos * 100.0f);
     }

@@ -41,7 +41,7 @@ bool PanelInspector::Draw()
             /*Name*/
             //ImGui::Checkbox("Active", &gameObjSelected->isActive);
             ImGui::SameLine(); ImGui::Text("GameObject:");
-            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, app->sceneManager->GetSelectedGO()->GetName().c_str());
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Tag + Layer*/
@@ -55,7 +55,7 @@ bool PanelInspector::Draw()
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Transform Component*/
-            Transform* transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
+            Transform* transform = app->sceneManager->GetSelectedGO()->GetComponent<Transform>();
 
             if (transform != nullptr && ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -193,7 +193,7 @@ bool PanelInspector::Draw()
             //ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
 
             /*Mesh Component*/
-            Mesh* mesh = app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>();
+            Mesh* mesh = app->sceneManager->GetSelectedGO()->GetComponent<Mesh>();
 
             if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -226,7 +226,7 @@ bool PanelInspector::Draw()
 
 
             /*Texture Component*/
-            Texture* texture = app->sceneManager->GetSelectedGO().get()->GetComponent<Texture>();
+            Texture* texture = app->sceneManager->GetSelectedGO()->GetComponent<Texture>();
 
             if (texture != nullptr && ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -264,7 +264,7 @@ bool PanelInspector::Draw()
             }
 
             /*Camera Component*/
-            Camera* camera = app->sceneManager->GetSelectedGO().get()->GetComponent<Camera>();
+            Camera* camera = app->sceneManager->GetSelectedGO()->GetComponent<Camera>();
 
             if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {

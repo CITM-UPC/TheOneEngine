@@ -99,13 +99,15 @@ void GameObject::Disable()
 
 void GameObject::Delete()
 {
-
-
 	for (const auto& component : components)
 		component.get_deleter();
 
 	for (const auto& child : children)
 		child.~shared_ptr();
+
+	parent.lock() = nullptr;
+
+	this->~GameObject();
 }
 
 std::string GameObject::GetName() const

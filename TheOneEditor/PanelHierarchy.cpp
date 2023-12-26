@@ -19,7 +19,7 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 		if (childGO.get()->children.size() == 0)
 			treeFlags |= ImGuiTreeNodeFlags_Leaf;
 
-		if (childGO == app->sceneManager->GetSelectedGO())
+		if (childGO.get() == app->sceneManager->GetSelectedGO())
 			treeFlags |= ImGuiTreeNodeFlags_Selected;
 
 		bool isOpen = ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags);
@@ -30,7 +30,7 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 		if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
 		{
 			app->sceneManager->SetSelectedGO(childGO);
-			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->sceneManager->GetSelectedGO()->GetName().c_str());
 		}
 
 		ContextMenu(childGO);
@@ -87,9 +87,12 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 		if (ImGui::MenuItem("Remove"))
 		{
 			//Historn: Change to remove function
-			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
-			//go.get()->Delete();
-			go.get()->Disable();
+			/*GameObject* goPtr = go.get();
+			goPtr->Delete();
+			goPtr->~GameObject();*/
+			go.get()->Delete();
+			go.~shared_ptr();
+			reparent = true;
 		}
 
 		ImGui::EndPopup();
@@ -103,14 +106,14 @@ bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 	{
 		if (childGO != app->sceneManager->GetRootSceneGO())
 		{
-			ImGui::SetDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+			ImGui::SetDragDropPayload(app->sceneManager->GetSelectedGO()->GetName().c_str(), &childGO, sizeof(GameObject));
 		}
 
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str()))
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->sceneManager->GetSelectedGO()->GetName().c_str()))
 		{
 			GameObject* dragging = *(GameObject**)payload->Data;
 
