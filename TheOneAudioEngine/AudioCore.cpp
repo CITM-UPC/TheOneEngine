@@ -1,19 +1,6 @@
 #include "AudioCore.h"
 #include "..\TheOneEditor\Log.h"
 
-#include <AK/SoundEngine/Common/AkMemoryMgr.h>      // Memory Manager interface
-#include <AK/SoundEngine/Common/AkModule.h>         // Default memory manager
-
-#include <AK/SoundEngine/Common/IAkStreamMgr.h>     
-#include <AK/Tools/Common/AkPlatformFuncs.h>        // Thread defines
-#include <Common/AkFilePackageLowLevelIODeferred.h> // Sample low-level I/O implementation
-
-#include <AK/SoundEngine/Common/AkSoundEngine.h>    // Sound engine
-
-#include <AK/MusicEngine/Common/AkMusicEngine.h>    // Music Engine
-
-#include <AK/SpatialAudio/Common/AkSpatialAudio.h>  // Spatial Audio
-
 // Include for communication between Wwise and the game -- Not needed in the release version
 #include <AK/Comm/AkCommunication.h>
 
@@ -39,6 +26,34 @@ bool AudioCore::Awake()
     if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
 
 	return true;
+}
+
+bool AudioCore::Update(double dt)
+{
+    AK::SoundEngine::RenderAudio();
+    
+    return true;
+}
+
+bool AudioCore::CleanUp()
+{
+#ifndef AK_OPTIMIZED
+    // Terminate Communication Services
+    AK::Comm::Term();
+#endif // AK_OPTIMIZED
+    
+    //AK::SpatialAudio::Term();
+
+    AK::MusicEngine::Term();
+
+    g_lowLevelIO.Term();
+
+    if (AK::IAkStreamMgr::Get())
+        AK::IAkStreamMgr::Get()->Destroy();
+
+    AK::MemoryMgr::Term();
+
+    return true;
 }
 
 bool AudioCore::InitMemoryManager()
