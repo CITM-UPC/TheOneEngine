@@ -16,7 +16,12 @@ public:
 	bool Update(double dt);
 
 private:
-
+	bool InitMemoryManager();
+	bool InitStreamingManager();
+	bool InitSoundEngine();
+	bool InitMusicEngine();
+	bool InitSpatialAudio();
+	bool InitCommunication();
 };
 
 #endif // !__AUDIOCORE_H__

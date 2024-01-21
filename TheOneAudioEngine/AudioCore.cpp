@@ -6,7 +6,7 @@
 
 #include <AK/SoundEngine/Common/IAkStreamMgr.h>     
 #include <AK/Tools/Common/AkPlatformFuncs.h>        // Thread defines
-#include <AkFilePackageLowLevelIODeferred.h>        // Sample low-level I/O implementation
+#include <Common/AkFilePackageLowLevelIODeferred.h> // Sample low-level I/O implementation
 
 #include <AK/SoundEngine/Common/AkSoundEngine.h>    // Sound engine
 
@@ -15,9 +15,7 @@
 #include <AK/SpatialAudio/Common/AkSpatialAudio.h>  // Spatial Audio
 
 // Include for communication between Wwise and the game -- Not needed in the release version
-#ifndef AK_OPTIMIZED
 #include <AK/Comm/AkCommunication.h>
-#endif // AK_OPTIMIZED
 
 // We're using the default Low-Level I/O implementation that's part
 // of the SDK's sample code, with the file package extension
@@ -33,17 +31,32 @@ AudioCore::~AudioCore()
 
 bool AudioCore::Awake()
 {
-    /*=====================MEMORY=====================*/ 
+    if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
+    if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
+    if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
+    if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
+    if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
+    if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
+
+	return true;
+}
+
+bool AudioCore::InitMemoryManager()
+{
     AkMemSettings memSettings;
     AK::MemoryMgr::GetDefaultSettings(memSettings);
 
     if (AK::MemoryMgr::Init(&memSettings) != AK_Success)
     {
-        assert(!"Could not create the memory manager.");
+        LOG(LogType::LOG_AUDIO, "Could not create the memory manager.");
         return false;
     }
+    
+    return true;
+}
 
-    /*=====================STREAMING=====================*/
+bool AudioCore::InitStreamingManager()
+{
     AkStreamMgrSettings stmSettings;
     AK::StreamMgr::GetDefaultSettings(stmSettings);
 
@@ -52,7 +65,7 @@ bool AudioCore::Awake()
 
     if (!AK::StreamMgr::Create(stmSettings))
     {
-        assert(!"Could not create the Streaming Manager");
+        LOG(LogType::LOG_AUDIO, "Could not create the Streaming Manager");
         return false;
     }
 
@@ -69,11 +82,15 @@ bool AudioCore::Awake()
 
     if (g_lowLevelIO.Init(deviceSettings) != AK_Success)
     {
-        assert(!"Could not create the streaming device and Low-Level I/O system");
+        LOG(LogType::LOG_AUDIO, "Could not create the streaming device and Low-Level I/O system");
         return false;
     }
+    
+    return true;
+}
 
-    /*=====================AUDIO=====================*/
+bool AudioCore::InitSoundEngine()
+{
     AkInitSettings initSettings;
     AkPlatformInitSettings platformInitSettings;
     AK::SoundEngine::GetDefaultInitSettings(initSettings);
@@ -81,46 +98,50 @@ bool AudioCore::Awake()
 
     if (AK::SoundEngine::Init(&initSettings, &platformInitSettings) != AK_Success)
     {
-        assert(!"Could not initialize the Sound Engine.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine.");
         return false;
     }
 
-    /*=====================MUSIC=====================*/
+    return true;
+}
+
+bool AudioCore::InitMusicEngine()
+{
     AkMusicSettings musicInit;
     AK::MusicEngine::GetDefaultInitSettings(musicInit);
 
     if (AK::MusicEngine::Init(&musicInit) != AK_Success)
     {
-        assert(!"Could not initialize the Music Engine.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
         return false;
     }
+    
+    return true;
+}
 
-    /*=====================SPATIAL AUDIO=====================*/
+bool AudioCore::InitSpatialAudio()
+{
     // Initialize Spatial Audio -> Using default initialization parameters
     AkSpatialAudioInitSettings settings; // The constructor fills AkSpatialAudioInitSettings with the recommended default settings. 
 
-    if (AK::SpatialAudio::Init(&settings) != AK_Success)
+    if (AK::SpatialAudio::Init(settings) != AK_Success)
     {
-        assert(!"Could not initialize the Spatial Audio.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio.");
         return false;
     }
+    
+    return true;
+}
 
-    /*=====================COMMUNICATION=====================*/
-#ifndef AK_OPTIMIZED
-//
-
-// Initialize communications (not in release build!)
-
-//
-
+bool AudioCore::InitCommunication()
+{
     AkCommSettings commSettings;
     AK::Comm::GetDefaultInitSettings(commSettings);
     if (AK::Comm::Init(commSettings) != AK_Success)
     {
-        assert(!"Could not initialize communication.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize communication.");
         return false;
     }
-#endif // AK_OPTIMIZED
 
-	return true;
+    return true;
 }
