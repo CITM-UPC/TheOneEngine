@@ -20,6 +20,7 @@ class PanelProject;
 class PanelScene;
 class PanelGame;
 class PanelSettings;
+class PanelTextEditor;
 
 
 class Gui : public Module
@@ -67,6 +68,7 @@ public:
 	PanelScene* panelScene = nullptr;
 	PanelGame* panelGame = nullptr;
 	PanelSettings* panelSettings = nullptr;
+	PanelTextEditor* panelTEditor = nullptr;
 
 private:
 

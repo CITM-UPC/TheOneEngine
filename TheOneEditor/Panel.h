@@ -15,6 +15,7 @@ enum class PanelType
 	SCENE,
 	GAME,
 	SETTINGS,
+	TEXT_EDITOR,
 
 	UNKNOWN
 };

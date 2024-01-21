@@ -67,6 +67,9 @@
     <ClCompile Include="Window.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="PanelTextEditor.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -128,6 +131,9 @@
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="PanelTextEditor.h">
+      <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

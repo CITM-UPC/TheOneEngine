@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.34031.81
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneEditor", "TheOneEditor\TheOneEditor.vcxproj", "{4F643650-00D5-44F6-B376-1634C6583029}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneEngine", "TheOneEngine\TheOneEngine.vcxproj", "{0E04F5B4-D4A2-4F7B-B350-A0EDCAE8A446}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneScripting", "TheOneScripting\TheOneScripting.vcxproj", "{CF6790CD-EFCD-474A-A343-007D11D9FA89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,14 @@ Global
 		{0E04F5B4-D4A2-4F7B-B350-A0EDCAE8A446}.Release|x64.ActiveCfg = Release|x64
 		{0E04F5B4-D4A2-4F7B-B350-A0EDCAE8A446}.Release|x64.Build.0 = Release|x64
 		{0E04F5B4-D4A2-4F7B-B350-A0EDCAE8A446}.Release|x86.ActiveCfg = Release|x64
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Debug|x64.ActiveCfg = Debug|x64
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Debug|x64.Build.0 = Debug|x64
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Debug|x86.ActiveCfg = Debug|Win32
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Debug|x86.Build.0 = Debug|Win32
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Release|x64.ActiveCfg = Release|x64
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Release|x64.Build.0 = Release|x64
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Release|x86.ActiveCfg = Release|Win32
+		{CF6790CD-EFCD-474A-A343-007D11D9FA89}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

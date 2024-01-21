@@ -18,6 +18,7 @@
 #include "PanelScene.h"
 #include "PanelGame.h"
 #include "PanelSettings.h"
+#include "PanelTextEditor.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -69,6 +70,10 @@ bool Gui::Awake()
     panelSettings = new PanelSettings(PanelType::SETTINGS, "Settings");
     panels.push_back(panelSettings);
     ret *= isInitialized(panelSettings);
+
+    panelTEditor = new PanelTextEditor(PanelType::TEXT_EDITOR, "Text Editor");
+    panels.push_back(panelTEditor);
+    ret *= isInitialized(panelTEditor);
 
     return ret;
 }
@@ -131,6 +136,7 @@ bool Gui::Start()
     app->gui->panelHierarchy->SetState(true);
     app->gui->panelScene->SetState(true);
     app->gui->panelGame->SetState(true);
+    app->gui->panelTEditor->SetState(true);
 
     // Style
 #pragma region IMGUI_STYLE
