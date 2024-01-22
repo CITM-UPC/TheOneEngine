@@ -7,7 +7,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneEditor", "TheOneEdito
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneEngine", "TheOneEngine\TheOneEngine.vcxproj", "{0E04F5B4-D4A2-4F7B-B350-A0EDCAE8A446}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneAudioEngine", "TheOneAudioEngine\TheOneAudioEngine.vcxproj", "{606662A0-B707-4C97-8361-5D46FD7FD1F3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneAudio", "TheOneAudio\TheOneAudio.vcxproj", "{606662A0-B707-4C97-8361-5D46FD7FD1F3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

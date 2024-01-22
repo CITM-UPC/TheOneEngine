@@ -5,7 +5,7 @@
 #include "Log.h"
 #include "Timer.h"
 #include "..\TheOneEngine\EngineCore.h"
-
+#include "..\TheOneEngine\EngineCore.h"
 #include <iostream>
 #include <sstream>
 #include <vector>

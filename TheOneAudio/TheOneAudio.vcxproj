@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{606662a0-b707-4c97-8361-5d46fd7fd1f3}</ProjectGuid>
-    <RootNamespace>TheOneAudioEngine</RootNamespace>
+    <RootNamespace>TheOneAudio</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
