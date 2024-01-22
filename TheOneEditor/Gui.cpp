@@ -136,7 +136,7 @@ bool Gui::Start()
     app->gui->panelHierarchy->SetState(true);
     app->gui->panelScene->SetState(true);
     app->gui->panelGame->SetState(true);
-    app->gui->panelTEditor->SetState(true);
+    //app->gui->panelTEditor->SetState(true);
 
     // Style
 #pragma region IMGUI_STYLE

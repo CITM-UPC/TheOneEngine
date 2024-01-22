@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Script.h"
 #include "UIDGen.h"
 #include "../TheOneEditor/SceneManager.h"
 
@@ -220,6 +221,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			{
 				this->AddComponent<Mesh>();
 				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == 4)
+			{
+				this->AddComponent<Script>();
+				this->GetComponent<Script>()->LoadComponent(componentJSON);
 			}
 		}
 	}

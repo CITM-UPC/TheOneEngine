@@ -6,19 +6,16 @@
 #define THEONESCRIPTING_API __declspec(dllimport)
 #endif
 
-// Initialize a Fibonacci relation sequence
-// such that F(0) = a, F(1) = b.
-// This function must be called before any other function.
-extern "C" THEONESCRIPTING_API void _init(
-    const unsigned long long a, const unsigned long long b);
+#define THEONE_API extern "C" ALIEN_ENGINE_API
 
-// Produce the next value in the sequence.
-// Returns true on success and updates current value and index;
-// false on overflow, leaves current value and index unchanged.
-extern "C" THEONESCRIPTING_API bool fibonacci_next();
+extern "C" THEONESCRIPTING_API void OnCreate();
 
-// Get the current value in the sequence.
-extern "C" THEONESCRIPTING_API unsigned long long fibonacci_current();
+extern "C" THEONESCRIPTING_API void OnPreUpdate();
 
-// Get the position of the current value in the sequence.
-extern "C" THEONESCRIPTING_API unsigned fibonacci_index();
+extern "C" THEONESCRIPTING_API void OnUpdate(double dt);
+
+extern "C" THEONESCRIPTING_API void OnFixedUpdate(double dt);
+
+extern "C" THEONESCRIPTING_API void OnPostUpdate();
+
+extern "C" THEONESCRIPTING_API void OnDestroy();
