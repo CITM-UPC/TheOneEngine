@@ -11,12 +11,12 @@ AudioCore::AudioCore()
 
 void AudioCore::Awake()
 {
-    if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
-    if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
-    if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
-    if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
-    if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
-    if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
+    //if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
+    //if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
+    //if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
+    //if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
+    //if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
+    //if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
 
 }
 

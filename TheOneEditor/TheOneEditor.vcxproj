@@ -130,6 +130,9 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     <ClCompile Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\TheOneAudio\TheOneAudio.vcxproj">
+      <Project>{606662a0-b707-4c97-8361-5d46fd7fd1f3}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\TheOneEngine\TheOneEngine.vcxproj">
       <Project>{0e04f5b4-d4a2-4f7b-b350-a0edcae8a446}</Project>
     </ProjectReference>
