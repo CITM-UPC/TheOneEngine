@@ -1,9 +1,6 @@
 #include "AudioCore.h"
 #include "..\TheOneEditor\Log.h"
 
-// Include for communication between Wwise and the game -- Not needed in the release version
-#include <AK/Comm/AkCommunication.h>
-
 // We're using the default Low-Level I/O implementation that's part
 // of the SDK's sample code, with the file package extension
 CAkFilePackageLowLevelIODeferred g_lowLevelIO;
@@ -12,11 +9,7 @@ AudioCore::AudioCore()
 {
 }
 
-AudioCore::~AudioCore()
-{
-}
-
-bool AudioCore::Awake()
+void AudioCore::Awake()
 {
     if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
     if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
@@ -25,24 +18,22 @@ bool AudioCore::Awake()
     if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
     if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
 
-	return true;
 }
 
-bool AudioCore::Update(double dt)
+void AudioCore::Update(double dt)
 {
     AK::SoundEngine::RenderAudio();
     
-    return true;
 }
 
-bool AudioCore::CleanUp()
+void AudioCore::CleanUp()
 {
 #ifndef AK_OPTIMIZED
     // Terminate Communication Services
     AK::Comm::Term();
 #endif // AK_OPTIMIZED
     
-    //AK::SpatialAudio::Term();
+    //AK::SpatialAudio::Term(); // JULS: It says Term() does not exist, so for now I will leave it commented
 
     AK::MusicEngine::Term();
 
@@ -53,7 +44,6 @@ bool AudioCore::CleanUp()
 
     AK::MemoryMgr::Term();
 
-    return true;
 }
 
 bool AudioCore::InitMemoryManager()

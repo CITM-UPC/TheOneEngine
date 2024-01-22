@@ -40,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -104,12 +104,19 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)Wwise\SDK\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)vcpkg\installed\x64-windows\lib\manual-link;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>CommunicationCentral.lib;AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -119,7 +126,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)Wwise\SDK\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
     </ClCompile>
     <Link>
@@ -127,12 +134,25 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Debug\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)vcpkg\installed\x64-windows\lib\manual-link;</AdditionalLibraryDirectories>
+      <AdditionalDependencies>AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AudioCore.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Wwise\SDK\include\AK\MusicEngine\Common\AkMusicEngine.h" />
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkMemoryMgr.h" />
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkModule.h" />
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkSoundEngine.h" />
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\IAkStreamMgr.h" />
+    <ClInclude Include="..\Wwise\SDK\include\AK\SpatialAudio\Common\AkSpatialAudio.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIODeferred.h" />
     <ClInclude Include="AudioCore.h" />
     <ClInclude Include="AudioUtility.h" />
   </ItemGroup>

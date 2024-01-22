@@ -26,5 +26,26 @@
     <ClInclude Include="AudioUtility.h">
       <Filter>AudioEngine</Filter>
     </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\AK\MusicEngine\Common\AkMusicEngine.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkMemoryMgr.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkModule.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\IAkStreamMgr.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkSoundEngine.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\AK\SpatialAudio\Common\AkSpatialAudio.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIODeferred.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

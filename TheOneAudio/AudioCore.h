@@ -2,6 +2,7 @@
 #define __AUDIOCORE_H__
 #pragma once
 
+#include <iostream>
 #include <AK/SoundEngine/Common/AkMemoryMgr.h>      // Memory Manager interface
 #include <AK/SoundEngine/Common/AkModule.h>         // Default memory manager
 #include <AK/SoundEngine/Common/IAkStreamMgr.h>     // Streaming Manager
@@ -10,19 +11,19 @@
 #include <AK/SoundEngine/Common/AkSoundEngine.h>    // Sound engine
 #include <AK/MusicEngine/Common/AkMusicEngine.h>    // Music Engine
 #include <AK/SpatialAudio/Common/AkSpatialAudio.h>  // Spatial Audio
+// Include for communication between Wwise and the game -- Not needed in the release version
+#include <AK/Comm/AkCommunication.h>
 
 class AudioCore
 {
 public:
 	AudioCore();
 
-	virtual ~AudioCore();
+	void Awake();
 
-	bool Awake();
+	void Update(double dt);
 
-	bool Update(double dt);
-
-	bool CleanUp();
+	void CleanUp();
 private:
 	bool InitMemoryManager();
 	bool InitStreamingManager();

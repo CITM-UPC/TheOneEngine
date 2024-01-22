@@ -41,6 +41,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
 
+	audio = new AudioCore();
+
 	state = GameState::NONE;
 	time_since_start = 0.0F;
 	game_time = 0.0F;
@@ -89,6 +91,7 @@ bool App::Awake()
 		}
 	}
 
+	audio->Awake();
 	//LOG("---------------- Time Awake: %f/n", timer.ReadMSec());
 
 	return ret;

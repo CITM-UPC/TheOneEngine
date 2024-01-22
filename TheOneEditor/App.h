@@ -5,7 +5,7 @@
 #include "Log.h"
 #include "Timer.h"
 #include "..\TheOneEngine\EngineCore.h"
-#include "..\TheOneEngine\EngineCore.h"
+#include "..\TheOneAudio\AudioCore.h"
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -86,6 +86,7 @@ private:
 public:
 
 	EngineCore* engine = nullptr;
+	AudioCore* audio = nullptr;
 
 	// Modules
 	Window* window = nullptr;
