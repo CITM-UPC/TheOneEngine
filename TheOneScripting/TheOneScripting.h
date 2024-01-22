@@ -6,16 +6,16 @@
 #define THEONESCRIPTING_API __declspec(dllimport)
 #endif
 
-#define THEONE_API extern "C" ALIEN_ENGINE_API
+#define THEONE_API extern "C" THEONESCRIPTING_API
 
-extern "C" THEONESCRIPTING_API void OnCreate();
+THEONE_API void OnCreate();
 
-extern "C" THEONESCRIPTING_API void OnPreUpdate();
+THEONE_API void OnPreUpdate();
 
-extern "C" THEONESCRIPTING_API void OnUpdate(double dt);
+THEONE_API void OnUpdate(double dt);
 
-extern "C" THEONESCRIPTING_API void OnFixedUpdate(double dt);
+THEONE_API void OnFixedUpdate(double dt);
 
-extern "C" THEONESCRIPTING_API void OnPostUpdate();
+THEONE_API void OnPostUpdate();
 
-extern "C" THEONESCRIPTING_API void OnDestroy();
+THEONE_API void OnDestroy();
