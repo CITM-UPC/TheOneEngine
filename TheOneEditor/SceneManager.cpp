@@ -71,6 +71,18 @@ bool SceneManager::Update(double dt)
         LoadScene(filename);
     }
 
+    //SCRIPTS UPDATE
+    for (const auto& go : rootSceneGO.get()->children)
+    {
+        auto scriptComp = go.get()->GetComponent<Script>();
+        if (!scriptComp->Instance)
+        {
+            scriptComp->InstantiateFunction();
+            scriptComp->StartFunction(scriptComp->Instance);
+        }
+        scriptComp->UpdateFunction(scriptComp->Instance, dt);
+    }
+
 
     if (app->IsPlaying() && demo != nullptr) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);

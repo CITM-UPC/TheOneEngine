@@ -9,6 +9,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{e4443350-2843-496e-98e9-08d58332eedf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -20,6 +23,9 @@
     <ClInclude Include="TheOneScripting.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="TankMovement.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -30,6 +36,9 @@
     </ClCompile>
     <ClCompile Include="TheOneScripting.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="TankMovement.cpp">
+      <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
