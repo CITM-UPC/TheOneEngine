@@ -3,7 +3,7 @@
 
 // We're using the default Low-Level I/O implementation that's part
 // of the SDK's sample code, with the file package extension
-CAkFilePackageLowLevelIODeferred g_lowLevelIO;
+
 
 AudioCore::AudioCore()
 {
@@ -11,7 +11,7 @@ AudioCore::AudioCore()
 
 void AudioCore::Awake()
 {
-    //if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
+    if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
     //if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
     //if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
     //if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
@@ -22,12 +22,13 @@ void AudioCore::Awake()
 
 void AudioCore::Update(double dt)
 {
-    AK::SoundEngine::RenderAudio();
+    //AK::SoundEngine::RenderAudio();
     
 }
 
 void AudioCore::CleanUp()
 {
+    /*
 #ifndef AK_OPTIMIZED
     // Terminate Communication Services
     AK::Comm::Term();
@@ -43,7 +44,7 @@ void AudioCore::CleanUp()
         AK::IAkStreamMgr::Get()->Destroy();
 
     AK::MemoryMgr::Term();
-
+*/
 }
 
 bool AudioCore::InitMemoryManager()
@@ -62,7 +63,7 @@ bool AudioCore::InitMemoryManager()
 
 bool AudioCore::InitStreamingManager()
 {
-    AkStreamMgrSettings stmSettings;
+    /*AkStreamMgrSettings stmSettings;
     AK::StreamMgr::GetDefaultSettings(stmSettings);
 
     // Customize the Stream Manager settings here.
@@ -89,14 +90,14 @@ bool AudioCore::InitStreamingManager()
     {
         LOG(LogType::LOG_AUDIO, "Could not create the streaming device and Low-Level I/O system");
         return false;
-    }
+    }*/
     
     return true;
 }
 
 bool AudioCore::InitSoundEngine()
 {
-    AkInitSettings initSettings;
+    /*AkInitSettings initSettings;
     AkPlatformInitSettings platformInitSettings;
     AK::SoundEngine::GetDefaultInitSettings(initSettings);
     AK::SoundEngine::GetDefaultPlatformInitSettings(platformInitSettings);
@@ -105,14 +106,14 @@ bool AudioCore::InitSoundEngine()
     {
         LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine.");
         return false;
-    }
+    }*/
 
     return true;
 }
 
 bool AudioCore::InitMusicEngine()
 {
-    AkMusicSettings musicInit;
+    /*AkMusicSettings musicInit;
     AK::MusicEngine::GetDefaultInitSettings(musicInit);
 
     if (AK::MusicEngine::Init(&musicInit) != AK_Success)
@@ -120,13 +121,13 @@ bool AudioCore::InitMusicEngine()
         LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
         return false;
     }
-    
+    */
     return true;
 }
 
 bool AudioCore::InitSpatialAudio()
 {
-    // Initialize Spatial Audio -> Using default initialization parameters
+    /*// Initialize Spatial Audio -> Using default initialization parameters
     AkSpatialAudioInitSettings settings; // The constructor fills AkSpatialAudioInitSettings with the recommended default settings. 
 
     if (AK::SpatialAudio::Init(settings) != AK_Success)
@@ -134,19 +135,19 @@ bool AudioCore::InitSpatialAudio()
         LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio.");
         return false;
     }
-    
+    */
     return true;
 }
 
 bool AudioCore::InitCommunication()
 {
-    AkCommSettings commSettings;
+    /*AkCommSettings commSettings;
     AK::Comm::GetDefaultInitSettings(commSettings);
     if (AK::Comm::Init(commSettings) != AK_Success)
     {
         LOG(LogType::LOG_AUDIO, "Could not initialize communication.");
         return false;
-    }
+    }*/
 
     return true;
 }

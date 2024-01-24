@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BB7360C0-A740-BBCB-D059-A973BC85F059}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>MFCDLLProj</Keyword>
+    <RootNamespace>Perforce</RootNamespace>
+    <ProjectName>Perforce</ProjectName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <VcpkgEnabled Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VcpkgEnabled>
+    <VcpkgEnabled Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</VcpkgEnabled>
+    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseOfMfc>Static</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\..\..\Authoring\x64\$(Configuration)\bin\SourceControl\</OutDir>
+    <IntDir>..\..\..\..\Authoring\Build\160DbgObj\Perforce\</IntDir>
+    <TargetName>Perforce</TargetName>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\..\..\Authoring\x64\$(Configuration)\bin\SourceControl\</OutDir>
+    <IntDir>..\..\..\..\Authoring\Build\160RelObj\Perforce\</IntDir>
+    <TargetName>Perforce</TargetName>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>WIN64;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN64;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\include;..\..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalDependencies>..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libclient.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\librpc.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libsupp.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4api.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_c.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_cstub.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_curl.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_sqlite.lib;..\..\..\..\Authoring\source\3rdParty\OpenSSL\lib\libcrypto.lib;..\..\..\..\Authoring\source\3rdParty\OpenSSL\lib\libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\..\..\..\Authoring\Build\160DbgLib\Perforce.lib</ImportLibrary>
+      <ModuleDefinitionFile>Perforce.def</ModuleDefinitionFile>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>WIN64;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN64;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\include;..\..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libclient.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\librpc.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libsupp.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4api.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_c.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_cstub.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_curl.lib;..\..\..\..\Authoring\source\3rdParty\Perforce\windows\$(Platform)\lib\libp4script_sqlite.lib;..\..\..\..\Authoring\source\3rdParty\OpenSSL\lib\libcrypto.lib;..\..\..\..\Authoring\source\3rdParty\OpenSSL\lib\libssl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\..\..\..\Authoring\Build\160RelLib\Perforce.lib</ImportLibrary>
+      <ModuleDefinitionFile>Perforce.def</ModuleDefinitionFile>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\OperationResults.h" />
+    <ClInclude Include="..\Common\SourceControlHelpers.h" />
+    <ClInclude Include="DlgPerforceConfig.h" />
+    <ClInclude Include="DlgPerforceDescription.h" />
+    <ClInclude Include="DlgPerforceOnNewFiles.h" />
+    <ClInclude Include="DlgRename.h" />
+    <ClInclude Include="Perforce.h" />
+    <ClInclude Include="PerforcePlugin.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Common\OperationResults.cpp" />
+    <ClCompile Include="..\Common\SourceControlHelpers.cpp" />
+    <ClCompile Include="DlgPerforceConfig.cpp" />
+    <ClCompile Include="DlgPerforceDescription.cpp" />
+    <ClCompile Include="DlgPerforceOnNewFiles.cpp" />
+    <ClCompile Include="DlgRename.cpp" />
+    <ClCompile Include="DllInterface.cpp" />
+    <ClCompile Include="PerforceClientUser.cpp" />
+    <ClCompile Include="PerforcePlugin.cpp" />
+    <ClCompile Include="PerforceSourceControl.cpp" />
+    <ClCompile Include="PerforceUtility.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Perforce.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Perforce.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\OpenSSL\bin\libcrypto-3-x64.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\OpenSSL\bin\libssl-3-x64.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
