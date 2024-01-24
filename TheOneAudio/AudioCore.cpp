@@ -1,10 +1,6 @@
 #include "AudioCore.h"
 #include "..\TheOneEditor\Log.h"
 
-// We're using the default Low-Level I/O implementation that's part
-// of the SDK's sample code, with the file package extension
-CAkFilePackageLowLevelIODeferred g_lowLevelIO;
-
 AudioCore::AudioCore()
 {
 }
@@ -63,7 +59,7 @@ bool AudioCore::InitMemoryManager()
 
 bool AudioCore::InitStreamingManager()
 {
-    /*AkStreamMgrSettings stmSettings;
+    AkStreamMgrSettings stmSettings;
     AK::StreamMgr::GetDefaultSettings(stmSettings);
 
     // Customize the Stream Manager settings here.
@@ -86,7 +82,7 @@ bool AudioCore::InitStreamingManager()
     // CAkFilePackageLowLevelIODeferred::Init() creates a streaming device
     // in the Stream Manager, and registers itself as the File Location Resolver.
 
-    if (g_lowLevelIO.Init(deviceSettings) != AK_Success)
+    /*if (g_lowLevelIO.Init(deviceSettings) != AK_Success)
     {
         LOG(LogType::LOG_AUDIO, "Could not create the streaming device and Low-Level I/O system");
         return false;

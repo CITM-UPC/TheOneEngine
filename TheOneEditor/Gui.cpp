@@ -336,7 +336,7 @@ void Gui::HandleInput(SDL_Event* event)
 void Gui::OpenURL(const char* url) const
 {
     // hekbas need shellapi
-    ShellExecute(0, 0, url, 0, 0, SW_SHOW);
+    ShellExecuteA(0, 0, url, 0, 0, SW_SHOW);
 }
 
 void Gui::PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags plotFlags, ImPlotAxisFlags axisFlags)
