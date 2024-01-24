@@ -3,7 +3,7 @@
 
 // We're using the default Low-Level I/O implementation that's part
 // of the SDK's sample code, with the file package extension
-
+CAkFilePackageLowLevelIODeferred g_lowLevelIO;
 
 AudioCore::AudioCore()
 {
