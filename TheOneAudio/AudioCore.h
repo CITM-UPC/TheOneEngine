@@ -3,18 +3,21 @@
 #pragma once
 
 #include <iostream>
-#include <AK/SoundEngine/Common/AkMemoryMgr.h>      // Memory Manager interface
-#include <AK/SoundEngine/Common/AkModule.h>         // Default memory manager
+#include <AK/SoundEngine/Common/AkMemoryMgr.h>						// Memory Manager interface
+#include <AK/SoundEngine/Common/AkModule.h>							// Default memory manager
 
-#include <AK/SoundEngine/Common/IAkStreamMgr.h>     // Streaming Manager
-#include <AK/Tools/Common/AkPlatformFuncs.h>        // Thread defines
-#include <AK/SoundEngine/Common/AkFilePackageLowLevelIODeferred.h> // Sample low-level I/O implementation
+#include <AK/SoundEngine/Common/IAkStreamMgr.h>						// Streaming Manager
+#include <AK/Tools/Common/AkPlatformFuncs.h>						// Thread defines
+#include <AK/SoundEngine/Common/AkFilePackageLowLevelIODeferred.h>	// Sample low-level I/O implementation
 
-#include <AK/SoundEngine/Common/AkSoundEngine.h>    // Sound engine
+#include <AK/SoundEngine/Common/AkFilePackage.h>					//file packaging
+#include <AK/SoundEngine/Common/AkFilePackageLUT.h>					//file packaging
 
-#include <AK/MusicEngine/Common/AkMusicEngine.h>    // Music Engine
+#include <AK/SoundEngine/Common/AkSoundEngine.h>					// Sound engine
 
-#include <AK/SpatialAudio/Common/AkSpatialAudio.h>  // Spatial Audio
+#include <AK/MusicEngine/Common/AkMusicEngine.h>					// Music Engine
+
+#include <AK/SpatialAudio/Common/AkSpatialAudio.h>					// Spatial Audio
 
 // Include for communication between Wwise and the game -- Not needed in the release version
 #ifndef AK_OPTIMIZED
@@ -43,7 +46,7 @@ private:
 public:
 	// We're using the default Low-Level I/O implementation that's part
 	// of the SDK's sample code, with the file package extension
-	//CAkFilePackageLowLevelIODeferred g_lowLevelIO;
+	CAkFilePackageLowLevelIODeferred g_lowLevelIO;
 };
 
 #endif // !__AUDIOCORE_H__

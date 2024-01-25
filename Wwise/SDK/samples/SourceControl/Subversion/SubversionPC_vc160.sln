@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{C11D5431-2DDE-CF67-F618-19E562981444}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Subversion", "Subversion.vcxproj", "{75DF6EA2-6197-B0EF-CA9E-894BB6754BE0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{75DF6EA2-6197-B0EF-CA9E-894BB6754BE0}.Debug|x64.ActiveCfg = Debug|x64
+		{75DF6EA2-6197-B0EF-CA9E-894BB6754BE0}.Debug|x64.Build.0 = Debug|x64
+		{75DF6EA2-6197-B0EF-CA9E-894BB6754BE0}.Release|x64.ActiveCfg = Release|x64
+		{75DF6EA2-6197-B0EF-CA9E-894BB6754BE0}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{75DF6EA2-6197-B0EF-CA9E-894BB6754BE0} = {C11D5431-2DDE-CF67-F618-19E562981444}
+	EndGlobalSection
+EndGlobal

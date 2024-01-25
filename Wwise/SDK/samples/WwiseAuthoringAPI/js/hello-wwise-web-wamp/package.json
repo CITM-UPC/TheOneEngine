@@ -1,0 +1,12 @@
+{
+  "name": "hello-wwise-web-wamp-waapi",
+  "version": "1.0.0",
+  "description": "",
+  "browser": {
+    "app": "./index.js"
+  },
+  "author": "Audiokinetic",
+  "dependencies": {
+    "autobahn-browser": "18.3.2"
+  }
+}
