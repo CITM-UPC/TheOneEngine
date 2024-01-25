@@ -237,6 +237,8 @@ void App::FinishUpdate()
 // -------------------- QUIT --------------------
 bool App::CleanUp()
 {
+	audio->CleanUp();
+
 	if (start_timer != nullptr)
 		delete start_timer;
 	if (game_timer != nullptr)

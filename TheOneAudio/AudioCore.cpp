@@ -8,11 +8,13 @@ AudioCore::AudioCore()
 void AudioCore::Awake()
 {
     if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
-    //if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
-    //if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
-    //if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
-    //if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
-    //if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
+    if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
+    if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
+    if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
+    if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
+#ifndef AK_OPTIMIZED
+    if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
+#endif // AK_OPTIMIZED
 
 }
 
@@ -24,23 +26,23 @@ void AudioCore::Update(double dt)
 
 void AudioCore::CleanUp()
 {
-    /*
 #ifndef AK_OPTIMIZED
-    // Terminate Communication Services
     AK::Comm::Term();
 #endif // AK_OPTIMIZED
-    
-    //AK::SpatialAudio::Term(); // JULS: It says Term() does not exist, so for now I will leave it commented
-
+    //commented cz theres no term function xd
+    //AK::SpatialAudio::Term();
     AK::MusicEngine::Term();
+    AK::SoundEngine::Term();
 
     g_lowLevelIO.Term();
 
     if (AK::IAkStreamMgr::Get())
+    {
         AK::IAkStreamMgr::Get()->Destroy();
+    }
 
     AK::MemoryMgr::Term();
-*/
+
 }
 
 bool AudioCore::InitMemoryManager()
@@ -82,18 +84,18 @@ bool AudioCore::InitStreamingManager()
     // CAkFilePackageLowLevelIODeferred::Init() creates a streaming device
     // in the Stream Manager, and registers itself as the File Location Resolver.
 
-    /*if (g_lowLevelIO.Init(deviceSettings) != AK_Success)
+    if (g_lowLevelIO.Init(deviceSettings) != AK_Success)
     {
         LOG(LogType::LOG_AUDIO, "Could not create the streaming device and Low-Level I/O system");
         return false;
-    }*/
+    }
     
     return true;
 }
 
 bool AudioCore::InitSoundEngine()
 {
-    /*AkInitSettings initSettings;
+    AkInitSettings initSettings;
     AkPlatformInitSettings platformInitSettings;
     AK::SoundEngine::GetDefaultInitSettings(initSettings);
     AK::SoundEngine::GetDefaultPlatformInitSettings(platformInitSettings);
@@ -102,14 +104,14 @@ bool AudioCore::InitSoundEngine()
     {
         LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine.");
         return false;
-    }*/
+    }
 
     return true;
 }
 
 bool AudioCore::InitMusicEngine()
 {
-    /*AkMusicSettings musicInit;
+    AkMusicSettings musicInit;
     AK::MusicEngine::GetDefaultInitSettings(musicInit);
 
     if (AK::MusicEngine::Init(&musicInit) != AK_Success)
@@ -117,13 +119,12 @@ bool AudioCore::InitMusicEngine()
         LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
         return false;
     }
-    */
     return true;
 }
 
 bool AudioCore::InitSpatialAudio()
 {
-    /*// Initialize Spatial Audio -> Using default initialization parameters
+    // Initialize Spatial Audio -> Using default initialization parameters
     AkSpatialAudioInitSettings settings; // The constructor fills AkSpatialAudioInitSettings with the recommended default settings. 
 
     if (AK::SpatialAudio::Init(settings) != AK_Success)
@@ -131,19 +132,22 @@ bool AudioCore::InitSpatialAudio()
         LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio.");
         return false;
     }
-    */
     return true;
 }
 
 bool AudioCore::InitCommunication()
 {
-    /*AkCommSettings commSettings;
+#ifndef AK_OPTIMIZED
+    // Initialize communications (not in release build!)
+
+    AkCommSettings commSettings;
     AK::Comm::GetDefaultInitSettings(commSettings);
     if (AK::Comm::Init(commSettings) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "Could not initialize communication.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the communications.");
         return false;
-    }*/
+    }
+#endif // AK_OPTIMIZED
 
     return true;
 }

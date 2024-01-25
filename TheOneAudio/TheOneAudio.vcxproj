@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -128,7 +128,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>AK_OPTIMIZED;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
@@ -147,18 +147,39 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkFileLocationBase.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkFilePackage.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkFilePackageLUT.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkGeneratedSoundBanksResolver.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkJobWorkerMgr.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkMultipleFileLocation.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkPlatformProfilerHookStubs.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Win32\AkDefaultIOHookDeferred.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Win32\AkPlatformProfilerHooks.cpp" />
+    <ClCompile Include="..\Wwise\SDK\include\Win32\stdafx.cpp" />
     <ClCompile Include="AudioCore.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Wwise\SDK\include\AK\MusicEngine\Common\AkMusicEngine.h" />
-    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkMemoryMgr.h" />
-    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkModule.h" />
-    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\AkSoundEngine.h" />
-    <ClInclude Include="..\Wwise\SDK\include\AK\SoundEngine\Common\IAkStreamMgr.h" />
-    <ClInclude Include="..\Wwise\SDK\include\AK\SpatialAudio\Common\AkSpatialAudio.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFileHelpersBase.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFileLocationBase.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackage.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIO.h" />
     <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIODeferred.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLUT.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkGeneratedSoundBanksResolver.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkJobWorkerMgr.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkMultipleFileLocation.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkPlatformProfilerHooks.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Win32\AkDefaultIOHookDeferred.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Win32\AkFileHelpers.h" />
+    <ClInclude Include="..\Wwise\SDK\include\Win32\stdafx.h" />
     <ClInclude Include="AudioCore.h" />
     <ClInclude Include="AudioUtility.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIO.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
