@@ -2,50 +2,31 @@
 #define __AUDIOCORE_H__
 #pragma once
 
-#include <iostream>
-#include <list>
-#include <string>
-#include <vector>
+#include "AudioUtility.h"
+#include "AudioEvent.h"
 
-#include <AK/SoundEngine/Common/AkMemoryMgr.h>			// Memory Manager interface
-#include <AK/SoundEngine/Common/AkModule.h>				// Default memory manager
-
-#include <AK/SoundEngine/Common/IAkStreamMgr.h>			// Streaming Manager
-#include <AK/Tools/Common/AkPlatformFuncs.h>			// Thread defines
-#include <Common/AkFilePackageLowLevelIODeferred.h>		// Sample low-level I/O implementation
-
-#include <AK/SoundEngine/Common/AkSoundEngine.h>		// Sound engine
-
-#include <AK/MusicEngine/Common/AkMusicEngine.h>		// Music Engine
-
-#include <AK/SpatialAudio/Common/AkSpatialAudio.h>		// Spatial Audio
-
-//file packaging
-#include <../Common/AkFilePackage.h>
-#include <../Common/AkFilePackageLUT.h>
-
-//communications
-// Include for communication between Wwise and the game -- Not needed in the release version
-#ifndef AK_OPTIMIZED
-#include <AK/Comm/AkCommunication.h>
-#endif // AK_OPTIMIZED
-
-
-#define BANKNAME_INIT L"Init.bnk"
-#define BANKNAME_MANTELENGINE L"MantelEngine.bnk"
-
-//others
-using namespace std;
 class AudioCore
 {
 public:
 	AudioCore();
+
+	void InitEngine();
 
 	void Awake();
 
 	void Update(double dt);
 
 	void CleanUp();
+
+	void SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
+	void SetSpatial1Transform(float posx, float posy, float posz);
+	void SetSpatial2Transform(float posx, float posy, float posz);
+
+	bool isGameOn;
+
+	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
+
+
 private:
 	bool InitMemoryManager();
 	bool InitStreamingManager();
@@ -53,6 +34,26 @@ private:
 	bool InitMusicEngine();
 	bool InitSpatialAudio();
 	bool InitCommunication();
+
+	// Camera
+	AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC = 100;
+	// Static
+	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND1 = 200;
+	// Moving
+	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND2 = 300;
+
+	// 1st music background
+	AudioEvent* music1;
+	// 2nd music background
+	AudioEvent* music2;
+	// Static
+	AudioEvent* spatial1;
+	// Moving
+	AudioEvent* spatial2;
+
+	//true: music1
+	//false: music2
+	bool nextSong;
 
 public:
 	// We're using the default Low-Level I/O implementation that's part

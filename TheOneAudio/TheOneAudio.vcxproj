@@ -159,6 +159,7 @@
     <ClCompile Include="..\Wwise\SDK\include\Win32\AkPlatformProfilerHooks.cpp" />
     <ClCompile Include="..\Wwise\SDK\include\Win32\stdafx.cpp" />
     <ClCompile Include="AudioCore.cpp" />
+    <ClCompile Include="AudioEvent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.h" />
@@ -176,6 +177,7 @@
     <ClInclude Include="..\Wwise\SDK\include\Win32\AkFileHelpers.h" />
     <ClInclude Include="..\Wwise\SDK\include\Win32\stdafx.h" />
     <ClInclude Include="AudioCore.h" />
+    <ClInclude Include="AudioEvent.h" />
     <ClInclude Include="AudioUtility.h" />
   </ItemGroup>
   <ItemGroup>

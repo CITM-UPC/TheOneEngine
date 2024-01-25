@@ -3,46 +3,55 @@
 
 AudioCore::AudioCore()
 {
+    isGameOn = false;
+    nextSong = false;
+    music1 = NULL;
+    music2 = NULL;
+    spatial1 = NULL;
+    spatial2 = NULL;
+}
+
+void AudioCore::InitEngine()
+{
+    if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Memory Manager.");
+
+    if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Streaming Manager.");
+
+    if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine.");
+
+    if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
+
+    if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio.");
+
+#ifndef AK_OPTIMIZED
+    if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize communication.");
+#endif // AK_OPTIMIZED
+
 }
 
 void AudioCore::Awake()
 {
-    if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
-    if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
-    if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
-    if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
-    if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
-#ifndef AK_OPTIMIZED
-    if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
-#endif // AK_OPTIMIZED
+    InitEngine();
 
+    //set default listener
+    AK::SoundEngine::SetDefaultListeners(&GAME_OBJECT_ID_BACKGROUNDMUSIC, 1);
+
+    //creating audio events
+    music1 = new AudioEvent();
+    music2 = new AudioEvent();
+    spatial1 = new AudioEvent();
+    spatial2 = new AudioEvent();
 }
 
 void AudioCore::Update(double dt)
 {
-    //AK::SoundEngine::RenderAudio();
-    
-}
-
-void AudioCore::CleanUp()
-{
-#ifndef AK_OPTIMIZED
-    AK::Comm::Term();
-#endif // AK_OPTIMIZED
-    //commented cz theres no term function xd
-    //AK::SpatialAudio::Term();
-    AK::MusicEngine::Term();
-    AK::SoundEngine::Term();
-
-    g_lowLevelIO.Term();
-
-    if (AK::IAkStreamMgr::Get())
-    {
-        AK::IAkStreamMgr::Get()->Destroy();
-    }
-
-    AK::MemoryMgr::Term();
-
+    AK::SoundEngine::RenderAudio();
 }
 
 bool AudioCore::InitMemoryManager()
@@ -150,4 +159,45 @@ bool AudioCore::InitCommunication()
 #endif // AK_OPTIMIZED
 
     return true;
+}
+
+void AudioCore::CleanUp()
+{
+#ifndef AK_OPTIMIZED
+    AK::Comm::Term();
+#endif // AK_OPTIMIZED
+    //commented cz theres no term function xd
+    //AK::SpatialAudio::Term();
+    AK::MusicEngine::Term();
+    AK::SoundEngine::Term();
+
+    g_lowLevelIO.Term();
+
+    if (AK::IAkStreamMgr::Get())
+    {
+        AK::IAkStreamMgr::Get()->Destroy();
+    }
+
+    AK::MemoryMgr::Term();
+
+}
+
+void AudioCore::SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
+{
+
+}
+
+void AudioCore::SetSpatial1Transform(float posx, float posy, float posz)
+{
+
+}
+
+void AudioCore::SetSpatial2Transform(float posx, float posy, float posz)
+{
+
+}
+
+void AudioCore::EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo)
+{
+
 }

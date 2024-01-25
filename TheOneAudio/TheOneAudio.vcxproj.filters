@@ -1,23 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Archivos de encabezado">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="AudioEngine">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="AudioEngine\Core">
+      <UniqueIdentifier>{cae8f942-1cca-458b-ba94-1f62e9b80eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AudioEngine\Utils">
+      <UniqueIdentifier>{f5fde439-f4db-4add-9abc-fad9047ee7d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="AudioEngine\Wwise">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="AudioEngine\Events">
+      <UniqueIdentifier>{e4ad9aac-633f-4653-b3cc-2dbeeee28fb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioCore.cpp">
-      <Filter>AudioEngine</Filter>
-    </ClCompile>
     <ClCompile Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.cpp">
       <Filter>AudioEngine\Wwise</Filter>
     </ClCompile>
@@ -51,14 +53,14 @@
     <ClCompile Include="..\Wwise\SDK\include\Win32\stdafx.cpp">
       <Filter>AudioEngine\Wwise</Filter>
     </ClCompile>
+    <ClCompile Include="AudioCore.cpp">
+      <Filter>AudioEngine\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioEvent.cpp">
+      <Filter>AudioEngine\Events</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AudioCore.h">
-      <Filter>AudioEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioUtility.h">
-      <Filter>AudioEngine</Filter>
-    </ClInclude>
     <ClInclude Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.h">
       <Filter>AudioEngine\Wwise</Filter>
     </ClInclude>
@@ -100,6 +102,15 @@
     </ClInclude>
     <ClInclude Include="..\Wwise\SDK\include\Win32\stdafx.h">
       <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioCore.h">
+      <Filter>AudioEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioUtility.h">
+      <Filter>AudioEngine\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioEvent.h">
+      <Filter>AudioEngine\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
