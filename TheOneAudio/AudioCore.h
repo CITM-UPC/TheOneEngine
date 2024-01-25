@@ -26,7 +26,6 @@ public:
 
 	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
 
-
 private:
 	bool InitMemoryManager();
 	bool InitStreamingManager();
@@ -36,11 +35,11 @@ private:
 	bool InitCommunication();
 
 	// Camera
-	AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC = 100;
+	AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC;
 	// Static
-	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND1 = 200;
+	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND1;
 	// Moving
-	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND2 = 300;
+	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND2;
 
 	// 1st music background
 	AudioEvent* music1;

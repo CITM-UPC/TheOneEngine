@@ -5,10 +5,15 @@ AudioCore::AudioCore()
 {
     isGameOn = false;
     nextSong = false;
+
     music1 = NULL;
     music2 = NULL;
     spatial1 = NULL;
     spatial2 = NULL;
+
+    GAME_OBJECT_ID_BACKGROUNDMUSIC = 100;
+    GAME_OBJECT_ID_SPATIALSOUND1 = 200;
+    GAME_OBJECT_ID_SPATIALSOUND2 = 300;
 }
 
 void AudioCore::InitEngine()
@@ -184,20 +189,50 @@ void AudioCore::CleanUp()
 
 void AudioCore::SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
 {
-
+    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
+    AkSoundPosition tTransform;
+    tTransform.SetPosition({ -posx, posy, -posz });
+    tTransform.SetOrientation({ ofx, ofy, ofz }, { otx, oty, otz });
+    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_BACKGROUNDMUSIC, tTransform) != AK_Success)
+    {
+        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
+    }
 }
 
 void AudioCore::SetSpatial1Transform(float posx, float posy, float posz)
 {
-
+    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
+    AkSoundPosition tTransform;
+    tTransform.SetPosition({ -posx, posy, -posz });
+    tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
+    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_SPATIALSOUND1, tTransform) != AK_Success)
+    {
+        LOG(LogType::LOG_AUDIO, "ERROR setting position to spatialsound1 (emiter 1)");
+    }
 }
 
 void AudioCore::SetSpatial2Transform(float posx, float posy, float posz)
 {
-
+    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
+    AkSoundPosition tTransform;
+    tTransform.SetPosition({ -posx, posy, -posz });
+    tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
+    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_SPATIALSOUND2, tTransform) != AK_Success)
+    {
+        LOG(LogType::LOG_AUDIO, "ERROR setting position to spatialsound2 (emiter 2)");
+    }
 }
 
 void AudioCore::EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo)
 {
+    AudioEvent* a_event = (AudioEvent*)in_pCallbackInfo->pCookie;
 
+    switch (in_eType)
+    {
+    case(AkCallbackType::AK_EndOfEvent):
+    {
+        a_event->playing_id = 0L;
+        break;
+    }
+    }
 }
