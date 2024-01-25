@@ -9,6 +9,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "..\TheOneAudio\AudioCore.h"
 
 #include <chrono>
 #include <memory>
@@ -27,6 +28,8 @@ public:
 
 	void Render(Camera* camera);
 
+	void CleanUp();
+
 	void DrawAxis();
 	void DrawGrid(int grid_size, int grid_step);
 	void DrawFrustum(const glm::mat4& viewProjectionMatrix);
@@ -40,6 +43,7 @@ public:
 public:
 	
 	bool vsync = false;
+	AudioCore* audio = nullptr;
 
 private:
 

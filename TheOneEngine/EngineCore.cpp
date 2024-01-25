@@ -8,12 +8,14 @@
 
 EngineCore::EngineCore()
 {
+    audio = new AudioCore();
 }
 
 void EngineCore::Awake()
 {
     LOG(LogType::LOG_OK, "Initializing DevIL");
     ilInit();
+    audio->Awake();
 }
 
 void EngineCore::Start()
@@ -57,6 +59,11 @@ void EngineCore::Render(Camera* camera)
     //DrawFrustum(camera->viewMatrix);
 
     assert(glGetError() == GL_NONE);
+}
+
+void EngineCore::CleanUp()
+{
+    audio->CleanUp();
 }
 
 void EngineCore::DrawAxis()

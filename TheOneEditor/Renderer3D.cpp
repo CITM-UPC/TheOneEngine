@@ -83,7 +83,7 @@ bool Renderer3D::PostUpdate()
 
 bool Renderer3D::CleanUp()
 {
-
+    app->engine->CleanUp();
     return true;
 }
 

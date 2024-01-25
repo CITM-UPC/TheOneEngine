@@ -48,6 +48,8 @@ bool AudioCore::InitEngine()
     if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
     else LOG(LogType::LOG_AUDIO, "Could not initialize communication.");
 #endif // AK_OPTIMIZED
+
+    return true;
 }
 
 bool AudioCore::InitMemoryManager()
@@ -159,7 +161,10 @@ bool AudioCore::InitCommunication()
 
 void AudioCore::Awake()
 {
-    InitEngine();
+    if (InitEngine())
+        LOG(LogType::LOG_AUDIO, "Initialized the Audio Engine.");
+    else
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Audio Engine.");
 
     //registering music to game object
     if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_BACKGROUNDMUSIC, "Music1") == AK_Success)
@@ -228,8 +233,6 @@ void AudioCore::Update(double dt)
         }
     }
 }
-
-
 
 void AudioCore::CleanUp()
 {
