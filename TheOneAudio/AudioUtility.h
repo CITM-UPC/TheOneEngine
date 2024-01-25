@@ -30,5 +30,7 @@
 #define BANKNAME_INIT L"Init.bnk"
 #define BANKNAME_MANTELENGINE L"TheOneEngine.bnk"
 
+#include "../TheOneEditor/Assets/Audio/WwiseProject/GeneratedSoundBanks/Wwise_IDs.h"
+
 //others
 using namespace std;

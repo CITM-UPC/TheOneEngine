@@ -3,20 +3,31 @@
 #pragma once
 
 #include "AudioUtility.h"
-#include "AudioEvent.h"
+
+class AudioEvent
+{
+public:
+	AudioEvent();
+
+	bool IsEventPlaying();
+
+	AkPlayingID playing_id;					// When Event is played, is different from 0L
+	AkCallbackFunc event_call_back;			// Call back function
+};
 
 class AudioCore
 {
 public:
 	AudioCore();
 
-	void InitEngine();
-
 	void Awake();
 
 	void Update(double dt);
 
 	void CleanUp();
+
+	void PlayEngine();
+	void PauseEngine();
 
 	void SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
 	void SetSpatial1Transform(float posx, float posy, float posz);
@@ -27,6 +38,7 @@ public:
 	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
 
 private:
+	bool InitEngine();
 	bool InitMemoryManager();
 	bool InitStreamingManager();
 	bool InitSoundEngine();

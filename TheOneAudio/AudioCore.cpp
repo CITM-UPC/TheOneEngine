@@ -1,6 +1,17 @@
 #include "AudioCore.h"
 #include "..\TheOneEditor\Log.h"
 
+AudioEvent::AudioEvent()
+{
+    playing_id = 0L;
+    event_call_back = &AudioCore::EventCallBack;
+}
+
+bool AudioEvent::IsEventPlaying()
+{
+    return playing_id != 0L;
+}
+
 AudioCore::AudioCore()
 {
     isGameOn = false;
@@ -16,7 +27,7 @@ AudioCore::AudioCore()
     GAME_OBJECT_ID_SPATIALSOUND2 = 300;
 }
 
-void AudioCore::InitEngine()
+bool AudioCore::InitEngine()
 {
     if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
     else LOG(LogType::LOG_AUDIO, "Could not initialize the Memory Manager.");
@@ -37,26 +48,6 @@ void AudioCore::InitEngine()
     if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
     else LOG(LogType::LOG_AUDIO, "Could not initialize communication.");
 #endif // AK_OPTIMIZED
-
-}
-
-void AudioCore::Awake()
-{
-    InitEngine();
-
-    //set default listener
-    AK::SoundEngine::SetDefaultListeners(&GAME_OBJECT_ID_BACKGROUNDMUSIC, 1);
-
-    //creating audio events
-    music1 = new AudioEvent();
-    music2 = new AudioEvent();
-    spatial1 = new AudioEvent();
-    spatial2 = new AudioEvent();
-}
-
-void AudioCore::Update(double dt)
-{
-    AK::SoundEngine::RenderAudio();
 }
 
 bool AudioCore::InitMemoryManager()
@@ -69,7 +60,7 @@ bool AudioCore::InitMemoryManager()
         LOG(LogType::LOG_AUDIO, "Could not create the memory manager.");
         return false;
     }
-    
+
     return true;
 }
 
@@ -103,7 +94,7 @@ bool AudioCore::InitStreamingManager()
         LOG(LogType::LOG_AUDIO, "Could not create the streaming device and Low-Level I/O system");
         return false;
     }
-    
+
     return true;
 }
 
@@ -166,6 +157,80 @@ bool AudioCore::InitCommunication()
     return true;
 }
 
+void AudioCore::Awake()
+{
+    InitEngine();
+
+    //registering music to game object
+    if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_BACKGROUNDMUSIC, "Music1") == AK_Success)
+        LOG(LogType::LOG_AUDIO, "Game Object BackgroundMusic Succesfully Registered");
+    else
+        LOG(LogType::LOG_AUDIO, "Game Object BackgroundMusic ERROR on Register");
+
+    //registering spatialsound1 to game object
+    if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_SPATIALSOUND1, "SpatialSound1") == AK_Success)
+        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 1 Succesfully Registered");
+    else
+        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 1 ERROR on Register");
+
+    //registering spatialsound2 to game object
+    if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_SPATIALSOUND2, "SpatialSound2") == AK_Success)
+        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 2 Succesfully Registered");
+    else
+        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 2 ERROR on Register");
+
+
+    //set default listener
+    AK::SoundEngine::SetDefaultListeners(&GAME_OBJECT_ID_BACKGROUNDMUSIC, 1);
+
+    //creating audio events
+    music1 = new AudioEvent();
+    music2 = new AudioEvent();
+    spatial1 = new AudioEvent();
+    spatial2 = new AudioEvent();
+}
+
+void AudioCore::Update(double dt)
+{
+    //always call this function on update to make things work
+    AK::SoundEngine::RenderAudio();
+    if (isGameOn)
+    {
+        //music 1
+        //if its turn of the music1 (nextSong == true) and neither of both songs are playing
+        if (nextSong && !music1->IsEventPlaying() && !music2->IsEventPlaying())
+        {
+            AK::SoundEngine::PostEvent(AK::EVENTS::MUSIC1, GAME_OBJECT_ID_BACKGROUNDMUSIC, AkCallbackType::AK_EndOfEvent, music1->event_call_back, (void*)music1);
+            music1->playing_id = 1L;
+            nextSong = false;
+        }
+        //music 2
+        //if its turn of the music2 (nextSong == false) and neither of both songs are playing
+        else if (!nextSong && !music1->IsEventPlaying() && !music2->IsEventPlaying())
+        {
+            AK::SoundEngine::PostEvent(AK::EVENTS::MUSIC2, GAME_OBJECT_ID_BACKGROUNDMUSIC, AkCallbackType::AK_EndOfEvent, music2->event_call_back, (void*)music2);
+            music2->playing_id = 1L;
+            nextSong = true;
+        }
+
+        //spatial sound 1
+        if (!spatial1->IsEventPlaying())
+        {
+            AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL1, GAME_OBJECT_ID_SPATIALSOUND1, AkCallbackType::AK_EndOfEvent, spatial1->event_call_back, (void*)spatial1);
+            spatial1->playing_id = 1L;
+        }
+
+        //spatial sound 2
+        if (!spatial2->IsEventPlaying())
+        {
+            AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL2, GAME_OBJECT_ID_SPATIALSOUND2, AkCallbackType::AK_EndOfEvent, spatial2->event_call_back, (void*)spatial2);
+            spatial2->playing_id = 1L;
+        }
+    }
+}
+
+
+
 void AudioCore::CleanUp()
 {
 #ifndef AK_OPTIMIZED
@@ -185,6 +250,31 @@ void AudioCore::CleanUp()
 
     AK::MemoryMgr::Term();
 
+}
+
+void AudioCore::PlayEngine()
+{
+    isGameOn = true;
+
+    //music 1
+    AK::SoundEngine::PostEvent(AK::EVENTS::MUSIC1, GAME_OBJECT_ID_BACKGROUNDMUSIC, AkCallbackType::AK_EndOfEvent, music1->event_call_back, (void*)music1);
+    music1->playing_id = 1L;
+
+    //spatial sound 1
+    AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL1, GAME_OBJECT_ID_SPATIALSOUND1, AkCallbackType::AK_EndOfEvent, spatial1->event_call_back, (void*)spatial1);
+    spatial1->playing_id = 1L;
+
+    //spatial sound 2
+    AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL2, GAME_OBJECT_ID_SPATIALSOUND2, AkCallbackType::AK_EndOfEvent, spatial2->event_call_back, (void*)spatial2);
+    spatial2->playing_id = 1L;
+}
+
+void AudioCore::PauseEngine()
+{
+    isGameOn = false;
+    AK::SoundEngine::StopAll(GAME_OBJECT_ID_BACKGROUNDMUSIC);
+    AK::SoundEngine::StopAll(GAME_OBJECT_ID_SPATIALSOUND1);
+    AK::SoundEngine::StopAll(GAME_OBJECT_ID_SPATIALSOUND2);
 }
 
 void AudioCore::SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)

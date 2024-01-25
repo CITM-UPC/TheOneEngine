@@ -15,9 +15,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="AudioEngine\Events">
-      <UniqueIdentifier>{e4ad9aac-633f-4653-b3cc-2dbeeee28fb2}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.cpp">
@@ -55,9 +52,6 @@
     </ClCompile>
     <ClCompile Include="AudioCore.cpp">
       <Filter>AudioEngine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioEvent.cpp">
-      <Filter>AudioEngine\Events</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -108,9 +102,6 @@
     </ClInclude>
     <ClInclude Include="AudioUtility.h">
       <Filter>AudioEngine\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioEvent.h">
-      <Filter>AudioEngine\Events</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,12 @@
+Event	ID	Name			Wwise Object Path	Notes
+	1730564816	MUSIC2			\Default Work Unit\MUSIC2	
+	1730564819	MUSIC1			\Default Work Unit\MUSIC1	
+	2134552412	SPATIAL1			\Default Work Unit\SPATIAL1	
+	2134552415	SPATIAL2			\Default Work Unit\SPATIAL2	
+
+In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
+	177257516	music2	D:\repos\Github\MantelGameMaker\MantelGameEditor\Assets\wwise\WwiseProject\.cache\Windows\SFX\music2_818F3B66.wem		\Actor-Mixer Hierarchy\Default Work Unit\music2		6336096
+	249536553	spatial2	D:\repos\Github\MantelGameMaker\MantelGameEditor\Assets\wwise\WwiseProject\.cache\Windows\SFX\spatial2_818F3B66.wem		\Actor-Mixer Hierarchy\Default Work Unit\spatial2		192156
+	602755037	spatial1	D:\repos\Github\MantelGameMaker\MantelGameEditor\Assets\wwise\WwiseProject\.cache\Windows\SFX\spatial1_818F3B66.wem		\Actor-Mixer Hierarchy\Default Work Unit\spatial1		1058496
+	961758796	music1	D:\repos\Github\MantelGameMaker\MantelGameEditor\Assets\wwise\WwiseProject\.cache\Windows\SFX\music1_818F3B66.wem		\Actor-Mixer Hierarchy\Default Work Unit\music1		3456096
+
