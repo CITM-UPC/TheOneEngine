@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Prueba.h" />
     <ClInclude Include="TankMovement.h" />
     <ClInclude Include="TheOneScripting.h" />
   </ItemGroup>
@@ -156,8 +157,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Prueba.cpp" />
     <ClCompile Include="TankMovement.cpp" />
-    <ClCompile Include="TheOneScripting.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

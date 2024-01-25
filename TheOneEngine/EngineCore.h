@@ -10,6 +10,7 @@
 #include "Mesh.h"
 #include "Texture.h"
 
+#include <Windows.h>
 #include <chrono>
 #include <memory>
 
@@ -37,10 +38,12 @@ public:
 	bool GetVSync();
 	bool SetVSync(bool vsync);
 
+	void SetScriptEngine();
+
 public:
 	
 	bool vsync = false;
-
+	HMODULE dllHandle;
 private:
 
 };

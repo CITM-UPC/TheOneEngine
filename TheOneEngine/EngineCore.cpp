@@ -3,8 +3,7 @@
 #include <GL\glew.h>
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
-
-#include <memory>
+#include <string>
 
 EngineCore::EngineCore()
 {
@@ -14,6 +13,7 @@ void EngineCore::Awake()
 {
     LOG(LogType::LOG_OK, "Initializing DevIL");
     ilInit();
+    SetScriptEngine();
 }
 
 void EngineCore::Start()
@@ -180,4 +180,20 @@ bool EngineCore::SetVSync(bool vsync)
     }
 
     return true;
+}
+
+void EngineCore::SetScriptEngine() {
+
+    if (dllHandle) {
+        FreeLibrary(static_cast<HMODULE>(dllHandle));
+    }
+
+    
+#ifdef _DEBUG
+    const std::string dllFolder("../x64/Debug/");
+#else
+    const std::string dllFolder("../x64/Release/");
+#endif
+    dllHandle = LoadLibraryA((dllFolder + "TheOneScripting" + ".dll").c_str());
+
 }

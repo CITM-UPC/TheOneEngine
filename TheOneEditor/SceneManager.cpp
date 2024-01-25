@@ -5,6 +5,8 @@
 #include <fstream>
 #include <filesystem>
 
+//#include "..\TheOneScripting\Prueba.h"
+
 namespace fs = std::filesystem;
 
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
@@ -17,6 +19,7 @@ SceneManager::~SceneManager()
 {
     delete meshLoader;
     delete demo;
+    delete selectedGameObject;
 }
 
 bool SceneManager::Awake()
@@ -48,7 +51,8 @@ bool SceneManager::Start()
 
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
-
+    gameCam.get()->AddComponent<Script>();
+    //gameCam.get()->GetComponent<Script>()->Bind<Prueba>();
     return true;
 }
 
@@ -72,17 +76,21 @@ bool SceneManager::Update(double dt)
     }
 
     //SCRIPTS UPDATE
-    for (const auto& go : rootSceneGO.get()->children)
+    /*if (app->IsPlaying())
     {
-        auto scriptComp = go.get()->GetComponent<Script>();
-        if (!scriptComp->Instance)
+        for (const auto& go : rootSceneGO.get()->children)
         {
-            scriptComp->InstantiateFunction();
-            scriptComp->StartFunction(scriptComp->Instance);
+            auto scriptComp = go.get()->GetComponent<Script>();
+            if (scriptComp != nullptr)
+            {
+                if (!scriptComp->containerGO.lock())
+                {
+                    scriptComp->containerGO = scriptComp->InstantiateScript();
+                    scriptComp->Instance
+                }
+            }
         }
-        scriptComp->UpdateFunction(scriptComp->Instance, dt);
-    }
-
+    }*/
 
     if (app->IsPlaying() && demo != nullptr) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);
@@ -379,6 +387,13 @@ GameObject* SceneManager::GetSelectedGO() const
 std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
 {
     return rootSceneGO;
+}
+
+GameObject* SceneManager::GetRootSceneGOStatic()
+{
+    /*GameObject* root = rootSceneGO.get();
+    return root;*/
+    return nullptr;
 }
 
 std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const

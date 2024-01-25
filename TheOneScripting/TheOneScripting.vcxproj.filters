@@ -26,6 +26,9 @@
     <ClInclude Include="TankMovement.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="Prueba.h">
+      <Filter>Scripts</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -34,10 +37,10 @@
     <ClCompile Include="pch.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="TheOneScripting.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="TankMovement.cpp">
+      <Filter>Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Prueba.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
   </ItemGroup>

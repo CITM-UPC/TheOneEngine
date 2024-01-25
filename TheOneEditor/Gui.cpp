@@ -71,9 +71,9 @@ bool Gui::Awake()
     panels.push_back(panelSettings);
     ret *= isInitialized(panelSettings);
 
-    panelTEditor = new PanelTextEditor(PanelType::TEXT_EDITOR, "Text Editor");
+    /*panelTEditor = new PanelTextEditor(PanelType::TEXT_EDITOR, "Text Editor");
     panels.push_back(panelTEditor);
-    ret *= isInitialized(panelTEditor);
+    ret *= isInitialized(panelTEditor);*/
 
     return ret;
 }

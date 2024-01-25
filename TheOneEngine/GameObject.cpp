@@ -5,10 +5,10 @@
 #include "Texture.h"
 #include "Script.h"
 #include "UIDGen.h"
-#include "../TheOneEditor/SceneManager.h"
 
 #include "Math.h"
 
+#include "..\TheOneEditor\SceneManager.h"
 
 GameObject::GameObject(std::string name)
 	: name(name),
@@ -23,6 +23,10 @@ GameObject::GameObject(std::string name)
 	// uncomenting the following line causes undefined behaviour
 	//AddComponent(ComponentType::Transform);
 	Enable();
+}
+
+GameObject::GameObject()
+{
 }
 
 
@@ -134,6 +138,20 @@ void GameObject::SetStatic(bool staticFlag)
 void GameObject::CreateUID()
 {
 	UID = UIDGen::GenerateUID();
+}
+
+GameObject* GameObject::FindWithName(std::string name)
+{
+	/*GameObject* root = SceneManager::GetRootSceneGOStatic();
+	for (const auto& go : root->children)
+	{
+		if (go->name == name)
+		{
+			GameObject* ret = go.get();
+			return ret;
+		}
+	}*/
+	return nullptr;
 }
 
 json GameObject::SaveGameObject()

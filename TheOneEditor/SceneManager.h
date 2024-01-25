@@ -22,6 +22,7 @@
 
 class SceneManager : public Module
 {
+    friend class GameObject;
 public:
     SceneManager(App* app);
 
@@ -55,6 +56,7 @@ public:
     void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
+    __declspec(dllexport) GameObject* GetRootSceneGOStatic();
 
     std::shared_ptr<GameObject> FindGOByUID(uint32_t _UID) const;
 
@@ -68,7 +70,7 @@ public:
     void LoadScene(const std::string& filename);
 
     //MeshLoader GetMeshLoader();
-
+    
 private:
     // Private constructor to enforce singleton pattern
     SceneManager() {}

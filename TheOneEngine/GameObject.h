@@ -15,11 +15,18 @@
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
+    friend class Component;
+    friend class Mesh;
+    friend class Texture;
+    friend class Transform;
+    friend class Camera;
+    friend class Script;
+    friend class SceneManager;
 public:
 
-    GameObject();
     GameObject(std::string name = "gameObject");
-    ~GameObject();
+    GameObject();
+    virtual ~GameObject();
 
     void Update(double dt);
     void Draw();
@@ -76,8 +83,17 @@ public:
     void CreateUID();
     uint32 GetUID() { return UID; }
 
+    /*STATIC FUNCTIONS*/
+    __declspec(dllexport) GameObject* FindWithName(std::string name);
+    //static GameObject* FindWithTag(std::string tag);
+
     json SaveGameObject();
     void LoadGameObject(const json& gameObjectJSON);
+
+protected:
+    virtual void OnStart(){}
+    virtual void OnUpdate(double dt){}
+    virtual void OnDestroy(){}
 
 public:
     std::weak_ptr<GameObject> parent;
@@ -86,6 +102,7 @@ public:
 
 private:
     std::string name;
+    std::string tag;
     std::vector<std::unique_ptr<Component>> components;
     uint32_t UID;
     bool enabled;

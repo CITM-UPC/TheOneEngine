@@ -19,8 +19,9 @@ enum class ComponentType
 	Unknown
 };
 
-class Component
+class __declspec(dllexport) Component
 {
+    friend class Script;
 public:
 
     Component(std::shared_ptr<GameObject> containerGO, ComponentType type);
@@ -49,12 +50,13 @@ public:
     virtual void LoadComponent(const json& transformJSON) = 0;
 
 protected:
-    std::weak_ptr<GameObject> containerGO;
+    
     ComponentType type;
     std::string name;
 
     uint32_t UID;
 public:
+    std::weak_ptr<GameObject> containerGO;
     bool enabled;
 };
 
