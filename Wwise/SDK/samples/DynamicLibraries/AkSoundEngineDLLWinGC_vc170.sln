@@ -1,0 +1,271 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Ak3DAudioBedMixer", "Ak3DAudioBedMixer\WinGC\Ak3DAudioBedMixer_vc170.vcxproj", "{7063654B-3A66-8D59-2B88-9908A81C50A6}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkAudioInput", "AkAudioInput\WinGC\AkAudioInput_vc170.vcxproj", "{530FF70C-1007-5954-52D7-50A909435ACE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkCompressor", "AkCompressor\WinGC\AkCompressor_vc170.vcxproj", "{E03DD864-1FD4-9CD2-8928-C2CC3852AE48}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkConvolutionReverb", "AkConvolutionReverb\WinGC\AkConvolutionReverb_vc170.vcxproj", "{18E7F064-AF5C-04C3-FEEA-FB1714A5855E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkDelay", "AkDelay\WinGC\AkDelay_vc170.vcxproj", "{3BA5F720-EC1F-0D04-F634-1EA0C887A7DA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkExpander", "AkExpander\WinGC\AkExpander_vc170.vcxproj", "{22D3282C-71A5-4299-AE27-B556DABB1334}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkFlanger", "AkFlanger\WinGC\AkFlanger_vc170.vcxproj", "{EB841064-1B39-3A80-B28D-44CB1FC3B8DA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkGain", "AkGain\WinGC\AkGain_vc170.vcxproj", "{404AA5DC-83AB-B034-AA0C-82F654A5683B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkGuitarDistortion", "AkGuitarDistortion\WinGC\AkGuitarDistortion_vc170.vcxproj", "{E0AAC6D4-6D4B-36AF-E98A-37F0266BA668}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkHarmonizer", "AkHarmonizer\WinGC\AkHarmonizer_vc170.vcxproj", "{D8910EF5-4341-B4F3-2884-86EA34FCD2E8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkImpacter", "AkImpacter\WinGC\AkImpacter_vc170.vcxproj", "{C4D45B05-A6E8-28F7-7922-218E5F2BA9EC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkMatrixReverb", "AkMatrixReverb\WinGC\AkMatrixReverb_vc170.vcxproj", "{37F9FCC8-B47C-546B-8935-F18529DCBCC1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkMotion", "AkMotion\WinGC\AkMotion_vc170.vcxproj", "{01BE2247-397F-53E1-72C5-366D21989026}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkParametricEQ", "AkParametricEQ\WinGC\AkParametricEQ_vc170.vcxproj", "{9D46EC0E-709C-E101-9551-4B289BD79F5F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkPeakLimiter", "AkPeakLimiter\WinGC\AkPeakLimiter_vc170.vcxproj", "{2D8BD8B5-C313-5A71-DD33-1E899F0C7D92}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkPitchShifter", "AkPitchShifter\WinGC\AkPitchShifter_vc170.vcxproj", "{BC7CBCC5-83AA-BF20-D8E7-45A361FBC546}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkRecorder", "AkRecorder\WinGC\AkRecorder_vc170.vcxproj", "{0FBAE164-7DF4-267A-6E6E-7513082A0EA7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkReflect", "AkReflect\WinGC\AkReflect_vc170.vcxproj", "{6162E64E-1AD3-64A3-EEF6-F3BEDE67F9EF}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkRoomVerb", "AkRoomVerb\WinGC\AkRoomVerb_vc170.vcxproj", "{CE97280E-02DB-A91C-FDE5-C96F49F78762}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkSilenceGenerator", "AkSilenceGenerator\WinGC\AkSilenceGenerator_vc170.vcxproj", "{11AA3AFE-0992-E144-4130-D155811C6C76}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkSineTone", "AkSineTone\WinGC\AkSineTone_vc170.vcxproj", "{8351D652-4293-542A-1D33-E74014C3A5AD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkSoundSeedAir", "AkSoundSeedAir\WinGC\AkSoundSeedAir_vc170.vcxproj", "{D5E3B468-E732-4C3A-8CD2-755D0C2C2006}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkSoundSeedGrain", "AkSoundSeedGrain\WinGC\AkSoundSeedGrain_vc170.vcxproj", "{FA49FE12-CDCB-44DD-E689-CC1772ECAAC8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkStereoDelay", "AkStereoDelay\WinGC\AkStereoDelay_vc170.vcxproj", "{136AB8C2-E2EF-70F4-062A-9ECC4A0A8CC8}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkSynthOne", "AkSynthOne\WinGC\AkSynthOne_vc170.vcxproj", "{C157D4B3-BF14-0509-DD13-C16F7EADB2DC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkTimeStretch", "AkTimeStretch\WinGC\AkTimeStretch_vc170.vcxproj", "{01158C3B-C208-7518-5C29-FB2E9CC781A0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkToneGen", "AkToneGen\WinGC\AkToneGen_vc170.vcxproj", "{A3B60B71-091C-DAEF-60AF-0D9AD3B31061}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkTremolo", "AkTremolo\WinGC\AkTremolo_vc170.vcxproj", "{8910A3C1-5E1C-3B24-5A35-18577C486F08}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Auro", "Auro\WinGC\Auro_vc170.vcxproj", "{AA48A5A7-98B8-2732-D9BB-E40A2AAA287F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MasteringSuite", "MasteringSuite\WinGC\MasteringSuite_vc170.vcxproj", "{6C48D959-BC1D-259B-B3F9-950BC1923C3E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "McDSP", "McDSP\WinGC\McDSP_vc170.vcxproj", "{37F4A39D-8EC1-6511-2949-F41B66B29121}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iZotope", "iZotope\WinGC\iZotope_vc170.vcxproj", "{150AE6A4-9142-4FCE-4272-1F2CC044B319}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Gaming.Desktop.x64 = Debug|Gaming.Desktop.x64
+		Profile|Gaming.Desktop.x64 = Profile|Gaming.Desktop.x64
+		Release|Gaming.Desktop.x64 = Release|Gaming.Desktop.x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7063654B-3A66-8D59-2B88-9908A81C50A6}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{7063654B-3A66-8D59-2B88-9908A81C50A6}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{7063654B-3A66-8D59-2B88-9908A81C50A6}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{7063654B-3A66-8D59-2B88-9908A81C50A6}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{7063654B-3A66-8D59-2B88-9908A81C50A6}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{7063654B-3A66-8D59-2B88-9908A81C50A6}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{530FF70C-1007-5954-52D7-50A909435ACE}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{530FF70C-1007-5954-52D7-50A909435ACE}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{530FF70C-1007-5954-52D7-50A909435ACE}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{530FF70C-1007-5954-52D7-50A909435ACE}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{530FF70C-1007-5954-52D7-50A909435ACE}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{530FF70C-1007-5954-52D7-50A909435ACE}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{E03DD864-1FD4-9CD2-8928-C2CC3852AE48}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{E03DD864-1FD4-9CD2-8928-C2CC3852AE48}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{E03DD864-1FD4-9CD2-8928-C2CC3852AE48}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{E03DD864-1FD4-9CD2-8928-C2CC3852AE48}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{E03DD864-1FD4-9CD2-8928-C2CC3852AE48}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{E03DD864-1FD4-9CD2-8928-C2CC3852AE48}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{18E7F064-AF5C-04C3-FEEA-FB1714A5855E}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{18E7F064-AF5C-04C3-FEEA-FB1714A5855E}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{18E7F064-AF5C-04C3-FEEA-FB1714A5855E}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{18E7F064-AF5C-04C3-FEEA-FB1714A5855E}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{18E7F064-AF5C-04C3-FEEA-FB1714A5855E}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{18E7F064-AF5C-04C3-FEEA-FB1714A5855E}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{3BA5F720-EC1F-0D04-F634-1EA0C887A7DA}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{3BA5F720-EC1F-0D04-F634-1EA0C887A7DA}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{3BA5F720-EC1F-0D04-F634-1EA0C887A7DA}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{3BA5F720-EC1F-0D04-F634-1EA0C887A7DA}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{3BA5F720-EC1F-0D04-F634-1EA0C887A7DA}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{3BA5F720-EC1F-0D04-F634-1EA0C887A7DA}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{22D3282C-71A5-4299-AE27-B556DABB1334}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{22D3282C-71A5-4299-AE27-B556DABB1334}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{22D3282C-71A5-4299-AE27-B556DABB1334}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{22D3282C-71A5-4299-AE27-B556DABB1334}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{22D3282C-71A5-4299-AE27-B556DABB1334}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{22D3282C-71A5-4299-AE27-B556DABB1334}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{EB841064-1B39-3A80-B28D-44CB1FC3B8DA}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{EB841064-1B39-3A80-B28D-44CB1FC3B8DA}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{EB841064-1B39-3A80-B28D-44CB1FC3B8DA}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{EB841064-1B39-3A80-B28D-44CB1FC3B8DA}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{EB841064-1B39-3A80-B28D-44CB1FC3B8DA}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{EB841064-1B39-3A80-B28D-44CB1FC3B8DA}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{404AA5DC-83AB-B034-AA0C-82F654A5683B}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{404AA5DC-83AB-B034-AA0C-82F654A5683B}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{404AA5DC-83AB-B034-AA0C-82F654A5683B}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{404AA5DC-83AB-B034-AA0C-82F654A5683B}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{404AA5DC-83AB-B034-AA0C-82F654A5683B}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{404AA5DC-83AB-B034-AA0C-82F654A5683B}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{E0AAC6D4-6D4B-36AF-E98A-37F0266BA668}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{E0AAC6D4-6D4B-36AF-E98A-37F0266BA668}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{E0AAC6D4-6D4B-36AF-E98A-37F0266BA668}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{E0AAC6D4-6D4B-36AF-E98A-37F0266BA668}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{E0AAC6D4-6D4B-36AF-E98A-37F0266BA668}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{E0AAC6D4-6D4B-36AF-E98A-37F0266BA668}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{D8910EF5-4341-B4F3-2884-86EA34FCD2E8}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{D8910EF5-4341-B4F3-2884-86EA34FCD2E8}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{D8910EF5-4341-B4F3-2884-86EA34FCD2E8}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{D8910EF5-4341-B4F3-2884-86EA34FCD2E8}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{D8910EF5-4341-B4F3-2884-86EA34FCD2E8}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{D8910EF5-4341-B4F3-2884-86EA34FCD2E8}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{C4D45B05-A6E8-28F7-7922-218E5F2BA9EC}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{C4D45B05-A6E8-28F7-7922-218E5F2BA9EC}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{C4D45B05-A6E8-28F7-7922-218E5F2BA9EC}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{C4D45B05-A6E8-28F7-7922-218E5F2BA9EC}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{C4D45B05-A6E8-28F7-7922-218E5F2BA9EC}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{C4D45B05-A6E8-28F7-7922-218E5F2BA9EC}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{37F9FCC8-B47C-546B-8935-F18529DCBCC1}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{37F9FCC8-B47C-546B-8935-F18529DCBCC1}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{37F9FCC8-B47C-546B-8935-F18529DCBCC1}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{37F9FCC8-B47C-546B-8935-F18529DCBCC1}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{37F9FCC8-B47C-546B-8935-F18529DCBCC1}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{37F9FCC8-B47C-546B-8935-F18529DCBCC1}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{01BE2247-397F-53E1-72C5-366D21989026}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{01BE2247-397F-53E1-72C5-366D21989026}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{01BE2247-397F-53E1-72C5-366D21989026}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{01BE2247-397F-53E1-72C5-366D21989026}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{01BE2247-397F-53E1-72C5-366D21989026}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{01BE2247-397F-53E1-72C5-366D21989026}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{9D46EC0E-709C-E101-9551-4B289BD79F5F}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{9D46EC0E-709C-E101-9551-4B289BD79F5F}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{9D46EC0E-709C-E101-9551-4B289BD79F5F}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{9D46EC0E-709C-E101-9551-4B289BD79F5F}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{9D46EC0E-709C-E101-9551-4B289BD79F5F}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{9D46EC0E-709C-E101-9551-4B289BD79F5F}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{2D8BD8B5-C313-5A71-DD33-1E899F0C7D92}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{2D8BD8B5-C313-5A71-DD33-1E899F0C7D92}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{2D8BD8B5-C313-5A71-DD33-1E899F0C7D92}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{2D8BD8B5-C313-5A71-DD33-1E899F0C7D92}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{2D8BD8B5-C313-5A71-DD33-1E899F0C7D92}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{2D8BD8B5-C313-5A71-DD33-1E899F0C7D92}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{BC7CBCC5-83AA-BF20-D8E7-45A361FBC546}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{BC7CBCC5-83AA-BF20-D8E7-45A361FBC546}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{BC7CBCC5-83AA-BF20-D8E7-45A361FBC546}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{BC7CBCC5-83AA-BF20-D8E7-45A361FBC546}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{BC7CBCC5-83AA-BF20-D8E7-45A361FBC546}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{BC7CBCC5-83AA-BF20-D8E7-45A361FBC546}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{0FBAE164-7DF4-267A-6E6E-7513082A0EA7}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{0FBAE164-7DF4-267A-6E6E-7513082A0EA7}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{0FBAE164-7DF4-267A-6E6E-7513082A0EA7}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{0FBAE164-7DF4-267A-6E6E-7513082A0EA7}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{0FBAE164-7DF4-267A-6E6E-7513082A0EA7}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{0FBAE164-7DF4-267A-6E6E-7513082A0EA7}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{6162E64E-1AD3-64A3-EEF6-F3BEDE67F9EF}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{6162E64E-1AD3-64A3-EEF6-F3BEDE67F9EF}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{6162E64E-1AD3-64A3-EEF6-F3BEDE67F9EF}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{6162E64E-1AD3-64A3-EEF6-F3BEDE67F9EF}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{6162E64E-1AD3-64A3-EEF6-F3BEDE67F9EF}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{6162E64E-1AD3-64A3-EEF6-F3BEDE67F9EF}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{CE97280E-02DB-A91C-FDE5-C96F49F78762}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{CE97280E-02DB-A91C-FDE5-C96F49F78762}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{CE97280E-02DB-A91C-FDE5-C96F49F78762}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{CE97280E-02DB-A91C-FDE5-C96F49F78762}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{CE97280E-02DB-A91C-FDE5-C96F49F78762}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{CE97280E-02DB-A91C-FDE5-C96F49F78762}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{11AA3AFE-0992-E144-4130-D155811C6C76}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{11AA3AFE-0992-E144-4130-D155811C6C76}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{11AA3AFE-0992-E144-4130-D155811C6C76}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{11AA3AFE-0992-E144-4130-D155811C6C76}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{11AA3AFE-0992-E144-4130-D155811C6C76}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{11AA3AFE-0992-E144-4130-D155811C6C76}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{8351D652-4293-542A-1D33-E74014C3A5AD}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{8351D652-4293-542A-1D33-E74014C3A5AD}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{8351D652-4293-542A-1D33-E74014C3A5AD}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{8351D652-4293-542A-1D33-E74014C3A5AD}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{8351D652-4293-542A-1D33-E74014C3A5AD}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{8351D652-4293-542A-1D33-E74014C3A5AD}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{D5E3B468-E732-4C3A-8CD2-755D0C2C2006}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{D5E3B468-E732-4C3A-8CD2-755D0C2C2006}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{D5E3B468-E732-4C3A-8CD2-755D0C2C2006}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{D5E3B468-E732-4C3A-8CD2-755D0C2C2006}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{D5E3B468-E732-4C3A-8CD2-755D0C2C2006}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{D5E3B468-E732-4C3A-8CD2-755D0C2C2006}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{FA49FE12-CDCB-44DD-E689-CC1772ECAAC8}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{FA49FE12-CDCB-44DD-E689-CC1772ECAAC8}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{FA49FE12-CDCB-44DD-E689-CC1772ECAAC8}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{FA49FE12-CDCB-44DD-E689-CC1772ECAAC8}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{FA49FE12-CDCB-44DD-E689-CC1772ECAAC8}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{FA49FE12-CDCB-44DD-E689-CC1772ECAAC8}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{136AB8C2-E2EF-70F4-062A-9ECC4A0A8CC8}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{136AB8C2-E2EF-70F4-062A-9ECC4A0A8CC8}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{136AB8C2-E2EF-70F4-062A-9ECC4A0A8CC8}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{136AB8C2-E2EF-70F4-062A-9ECC4A0A8CC8}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{136AB8C2-E2EF-70F4-062A-9ECC4A0A8CC8}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{136AB8C2-E2EF-70F4-062A-9ECC4A0A8CC8}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{C157D4B3-BF14-0509-DD13-C16F7EADB2DC}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{C157D4B3-BF14-0509-DD13-C16F7EADB2DC}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{C157D4B3-BF14-0509-DD13-C16F7EADB2DC}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{C157D4B3-BF14-0509-DD13-C16F7EADB2DC}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{C157D4B3-BF14-0509-DD13-C16F7EADB2DC}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{C157D4B3-BF14-0509-DD13-C16F7EADB2DC}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{01158C3B-C208-7518-5C29-FB2E9CC781A0}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{01158C3B-C208-7518-5C29-FB2E9CC781A0}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{01158C3B-C208-7518-5C29-FB2E9CC781A0}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{01158C3B-C208-7518-5C29-FB2E9CC781A0}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{01158C3B-C208-7518-5C29-FB2E9CC781A0}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{01158C3B-C208-7518-5C29-FB2E9CC781A0}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{A3B60B71-091C-DAEF-60AF-0D9AD3B31061}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{A3B60B71-091C-DAEF-60AF-0D9AD3B31061}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{A3B60B71-091C-DAEF-60AF-0D9AD3B31061}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{A3B60B71-091C-DAEF-60AF-0D9AD3B31061}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{A3B60B71-091C-DAEF-60AF-0D9AD3B31061}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{A3B60B71-091C-DAEF-60AF-0D9AD3B31061}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{8910A3C1-5E1C-3B24-5A35-18577C486F08}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{8910A3C1-5E1C-3B24-5A35-18577C486F08}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{8910A3C1-5E1C-3B24-5A35-18577C486F08}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{8910A3C1-5E1C-3B24-5A35-18577C486F08}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{8910A3C1-5E1C-3B24-5A35-18577C486F08}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{8910A3C1-5E1C-3B24-5A35-18577C486F08}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{AA48A5A7-98B8-2732-D9BB-E40A2AAA287F}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{AA48A5A7-98B8-2732-D9BB-E40A2AAA287F}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{AA48A5A7-98B8-2732-D9BB-E40A2AAA287F}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{AA48A5A7-98B8-2732-D9BB-E40A2AAA287F}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{AA48A5A7-98B8-2732-D9BB-E40A2AAA287F}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{AA48A5A7-98B8-2732-D9BB-E40A2AAA287F}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{6C48D959-BC1D-259B-B3F9-950BC1923C3E}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{6C48D959-BC1D-259B-B3F9-950BC1923C3E}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{6C48D959-BC1D-259B-B3F9-950BC1923C3E}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{6C48D959-BC1D-259B-B3F9-950BC1923C3E}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{6C48D959-BC1D-259B-B3F9-950BC1923C3E}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{6C48D959-BC1D-259B-B3F9-950BC1923C3E}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{37F4A39D-8EC1-6511-2949-F41B66B29121}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{37F4A39D-8EC1-6511-2949-F41B66B29121}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{37F4A39D-8EC1-6511-2949-F41B66B29121}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{37F4A39D-8EC1-6511-2949-F41B66B29121}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{37F4A39D-8EC1-6511-2949-F41B66B29121}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{37F4A39D-8EC1-6511-2949-F41B66B29121}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+		{150AE6A4-9142-4FCE-4272-1F2CC044B319}.Debug|Gaming.Desktop.x64.ActiveCfg = Debug|Gaming.Desktop.x64
+		{150AE6A4-9142-4FCE-4272-1F2CC044B319}.Debug|Gaming.Desktop.x64.Build.0 = Debug|Gaming.Desktop.x64
+		{150AE6A4-9142-4FCE-4272-1F2CC044B319}.Profile|Gaming.Desktop.x64.ActiveCfg = Profile|Gaming.Desktop.x64
+		{150AE6A4-9142-4FCE-4272-1F2CC044B319}.Profile|Gaming.Desktop.x64.Build.0 = Profile|Gaming.Desktop.x64
+		{150AE6A4-9142-4FCE-4272-1F2CC044B319}.Release|Gaming.Desktop.x64.ActiveCfg = Release|Gaming.Desktop.x64
+		{150AE6A4-9142-4FCE-4272-1F2CC044B319}.Release|Gaming.Desktop.x64.Build.0 = Release|Gaming.Desktop.x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

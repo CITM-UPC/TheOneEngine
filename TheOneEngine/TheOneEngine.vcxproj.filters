@@ -54,8 +54,11 @@
     <ClInclude Include="Graphic.h">
       <Filter>GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>GameObject\Components</Filter>
+    <ClInclude Include="CubeImmediateMode.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,8 +86,11 @@
     <ClCompile Include="Mesh.cpp">
       <Filter>GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>GameObject\Components</Filter>
+    <ClCompile Include="CubeImmediateMode.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

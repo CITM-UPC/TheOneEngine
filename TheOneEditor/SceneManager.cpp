@@ -10,7 +10,7 @@ namespace fs = std::filesystem;
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 {
     meshLoader = new MeshLoader();
-    rootSceneGO = std::make_shared<GameObject>("Scene");;
+    rootSceneGO = std::make_shared<GameObject>("Scene");
 }
 
 SceneManager::~SceneManager()
@@ -48,6 +48,12 @@ bool SceneManager::Start()
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
 
+    spatialObject2 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
+    spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
+    
+    spatialObject1 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
+    spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });
+
     return true;
 }
 
@@ -84,6 +90,15 @@ bool SceneManager::Update(double dt)
         demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, 0.0);
         rotationAngle = 0.0;
     }
+
+    app->engine->audio->SetSpatial1Transform(
+        spatialObject1->GetComponent<Transform>()->getPosition().x,
+        spatialObject1->GetComponent<Transform>()->getPosition().y,
+        spatialObject1->GetComponent<Transform>()->getPosition().z);
+    app->engine->audio->SetSpatial2Transform(
+        spatialObject2->GetComponent<Transform>()->getPosition().x,
+        spatialObject2->GetComponent<Transform>()->getPosition().y,
+        0);
 
     return true;
 }
@@ -213,6 +228,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             {
                 meshGO.get()->parent = emptyParent;
                 emptyParent.get()->children.push_back(meshGO);
+
             }
         }
 
@@ -234,6 +250,8 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                 }
             }
         }*/
+
+        
     }
 
     return nullptr;
@@ -320,7 +338,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
 
     rootSceneGO.get()->children.emplace_back(cubeGO);
 
-    return nullptr;
+    return cubeGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateSphere()
@@ -338,9 +356,88 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()
 {
- 
+    return CreateMeshGO("Assets/Meshes/mf.fbx");
+}
 
-    return CreateMeshGO("Assets/Meshes/mf.fbx");;
+std::shared_ptr<GameObject> SceneManager::CreateTeapot(std::string path)
+{
+    std::vector<MeshBufferedData> meshes = meshLoader->LoadMesh(path);
+    std::vector<std::shared_ptr<Texture>> textures = meshLoader->LoadTexture(path);
+
+    if (!meshes.empty())
+    {
+        std::string name = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
+
+        //Take name before editing for meshData lookUp
+        std::string folderName = "Library/Meshes/" + name + "/";
+
+        name = GenerateUniqueName(name);
+
+        // Create emptyGO parent if meshes >1
+        bool isSingleMesh = meshes.size() > 1 ? false : true;
+        std::shared_ptr<GameObject> emptyParent = isSingleMesh ? nullptr : CreateEmptyGO();
+        if (!isSingleMesh) emptyParent.get()->SetName(name);
+
+        std::vector<std::string> fileNames;
+
+        uint fileCount = 0;
+
+        for (const auto& entry : fs::directory_iterator(folderName))
+        {
+            if (fs::is_regular_file(entry))
+            {
+                std::string path = entry.path().filename().string();
+                fileNames.push_back(entry.path().string());
+                fileCount++;
+            }
+        }
+
+        for (auto& mesh : meshes)
+        {
+            std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
+            meshGO.get()->AddComponent<Transform>();
+            meshGO.get()->AddComponent<Mesh>();
+            //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
+
+            meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+            meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
+            //meshGO.get()->GetComponent<Texture>() = &meshGO.get()->GetComponent<Mesh>()->mesh.texture;
+
+            //Load MeshData from custom files
+            for (const auto& file : fileNames)
+            {
+                std::string fileName = file.substr(file.find_last_of("\\/") + 1, file.find_last_of('.') - file.find_last_of("\\/") - 1);
+                if (fileName == mesh.meshName)
+                {
+                    MeshData mData = meshLoader->deserializeMeshData(file);
+
+                    meshGO.get()->GetComponent<Mesh>()->meshData = mData;
+                    meshGO.get()->GetComponent<Mesh>()->path = file;
+                }
+
+            }
+
+            // hekbas: need to set Transform?
+
+            meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
+
+            if (isSingleMesh)
+            {
+                meshGO.get()->parent = rootSceneGO;
+                rootSceneGO.get()->children.push_back(meshGO);
+                return meshGO;
+            }
+            else
+            {
+                meshGO.get()->parent = emptyParent;
+                emptyParent.get()->children.push_back(meshGO);
+                return emptyParent;
+
+            }
+        }
+    }
+    
+    return nullptr;
 }
 
 uint SceneManager::GetNumberGO() const

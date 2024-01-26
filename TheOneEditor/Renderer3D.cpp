@@ -35,6 +35,18 @@ bool Renderer3D::Start()
     sceneCamera.get()->AddComponent<Transform>();
     sceneCamera.get()->AddComponent<Camera>();
     sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 15, -70));
+    
+    app->engine->audio->SetListenerTransform(
+        sceneCamera.get()->GetComponent<Transform>()->getPosition().x, 
+        sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
+        sceneCamera.get()->GetComponent<Transform>()->getPosition().z, 
+        sceneCamera.get()->GetComponent<Transform>()->getForward().x, 
+        sceneCamera.get()->GetComponent<Transform>()->getForward().y,
+        sceneCamera.get()->GetComponent<Transform>()->getForward().z, 
+        sceneCamera.get()->GetComponent<Transform>()->getUp().x,
+        sceneCamera.get()->GetComponent<Transform>()->getUp().y,
+        sceneCamera.get()->GetComponent<Transform>()->getUp().z);
+
     //hekbas check this
     /*sceneCamera.get()->GetComponent<Camera>()->center = {0, 0, 0};
     sceneCamera.get()->GetComponent<Camera>()->updateViewMatrix();*/
@@ -61,6 +73,26 @@ bool Renderer3D::Update(double dt)
 
     app->engine->Update(dt);
 
+    app->engine->audio->SetListenerTransform(
+        sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
+        sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
+        sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
+        sceneCamera.get()->GetComponent<Transform>()->getForward().x,
+        sceneCamera.get()->GetComponent<Transform>()->getForward().y,
+        sceneCamera.get()->GetComponent<Transform>()->getForward().z,
+        sceneCamera.get()->GetComponent<Transform>()->getUp().x,
+        sceneCamera.get()->GetComponent<Transform>()->getUp().y,
+        sceneCamera.get()->GetComponent<Transform>()->getUp().z);
+
+    app->engine->audio->SetSpatial1Transform(
+        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().x,
+        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().y,
+        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().z);
+    app->engine->audio->SetSpatial2Transform(
+        app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().x,
+        app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().y,
+        0);
+
     return true;
 }
 
@@ -83,7 +115,7 @@ bool Renderer3D::PostUpdate()
 
 bool Renderer3D::CleanUp()
 {
-
+    app->engine->CleanUp();
     return true;
 }
 

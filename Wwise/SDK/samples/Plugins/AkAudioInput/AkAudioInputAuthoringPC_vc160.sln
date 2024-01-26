@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AudioInput", "Sources\WwisePlugin\AkAudioInput.vcxproj", "{6749EA5D-5301-2CAB-BC08-0507A8DFC69B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3036D990-FC34-1673-4861-6389A906009B} = {3036D990-FC34-1673-4861-6389A906009B}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{6EEF9964-DAAF-159B-A3EA-5E180F6A5A77}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{E14B3B89-4DB8-F683-16AC-8EE182D718EC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AkAudioInputSource", "Sources\AudioEngineFX\Win32\AkAudioInputSourceWindows_vc160.vcxproj", "{3036D990-FC34-1673-4861-6389A906009B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6749EA5D-5301-2CAB-BC08-0507A8DFC69B}.Debug|x64.ActiveCfg = Debug|x64
+		{6749EA5D-5301-2CAB-BC08-0507A8DFC69B}.Debug|x64.Build.0 = Debug|x64
+		{6749EA5D-5301-2CAB-BC08-0507A8DFC69B}.Release|x64.ActiveCfg = Release|x64
+		{6749EA5D-5301-2CAB-BC08-0507A8DFC69B}.Release|x64.Build.0 = Release|x64
+		{3036D990-FC34-1673-4861-6389A906009B}.Debug|x64.ActiveCfg = Debug|x64
+		{3036D990-FC34-1673-4861-6389A906009B}.Debug|x64.Build.0 = Debug|x64
+		{3036D990-FC34-1673-4861-6389A906009B}.Release|x64.ActiveCfg = Profile|x64
+		{3036D990-FC34-1673-4861-6389A906009B}.Release|x64.Build.0 = Profile|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E14B3B89-4DB8-F683-16AC-8EE182D718EC} = {6EEF9964-DAAF-159B-A3EA-5E180F6A5A77}
+		{3036D990-FC34-1673-4861-6389A906009B} = {E14B3B89-4DB8-F683-16AC-8EE182D718EC}
+	EndGlobalSection
+EndGlobal
