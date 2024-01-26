@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "GameObject.h"
 
+#include <Windows.h>
 #include <vector>
 #include <memory>
 #include <string>
@@ -79,23 +80,13 @@ public:
     json SaveComponent();
     void LoadComponent(const json& meshJSON);
 
-	/*GameObject* Instance = nullptr;
-
-	GameObject*(*InstantiateScript)();
-	void (*DestroyScript)(Script*);*/
-
-	//Historn: Try to create a script in the DLL Like TankMovement.h/.cpp and add functionality
-	/*template<typename T>
-	void Bind()
-	{
-		InstantiateScript = []() { return new T(); };
-		DestroyScript = [](Script* script) { delete script->Instance; script->Instance = nullptr; };
-	}*/
+	void LoadScript(HMODULE _dllHandle, std::string name);
 
 public:
     bool active;
 private:
     std::string path;
+	void* scriptData_ptr = nullptr;
 	//InspectorScriptData scriptData;
 };
 #endif // !__SCRIPT_H__

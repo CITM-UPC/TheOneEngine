@@ -10,6 +10,7 @@
 #include "..\TheOneEngine\Camera.h"
 #include "..\TheOneEngine\Texture.h"
 #include "..\TheOneEngine\Script.h"
+#include "..\TheOneEngine\CPPScript.h"
 
 /*EDITOR ACCESSIBLE COMPONENTS*/
 #include "..\TheOneEditor\SceneManager.h"

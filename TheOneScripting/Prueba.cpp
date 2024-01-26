@@ -1,6 +1,14 @@
 #include "pch.h"
 #include "Prueba.h"
 
+Prueba::Prueba()
+{
+}
+
+Prueba::~Prueba()
+{
+}
+
 void Prueba::Start()
 {
 	/*goPrueba = GameObject::FindWithName("Lower_Tank");

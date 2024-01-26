@@ -1,5 +1,9 @@
 #include "TankMovement.h"
 
+TankMovement::TankMovement()
+{
+}
+
 TankMovement::~TankMovement()
 {
 }
@@ -8,7 +12,7 @@ void TankMovement::Start()
 {
 	//GameObject* root = SceneManager::GetRootSceneGO();
 
-	GameObject* wheels = containerGO.lock().get()->FindWithName("Lower_Tank");
+	/*GameObject* wheels = containerGO.lock().get()->FindWithName("Lower_Tank");
 	if (wheels != nullptr)
 	{
 		wheels_transform = (Transform*)wheels->GetComponent<Transform>();
@@ -18,7 +22,7 @@ void TankMovement::Start()
 	if (turret != nullptr)
 	{
 		turret_transform = (Transform*)turret->GetComponent<Transform>();
-	}
+	}*/
 }
 
 void TankMovement::Update(double dt)

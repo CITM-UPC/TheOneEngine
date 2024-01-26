@@ -57,3 +57,10 @@ void Script::LoadComponent(const json& scriptJSON)
     }
 
 }
+
+void Script::LoadScript(HMODULE _dllHandle, std::string name)
+{
+    //Load here script attached
+    void* (*Creator)() = (void* (*)())GetProcAddress(_dllHandle, std::string("Create" + std::string(name)).data());
+    
+}

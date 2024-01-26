@@ -1,6 +1,5 @@
 #include "Mesh.h"
 #include "../TheOneEditor/Log.h"
-#include "../TheOneEditor/SceneManager.h"
 #include "GameObject.h"
 #include "Transform.h"
 //#include <GL/glew.h>

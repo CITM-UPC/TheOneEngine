@@ -2,8 +2,12 @@
 
 #include "TheOneScripting.h"
 
-class THEONESCRIPTING_API Prueba : public Script
+class THEONESCRIPTING_API Prueba : public CPPScript
 {
+public:
+	Prueba();
+	virtual ~Prueba();
+
 	void Start();
 
 	void Update(double dt);

@@ -2,8 +2,9 @@
 
 #include "TheOneScripting.h"
 
-class THEONESCRIPTING_API TankMovement : public Script
+class THEONESCRIPTING_API TankMovement : public CPPScript
 {
+public:
 	TankMovement();
 	virtual ~TankMovement();
 
@@ -13,7 +14,7 @@ class THEONESCRIPTING_API TankMovement : public Script
 
 public:
 
-	GameObject bullet;
+	//GameObject bullet;
 	Transform* wheels_transform = nullptr;
 	Transform* turret_transform = nullptr;
 
