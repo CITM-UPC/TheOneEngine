@@ -11,6 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioListener.h" />
+    <ClInclude Include="AudioObject.h" />
+    <ClInclude Include="AudioSource.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Defs.h" />
@@ -24,6 +27,9 @@
     <ClInclude Include="UIDGen.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioListener.cpp" />
+    <ClCompile Include="AudioObject.cpp" />
+    <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />

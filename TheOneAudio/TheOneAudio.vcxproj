@@ -176,7 +176,7 @@
     <ClInclude Include="..\Wwise\SDK\include\Win32\AkFileHelpers.h" />
     <ClInclude Include="..\Wwise\SDK\include\Win32\stdafx.h" />
     <ClInclude Include="AudioCore.h" />
-    <ClInclude Include="AudioUtility.h" />
+    <ClInclude Include="AudioUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIO.inl" />

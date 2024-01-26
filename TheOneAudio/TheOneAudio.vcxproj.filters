@@ -100,7 +100,7 @@
     <ClInclude Include="AudioCore.h">
       <Filter>AudioEngine\Core</Filter>
     </ClInclude>
-    <ClInclude Include="AudioUtility.h">
+    <ClInclude Include="AudioUtils.h">
       <Filter>AudioEngine\Utils</Filter>
     </ClInclude>
   </ItemGroup>

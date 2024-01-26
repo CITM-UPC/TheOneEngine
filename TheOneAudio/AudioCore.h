@@ -2,7 +2,8 @@
 #define __AUDIOCORE_H__
 #pragma once
 
-#include "AudioUtility.h"
+// juls: Include in Editor or Engine when needed: #include "../TheOneAudio/AudioCore.h"
+#include "AudioUtils.h"
 
 class AudioEvent
 {

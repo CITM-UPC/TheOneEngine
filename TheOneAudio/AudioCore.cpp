@@ -29,24 +29,24 @@ AudioCore::AudioCore()
 
 bool AudioCore::InitEngine()
 {
-    if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Initialized the Memory Manager.");
-    else LOG(LogType::LOG_AUDIO, "Could not initialize the Memory Manager.");
+    if (InitMemoryManager())  LOG(LogType::LOG_AUDIO, "Memory Manager succesfully initialized");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Memory Manager");
 
-    if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Initialized the Streaming Manager.");
-    else LOG(LogType::LOG_AUDIO, "Could not initialize the Streaming Manager.");
+    if (InitStreamingManager()) LOG(LogType::LOG_AUDIO, "Streaming Manager succesfully initialized");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Streaming Manager");
 
-    if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Sound Engine.");
-    else LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine.");
+    if (InitSoundEngine()) LOG(LogType::LOG_AUDIO, "Sound Engine was succesfully initialized");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine");
 
-    if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
-    else LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
+    if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Music Engine was succesfully initialized");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine");
 
-    if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
-    else LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio.");
+    if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Spatial Audio was succesfully initialized");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio");
 
 #ifndef AK_OPTIMIZED
-    if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Initialized communication.");
-    else LOG(LogType::LOG_AUDIO, "Could not initialize communication.");
+    if (InitCommunication()) LOG(LogType::LOG_AUDIO, "Communication was succesfully initialized");
+    else LOG(LogType::LOG_AUDIO, "Could not initialize communication");
 #endif // AK_OPTIMIZED
 
     return true;
@@ -59,7 +59,7 @@ bool AudioCore::InitMemoryManager()
 
     if (AK::MemoryMgr::Init(&memSettings) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "Could not create the memory manager.");
+        LOG(LogType::LOG_AUDIO, "Could not create the memory manager");
         return false;
     }
 
@@ -109,7 +109,7 @@ bool AudioCore::InitSoundEngine()
 
     if (AK::SoundEngine::Init(&initSettings, &platformInitSettings) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Sound Engine");
         return false;
     }
 
@@ -123,7 +123,7 @@ bool AudioCore::InitMusicEngine()
 
     if (AK::MusicEngine::Init(&musicInit) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine");
         return false;
     }
     return true;
@@ -136,7 +136,7 @@ bool AudioCore::InitSpatialAudio()
 
     if (AK::SpatialAudio::Init(settings) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio");
         return false;
     }
     return true;
@@ -151,7 +151,7 @@ bool AudioCore::InitCommunication()
     AK::Comm::GetDefaultInitSettings(commSettings);
     if (AK::Comm::Init(commSettings) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "Could not initialize the communications.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the communications");
         return false;
     }
 #endif // AK_OPTIMIZED
@@ -162,9 +162,9 @@ bool AudioCore::InitCommunication()
 void AudioCore::Awake()
 {
     if (InitEngine())
-        LOG(LogType::LOG_AUDIO, "Initialized the Audio Engine.");
+        LOG(LogType::LOG_AUDIO, "Audio Engine was succesfully initialized");
     else
-        LOG(LogType::LOG_AUDIO, "Could not initialize the Audio Engine.");
+        LOG(LogType::LOG_AUDIO, "Could not initialize the Audio Engine");
 
     //registering music to game object
     if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_BACKGROUNDMUSIC, "Music1") == AK_Success)
