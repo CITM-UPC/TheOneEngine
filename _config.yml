@@ -1,8 +1,8 @@
 title: TheOneEngine
 description: 
-url: "https://hekbas.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-baseurl: "/TheOneEngine_wp" # the subpath of your site, e.g. /blog
-repository: Hekbas/TheOneEngine_wp # for github-metadata
+url: "https://citm-upc.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "/TheOneEngine" # the subpath of your site, e.g. /blog
+repository: CITM-UPC/TheOneEngine # for github-metadata
 
 permalink: pretty
 

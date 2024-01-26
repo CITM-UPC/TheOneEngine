@@ -2,196 +2,196 @@
     "doc": "About TheOne",
     "title": "1. What is TheOne",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#1-what-is-theone",
+    "url": "/TheOneEngine/docs/2_TheOne/#1-what-is-theone",
     
     "relUrl": "/docs/2_TheOne/#1-what-is-theone"
   },"1": {
     "doc": "About TheOne",
     "title": "1.1. Description",
     "content": "TheOne is a game engine crafted with passion by Héctor Báscones, Arnau Jiménez and Júlia Serra. TheOne pillars are: . | Documentation | Simplicity | SOLID | . ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#11-description",
+    "url": "/TheOneEngine/docs/2_TheOne/#11-description",
     
     "relUrl": "/docs/2_TheOne/#11-description"
   },"2": {
     "doc": "About TheOne",
     "title": "1.2. Modules",
     "content": ". | TheOneEngine: Uses EngineCore, asset dependent, for any game built with TheOne | TheOneEditor: Uses EngineCore, expose game development to the end-user | . ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#12-modules",
+    "url": "/TheOneEngine/docs/2_TheOne/#12-modules",
     
     "relUrl": "/docs/2_TheOne/#12-modules"
   },"3": {
     "doc": "About TheOne",
     "title": "2. History of TheOne",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#2-history-of-theone",
+    "url": "/TheOneEngine/docs/2_TheOne/#2-history-of-theone",
     
     "relUrl": "/docs/2_TheOne/#2-history-of-theone"
   },"4": {
     "doc": "About TheOne",
     "title": "2.1. Context",
     "content": "TheOne is a project for the subject of Game Engines in our 3rd year at CITM (UPC). Our team (Héctor Báscones, Arnau Jiménez, Júlia Serra) had 3 months to create a game engine from scratch. ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#21-context",
+    "url": "/TheOneEngine/docs/2_TheOne/#21-context",
     
     "relUrl": "/docs/2_TheOne/#21-context"
   },"5": {
     "doc": "About TheOne",
     "title": "2.2. Goals",
     "content": "Our goals for this project were: . | Understanding the architecture of a game engine | Making a game engine as simple as possible | Producing SOLID modern code | Creating a game with our engine | Dealing with a long-term project | Developping documentation for developers and end-users | . ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#22-goals",
+    "url": "/TheOneEngine/docs/2_TheOne/#22-goals",
     
     "relUrl": "/docs/2_TheOne/#22-goals"
   },"6": {
     "doc": "About TheOne",
     "title": "2.3. Pre-production",
     "content": "We spent the first weeks designing our initial architecture, setting up the template with the libraries, and defining the rules to keep a maintainable code during the whole project. ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#23-pre-production",
+    "url": "/TheOneEngine/docs/2_TheOne/#23-pre-production",
     
     "relUrl": "/docs/2_TheOne/#23-pre-production"
   },"7": {
     "doc": "About TheOne",
     "title": "2.4. Production",
     "content": "The production made us realize that our idea of a game engine was naive. Our architecture evolved through the knowledge acquired in class. ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/#24-production",
+    "url": "/TheOneEngine/docs/2_TheOne/#24-production",
     
     "relUrl": "/docs/2_TheOne/#24-production"
   },"8": {
     "doc": "About TheOne",
     "title": "About TheOne",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/2_TheOne/",
+    "url": "/TheOneEngine/docs/2_TheOne/",
     
     "relUrl": "/docs/2_TheOne/"
   },"9": {
     "doc": "Features",
     "title": "3. Features",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/3_Features/#3-features",
+    "url": "/TheOneEngine/docs/3_Features/#3-features",
     
     "relUrl": "/docs/3_Features/#3-features"
   },"10": {
     "doc": "Features",
     "title": "3.1. Implemented",
     "content": "Here is a non-exhaustive list of TheOne main features: . | Model Import + Drag &amp; Drop | Texture Import | GameObject hierarchy + Component Pattern | Unity-like camera controls | Editor tools (main menu and windows) | Transform and Game Object hierarchy | Custom file format | Scene serialization | Play / Stop | Mouse picking | Frustum culling | Resource Management | . ",
-    "url": "/TheOneEngine_wp/docs/3_Features/#31-implemented",
+    "url": "/TheOneEngine/docs/3_Features/#31-implemented",
     
     "relUrl": "/docs/3_Features/#31-implemented"
   },"11": {
     "doc": "Features",
     "title": "3.2. To implement",
     "content": "Again, a non-exhaustive list of TheOne in-coming features: . | Custom shaders support | Rigidbody physics | Windows game building | More input device support (Gamepad) | Prefab system | Skeletal animation | Sound system | Particle System | . ",
-    "url": "/TheOneEngine_wp/docs/3_Features/#32-to-implement",
+    "url": "/TheOneEngine/docs/3_Features/#32-to-implement",
     
     "relUrl": "/docs/3_Features/#32-to-implement"
   },"12": {
     "doc": "Features",
     "title": "Features",
     "content": ". ",
-    "url": "/TheOneEngine_wp/docs/3_Features/",
+    "url": "/TheOneEngine/docs/3_Features/",
     
     "relUrl": "/docs/3_Features/"
   },"13": {
     "doc": "Details",
     "title": "4. Details",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/4_Details/#4-details",
+    "url": "/TheOneEngine/docs/4_Details/#4-details",
     
     "relUrl": "/docs/4_Details/#4-details"
   },"14": {
     "doc": "Details",
     "title": "4.1. Software",
     "content": ". | Visual Studio 2022 (v142) (previous versions should also be supported) | . ",
-    "url": "/TheOneEngine_wp/docs/4_Details/#41-software",
+    "url": "/TheOneEngine/docs/4_Details/#41-software",
     
     "relUrl": "/docs/4_Details/#41-software"
   },"15": {
     "doc": "Details",
     "title": "4.2. Dependencies",
     "content": ". | OpenGL + GLEW + GLM (Graphics API) | SDL2 (OpenGL Binding + Input) | Assimp (3D model loader) | DeVil (Image library) | rapidjson (JSON parser/generator) | imGui (GUI) | imPlot (2D plotting for ImGui) | . ",
-    "url": "/TheOneEngine_wp/docs/4_Details/#42-dependencies",
+    "url": "/TheOneEngine/docs/4_Details/#42-dependencies",
     
     "relUrl": "/docs/4_Details/#42-dependencies"
   },"16": {
     "doc": "Details",
     "title": "4.3. Requirements",
     "content": "TheOne requires: . | RAM: 256MB | OS: Windows 7 | GPU: Graphics card supporting OpenGL 3 | CPU: x64 | . ",
-    "url": "/TheOneEngine_wp/docs/4_Details/#43-requirements",
+    "url": "/TheOneEngine/docs/4_Details/#43-requirements",
     
     "relUrl": "/docs/4_Details/#43-requirements"
   },"17": {
     "doc": "Details",
     "title": "4.4. Licence",
     "content": "TheOne is licenced under an MIT licence. ",
-    "url": "/TheOneEngine_wp/docs/4_Details/#44-licence",
+    "url": "/TheOneEngine/docs/4_Details/#44-licence",
     
     "relUrl": "/docs/4_Details/#44-licence"
   },"18": {
     "doc": "Details",
     "title": "4.5. More information",
     "content": "If you are interested in TheOne, you can download our engine on our website: . Learn about TheOne by visiting our Wiki: . You can also watch our features reel (TheOne v0.x) on YouTube: . ",
-    "url": "/TheOneEngine_wp/docs/4_Details/#45-more-information",
+    "url": "/TheOneEngine/docs/4_Details/#45-more-information",
     
     "relUrl": "/docs/4_Details/#45-more-information"
   },"19": {
     "doc": "Details",
     "title": "Details",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/4_Details/",
+    "url": "/TheOneEngine/docs/4_Details/",
     
     "relUrl": "/docs/4_Details/"
   },"20": {
     "doc": "Resources",
     "title": "5. Getting started",
     "content": "Learn how to create your own games using TheOne by visiting our wiki. ",
-    "url": "/TheOneEngine_wp/docs/5_Resources/#5-getting-started",
+    "url": "/TheOneEngine/docs/5_Resources/#5-getting-started",
     
     "relUrl": "/docs/5_Resources/#5-getting-started"
   },"21": {
     "doc": "Resources",
     "title": "6. Contributing",
     "content": "TheOne is opened to any contribution. Do not hesitate to open issues (Features or bugs) or create pull requests. If you want to help us, visit our CONTRIBUTING.md guidelines document. ",
-    "url": "/TheOneEngine_wp/docs/5_Resources/#6-contributing",
+    "url": "/TheOneEngine/docs/5_Resources/#6-contributing",
     
     "relUrl": "/docs/5_Resources/#6-contributing"
   },"22": {
     "doc": "Resources",
     "title": "7. Screenshots",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/5_Resources/#7-screenshots",
+    "url": "/TheOneEngine/docs/5_Resources/#7-screenshots",
     
     "relUrl": "/docs/5_Resources/#7-screenshots"
   },"23": {
     "doc": "Resources",
     "title": "Resources",
     "content": " ",
-    "url": "/TheOneEngine_wp/docs/5_Resources/",
+    "url": "/TheOneEngine/docs/5_Resources/",
     
     "relUrl": "/docs/5_Resources/"
   },"24": {
     "doc": "Improvements",
     "title": "Improvements",
     "content": "This section is still work in progress. ",
-    "url": "/TheOneEngine_wp/docs/6_Improvements/",
+    "url": "/TheOneEngine/docs/6_Improvements/",
     
     "relUrl": "/docs/6_Improvements/"
   },"25": {
     "doc": "Bibliography",
     "title": "Bibliography",
     "content": "This section is still work in progress. ",
-    "url": "/TheOneEngine_wp/docs/7_Bibliography/",
+    "url": "/TheOneEngine/docs/7_Bibliography/",
     
     "relUrl": "/docs/7_Bibliography/"
   },"26": {
     "doc": "Welcome!",
     "title": "Welcome to TheOneEngine!",
     "content": "Brief introduction. Note Example. Releases | Screenshots | Features | Wiki | Contributing . ",
-    "url": "/TheOneEngine_wp/#welcome-to-theoneengine",
+    "url": "/TheOneEngine/#welcome-to-theoneengine",
     
     "relUrl": "/#welcome-to-theoneengine"
   },"27": {
     "doc": "Welcome!",
     "title": "Welcome!",
     "content": " ",
-    "url": "/TheOneEngine_wp/",
+    "url": "/TheOneEngine/",
     
     "relUrl": "/"
   }
