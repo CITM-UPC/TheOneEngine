@@ -25,7 +25,7 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
-
+    audio->Update(dt);
 }
 
 void EngineCore::Render(Camera* camera)

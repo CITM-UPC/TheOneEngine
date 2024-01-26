@@ -45,11 +45,12 @@ public:
     std::shared_ptr<GameObject> CreateCube();
     std::shared_ptr<GameObject> CreateSphere();
     std::shared_ptr<GameObject> CreateMF();
+    std::shared_ptr<GameObject> CreateTeapot();
 
     //static
-    std::shared_ptr<GameObject> spatialObject1;
+    GameObject* spatialObject1 = nullptr;
     //movable
-    std::shared_ptr<GameObject> spatialObject2;
+    GameObject* spatialObject2 = nullptr;
 
     // Get/Set
     uint GetNumberGO() const;

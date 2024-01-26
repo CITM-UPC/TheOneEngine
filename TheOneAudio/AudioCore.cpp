@@ -41,6 +41,31 @@ bool AudioCore::InitEngine()
     if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
     else LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
 
+    g_lowLevelIO.SetBasePath(AKTEXT("Assets\\wwise\\WwiseProject\\GeneratedSoundBanks\\Windows"));
+    AK::StreamMgr::SetCurrentLanguage(AKTEXT("English(us)"));
+
+    //bank init
+    AkBankID bankID;
+    if (AK::SoundEngine::LoadBank(BANKNAME_INIT, bankID) == AK_Success)
+    {
+        LOG(LogType::LOG_AUDIO, "Init bank loaded");
+    }
+    else
+    {
+        LOG(LogType::LOG_AUDIO, "Could not load init bank");
+        return false;
+    }
+
+    if (AK::SoundEngine::LoadBank(BANKNAME_MANTELENGINE, bankID) == AK_Success)
+    {
+        LOG(LogType::LOG_AUDIO, "TheOneEngine bank loaded");
+    }
+    else
+    {
+        LOG(LogType::LOG_AUDIO, "Could not load MantelEngine bank");
+        return false;
+    }
+
     if (InitSpatialAudio()) LOG(LogType::LOG_AUDIO, "Initialized the Spatial Audio.");
     else LOG(LogType::LOG_AUDIO, "Could not initialize the Spatial Audio.");
 

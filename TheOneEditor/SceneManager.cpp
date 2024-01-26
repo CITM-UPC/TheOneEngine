@@ -48,11 +48,11 @@ bool SceneManager::Start()
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
 
-    spatialObject2 = CreateCube();
-    spatialObject2.get()->GetComponent<Transform>()->getPosition() = { 0,15,0 };
+    spatialObject2 = CreateCube().get();
+    spatialObject2->GetComponent<Transform>()->setPosition({ 8,0,0 });
     
-    spatialObject1 = CreateCube();
-    spatialObject1.get()->GetComponent<Transform>()->getPosition() = { 15,5,0 };
+    spatialObject1 = CreateCube().get();
+    spatialObject1->GetComponent<Transform>()->setPosition({ 10,5,0 });
 
     return true;
 }
@@ -219,6 +219,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             {
                 meshGO.get()->parent = emptyParent;
                 emptyParent.get()->children.push_back(meshGO);
+
             }
         }
 
@@ -240,6 +241,8 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                 }
             }
         }*/
+
+        
     }
 
     return nullptr;
@@ -326,7 +329,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
 
     rootSceneGO.get()->children.emplace_back(cubeGO);
 
-    return nullptr;
+    return cubeGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateSphere()
@@ -344,9 +347,12 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()
 {
- 
+    return CreateMeshGO("Assets/Meshes/mf.fbx");
+}
 
-    return CreateMeshGO("Assets/Meshes/mf.fbx");;
+std::shared_ptr<GameObject> SceneManager::CreateTeapot()
+{
+    return CreateMeshGO("Assets/Meshes/teapot.fbx");
 }
 
 uint SceneManager::GetNumberGO() const
