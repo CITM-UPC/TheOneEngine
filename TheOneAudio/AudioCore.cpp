@@ -41,7 +41,7 @@ bool AudioCore::InitEngine()
     if (InitMusicEngine()) LOG(LogType::LOG_AUDIO, "Initialized the Music Engine.");
     else LOG(LogType::LOG_AUDIO, "Could not initialize the Music Engine.");
 
-    g_lowLevelIO.SetBasePath(AKTEXT("Assets\\wwise\\WwiseProject\\GeneratedSoundBanks\\Windows"));
+    g_lowLevelIO.SetBasePath(AKTEXT("Assets\\Audio\\Wwise Project\\GeneratedSoundBanks\\Windows"));
     AK::StreamMgr::SetCurrentLanguage(AKTEXT("English(us)"));
 
     //bank init
@@ -56,7 +56,7 @@ bool AudioCore::InitEngine()
         return false;
     }
 
-    if (AK::SoundEngine::LoadBank(BANKNAME_MANTELENGINE, bankID) == AK_Success)
+    if (AK::SoundEngine::LoadBank(BANKNAME_THEONEENGINE, bankID) == AK_Success)
     {
         LOG(LogType::LOG_AUDIO, "TheOneEngine bank loaded");
     }
