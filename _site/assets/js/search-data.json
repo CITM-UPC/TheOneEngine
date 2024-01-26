@@ -111,62 +111,55 @@
     
     "relUrl": "/docs/4_Details/#licence"
   },"16": {
-    "doc": "Details",
-    "title": "More information",
-    "content": "If you are interested in TheOne, you can download our engine on our website: . Learn about TheOne by visiting our Wiki: . You can also watch our features reel (TheOne v0.x) on YouTube: . ",
-    "url": "/TheOneEngine/docs/4_Details/#more-information",
-    
-    "relUrl": "/docs/4_Details/#more-information"
-  },"17": {
     "doc": "Resources",
     "title": "Getting started",
-    "content": "Learn how to create your own games using TheOne by visiting our wiki. ",
+    "content": "If you are interested in TheOne, you can download the engine from Github. Learn how to create your own games using TheOne by visiting our wiki. Video not yet avaliable. You can also watch our features reel (TheOne v0.x) on YouTube. ",
     "url": "/TheOneEngine/docs/5_Resources/#getting-started",
     
     "relUrl": "/docs/5_Resources/#getting-started"
-  },"18": {
+  },"17": {
     "doc": "Resources",
     "title": "Contributing",
     "content": "TheOne is opened to any contribution. Do not hesitate to open issues (Features or bugs) or create pull requests. If you want to help us, visit our CONTRIBUTING.md guidelines document. ",
     "url": "/TheOneEngine/docs/5_Resources/#contributing",
     
     "relUrl": "/docs/5_Resources/#contributing"
-  },"19": {
+  },"18": {
     "doc": "Resources",
     "title": "Screenshots",
     "content": " ",
     "url": "/TheOneEngine/docs/5_Resources/#screenshots",
     
     "relUrl": "/docs/5_Resources/#screenshots"
-  },"20": {
+  },"19": {
     "doc": "Resources",
     "title": "Resources",
     "content": " ",
     "url": "/TheOneEngine/docs/5_Resources/",
     
     "relUrl": "/docs/5_Resources/"
-  },"21": {
+  },"20": {
     "doc": "Improvements",
     "title": "Improvements",
     "content": "This section is still work in progress. ",
     "url": "/TheOneEngine/docs/6_Improvements/",
     
     "relUrl": "/docs/6_Improvements/"
-  },"22": {
+  },"21": {
     "doc": "Bibliography",
     "title": "Bibliography",
     "content": "This section is still work in progress. ",
     "url": "/TheOneEngine/docs/7_Bibliography/",
     
     "relUrl": "/docs/7_Bibliography/"
-  },"23": {
+  },"22": {
     "doc": "Welcome!",
     "title": "Welcome to TheOneEngine!",
     "content": "One Engine to rull them all. Releases | Screenshots | Features | Wiki | Contributing . Check us out! . | | | . ",
     "url": "/TheOneEngine/#welcome-to-theoneengine",
     
     "relUrl": "/#welcome-to-theoneengine"
-  },"24": {
+  },"23": {
     "doc": "Welcome!",
     "title": "Welcome!",
     "content": " ",

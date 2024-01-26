@@ -26,10 +26,3 @@ TheOne requires:
 
 ## Licence
 TheOne is licenced under an MIT licence.
-
-## More information
-If you are interested in TheOne, you can download our engine on our website:
-
-Learn about TheOne by visiting our Wiki:
-
-You can also watch our features reel (TheOne v0.x) on YouTube:
