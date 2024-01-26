@@ -5,8 +5,8 @@ nav_order: 3
 ---
 
 <span name="features"></span>
-# 3. Features
-## 3.1. Implemented
+# Features
+## Implemented
 Here is a non-exhaustive list of TheOne main features:
 - Model Import + Drag & Drop
 - Texture Import
@@ -21,7 +21,7 @@ Here is a non-exhaustive list of TheOne main features:
 - Frustum culling
 - Resource Management
 
-## 3.2. To implement
+## To implement
 Again, a non-exhaustive list of TheOne in-coming features:
 - Custom shaders support
 - Rigidbody physics

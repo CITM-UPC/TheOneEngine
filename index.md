@@ -9,13 +9,11 @@ permalink: /
 # Welcome to TheOneEngine!
 {: .fs-9 }
 
-Brief introduction.
+One Engine to rull them all.
 {: .fs-6 .fw-300 }
 
 ---
 
-{: .note }
-> Note Example.
 
 <p align="center">
   <img src="https://github.com/CITM-UPC/TheOneEngine/blob/main/.github/images/TheOneLogo.png" />
@@ -40,12 +38,12 @@ Brief introduction.
   <a href="https://github.com/CITM-UPC/TheOneEngine/releases"><img alt="downloads" src="https://img.shields.io/github/downloads/CITM-UPC/TheOneEngine/total?color=green&style=flat-square"></a>
 </p>
 
-#### Thank you to the contributors of Just the Docs!
+#### Check us out!
 
 <ul class="list-style-none">
 {% for contributor in site.github.contributors %}
   <li class="d-inline-block mr-1">
-     <a href="{{ contributor.html_url }}"><img src="{{ contributor.avatar_url }}" width="64" height="64" alt="{{ contributor.login }}"></a>
+     <a href="{{ contributor.html_url }}"><img src="{{ contributor.avatar_url }}" width="48" height="48" alt="{{ contributor.login }}"></a>
   </li>
 {% endfor %}
 </ul>
