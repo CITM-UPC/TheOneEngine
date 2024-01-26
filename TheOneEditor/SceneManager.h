@@ -46,6 +46,11 @@ public:
     std::shared_ptr<GameObject> CreateSphere();
     std::shared_ptr<GameObject> CreateMF();
 
+    //static
+    std::shared_ptr<GameObject> spatialObject1;
+    //movable
+    std::shared_ptr<GameObject> spatialObject2;
+
     // Get/Set
     uint GetNumberGO() const;
     std::vector<std::shared_ptr<GameObject>>GetGameObjects();

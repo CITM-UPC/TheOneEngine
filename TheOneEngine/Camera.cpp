@@ -9,6 +9,7 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     drawFrustum(true)
 {
     Transform* transform = containerGO.get()->GetComponent<Transform>();
+    //AudioListener* listener = containerGO.get()->GetComponent<AudioListener>();
 
     if (transform)
     {
@@ -21,6 +22,9 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
         updateCameraVectors();
         updateViewMatrix();
     }
+    //if (listener) {
+    //
+    //}
     else
     {
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
@@ -125,6 +129,31 @@ void Camera::updateCameraVectors()
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
 }
+
+//void Camera::updateCameraListener()
+//{
+    ////update camera position to audio listener
+    //if (auto sharedGO = this->containerGO.lock())
+    //{
+    //    sharedGO->SetListenerTransform(eye.x, eye.y, eye.z, forward.x, forward.y, forward.z, up.x, up.y, up.z);
+    //}
+    //else
+    //{
+    //    LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+    //}
+    
+
+    //SetListenerTransform(eye.x, eye.y, eye.z, forward.x, forward.y, forward.z, up.x, up.y, up.z);
+
+    //editor->audioEngine->SetSpatial1Transform(
+    //    editor->gameApp->spatialObject1->GetComponent<TransformComponent>()->getPosition().x,
+    //    editor->gameApp->spatialObject1->GetComponent<TransformComponent>()->getPosition().y,
+    //    editor->gameApp->spatialObject1->GetComponent<TransformComponent>()->getPosition().z);
+    //editor->audioEngine->SetSpatial2Transform(
+    //    editor->gameApp->spatialObject2->GetComponent<TransformComponent>()->getPosition().x,
+    //    editor->gameApp->spatialObject2->GetComponent<TransformComponent>()->getPosition().y,
+    //    0);
+//}
 
 void Camera::UpdateFrustum()
 {

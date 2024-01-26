@@ -323,6 +323,7 @@ void App::Play()
 
 		LOG(LogType::LOG_INFO, "GameState changed to PLAY");
 
+		engine->audio->PlayEngine();
 	}
 	else if (state == GameState::PAUSE) {
 		state = GameState::PLAY;
@@ -337,6 +338,7 @@ void App::Play()
 		LOG(LogType::LOG_INFO, "GameState changed to NONE");
 	}
 
+
 }
 
 void App::Pause()
@@ -349,6 +351,8 @@ void App::Pause()
 		game_timer->Pause();
 
 		LOG(LogType::LOG_INFO, "GameState changed to PAUSE");
+
+		engine->audio->PauseEngine();
 	}
 }
 
@@ -386,5 +390,6 @@ void App::Stop()
 	game_time = 0.0F;
 	state = GameState::NONE;
 	LOG(LogType::LOG_INFO, "GameState changed to NONE");
+	engine->audio->PauseEngine();
 
 }

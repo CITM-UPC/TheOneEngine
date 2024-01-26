@@ -11,7 +11,7 @@
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
-
+#include "..\TheOneEngine\AudioListener.h"
 
 Renderer3D::Renderer3D(App* app) : Module(app)
 {
@@ -33,8 +33,12 @@ bool Renderer3D::Start()
     // Creating Editor Camera GO (Outside hierarchy)
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
     sceneCamera.get()->AddComponent<Transform>();
+    //sceneCamera.get()->AddComponent<AudioListener>();
+
     sceneCamera.get()->AddComponent<Camera>();
     sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 15, -70));
+    //sceneCamera.get()->GetComponent<AudioListener>()->setPosition(vec3f(0, 15, -70));
+
     //hekbas check this
     /*sceneCamera.get()->GetComponent<Camera>()->center = {0, 0, 0};
     sceneCamera.get()->GetComponent<Camera>()->updateViewMatrix();*/
@@ -213,4 +217,5 @@ void Renderer3D::CameraInput(double dt)
     }
 
     camera->updateCameraVectors();
+    camera->updateCameraListener();
 }

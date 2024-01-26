@@ -48,6 +48,14 @@ bool SceneManager::Start()
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
 
+    // Create Movable
+    spatialObject2 = CreateCube();
+    spatialObject2.get()->GetComponent<Transform>()->setPosition(vec3f(0, 15, 0));
+
+    // Create Static
+    spatialObject1 = CreateCube();
+    spatialObject1.get()->GetComponent<Transform>()->setPosition(vec3f(15, 15, 0));
+
     return true;
 }
 

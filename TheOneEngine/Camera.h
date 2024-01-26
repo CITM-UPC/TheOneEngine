@@ -5,9 +5,12 @@
 #include "Defs.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "AudioListener.h"
 
 #include "..\TheOneEditor\Log.h"
 #include "..\TheOneEditor\Input.h"
+
+#include "..\TheOneAudio\AudioCore.h"
 
 #include <memory>
 
@@ -63,6 +66,7 @@ public:
     void updateViewMatrix();
 
     void updateCameraVectors();
+    //void updateCameraListener();
 
     void UpdateFrustum();
     void UpdateProjectionMatrix();

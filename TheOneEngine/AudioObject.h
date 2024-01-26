@@ -1,5 +1,4 @@
 #pragma once
-#include "..\TheOneAudio\AudioUtils.h"
 #include "..\TheOneAudio\AudioCore.h"
 
 using AudioObjectID = AkGameObjectID;
@@ -8,7 +7,7 @@ class AudioObject
 {
 public:
     AudioObject() : m_audioObjectID{ -1 } {}
-    virtual ~AudioObject() {}
+    virtual ~AudioObject() {};
 
     void Init();
 
