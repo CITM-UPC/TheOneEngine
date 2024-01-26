@@ -11,7 +11,6 @@
 #include "..\TheOneEngine\Camera.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Texture.h"
-#include "..\TheOneEngine\Script.h"
 
 #include <vector>
 #include <string>

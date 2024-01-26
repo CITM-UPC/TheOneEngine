@@ -1,16 +1,13 @@
 #pragma once
 
-#include "GameObject.h"
-#include "Component.h"
-#include "Transform.h"
-#include "Camera.h"
-#include "Mesh.h"
-
 #include <vector>
 #include <memory>
 #include <string>
 
-class CPPScript
+class GameObject;
+class Transform;
+
+class __declspec(dllexport) CPPScript
 {
 	friend class GameObject;
 	friend class Script;
@@ -34,8 +31,6 @@ public:
 public:
 	std::weak_ptr<GameObject> containerGO;
 	Transform* transform = nullptr;
-	Mesh* mesh = nullptr;
-	Camera* camera = nullptr;
-	bool active;
+	bool active = true;
 	std::string name;
 };

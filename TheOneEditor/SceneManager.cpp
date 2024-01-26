@@ -1,6 +1,7 @@
 #include "App.h"
 #include "SceneManager.h"
 #include "Log.h"
+#include "..\TheOneEngine\Script.h"
 
 #include <fstream>
 #include <filesystem>

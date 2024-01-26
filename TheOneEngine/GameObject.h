@@ -13,19 +13,15 @@
 #include <memory>
 
 
-class GameObject : public std::enable_shared_from_this<GameObject>
+class __declspec(dllexport) GameObject : public std::enable_shared_from_this<GameObject>
 {
     friend class Component;
-    friend class Mesh;
-    friend class Texture;
-    friend class Transform;
-    friend class Camera;
     friend class Script;
     friend class SceneManager;
 public:
 
     GameObject(std::string name = "gameObject");
-    GameObject();
+    //GameObject();
     virtual ~GameObject();
 
     void Update(double dt);
@@ -103,7 +99,7 @@ public:
 private:
     std::string name;
     std::string tag;
-    std::vector<std::unique_ptr<Component>> components;
+    std::vector<std::shared_ptr<Component>> components;
     uint32_t UID;
     bool enabled;
     int index;

@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "TheOneScripting.h"
 
-class THEONESCRIPTING_API TankMovement
+class THEONESCRIPTING_API TankMovement : public CPPScript
 {
 public:
 	TankMovement();

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Prueba.h"
 
-Prueba::Prueba()
+Prueba::Prueba() : CPPScript()
 {
 }
 

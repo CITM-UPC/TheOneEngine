@@ -15,7 +15,7 @@ Texture::Texture(const std::string& path, std::shared_ptr<GameObject> containerG
     //load image data using devil
     auto img = ilGenImage();
     ilBindImage(img);
-    ilLoadImage((const char*)path.c_str());
+    ilLoadImage((const wchar_t*)path.c_str());
     auto width = ilGetInteger(IL_IMAGE_WIDTH);
     this->width = static_cast<uint>(width);
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);

@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "TheOneScripting.h"
 
-class THEONESCRIPTING_API Prueba
+class THEONESCRIPTING_API Prueba : public CPPScript
 {
 public:
 	Prueba();

@@ -2,6 +2,7 @@
 #include "../TheOneEditor/Log.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "../TheOneEditor/SceneManager.h"
 //#include <GL/glew.h>
 #include <span>
 #include <vector>

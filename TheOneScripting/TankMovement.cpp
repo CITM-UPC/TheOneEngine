@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TankMovement.h"
 
-TankMovement::TankMovement()
+TankMovement::TankMovement() : CPPScript()
 {
 }
 

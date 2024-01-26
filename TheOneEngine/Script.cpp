@@ -1,6 +1,6 @@
 #include "Script.h"
 #include "GameObject.h"
-//#include "Transform.h"
+#include "Transform.h"
 //#include "Mesh.h"
 //#include "Camera.h"
 #include "CPPScript.h"
@@ -73,7 +73,7 @@ void Script::LoadScript(HMODULE _dllHandle, std::string name)
 
         CPPScript* script = (CPPScript*)scriptData_ptr;
         script->containerGO = containerGO;
-        //script->transform = containerGO.lock().get()->GetComponent<Transform>();
+        script->transform = containerGO.lock().get()->GetComponent<Transform>();
         //script->mesh = containerGO.lock().get()->GetComponent<Mesh>();
         //script->camera = containerGO.lock().get()->GetComponent<Camera>();
         script->active = &active;
