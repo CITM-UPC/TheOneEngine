@@ -209,7 +209,6 @@ void AudioCore::Awake()
     else
         LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 2 ERROR on Register");
 
-
     //set default listener
     AK::SoundEngine::SetDefaultListeners(&GAME_OBJECT_ID_BACKGROUNDMUSIC, 1);
 
