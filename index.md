@@ -16,7 +16,7 @@ One Engine to rull them all.
 
 
 <p align="center">
-  <img src="https://github.com/CITM-UPC/TheOneEngine/blob/main/.github/images/TheOneLogo.png" />
+  <img src="assets/images/TheOneLogo.png">
   <br/>
   <br/>
   <br/>
@@ -36,6 +36,8 @@ One Engine to rull them all.
   <br/>
   <a href="https://github.com/CITM-UPC/TheOneEngine/blob/main/LICENSE.md"><img alt="license" src="https://img.shields.io/github/license/CITM-UPC/TheOneEngine?color=green&style=flat-square"/></a>
   <a href="https://github.com/CITM-UPC/TheOneEngine/releases"><img alt="downloads" src="https://img.shields.io/github/downloads/CITM-UPC/TheOneEngine/total?color=green&style=flat-square"></a>
+<br/>
+<br/>
 </p>
 
 #### Check us out!

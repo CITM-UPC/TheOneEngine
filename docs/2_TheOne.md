@@ -16,7 +16,7 @@ TheOne pillars are:
 - `TheOneEngine`: Uses EngineCore, asset dependent, for any game built with TheOne
 - `TheOneEditor`: Uses EngineCore, expose game development to the end-user
 
-![Editor](https://github.com/CITM-UPC/TheOneEngine/blob/main/.github/images/TheOneEditor.png)
+![Editor](../../assets/images/TheOneEditor.png)
 
 # History of TheOne
 TheOne is a project for the subject of Game Engines in our 3rd year at CITM (UPC).  
