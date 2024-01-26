@@ -10,7 +10,7 @@ namespace fs = std::filesystem;
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 {
     meshLoader = new MeshLoader();
-    rootSceneGO = std::make_shared<GameObject>("Scene");;
+    rootSceneGO = std::make_shared<GameObject>("Scene");
 }
 
 SceneManager::~SceneManager()
@@ -47,6 +47,12 @@ bool SceneManager::Start()
 
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
+
+    spatialObject2 = CreateCube();
+    spatialObject2.get()->GetComponent<Transform>()->getPosition() = { 0,15,0 };
+    
+    spatialObject1 = CreateCube();
+    spatialObject1.get()->GetComponent<Transform>()->getPosition() = { 15,5,0 };
 
     return true;
 }
