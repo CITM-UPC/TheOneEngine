@@ -1,8 +1,8 @@
 #pragma once
-
+#include "pch.h"
 #include "TheOneScripting.h"
 
-class THEONESCRIPTING_API Prueba : public CPPScript
+class THEONESCRIPTING_API Prueba
 {
 public:
 	Prueba();
@@ -13,8 +13,8 @@ public:
 	void Update(double dt);
 
 public:
-	GameObject* goPrueba = nullptr;
-	Transform* transformPrueba = nullptr;
+	/*GameObject* goPrueba = nullptr;
+	Transform* transformPrueba = nullptr;*/
 };
 
 THEONE_API Prueba* CreatePrueba() {

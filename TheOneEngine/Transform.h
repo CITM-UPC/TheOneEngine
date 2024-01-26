@@ -9,7 +9,7 @@
 
 class GameObject;
 
-class __declspec(dllexport) Transform : public Component
+class Transform : public Component
 {
 public:
 

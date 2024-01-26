@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BBox.hpp" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CPPScript.h" />
@@ -51,14 +52,14 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <CharacterSet>Unicode</CharacterSet>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -78,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\TheOneScripting\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -89,16 +90,18 @@
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets
+</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;TheOneScripting.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\$(IntDir)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)\$(IntDir)TheOneScripting.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -109,7 +112,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\TheOneScripting\;$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -122,16 +125,18 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets
+</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;TheOneScripting.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\$(IntDir)</AdditionalLibraryDirectories>
     </Lib>
     <PostBuildEvent>
-      <Command>xcopy /y /d "$(SolutionDir)\$(IntDir)TheOneScripting.dll" "$(OutDir)"</Command>
+      <Command>
+      </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

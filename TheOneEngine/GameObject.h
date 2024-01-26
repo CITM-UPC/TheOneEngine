@@ -84,7 +84,7 @@ public:
     uint32 GetUID() { return UID; }
 
     /*STATIC FUNCTIONS*/
-    __declspec(dllexport) GameObject* FindWithName(std::string name);
+    GameObject* FindWithName(std::string name);
     //static GameObject* FindWithTag(std::string tag);
 
     json SaveGameObject();

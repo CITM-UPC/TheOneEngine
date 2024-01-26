@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Defs.h"
-#include "GameObject.h"
+#include "Component.h"
 
 #include <Windows.h>
 #include <vector>
@@ -54,14 +54,15 @@
 //	float max_slider = 0;
 //};
 
-class __declspec(dllexport) Script : public Component
+class CPPScript;
+
+class Script : public Component
 {
+    friend class GameObject;
+    friend class Component;
     friend class Transform;
     friend class Mesh;
     friend class Camera;
-    friend class Texture;
-    friend class GameObject;
-    friend class Component;
 public:
 
     Script(std::shared_ptr<GameObject> containerGO);
@@ -83,9 +84,11 @@ public:
 	void LoadScript(HMODULE _dllHandle, std::string name);
 
 public:
-    bool active;
+	bool active;
+    std::vector<CPPScript*> goScripts;
 private:
     std::string path;
+    std::string scriptName;
 	void* scriptData_ptr = nullptr;
 	//InspectorScriptData scriptData;
 };

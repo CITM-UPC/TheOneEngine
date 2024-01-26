@@ -1,8 +1,8 @@
 #pragma once
-
+#include "pch.h"
 #include "TheOneScripting.h"
 
-class THEONESCRIPTING_API TankMovement : public CPPScript
+class THEONESCRIPTING_API TankMovement
 {
 public:
 	TankMovement();
@@ -15,7 +15,7 @@ public:
 public:
 
 	//GameObject bullet;
-	Transform* wheels_transform = nullptr;
+	/*Transform* wheels_transform = nullptr;
 	Transform* turret_transform = nullptr;
 
 	float max_velocity_forward = 8.0f;
@@ -27,12 +27,12 @@ public:
 	float recoil = 0.0f;
 	float recoil_velocity = 6.0f;
 	vec3f recoil_direction = { 0,0,0 };
-	float turning_velocity = 30.0f;
+	float turning_velocity = 30.0f;*/
 
 private:
 
-	float angle = 0.0f;
-	vec3f to_look = { 0,0,0 };
+	/*float angle = 0.0f;
+	vec3f to_look = { 0,0,0 };*/
 };
 
 THEONE_API TankMovement* CreateTankMovement() {

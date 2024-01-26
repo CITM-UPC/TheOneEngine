@@ -2,18 +2,18 @@
 
 #include "pch.h"
 
-/*ENGINE ACCESSIBLE COMPONENTS*/
-#include "..\TheOneEngine\GameObject.h"
-#include "..\TheOneEngine\Component.h"
-#include "..\TheOneEngine\Transform.h"
-#include "..\TheOneEngine\Mesh.h"
-#include "..\TheOneEngine\Camera.h"
-#include "..\TheOneEngine\Texture.h"
-#include "..\TheOneEngine\Script.h"
-#include "..\TheOneEngine\CPPScript.h"
-
-/*EDITOR ACCESSIBLE COMPONENTS*/
-#include "..\TheOneEditor\SceneManager.h"
+///*ENGINE ACCESSIBLE COMPONENTS*/
+//#include "..\TheOneEngine\GameObject.h"
+//#include "..\TheOneEngine\Component.h"
+//#include "..\TheOneEngine\Transform.h"
+//#include "..\TheOneEngine\Mesh.h"
+//#include "..\TheOneEngine\Camera.h"
+//#include "..\TheOneEngine\Texture.h"
+//#include "..\TheOneEngine\Script.h"
+//#include "..\TheOneEngine\CPPScript.h"
+//
+///*EDITOR ACCESSIBLE COMPONENTS*/
+//#include "..\TheOneEditor\SceneManager.h"
 
 #ifdef THEONESCRIPTING_EXPORTS
 #define THEONESCRIPTING_API __declspec(dllexport)

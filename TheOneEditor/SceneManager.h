@@ -56,7 +56,7 @@ public:
     void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
-    __declspec(dllexport) GameObject* GetRootSceneGOStatic();
+    GameObject* GetRootSceneGOStatic();
 
     std::shared_ptr<GameObject> FindGOByUID(uint32_t _UID) const;
 

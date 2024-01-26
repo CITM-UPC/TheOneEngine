@@ -21,4 +21,5 @@ void Prueba::Start()
 void Prueba::Update(double dt)
 {
 	//transformPrueba->translate(vec3f{ 0.0f, 0.0f, *dt });
+	//transform->translate(vec3f(0.0f, 0.0f, 1.0f * dt));
 }

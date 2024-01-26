@@ -52,7 +52,7 @@ bool SceneManager::Start()
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
     gameCam.get()->AddComponent<Script>();
-    //gameCam.get()->GetComponent<Script>()->Bind<Prueba>();
+    //gameCam.get()->GetComponent<Script>()->LoadScript(app->engine->dllHandle, "Prueba");
     return true;
 }
 

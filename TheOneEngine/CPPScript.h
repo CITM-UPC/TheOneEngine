@@ -1,20 +1,19 @@
 #pragma once
 
-class GameObject;
-class Component;
-class Transform;
-class Camera;
-class Mesh;
-class Texture;
+#include "GameObject.h"
+#include "Component.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Mesh.h"
 
-class __declspec(dllexport) CPPScript
+#include <vector>
+#include <memory>
+#include <string>
+
+class CPPScript
 {
-	friend class Transform;
-	friend class Mesh;
-	friend class Camera;
-	friend class Texture;
 	friend class GameObject;
-	friend class Component;
+	friend class Script;
 public:
 
 	CPPScript();
@@ -33,5 +32,10 @@ public:
 	virtual void CleanUp() {}
 
 public:
-	GameObject* parent = nullptr;
+	std::weak_ptr<GameObject> containerGO;
+	Transform* transform = nullptr;
+	Mesh* mesh = nullptr;
+	Camera* camera = nullptr;
+	bool active;
+	std::string name;
 };

@@ -63,6 +63,9 @@
     <ClInclude Include="CPPScript.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="BBox.hpp">
+      <Filter>GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">

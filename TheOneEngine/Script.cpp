@@ -1,4 +1,9 @@
 #include "Script.h"
+#include "GameObject.h"
+//#include "Transform.h"
+//#include "Mesh.h"
+//#include "Camera.h"
+#include "CPPScript.h"
 #include "..\TheOneEditor\Log.h"
 #include "..\TheOneEditor\Input.h"
 
@@ -21,7 +26,7 @@ json Script::SaveComponent()
         scriptJSON["ParentUID"] = pGO.get()->GetUID();
     }
     scriptJSON["UID"] = UID;
-    scriptJSON["Active"] = active;
+    scriptJSON["Active"] = enabled;
     scriptJSON["Path"] = path;
 
     return scriptJSON;
@@ -43,7 +48,7 @@ void Script::LoadComponent(const json& scriptJSON)
     // Load mesh-specific properties
     if (scriptJSON.contains("Active"))
     {
-        active = scriptJSON["Active"];
+        enabled = scriptJSON["Active"];
     }
 
     if (scriptJSON.contains("Path"))
@@ -62,5 +67,18 @@ void Script::LoadScript(HMODULE _dllHandle, std::string name)
 {
     //Load here script attached
     void* (*Creator)() = (void* (*)())GetProcAddress(_dllHandle, std::string("Create" + std::string(name)).data());
-    
+    if (Creator != nullptr) {
+        scriptName = std::string(name);
+        scriptData_ptr = Creator();
+
+        CPPScript* script = (CPPScript*)scriptData_ptr;
+        script->containerGO = containerGO;
+        //script->transform = containerGO.lock().get()->GetComponent<Transform>();
+        //script->mesh = containerGO.lock().get()->GetComponent<Mesh>();
+        //script->camera = containerGO.lock().get()->GetComponent<Camera>();
+        script->active = &active;
+        script->name = scriptName;
+        goScripts.emplace_back(script);
+        
+    }
 }
