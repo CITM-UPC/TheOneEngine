@@ -94,7 +94,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
 </Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;TheOneScripting.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\$(IntDir)</AdditionalLibraryDirectories>
@@ -129,7 +129,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
 </Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;TheOneScripting.lib</AdditionalDependencies>
     </Lib>
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\$(IntDir)</AdditionalLibraryDirectories>

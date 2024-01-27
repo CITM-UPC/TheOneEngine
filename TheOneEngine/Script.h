@@ -68,15 +68,13 @@ public:
     Script(std::shared_ptr<GameObject> containerGO);
     virtual ~Script();
 
-	virtual void Awake() {}
-	virtual void Start() {}
-
-	virtual void PreUpdate() {}
-	virtual void Update(double dt) {}
-	virtual void PostUpdate() {}
-
-	virtual void OnDisable() {}
-	virtual void OnEnable() {}
+	void Awake();
+	void Start();
+    void PreUpdate();
+    void Update(double dt);
+    void PostUpdate();
+    void OnDisable();
+    void OnEnable();
 
     json SaveComponent();
     void LoadComponent(const json& meshJSON);
@@ -85,7 +83,7 @@ public:
 
 public:
 	bool active;
-    std::vector<CPPScript*> goScripts;
+    std::vector<std::unique_ptr<CPPScript>> goScripts;
 private:
     std::string path;
     std::string scriptName;

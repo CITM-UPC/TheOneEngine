@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Log.h"
 #include "..\TheOneEngine\Script.h"
-
+#include "..\TheOneEngine\CPPScript.h"
 #include <fstream>
 #include <filesystem>
 
@@ -77,21 +77,16 @@ bool SceneManager::Update(double dt)
     }
 
     //SCRIPTS UPDATE
-    /*if (app->IsPlaying())
+    if (app->IsPlaying())
     {
         for (const auto& go : rootSceneGO.get()->children)
         {
-            auto scriptComp = go.get()->GetComponent<Script>();
-            if (scriptComp != nullptr)
+            if (go.get()->GetComponent<Script>() != nullptr && !go.get()->GetComponent<Script>()->goScripts.empty())
             {
-                if (!scriptComp->containerGO.lock())
-                {
-                    scriptComp->containerGO = scriptComp->InstantiateScript();
-                    scriptComp->Instance
-                }
+                go.get()->GetComponent<Script>()->Update(dt);
             }
         }
-    }*/
+    }
 
     if (app->IsPlaying() && demo != nullptr) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);

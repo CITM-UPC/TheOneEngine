@@ -9,8 +9,6 @@ class Transform;
 
 class __declspec(dllexport) CPPScript
 {
-	friend class GameObject;
-	friend class Script;
 public:
 
 	CPPScript();
@@ -20,7 +18,7 @@ public:
 	virtual void Start() {}
 
 	virtual void PreUpdate() {}
-	virtual void Update(double dt) {}
+	virtual void Update(double dt) = 0;
 	virtual void PostUpdate() {}
 
 	virtual void OnDisable() {}
@@ -29,8 +27,10 @@ public:
 	virtual void CleanUp() {}
 
 public:
-	std::weak_ptr<GameObject> containerGO;
+	GameObject* containerGO = nullptr;
 	Transform* transform = nullptr;
 	bool active = true;
 	std::string name;
 };
+
+typedef CPPScript* (*NewScript)();

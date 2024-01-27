@@ -194,6 +194,6 @@ void EngineCore::SetScriptEngine() {
 #else
     const std::string dllFolder("../x64/Release/");
 #endif
-    dllHandle = LoadLibraryA((dllFolder + "TheOneScripting" + ".dll").c_str());
+    dllHandle = LoadLibraryA((dllFolder + "TheOneScripting" + ".dll").data());
 
 }

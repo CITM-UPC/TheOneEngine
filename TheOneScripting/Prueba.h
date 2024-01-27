@@ -13,8 +13,8 @@ public:
 	void Update(double dt);
 
 public:
-	/*GameObject* goPrueba = nullptr;
-	Transform* transformPrueba = nullptr;*/
+	double rotationAngle;
+	double rotationSpeed;
 };
 
 THEONE_API Prueba* CreatePrueba() {

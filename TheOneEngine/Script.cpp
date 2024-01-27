@@ -1,8 +1,6 @@
 #include "Script.h"
 #include "GameObject.h"
 #include "Transform.h"
-//#include "Mesh.h"
-//#include "Camera.h"
 #include "CPPScript.h"
 #include "..\TheOneEditor\Log.h"
 #include "..\TheOneEditor\Input.h"
@@ -66,19 +64,46 @@ void Script::LoadComponent(const json& scriptJSON)
 void Script::LoadScript(HMODULE _dllHandle, std::string name)
 {
     //Load here script attached
-    void* (*Creator)() = (void* (*)())GetProcAddress(_dllHandle, std::string("Create" + std::string(name)).data());
-    if (Creator != nullptr) {
-        scriptName = std::string(name);
-        scriptData_ptr = Creator();
+    //auto Creator = (NewScript)GetProcAddress(_dllHandle, std::string("Create" + std::string(name)).data());
+    //if (Creator != nullptr) {
+    //    scriptName = std::string(name);
+    //    scriptData_ptr = Creator();
 
-        CPPScript* script = (CPPScript*)scriptData_ptr;
-        script->containerGO = containerGO;
-        script->transform = containerGO.lock().get()->GetComponent<Transform>();
-        //script->mesh = containerGO.lock().get()->GetComponent<Mesh>();
-        //script->camera = containerGO.lock().get()->GetComponent<Camera>();
-        script->active = &active;
-        script->name = scriptName;
-        goScripts.emplace_back(script);
-        
+    //    containerGO.lock().get()->AddComponent<Script>();
+
+    //    CPPScript* script = (CPPScript*)scriptData_ptr;
+    //    script->containerGO = containerGO.lock().get();
+    //    script->transform = containerGO.lock().get()->GetComponent<Transform>();
+    //    script->active = &active;
+    //    script->name = scriptName;
+    //    goScripts.emplace_back(script);
+    //    /*Creator()->containerGO = this->containerGO.lock().get();
+    //    Creator()->transform = this->containerGO.lock().get()->GetComponent<Transform>();
+    //    Creator()->active = &active;
+    //    Creator()->name = scriptName;*/
+    //    //goScripts.emplace_back().reset(Creator());
+    //    
+    //}
+}
+
+void Script::Start()
+{
+    if (!goScripts.empty())
+    {
+        for (auto const& script : goScripts)
+        {
+            //script->Start();
+        }
+    }
+}
+
+void Script::Update(double dt)
+{
+    if (!goScripts.empty())
+    {
+        for (auto const& script : goScripts)
+        {
+            //script->Update(dt);
+        }
     }
 }
