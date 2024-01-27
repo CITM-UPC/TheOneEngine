@@ -75,7 +75,11 @@ bool SceneManager::Update(double dt)
         std::string filename = "Assets/Scenes/scene.toe";
         LoadScene(filename);
     }
-
+    //Audio moving
+    if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->state == GameState::PLAY)
+        spatialObject2->GetComponent<Transform>()->setPosition({spatialObject2->GetComponent<Transform>()->getPosition().x + 1 ,15,0 });
+    if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && app->state == GameState::PLAY)
+        spatialObject2->GetComponent<Transform>()->setPosition({ spatialObject2->GetComponent<Transform>()->getPosition().x -1 ,15,0 });
 
     if (app->IsPlaying()) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);
@@ -89,6 +93,7 @@ bool SceneManager::Update(double dt)
     if (app->state == GameState::NONE) {
         demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, 0.0);
         rotationAngle = 0.0;
+        spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
     }
 
     app->engine->audio->SetSpatial1Transform(
