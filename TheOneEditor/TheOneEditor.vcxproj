@@ -65,7 +65,7 @@
     </Link>
     <PreBuildEvent>
       <Command>call ..\vcpkg\bootstrap-vcpkg.bat
-..\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets
+..\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] luabridge implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets
 copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
@@ -97,7 +97,7 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     </Link>
     <PreBuildEvent>
       <Command>call ..\vcpkg\bootstrap-vcpkg.bat
-..\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets
+..\vcpkg\vcpkg.exe install opengl glew sdl2 imgui[opengl3-binding,sdl2-binding,docking-experimental] luabridge implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets
 copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>

@@ -85,7 +85,7 @@
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] luabridge --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
@@ -115,7 +115,7 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] luabridge --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
       <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>

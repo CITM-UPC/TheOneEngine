@@ -71,6 +71,7 @@ Here is a list of EOP's coming features
 - rapidjson (JSON parser/generator)
 - imGui (GUI)
 - imPlot (2D plotting for ImGui)
+- LuaBridge
 
 ## 4.3. Requirements
 TheOne requires:
