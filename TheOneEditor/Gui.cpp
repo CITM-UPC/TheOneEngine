@@ -504,7 +504,7 @@ void Gui::MainMenuWindow()
 
 void Gui::MainMenuHelp()
 {
-    if (ImGui::MenuItem("About TheOneEngine"))
+    if (ImGui::MenuItem("About Engine of Power"))
     {
         app->gui->panelAbout->SwitchState();
     }
@@ -513,7 +513,7 @@ void Gui::MainMenuHelp()
 
     if (ImGui::MenuItem("Documentation"))
     {
-        OpenURL("https://github.com/CITM-UPC/TheOneEngine");
+        OpenURL("https://github.com/CITM-UPC/EngineOfPower");
     }
     
     ImGui::Separator();
