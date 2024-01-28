@@ -16,7 +16,7 @@ bool PanelAbout::Draw()
 
 	if (ImGui::Begin("About Engine of Power", &enabled, settingsFlags))
 	{
-		ImGui::Text("Engine of Power by Sergi Parra is a fork of TheOneEngine.")
+		ImGui::Text("Engine of Power by Sergi Parra is a fork of TheOneEngine.");
 		ImGui::Text("TheOneEngine by Hector Bascones Zamora, Arnau Jimenez Gallego & Julia Serra Trujillo.");
 		ImGui::Text("This is a demo for the subject of Game Engines, CITM - UPC");
 	}	
