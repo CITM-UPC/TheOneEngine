@@ -16,7 +16,9 @@
 #include "PanelScene.h"
 #include "PanelSettings.h"
 #include "Timer.h"
+
 #include "..\TheOneEngine\Transform.h"
+#include "..\TheOneEngine\EngineCore.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {

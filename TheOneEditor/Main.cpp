@@ -1,12 +1,6 @@
 #include "App.h"
 #include "Log.h"
-
-#include <iostream>
-#include <sstream>
-#include <vector>
-#include <chrono>
-#include <thread>
-#include <stdlib.h>
+#include "SDL2/SDL.h"
 
 
 enum MainState
@@ -22,7 +16,7 @@ enum MainState
 
 App* app = NULL;
 
-int main(int argc, char* args[])
+int main(int argc, char** argv)
 {
 	LOG(LogType::LOG_INFO, "Engine starting ...");
 
@@ -38,7 +32,7 @@ int main(int argc, char* args[])
 		case CREATE:
 			LOG(LogType::LOG_INFO, "CREATION PHASE ===============================");
 
-			app = new App(argc, args);
+			app = new App(argc, argv);
 
 			if (app != NULL)
 				state = AWAKE;

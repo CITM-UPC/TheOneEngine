@@ -11,6 +11,8 @@
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
+#include "..\TheOneEngine\EngineCore.h"
+
 
 
 Renderer3D::Renderer3D(App* app) : Module(app)

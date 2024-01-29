@@ -118,6 +118,7 @@ bool Gui::Start()
 
 
     // Setup Platform/Renderer backends
+    const char* video = SDL_GetCurrentVideoDriver(); //Imgui does not like it in debug unless this is included?
     ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->window->glContext);
     ImGui_ImplOpenGL3_Init("#version 330 core");
 

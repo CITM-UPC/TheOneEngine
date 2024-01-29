@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Hardware.h"
+#include "..\TheOneEngine\EngineCore.h"
 
 #include "imgui.h"
 #include "implot.h"

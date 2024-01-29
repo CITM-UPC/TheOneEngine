@@ -4,13 +4,9 @@
 
 #include "Log.h"
 #include "Timer.h"
-#include "..\TheOneEngine\EngineCore.h"
 
-#include <iostream>
-#include <sstream>
 #include <vector>
 #include <chrono>
-#include <thread>
 #include <string>
 #include <list>
 
@@ -23,6 +19,7 @@ class Hardware;
 class SceneManager;
 class Gui;
 class Renderer3D;
+class EngineCore;
 
 enum class GameState {
 	NONE,
