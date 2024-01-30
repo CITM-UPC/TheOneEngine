@@ -57,6 +57,9 @@
     <ClInclude Include="Material.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentScript.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
