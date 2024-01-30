@@ -9,6 +9,8 @@ Window::Window(App* app) :
     glContext(),
     displayMode(DisplayMode::WINDOWED),
     resolution(Resolution::R_1920x1080),
+    height(768),
+    width(1024),
     borderless(false),
     refreshRate(0)
 {}
@@ -19,7 +21,7 @@ bool Window::Awake()
 {
     bool ret = true;
 
-    SetResolution(resolution);
+    //SetResolution(resolution);
 
     LOG(LogType::LOG_INFO, "# Initializing SDL Window with OpenGL...");
     if (!initSDLWindowWithOpenGL())
@@ -38,9 +40,9 @@ bool Window::Awake()
 bool Window::Start()
 {
     displayMode = DisplayMode::WINDOWED;
-    resolution = Resolution::R_1920x1080;
+    //resolution = Resolution::R_1920x1080;
 
-    SetResolution(resolution);
+    //SetResolution(resolution);
 
     return true;
 }
