@@ -2,6 +2,7 @@
 #include "ScriptData.h"
 #include "luadefs.h"
 #include "../TheOneEngine/ComponentScript.h"
+#include "App.h"
 
 
 Scripting::Scripting(App* app) : Module(app){}
@@ -14,20 +15,40 @@ void Scripting::Init() {
 }
 
 bool Scripting::CleanUp() {
+	current_script_ = nullptr;
 	for (ScriptData* it : instances_)
 		if (it) delete it;
-	current_script_ = nullptr;
+	instances_.clear();
 	return true;
 }
 
 bool Scripting::Update(double dt) {
-	//TODO: Check if we are in play mode and call every script update/start
 	//TODO: Update inspector variables
+	if (app->IsPlaying()) {
+		for (ScriptData* script : instances_) {
+			current_script_ = script;
+			if (!script->awoken) { // We wake the script regardless of it being active or not
+				script->table_class["Awake"]();
+				script->awoken = true;
+			}
+			else if (script->owner->IsEnabled()) { 
+				if (!script->started) {
+					script->table_class["Start"]();
+					script->started = true;
+				}
+				else
+					script->table_class["Update"]();
+			}
+		}
+	}
 	return true;
 }
 
 void Scripting::CreateScript(ComponentScript* component) {
-	//TODO: Create a new instance from component's script path
+	ScriptData* instance = new ScriptData;
+	instance->owner = component;
+	instances_.push_back(instance);
+	CompileScriptTable(instance);
 }
 
 const ScriptData* Scripting::GetCurrentScript() const {

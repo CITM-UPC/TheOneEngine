@@ -8,5 +8,6 @@ struct ScriptData {
 	ComponentScript* owner = nullptr;
 	luabridge::LuaRef table_class = 0;
 	bool started = false;
+	bool awoken = false;
 };
 #endif
