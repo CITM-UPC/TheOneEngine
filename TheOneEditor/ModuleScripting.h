@@ -30,7 +30,7 @@ private:
 private:
 	lua_State* luastate_= nullptr;
 	std::vector<ScriptData*> instances_;
-	ScriptData* current_script_;
+	ScriptData* current_script_ = nullptr;
 
 
 

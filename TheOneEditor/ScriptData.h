@@ -2,7 +2,7 @@
 #define __SCRIPTDATA_H__
 
 #include "../TheOneEngine/ComponentScript.h"
-#include "LuaBridge/LuaBridge.h"
+#include "luadefs.h"
 
 struct ScriptData {
 	ComponentScript* owner = nullptr;
