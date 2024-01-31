@@ -58,11 +58,13 @@ public:
             }
         }
 
-        newComponent->Enable(); // hekbas: Enable the component if necessary?
-        components.push_back(std::move(newComponent));
+        new_component->Enable(); // hekbas: Enable the component if necessary?
+        components.push_back(std::move(new_component));
 
         return true;
     }
+
+    void AddScriptComponent(const char* path);
 
     void RemoveComponent(ComponentType type);
     void RemoveComponent(uint UID);

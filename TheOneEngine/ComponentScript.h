@@ -6,6 +6,7 @@
 
 class ComponentScript : public Component {
 public:
+	// path must be relative
 	ComponentScript(std::shared_ptr<GameObject> containerGO, const char* path);
 	virtual ~ComponentScript();
 

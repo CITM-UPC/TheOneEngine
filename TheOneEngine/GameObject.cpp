@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "ComponentScript.h"
 #include "UIDGen.h"
 #include "../TheOneEditor/SceneManager.h"
 
@@ -62,6 +63,13 @@ std::vector<TComponent*> GameObject::GetAllComponents() {
 	}
 
 	return ret;
+}
+
+void GameObject::AddScriptComponent(const char* path) {
+	std::unique_ptr<Component> new_component = std::make_unique<ComponentScript>(shared_from_this(), path);
+	new_component->Enable(); 
+	components.push_back(std::move(new_component));
+
 }
 
 // Only for Components of unique type
