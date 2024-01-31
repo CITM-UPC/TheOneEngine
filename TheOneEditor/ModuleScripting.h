@@ -5,7 +5,7 @@
 #include <vector>
 
 // LuaBridge's Lua Virtual Machine Class
-class lua_State;
+struct lua_State;
 class ComponentScript;
 struct ScriptData;
 

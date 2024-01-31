@@ -58,7 +58,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)\vcpkg\installed\x64-windows\lib\;$(SolutionDir)\vcpkg\installed\x64-windows\lib\manual-link\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\debug\lib\;$(SolutionDir)vcpkg\installed\x64-windows\debug\lib\manual-link\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;imgui.lib;implot.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
@@ -89,7 +89,7 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\vcpkg\installed\x64-windows\lib\;..\vcpkg\installed\x64-windows\lib\manual-link\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)vcpkg\installed\x64-windows\lib\manual-link\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;imgui.lib;implot.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
       <IgnoreSpecificDefaultLibraries>

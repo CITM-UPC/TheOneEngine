@@ -1,7 +1,7 @@
 #ifndef __SCRIPTINGTRANSFORM_H__
 #define __SCRIPTINGTRANSFORM_H__
 
-class lua_State;
+struct lua_State;
 namespace luabridge
 {
 	class LuaRef;
