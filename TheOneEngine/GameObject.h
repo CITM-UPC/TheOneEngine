@@ -53,7 +53,7 @@ public:
                 LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
                 LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
 
-                new_component.release();
+                new_component.reset();
                 return false;
             }
         }
