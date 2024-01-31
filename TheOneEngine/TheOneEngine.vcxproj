@@ -15,6 +15,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentScript.h" />
     <ClInclude Include="Defs.h" />
+    <ClInclude Include="FileUtils.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Material.h" />
@@ -29,6 +30,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentScript.cpp" />
+    <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
