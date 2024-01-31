@@ -126,6 +126,7 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelAbout.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScriptingGameObject.cpp" />
     <ClCompile Include="ScriptingTransform.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Window.cpp" />
@@ -159,6 +160,7 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     <ClInclude Include="PanelAbout.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="ScriptData.h" />
+    <ClInclude Include="ScriptingGameObject.h" />
     <ClInclude Include="ScriptingTransform.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>

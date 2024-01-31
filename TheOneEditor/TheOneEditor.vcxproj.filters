@@ -73,6 +73,9 @@
     <ClCompile Include="ScriptingTransform.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptingGameObject.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -145,6 +148,9 @@
       <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="ScriptingTransform.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingGameObject.h">
       <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
