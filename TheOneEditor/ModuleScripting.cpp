@@ -7,6 +7,7 @@
 //Scripting functions
 #include "ScriptingTransform.h"
 #include "ScriptingGameObject.h"
+#include "ScriptingInput.h"
 
 
 Scripting::Scripting(App* app) : Module(app){}
@@ -73,9 +74,26 @@ void Scripting::PopulateLuaState() {
 		.addFunction("SetRotation", &ScriptingTransform::SetRotation)
 		.addFunction("Rotate", &ScriptingTransform::Rotate)
 		.endClass()
+		// GameObject Scripting
 		.beginClass<ScriptingGameObject>("GameObject")
 		.addConstructor<void(*) (void)>()
 		.addFunction("GetMyUID", &ScriptingGameObject::GetMyUID)
+		.endClass()
+		// Input Scripting
+		.beginClass<ScriptingInput>("Input")
+		.addConstructor<void(*) (void)>()
+		.addFunction("GetKeyState", &ScriptingInput::GetKeyState)
+		.addFunction("IsKeyDown", &ScriptingInput::IsKeyDown)
+		.addFunction("IsKeyUp", &ScriptingInput::IsKeyUp)
+		.addFunction("IsKeyRepeat", &ScriptingInput::IsKeyRepeat)
+		.addFunction("IsKeyIdle", &ScriptingInput::IsKeyIdle)
+		.addFunction("GetMBState", &ScriptingInput::GetMBState)
+		.addFunction("IsMBDown", &ScriptingInput::IsMBDown)
+		.addFunction("IsMBUp", &ScriptingInput::IsMBUp)
+		.addFunction("IsMBRepeat", &ScriptingInput::IsMBRepeat)
+		.addFunction("ISMBIdle", &ScriptingInput::ISMBIdle)
+		.addFunction("GetMouseMovementX", &ScriptingInput::GetMouseMovementX)
+		.addFunction("GetMouseMovementY", &ScriptingInput::GetMouseMovementY)
 		.endClass()
 		.endNamespace();
 }

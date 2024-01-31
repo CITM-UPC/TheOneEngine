@@ -76,6 +76,9 @@
     <ClCompile Include="ScriptingGameObject.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptingInput.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
