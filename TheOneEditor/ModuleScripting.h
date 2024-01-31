@@ -25,6 +25,7 @@ public:
 	const ScriptData* GetCurrentScript() const;
 
 private:
+	void PopulateLuaState();
 	void CompileScriptTable(ScriptData* script);
 
 private:

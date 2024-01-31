@@ -10,9 +10,12 @@ public:
 	virtual ~ComponentScript();
 
 	//TODO: Create a save/load function
+	std::string GetPath() const { return path_; };
+	std::string GetScriptName() const { return script_name_; };
 
 private:
 	std::string path_;
+	std::string script_name_;
 	//TODO: Store here variables from the script
 };
 

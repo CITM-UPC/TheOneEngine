@@ -4,6 +4,9 @@
 #include "../TheOneEngine/ComponentScript.h"
 #include "App.h"
 
+//Scripting functions
+#include "ScriptingTransform.h"
+
 
 Scripting::Scripting(App* app) : Module(app){}
 
@@ -12,6 +15,7 @@ Scripting::~Scripting() {}
 void Scripting::Init() {
 	luastate_ = luaL_newstate();
 	luaL_openlibs(luastate_);
+	PopulateLuaState();
 }
 
 bool Scripting::CleanUp() {
@@ -55,6 +59,33 @@ const ScriptData* Scripting::GetCurrentScript() const {
 	return current_script_;
 }
 
+void Scripting::PopulateLuaState() {
+	luabridge::getGlobalNamespace(luastate_)
+		.beginNamespace("Scripting")
+		// Transform Scripting
+		.beginClass<ScriptingTransform>("Transform")
+		.addConstructor<void(*) (void)>()
+		.addFunction("GetPosition", &ScriptingTransform::GetPosition)
+		.addFunction("SetPosition", &ScriptingTransform::SetPosition)
+		.addFunction("Translate", &ScriptingTransform::Translate)
+		.addFunction("GetRotation", &ScriptingTransform::GetRotation)
+		.addFunction("SetRotation", &ScriptingTransform::SetRotation)
+		.addFunction("Rotate", &ScriptingTransform::Rotate)
+		.endClass()
+		.endNamespace();
+}
+
 void Scripting::CompileScriptTable(ScriptData* script) {
-	//TODO: Create function table and pass it onto script
+	if (luastate_) {
+		int compiled = luaL_dofile(luastate_, script->owner->GetPath().c_str());
+		if (compiled == LUA_OK) {
+			std::string get_table_name = "GetTable" + script->owner->GetScriptName();
+			luabridge::LuaRef get_table = luabridge::getGlobal(luastate_, get_table_name.c_str());
+
+			if (!get_table.isNil()) {
+				luabridge::LuaRef script_table(get_table());
+				script->table_class = script_table;
+			}
+		} else {} //TODO: Throw some error
+	}
 }

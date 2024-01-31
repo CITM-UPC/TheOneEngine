@@ -70,6 +70,9 @@
     <ClCompile Include="ModuleScripting.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptingTransform.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -139,6 +142,9 @@
       <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="luadefs.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingTransform.h">
       <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
