@@ -17,7 +17,6 @@ class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 
-    GameObject();
     GameObject(std::string name = "gameObject");
     ~GameObject();
 
@@ -40,29 +39,7 @@ public:
     std::vector<TComponent*> GetAllComponents();
 
     template <typename TComponent>
-    bool AddComponent()
-    {
-        static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must inherit from Component");
-        std::unique_ptr<Component> new_component = std::make_unique<TComponent>(shared_from_this());
-        if (new_component->IsUnique()) {
-            Component* component = this->GetComponent<TComponent>();
-
-            // Check for already existing Component
-            if (component != nullptr) {
-                LOG(LogType::LOG_WARNING, "Component already applied");
-                LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
-                LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
-
-                new_component.reset();
-                return false;
-            }
-        }
-
-        new_component->Enable(); // hekbas: Enable the component if necessary?
-        components.push_back(std::move(new_component));
-
-        return true;
-    }
+    bool AddComponent();
 
     void AddScriptComponent(const char* path);
 

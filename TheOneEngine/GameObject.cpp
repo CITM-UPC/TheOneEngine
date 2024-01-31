@@ -65,6 +65,30 @@ std::vector<TComponent*> GameObject::GetAllComponents() {
 	return ret;
 }
 
+template<typename TComponent>
+bool GameObject::AddComponent() {
+	static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must inherit from Component");
+	std::unique_ptr<Component> new_component = std::make_unique<TComponent>(shared_from_this());
+	if (new_component->IsUnique()) {
+		Component* component = this->GetComponent<TComponent>();
+
+		// Check for already existing Component
+		if (component != nullptr) {
+			LOG(LogType::LOG_WARNING, "Component already applied");
+			LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
+			LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
+
+			new_component.reset();
+			return false;
+		}
+	}
+
+	new_component->Enable(); // hekbas: Enable the component if necessary?
+	components.push_back(std::move(new_component));
+
+	return true;
+}
+
 void GameObject::AddScriptComponent(const char* path) {
 	std::unique_ptr<Component> new_component = std::make_unique<ComponentScript>(shared_from_this(), path);
 	new_component->Enable(); 
