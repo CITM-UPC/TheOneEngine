@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 #include "Gui.h"
 #include "Renderer3D.h"
+#include "ModuleScripting.h"
 
 #include "PanelAbout.h"
 #include "PanelConsole.h"
@@ -28,6 +29,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	input = new Input(this);
 	hardware = new Hardware(this);
 	sceneManager = new SceneManager(this);
+	scripting = new Scripting(this);
 	gui = new Gui(this);
 	renderer3D = new Renderer3D(this);
 
