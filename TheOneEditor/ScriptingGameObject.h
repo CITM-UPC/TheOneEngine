@@ -7,7 +7,7 @@ public:
 	ScriptingGameObject() {};
 	~ScriptingGameObject() {};
 
-	unsigned int GetMyUID();
+	unsigned int GetMyUID() const;
 
 };
 

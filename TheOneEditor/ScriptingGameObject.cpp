@@ -7,7 +7,7 @@
 #include "../TheOneEngine/GameObject.h"
 
 
-unsigned int ScriptingGameObject::GetMyUID() {
+unsigned int ScriptingGameObject::GetMyUID() const {
 	ComponentScript* component = app->scripting->GetCurrentScript()->owner;
 	return component->GetContainerGO()->GetUID();
 }

@@ -4,7 +4,7 @@
 #include "luadefs.h"
 #include "../TheOneEngine/Transform.h"
 
-luabridge::LuaRef ScriptingTransform::GetPosition(unsigned int go_UUID, lua_State* lua_state) {
+luabridge::LuaRef ScriptingTransform::GetPosition(unsigned int go_UUID, lua_State* lua_state) const{
 	vec3 position = vec3(0.0f);
 	std::shared_ptr<GameObject> go = app->sceneManager->FindGOByUID(go_UUID);
 	if (go) {
@@ -38,7 +38,7 @@ void ScriptingTransform::Translate(unsigned int go_UUID, float x, float y, float
 	else {} // TODO: Throw an error maybe?
 }
 
-luabridge::LuaRef ScriptingTransform::GetRotation(unsigned int go_UUID, lua_State* lua_state) {
+luabridge::LuaRef ScriptingTransform::GetRotation(unsigned int go_UUID, lua_State* lua_state) const{
 	vec3 rotation = vec3(0.0f);
 	std::shared_ptr<GameObject> go = app->sceneManager->FindGOByUID(go_UUID);
 	if (go) {
