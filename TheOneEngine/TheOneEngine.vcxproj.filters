@@ -89,5 +89,8 @@
     <ClCompile Include="Material.cpp">
       <Filter>GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentScript.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

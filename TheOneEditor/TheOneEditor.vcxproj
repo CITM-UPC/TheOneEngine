@@ -142,6 +142,7 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     <ClInclude Include="Importer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="luadefs.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleScripting.h" />
     <ClInclude Include="PanelConsole.h" />
