@@ -3,6 +3,7 @@
 
 
 class ScriptingGameObject {
+public:
 	ScriptingGameObject() {};
 	~ScriptingGameObject() {};
 

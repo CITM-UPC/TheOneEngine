@@ -6,6 +6,7 @@
 
 //Scripting functions
 #include "ScriptingTransform.h"
+#include "ScriptingGameObject.h"
 
 
 Scripting::Scripting(App* app) : Module(app){}
@@ -71,6 +72,10 @@ void Scripting::PopulateLuaState() {
 		.addFunction("GetRotation", &ScriptingTransform::GetRotation)
 		.addFunction("SetRotation", &ScriptingTransform::SetRotation)
 		.addFunction("Rotate", &ScriptingTransform::Rotate)
+		.endClass()
+		.beginClass<ScriptingGameObject>("GameObject")
+		.addConstructor<void(*) (void)>()
+		.addFunction("GetMyUID", &ScriptingGameObject::GetMyUID)
 		.endClass()
 		.endNamespace();
 }
