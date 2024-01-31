@@ -37,21 +37,27 @@ public:
     }
 
     template <typename TComponent>
+    std::vector<TComponent*> GetAllComponents();
+
+    template <typename TComponent>
     bool AddComponent()
     {
-        Component* component = this->GetComponent<TComponent>();
+        static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must inherit from Component");
+        std::unique_ptr<Component> new_component = std::make_unique<TComponent>(shared_from_this());
+        if (new_component->IsUnique()) {
+            Component* component = this->GetComponent<TComponent>();
 
-        // Check for already existing Component
-        if (component != nullptr)
-        {
-            LOG(LogType::LOG_WARNING, "Component already applied");
-            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
-            LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
+            // Check for already existing Component
+            if (component != nullptr) {
+                LOG(LogType::LOG_WARNING, "Component already applied");
+                LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
+                LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
 
-            return false;
+                new_component.release();
+                return false;
+            }
         }
 
-        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());
         newComponent->Enable(); // hekbas: Enable the component if necessary?
         components.push_back(std::move(newComponent));
 
@@ -59,6 +65,7 @@ public:
     }
 
     void RemoveComponent(ComponentType type);
+    void RemoveComponent(uint UID);
 
     // Get/Set
     bool IsEnabled() const;

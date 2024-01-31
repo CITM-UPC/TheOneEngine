@@ -4,6 +4,7 @@
 
 #include <fstream>
 #include <filesystem>
+#include "../TheOneEngine/ComponentScript.h"
 
 namespace fs = std::filesystem;
 
@@ -452,6 +453,8 @@ void SceneManager::LoadScene(const std::string& filename)
 
             // Load the game object from JSON
             newGameObject->LoadGameObject(gameObjectJSON);
+            
+            // TODO: Load Scripts
 
         }
 

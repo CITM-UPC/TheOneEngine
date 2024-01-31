@@ -48,10 +48,14 @@ public:
     virtual json SaveComponent() = 0;
     virtual void LoadComponent(const json& transformJSON) = 0;
 
+    // Is this component only allowed one instance per GameObject?
+    bool IsUnique() const { return unique; };
+
 protected:
     std::weak_ptr<GameObject> containerGO;
     ComponentType type;
     std::string name;
+    bool unique = true;
 
     uint32_t UID;
 public:

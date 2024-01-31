@@ -51,12 +51,35 @@ void GameObject::Draw()
 }
 
 // Component ----------------------------------------
+template<typename TComponent>
+std::vector<TComponent*> GameObject::GetAllComponents() {
+	static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must inherit from Component");
+	std::vector<TComponent>* ret;
+
+	for (const auto& component : components) {
+		if (dynamic_cast<TComponent*>(component.get()))
+			ret->push_back(static_cast<TComponent*>(component.get()));
+	}
+
+	return ret;
+}
+
+// Only for Components of unique type
 void GameObject::RemoveComponent(ComponentType type)
 {
 	for (auto it = components.begin(); it != components.end(); ++it)
 	{
 		if ((*it)->GetType() == type)
 		{
+			it = components.erase(it);
+			break;
+		}
+	}
+}
+
+void GameObject::RemoveComponent(uint UID) {
+	for (auto it = components.begin(); it != components.end(); ++it) {
+		if ((*it)->GetUID() == UID) {
 			it = components.erase(it);
 			break;
 		}
@@ -202,19 +225,19 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 
 		for (const auto& componentJSON : componentsJSON)
 		{
-
+			// TODO: Load Scripts
 			// Assuming each component has a LoadComponent function
-			if (componentJSON["Type"] == 0)
+			if (componentJSON["Type"] == ComponentType::Transform)
 			{
 				this->AddComponent<Transform>();
 				this->GetComponent<Transform>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON["Type"] == 1)
+			else if (componentJSON["Type"] == ComponentType::Camera)
 			{
 				this->AddComponent<Camera>();
 				this->GetComponent<Camera>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON["Type"] == 2)
+			else if (componentJSON["Type"] == ComponentType::Mesh)
 			{
 				this->AddComponent<Mesh>();
 				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
