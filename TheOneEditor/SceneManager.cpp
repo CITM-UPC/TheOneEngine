@@ -5,6 +5,7 @@
 #include <fstream>
 #include <filesystem>
 #include "../TheOneEngine/ComponentScript.h"
+#include "ModuleScripting.h"
 
 namespace fs = std::filesystem;
 
@@ -454,7 +455,12 @@ void SceneManager::LoadScene(const std::string& filename)
             // Load the game object from JSON
             newGameObject->LoadGameObject(gameObjectJSON);
             
-            // TODO: Load Scripts
+            // Load Scripts
+            std::vector<ComponentScript*> script_components = newGameObject->GetAllComponents<ComponentScript>();
+            for (auto& script : script_components) {
+                app->scripting->CreateScript(script);
+            }
+            script_components.clear();
 
         }
 
