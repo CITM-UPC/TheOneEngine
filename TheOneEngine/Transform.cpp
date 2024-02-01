@@ -4,8 +4,8 @@
 Transform::Transform(std::shared_ptr<GameObject> containerGO)
     : Component(containerGO, ComponentType::Transform),
     globalMatrix(1.0f),
-    position(0.0f), rotation(1, 0, 0, 0), scale(1.0f), eulerAngles(0,0,0),
-    localScale(1.0f), localRotation(1, 0, 0, 0), localEulerAngles(0, 0, 0)
+    position(0.0f), rotation(1, 0, 0, 0), scale(1.0f),
+    localScale(1.0f), localRotation(1, 0, 0, 0)
 {}
 
 Transform::~Transform() {}
@@ -27,14 +27,10 @@ void Transform::rotate(const vec3& axis, double angle, bool local)
     glm::quat rotationQuat = glm::angleAxis(glm::radians(angle), axis);
 
     if (local) {
-        localRotation = rotationQuat;
-        //localRotation = glm::normalize(localRotation);
-        localEulerAngles = glm::eulerAngles(localRotation);
+        localRotation *= rotationQuat;
     }
     else {
-        rotation = rotationQuat;
-        //rotation = glm::normalize(rotation);
-        this->eulerAngles = glm::eulerAngles(rotation);
+        rotation *= rotationQuat;
     }
 }
 
@@ -43,15 +39,18 @@ void Transform::rotate(const vec3& eulerAngles, bool local)
     glm::quat rotationQuat = glm::quat(glm::radians(eulerAngles));
 
     if (local) {
-        localRotation = rotationQuat;
-        //localRotation = glm::normalize(localRotation);
-        localEulerAngles = glm::eulerAngles(localRotation);
+        localRotation *= rotationQuat;
     }
     else {
-        rotation = rotationQuat;
-        //rotation = glm::normalize(rotation);
-        this->eulerAngles = glm::eulerAngles(rotation);
+        rotation *= rotationQuat;
     }
+}
+
+void Transform::rotate(const glm::quat& rotation_quat, bool local) {
+    if (local)
+        localRotation *= rotation_quat;
+    else
+        rotation *= rotation_quat;
 }
 
 void Transform::scaleBy(const vec3& scaling, bool local) 
@@ -131,10 +130,34 @@ vec3 Transform::getLocalEulerAngles() const
     return eulerAngles;
 }
 
-void Transform::setRotation(const vec3& newRotation)
+void Transform::setRotation(const vec3& newRotation, bool local = true)
 {
-    eulerAngles = newRotation;
-    rotation = EulerAnglesToQuaternion(eulerAngles);
+    glm::quat rotationQuat = glm::quat(glm::radians(newRotation));
+
+    if (local) {
+        localRotation = rotationQuat;
+    }
+    else {
+        rotation = rotationQuat;
+    }
+}
+
+void Transform::setRotation(const vec3& axis, double angle, bool local) {
+    glm::quat rotationQuat = glm::angleAxis(glm::radians(angle), axis);
+
+    if (local) {
+        localRotation = rotationQuat;
+    }
+    else {
+        rotation = rotationQuat;
+    }
+}
+
+void Transform::setRotation(const glm::quat& rotation_quat, bool local) {
+    if (local)
+        localRotation *= rotation_quat;
+    else
+        rotation *= rotation_quat;
 }
 
 vec3 Transform::getScale() const

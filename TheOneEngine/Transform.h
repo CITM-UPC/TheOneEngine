@@ -20,6 +20,7 @@ public:
     void translate(const vec3& translation, bool local = true);
     void rotate(const vec3& axis, double angle, bool local = true);
     void rotate(const vec3& eulerAngles, bool local = true);
+    void rotate(const glm::quat& rotation_quat, bool local = true);
     void scaleBy(const vec3& scaling, bool local = true);
 
 
@@ -40,8 +41,10 @@ public:
    
     vec3 getEulerAngles() const;       // Gets global rotation of the object in Euler Angles   
     vec3 getLocalEulerAngles() const;  // Gets local rotation of the object in Euler Angles
-    //void setRotation(const vec3f& newRotation); // Sets rotation 
-    void setRotation(const vec3& newRotation); // Sets rotation 
+    void setRotation(const vec3& newRotation, bool local = true); // Sets rotation 
+    void setRotation(const vec3& axis, double angle, bool local = true); // Sets rotation 
+    void setRotation(const glm::quat& rotation_quat, bool local = true); // Sets rotation
+
 
     vec3 getScale() const;
     void setScale(const vec3& newScale); // Sets Scale
@@ -56,10 +59,8 @@ public:
 public:
 
     vec3 position;
-    quat rotation;
+    quat rotation; // TODO: storing global rotation seems moot?
     quat localRotation;
-    vec3 eulerAngles;
-    vec3 localEulerAngles;
     vec3 scale;
     vec3 localScale;
     mat4 globalMatrix; // Stores the transformations
