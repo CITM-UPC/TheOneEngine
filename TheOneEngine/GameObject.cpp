@@ -86,13 +86,14 @@ Component* GameObject::AddComponent() {
 	new_component->Enable(); // hekbas: Enable the component if necessary?
 	components.push_back(std::move(new_component));
 
-	return &components.back().get();
+	return components.back().get();
 }
 
-void GameObject::AddScriptComponent(const char* path) {
+ComponentScript* GameObject::AddScriptComponent(const char* path) {
 	std::unique_ptr<Component> new_component = std::make_unique<ComponentScript>(shared_from_this(), path);
 	new_component->Enable(); 
 	components.push_back(std::move(new_component));
+	return (ComponentScript*)components.back().get();
 
 }
 

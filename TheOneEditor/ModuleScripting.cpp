@@ -14,10 +14,12 @@ Scripting::Scripting(App* app) : Module(app){}
 
 Scripting::~Scripting() {}
 
-void Scripting::Init() {
+bool Scripting::Awake() {
 	luastate_ = luaL_newstate();
 	luaL_openlibs(luastate_);
 	PopulateLuaState();
+
+	return true;
 }
 
 bool Scripting::CleanUp() {
@@ -110,7 +112,8 @@ void Scripting::CompileScriptTable(ScriptData* script) {
 				script->table_class = script_table;
 			}
 		} else {
-			LOG(LogType::LOG_ERROR, "Failed to compile script %s", script->owner->GetScriptName());
+			std::string error = lua_tostring(luastate_, -1);
+			LOG(LogType::LOG_ERROR, "Failed to compile script %s, error: %s", script->owner->GetScriptName().data(), error.data());
 		}
 	}
 }

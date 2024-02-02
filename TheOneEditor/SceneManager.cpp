@@ -37,12 +37,13 @@ bool SceneManager::Start()
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
     CreateMeshGO("Assets\\Meshes\\street.fbx");
     CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
-
     for (auto mesh : GetGameObjects()) {
         if (mesh->GetName() == "Cadillac_CT4_V_2022_LowPoly") {
             demo = mesh;
         }
     }
+    ComponentScript* demo_script = demo->AddScriptComponent("Assets\\Scripts\\DemoTankMovement.lua");
+    app->scripting->CreateScript(demo_script);
 
     rotationAngle = 0.0f;
     rotationSpeed = 30.0f;
@@ -74,16 +75,17 @@ bool SceneManager::Update(double dt)
 
 
     if (app->IsPlaying()) {
-        demo->GetComponent<Transform>()->setRotation({ 0, 1, 0 }, rotationAngle);
-
-        rotationAngle += rotationSpeed * dt;
-
-        if (rotationAngle >= 360.0f)
-            rotationAngle -= 360.0f;
+        //demo->GetComponent<Transform>()->setRotation({ 0, 1, 0 }, rotationAngle);
+        //
+        //rotationAngle += rotationSpeed * dt;
+        //
+        //if (rotationAngle >= 360.0f)
+        //    rotationAngle -= 360.0f;
     }
 
     if (app->state == GameState::NONE) {
-        demo->GetComponent<Transform>()->setRotation({ 1, 0, 0 }, 0.0);
+        demo->GetComponent<Transform>()->setRotation({ 0, 0, 0 });
+        demo->GetComponent<Transform>()->setPosition({ 0, 0, 0 });
         rotationAngle = 0.0;
     }
 
@@ -372,6 +374,7 @@ std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
 
 std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
 {
+
     for (const auto& go : rootSceneGO.get()->children)
     {
         if (go.get()->GetUID() == _UID) 

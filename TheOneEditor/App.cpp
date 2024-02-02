@@ -40,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input, true);
 	AddModule(hardware, true);
 	AddModule(sceneManager, true);
+	AddModule(scripting, true);
 	AddModule(gui, true);
 
 	// Render last to swap buffer

@@ -166,7 +166,7 @@ bool PanelInspector::Draw()
                     transform->updateMatrix();
                 }
                 else if (needRefresh_rot) {
-                    transform->setRotation(view_rot);
+                    transform->setRotation((vec3)view_rot);
                     transform->updateMatrix();
                 }
                 else if (needRefresh_sca) {

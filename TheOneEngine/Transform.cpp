@@ -130,7 +130,7 @@ vec3 Transform::getLocalEulerAngles() const
     return eulerAngles;
 }
 
-void Transform::setRotation(const vec3& newRotation, bool local = true)
+void Transform::setRotation(const vec3& newRotation, bool local)
 {
     glm::quat rotationQuat = glm::quat(glm::radians(newRotation));
 

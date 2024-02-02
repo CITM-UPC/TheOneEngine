@@ -10,6 +10,9 @@ function lua_table:Awake()
     owner_UID = lua_table.GameObject:GetMyUID()
 end
 
+function lua_table:Start()
+end
+
 function lua_table:Update()
     if lua_table.Input:IsKeyRepeat("W") then
         lua_table.Transform:Translate(owner_UID, 0, 0, 1)

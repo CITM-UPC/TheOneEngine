@@ -16,7 +16,7 @@ public:
 	virtual ~Scripting();
 
 	// Regular module functions 
-	void Init();
+	bool Awake() override;
 	bool CleanUp() override;
 	bool Update(double dt) override;
 

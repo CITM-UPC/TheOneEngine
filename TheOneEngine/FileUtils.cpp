@@ -1,19 +1,12 @@
 #include "FileUtils.h"
 #include "SDL2/SDL.h"
+#include <filesystem>
 
 namespace Fileutils
 {
-	std::string working_dir;
-	bool written_wd = false;
 
 	std::string GetWorkingDir() {
-		if (!written_wd) {
-			char* path = SDL_GetBasePath();
-			working_dir = path;
-			written_wd = true;
-			SDL_free(path);
-		}
-		return working_dir;
+		return std::filesystem::current_path().string() + "\\";
 	}
 
 	void RemoveFileExtension(std::string& filename) {

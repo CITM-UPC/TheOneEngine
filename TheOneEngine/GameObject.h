@@ -12,6 +12,7 @@
 #include <list>
 #include <memory>
 
+class ComponentScript;
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
@@ -41,7 +42,7 @@ public:
     template <typename TComponent>
     Component* AddComponent();
 
-    void AddScriptComponent(const char* path);
+    ComponentScript* AddScriptComponent(const char* path);
 
     void RemoveComponent(ComponentType type);
     void RemoveComponent(uint UID);
