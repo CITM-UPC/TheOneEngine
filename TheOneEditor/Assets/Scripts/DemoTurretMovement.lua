@@ -20,7 +20,7 @@ function lua_table:Update()
     if (x_movement > 0) then
         lua_table.Transform:Rotate(owner_UID, 0, 1, 0)
     else if (x_movement < 0) then
-        lua_table.Transform:Rotate(owner_UID, 0, 1, 0)
+        lua_table.Transform:Rotate(owner_UID, 0, -1, 0)
     end
 
     -- TODO: Mouse clicking should instantiate a new bullet?
