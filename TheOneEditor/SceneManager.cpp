@@ -451,10 +451,12 @@ void SceneManager::LoadScene(const std::string& filename)
         {
             // Create a new game object
             auto newGameObject = CreateEmptyGO();
+            auto it = gameobjects.find(newGameObject->GetUID());
+            gameobjects.erase(it);
 
             // Load the game object from JSON
             newGameObject->LoadGameObject(gameObjectJSON);
-            
+            gameobjects[newGameObject->GetUID()] = newGameObject; // We load it with the new UID
             // FIXME: Due to inheritance we'd have to go through all children and grab their scripts too
             // for now we just don't load scripts automatically
             // Load Scripts
