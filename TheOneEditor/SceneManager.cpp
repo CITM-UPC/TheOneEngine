@@ -101,6 +101,7 @@ bool SceneManager::PostUpdate()
 
 bool SceneManager::CleanUp()
 {
+    gameobjects.clear();
     return true;
 }
 
@@ -129,6 +130,7 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO(std::string name)
     emptyGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
     rootSceneGO.get()->children.emplace_back(emptyGO);
+    gameobjects[emptyGO->GetUID()] = emptyGO;
 
     return emptyGO;
 }
@@ -182,6 +184,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         for (auto& mesh : meshes)
         {
             std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
+            gameobjects[meshGO->GetUID()] = meshGO;
             meshGO.get()->AddComponent<Transform>();
             meshGO.get()->AddComponent<Mesh>();
             //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
@@ -286,6 +289,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
             meshLoader->BufferData(mData);
 
             std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mData.meshName);
+            gameobjects[meshGO->GetUID()] = meshGO;
             meshGO.get()->AddComponent<Transform>();
             meshGO.get()->AddComponent<Mesh>();
             //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
@@ -317,6 +321,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
 std::shared_ptr<GameObject> SceneManager::CreateCube()
 {
     std::shared_ptr<GameObject> cubeGO = std::make_shared<GameObject>("Cube");
+    gameobjects[cubeGO->GetUID()] = cubeGO;
     cubeGO.get()->AddComponent<Transform>();
     cubeGO.get()->AddComponent<Mesh>();
 
@@ -330,6 +335,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
 std::shared_ptr<GameObject> SceneManager::CreateSphere()
 {
     std::shared_ptr<GameObject> sphereGO = std::make_shared<GameObject>("Sphere");
+    gameobjects[sphereGO->GetUID()] = sphereGO;
     sphereGO.get()->AddComponent<Transform>();
     sphereGO.get()->AddComponent<Mesh>();
 
@@ -374,20 +380,11 @@ std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
 
 std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
 {
-
-    for (const auto& go : rootSceneGO.get()->children)
-    {
-        if (go.get()->GetUID() == _UID) 
-        {
-            return go;
-        }
-        else
-        {
-            FindGOByUID(_UID);
-        }
-    }
-
-    return nullptr;
+    auto it = gameobjects.find(_UID);
+    if (it != gameobjects.end())
+        return it->second;
+    else
+        return nullptr;
 }
 
 void SceneManager::SaveScene()

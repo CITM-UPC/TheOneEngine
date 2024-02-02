@@ -16,6 +16,7 @@
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <unordered_map>
 
 #define NOT_SPECIFIED ""
 
@@ -67,6 +68,9 @@ public:
     void LoadScene(const std::string& filename);
 
     //MeshLoader GetMeshLoader();
+
+public:
+    std::unordered_map <unsigned int, std::shared_ptr<GameObject>> gameobjects;
 
 private:
     // Private constructor to enforce singleton pattern
