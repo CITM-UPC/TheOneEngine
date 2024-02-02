@@ -455,12 +455,14 @@ void SceneManager::LoadScene(const std::string& filename)
             // Load the game object from JSON
             newGameObject->LoadGameObject(gameObjectJSON);
             
+            // FIXME: Due to inheritance we'd have to go through all children and grab their scripts too
+            // for now we just don't load scripts automatically
             // Load Scripts
-            std::vector<ComponentScript*> script_components = newGameObject->GetAllComponents<ComponentScript>();
-            for (auto& script : script_components) {
-                app->scripting->CreateScript(script);
-            }
-            script_components.clear();
+            //std::vector<ComponentScript*> script_components = newGameObject->GetAllComponents<ComponentScript>();
+            //for (auto& script : script_components) {
+            //    app->scripting->CreateScript(script);
+            //}
+            //script_components.clear();
 
         }
 

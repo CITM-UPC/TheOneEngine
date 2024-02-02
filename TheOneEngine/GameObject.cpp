@@ -271,8 +271,8 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 				new_component = AddComponent<Mesh>();
 				break;
 			case ComponentType::Script:
-				new_component = AddComponent<ComponentScript>();
-				break;
+				//new_component = AddComponent<ComponentScript>();
+				//break;
 			default:
 				new_component = nullptr;
 			}
