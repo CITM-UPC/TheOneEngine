@@ -10,7 +10,9 @@ luabridge::LuaRef ScriptingTransform::GetPosition(unsigned int go_UUID, lua_Stat
 	if (go) {
 		Transform* m_transform = go->GetComponent<Transform>();
 		position = m_transform->getPosition();
-	} else {} // TODO: Throw an error maybe?
+	} else {
+		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
+	}
 
 	luabridge::LuaRef table = luabridge::newTable(lua_state);
 	table.append(position.x);
@@ -26,7 +28,9 @@ void ScriptingTransform::SetPosition(unsigned int go_UUID, float x, float y, flo
 		Transform* m_transform = go->GetComponent<Transform>();
 		m_transform->setPosition(vec3(x, y, z));
 	}
-	else {} // TODO: Throw an error maybe?
+	else {
+		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
+	}
 }
 
 void ScriptingTransform::Translate(unsigned int go_UUID, float x, float y, float z) {
@@ -35,7 +39,9 @@ void ScriptingTransform::Translate(unsigned int go_UUID, float x, float y, float
 		Transform* m_transform = go->GetComponent<Transform>();
 		m_transform->translate(vec3(x, y, z));
 	}
-	else {} // TODO: Throw an error maybe?
+	else {
+		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
+	}
 }
 
 luabridge::LuaRef ScriptingTransform::GetRotation(unsigned int go_UUID, lua_State* lua_state) const{
@@ -45,7 +51,9 @@ luabridge::LuaRef ScriptingTransform::GetRotation(unsigned int go_UUID, lua_Stat
 		Transform* m_transform = go->GetComponent<Transform>();
 		rotation = m_transform->getEulerAngles();
 	}
-	else {} // TODO: Throw an error maybe?
+	else {
+		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
+	}
 
 	luabridge::LuaRef table = luabridge::newTable(lua_state);
 	table.append(rotation.x);
@@ -61,7 +69,9 @@ void ScriptingTransform::SetRotation(unsigned int go_UUID, float x, float y, flo
 		Transform* m_transform = go->GetComponent<Transform>();
 		m_transform->setRotation(vec3(x, y, z));
 	}
-	else {} // TODO: Throw an error maybe?
+	else {
+		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
+	}
 }
 
 void ScriptingTransform::Rotate(unsigned int go_UUID, float x, float y, float z) {
@@ -70,5 +80,7 @@ void ScriptingTransform::Rotate(unsigned int go_UUID, float x, float y, float z)
 		Transform* m_transform = go->GetComponent<Transform>();
 		m_transform->rotate(vec3(x, y, z));
 	}
-	else {} // TODO: Throw an error maybe?
+	else {
+		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
+	}
 }

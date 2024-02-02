@@ -23,8 +23,9 @@ int ScriptingInput::GetKeyState(const char* key) const {
 		return app->input->GetKey(code);
 	}
 	else {
+		LOG(LogType::LOG_WARNING, "Wrong key provided");
 		return KEY_UNKNOWN;
-	} //TODO: Throw an error maybe
+	}
 }
 
 bool ScriptingInput::IsKeyDown(const char* key) const {
@@ -49,7 +50,8 @@ int ScriptingInput::GetMBState(const char* mousebutton) const {
 		return app->input->GetMouseButton(mouseid);
 	}
 	else {
-		return KEY_UNKNOWN; //TODO: Throw an error maybe?
+		LOG(LogType::LOG_WARNING, "Wrong key provided");
+		return KEY_UNKNOWN;
 	}
 }
 

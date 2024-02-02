@@ -59,7 +59,7 @@ public:
 public:
 
     vec3 position;
-    quat rotation; // TODO: storing global rotation seems moot?
+    quat rotation; // FIXME: storing global rotation seems moot?
     quat localRotation;
     vec3 scale;
     vec3 localScale;

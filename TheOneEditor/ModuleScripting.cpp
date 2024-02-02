@@ -109,6 +109,8 @@ void Scripting::CompileScriptTable(ScriptData* script) {
 				luabridge::LuaRef script_table(get_table());
 				script->table_class = script_table;
 			}
-		} else {} //TODO: Throw some error
+		} else {
+			LOG(LogType::LOG_ERROR, "Failed to compile script %s", script->owner->GetScriptName());
+		}
 	}
 }
