@@ -84,3 +84,14 @@ void ScriptingTransform::Rotate(unsigned int go_UUID, float x, float y, float z)
 		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
 	}
 }
+
+void ScriptingTransform::RotateOnAxis(unsigned int go_UUID, float axis_x, float axis_y, float axis_z, float angle) {
+	std::shared_ptr<GameObject> go = app->sceneManager->FindGOByUID(go_UUID);
+	if (go) {
+		Transform* m_transform = go->GetComponent<Transform>();
+		m_transform->rotate(vec3(axis_x, axis_y, axis_z), angle);
+	}
+	else {
+		LOG(LogType::LOG_WARNING, "GameObject with UID %d does not exist.", go_UUID);
+	}
+}

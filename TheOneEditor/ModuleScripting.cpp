@@ -75,6 +75,7 @@ void Scripting::PopulateLuaState() {
 		.addFunction("GetRotation", &ScriptingTransform::GetRotation)
 		.addFunction("SetRotation", &ScriptingTransform::SetRotation)
 		.addFunction("Rotate", &ScriptingTransform::Rotate)
+		.addFunction("RotateOnAxis", &ScriptingTransform::RotateOnAxis)
 		.endClass()
 		// GameObject Scripting
 		.beginClass<ScriptingGameObject>("GameObject")
