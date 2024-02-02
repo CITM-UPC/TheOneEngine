@@ -19,9 +19,9 @@ function lua_table:Update()
     elseif lua_table.Input:IsKeyRepeat("S") then
         lua_table.Transform:Translate(owner_UID, 0, 0, -1)
     elseif lua_table.Input:IsKeyRepeat("A") then
-        lua_table.Transform:Translate(owner_UID, 1, 0, 0)
+        lua_table.Transform:Rotate(owner_UID, 0, -1, 0)
     elseif lua_table.Input:IsKeyRepeat("D") then
-        lua_table.Transform:Translate(owner_UID, -1, 0, 0)
+        lua_table.Transform:Rotate(owner_UID, 0, 1, 0)
     end
 end
 
