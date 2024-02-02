@@ -39,7 +39,7 @@ public:
     std::vector<TComponent*> GetAllComponents();
 
     template <typename TComponent>
-    bool AddComponent();
+    Component* AddComponent();
 
     void AddScriptComponent(const char* path);
 

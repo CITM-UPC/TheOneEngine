@@ -66,7 +66,7 @@ std::vector<TComponent*> GameObject::GetAllComponents() {
 }
 
 template<typename TComponent>
-bool GameObject::AddComponent() {
+Component* GameObject::AddComponent() {
 	static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must inherit from Component");
 	std::unique_ptr<Component> new_component = std::make_unique<TComponent>(shared_from_this());
 	if (new_component->IsUnique()) {
@@ -79,14 +79,14 @@ bool GameObject::AddComponent() {
 			LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
 
 			new_component.reset();
-			return false;
+			return nullptr;
 		}
 	}
 
 	new_component->Enable(); // hekbas: Enable the component if necessary?
 	components.push_back(std::move(new_component));
 
-	return true;
+	return &components.back().get();
 }
 
 void GameObject::AddScriptComponent(const char* path) {
@@ -254,26 +254,31 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 	if (gameObjectJSON.contains("Components"))
 	{
 		const json& componentsJSON = gameObjectJSON["Components"];
+		ComponentType type;
+		Component* new_component;
 
 		for (const auto& componentJSON : componentsJSON)
 		{
-			// TODO: Load Scripts
-			// Assuming each component has a LoadComponent function
-			if (componentJSON["Type"] == ComponentType::Transform)
-			{
-				this->AddComponent<Transform>();
-				this->GetComponent<Transform>()->LoadComponent(componentJSON);
+			type = componentJSON["Type"];
+			switch (type) {
+			case ComponentType::Transform:
+				new_component = AddComponent<Transform>();
+				break;
+			case ComponentType::Camera:
+				new_component = AddComponent<Camera>();
+				break;
+			case ComponentType::Mesh:
+				new_component = AddComponent<Mesh>();
+				break;
+			case ComponentType::Script:
+				new_component = AddComponent<ComponentScript>();
+				break;
+			default:
+				new_component = nullptr;
 			}
-			else if (componentJSON["Type"] == ComponentType::Camera)
-			{
-				this->AddComponent<Camera>();
-				this->GetComponent<Camera>()->LoadComponent(componentJSON);
-			}
-			else if (componentJSON["Type"] == ComponentType::Mesh)
-			{
-				this->AddComponent<Mesh>();
-				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
-			}
+
+			if (new_component)
+				new_component->LoadComponent(componentJSON);
 		}
 	}
 

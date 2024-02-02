@@ -22,6 +22,7 @@ ComponentScript::~ComponentScript() {}
 json ComponentScript::SaveComponent() {
 	json savejson;
 
+    savejson["Type"] = type;
     savejson["Name"] = name;
     savejson["UID"] = UID;
     savejson["Path"] = path_;
