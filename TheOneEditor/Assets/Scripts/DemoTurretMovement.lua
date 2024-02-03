@@ -18,9 +18,9 @@ function lua_table:Update()
     -- FIXME: The optimal way to do this would be to grab screen size and divide the movement
     -- and multiply it by sensitivity, but this will do
     if x_movement > 0 then
-        lua_table.Transform:Rotate(owner_UID, 0, 1, 0)
-    elseif x_movement < 0 then
         lua_table.Transform:Rotate(owner_UID, 0, -1, 0)
+    elseif x_movement < 0 then
+        lua_table.Transform:Rotate(owner_UID, 0, 1, 0)
     end
 
     -- TODO: Mouse clicking should instantiate a new bullet?
