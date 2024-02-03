@@ -14,17 +14,16 @@ function lua_table:Start()
 end
 
 function lua_table:Update()
-    local x_movement = lua_table.Input:GetGetMouseMovementX()
+    local x_movement = lua_table.Input:GetMouseMovementX()
     -- FIXME: The optimal way to do this would be to grab screen size and divide the movement
     -- and multiply it by sensitivity, but this will do
-    if (x_movement > 0) then
+    if x_movement > 0 then
         lua_table.Transform:Rotate(owner_UID, 0, 1, 0)
-    else if (x_movement < 0) then
+    elseif x_movement < 0 then
         lua_table.Transform:Rotate(owner_UID, 0, -1, 0)
     end
 
     -- TODO: Mouse clicking should instantiate a new bullet?
-
 end
 
 return lua_table

@@ -82,6 +82,9 @@
     <ClCompile Include="ScriptingApp.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="DemoFunctions.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -158,6 +161,9 @@
     </ClInclude>
     <ClInclude Include="ScriptingApp.h">
       <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoFunctions.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

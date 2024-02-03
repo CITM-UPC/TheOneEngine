@@ -6,6 +6,7 @@
 #include <filesystem>
 #include "../TheOneEngine/ComponentScript.h"
 #include "ModuleScripting.h"
+#include "DemoFunctions.h"
 
 namespace fs = std::filesystem;
 
@@ -36,9 +37,10 @@ bool SceneManager::Start()
     
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
     CreateMeshGO("Assets\\Meshes\\street.fbx");
-    demo = CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
-    ComponentScript* demo_script = demo->AddScriptComponent("Assets\\Scripts\\DemoTankMovement.lua");
-    app->scripting->CreateScript(demo_script);
+    //demo = CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
+    //ComponentScript* demo_script = demo->AddScriptComponent("Assets\\Scripts\\DemoTankMovement.lua");
+    //app->scripting->CreateScript(demo_script);
+    demo = Demo::CreateTank();
 
     rotationAngle = 0.0f;
     rotationSpeed = 30.0f;
@@ -51,7 +53,8 @@ bool SceneManager::Start()
 
 bool SceneManager::PreUpdate()
 {
-    rootSceneGO->UpdateTransform();
+    for (auto child : rootSceneGO->children)
+        child->UpdateTransform();
     return true;
 }
 
@@ -328,7 +331,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
 
     rootSceneGO.get()->children.emplace_back(cubeGO);
 
-    return nullptr;
+    return cubeGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateSphere()
