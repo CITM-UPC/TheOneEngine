@@ -72,6 +72,17 @@ void Camera::rotate(const vec3f& axis, float angle, bool local)
     updateViewMatrix();
 }
 
+void Camera::setRotation(const vec3f& axis, float angle, bool local) {
+    if (auto sharedGO = this->containerGO.lock()) {
+        sharedGO.get()->GetComponent<Transform>()->setRotation(axis, angle, local);
+    }
+    else {
+        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+    }
+
+    updateViewMatrix();
+}
+
 void Camera::rotate(const vec3f& eulerRotation, bool local)
 {
     if (auto sharedGO = this->containerGO.lock())
@@ -80,6 +91,17 @@ void Camera::rotate(const vec3f& eulerRotation, bool local)
     }
     else
     {
+        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+    }
+
+    updateViewMatrix();
+}
+
+void Camera::setRotation(const vec3f& eulerRotation, bool local) {
+    if (auto sharedGO = this->containerGO.lock()) {
+        sharedGO.get()->GetComponent<Transform>()->setRotation((vec3)eulerRotation, local);
+    }
+    else {
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
 
@@ -95,6 +117,7 @@ void Camera::updateViewMatrix()
 {
     if (auto sharedGO = this->containerGO.lock())
     {
+        //sharedGO.get()->GetComponent<Transform>()->updateMatrix();
         viewMatrix = glm::inverse(sharedGO.get()->GetComponent<Transform>()->getMatrix());
     }
     else

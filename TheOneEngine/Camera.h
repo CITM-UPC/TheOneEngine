@@ -57,7 +57,10 @@ public:
     void translate(const vec3f& translation, bool local = true);
     void setPosition(const vec3f& newPosition);
     void rotate(const vec3f& axis, float angle, bool local = true);  
+    void setRotation(const vec3f& axis, float angle, bool local = true);
     void rotate(const vec3f& eulerRotation, bool local = true);
+    void setRotation(const vec3f& eulerRotation, bool local = true);
+
 
     const mat4f& getViewMatrix();
     void updateViewMatrix();
