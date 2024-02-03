@@ -43,6 +43,18 @@ void GameObject::Update(double dt)
 		child->Update(dt);
 }
 
+void GameObject::UpdateTransform(mat4 parent_matrix, bool dirty) {
+	Transform* transform = GetComponent<Transform>();
+	bool is_dirty = dirty || transform->isDirty();
+
+	if (is_dirty)
+		transform->updateMatrix(parent_matrix);
+
+	for (auto& child : children) {
+		child->UpdateTransform(transform->getMatrix(), is_dirty);
+	}
+}
+
 void GameObject::Draw()
 {
 	for (const auto& component : components)

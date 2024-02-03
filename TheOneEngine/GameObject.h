@@ -22,6 +22,7 @@ public:
     ~GameObject();
 
     void Update(double dt);
+    void UpdateTransform(mat4 parent_matrix = mat4(1.0f), bool dirty = false);
     void Draw();
 
     // Components

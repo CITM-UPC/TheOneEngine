@@ -51,6 +51,7 @@ bool SceneManager::Start()
 
 bool SceneManager::PreUpdate()
 {
+    rootSceneGO->UpdateTransform();
     return true;
 }
 

@@ -20,6 +20,7 @@ void Transform::translate(const vec3& translation, bool local)
     else {
         position += rotation * translation;
     }
+    dirty_ = true;
 }
 
 void Transform::rotate(const vec3& axis, double angle, bool local)
@@ -32,6 +33,7 @@ void Transform::rotate(const vec3& axis, double angle, bool local)
     else {
         rotation *= rotationQuat;
     }
+    dirty_ = true;
 }
 
 void Transform::rotate(const vec3& eulerAngles, bool local)
@@ -44,6 +46,7 @@ void Transform::rotate(const vec3& eulerAngles, bool local)
     else {
         rotation *= rotationQuat;
     }
+    dirty_ = true;
 }
 
 void Transform::rotate(const glm::quat& rotation_quat, bool local) {
@@ -51,6 +54,8 @@ void Transform::rotate(const glm::quat& rotation_quat, bool local) {
         localRotation *= rotation_quat;
     else
         rotation *= rotation_quat;
+
+    dirty_ = true;
 }
 
 void Transform::scaleBy(const vec3& scaling, bool local) 
@@ -61,6 +66,8 @@ void Transform::scaleBy(const vec3& scaling, bool local)
     else {
         scale *= scaling;
     }
+    dirty_ = true;
+
 }
 
 
@@ -83,19 +90,28 @@ vec3 Transform::getRight()
     return glm::normalize(globalMatrix[0]);
 }
 
-mat4 Transform::getMatrix() 
+bool Transform::isDirty() const {
+    return dirty_;
+}
+
+mat4 Transform::getMatrix() const
 {
-    updateMatrix();
     return globalMatrix;
 }
 
-void Transform::updateMatrix()
+mat4 Transform::getMatrixLocal() const {
+    return localMatrix;
+}
+
+void Transform::updateMatrix(const mat4& parent_global)
 {
-    globalMatrix = mat4(1.0f);
-    globalMatrix = glm::translate(globalMatrix, position);
-    globalMatrix *= glm::mat4_cast(rotation * localRotation);
-    globalMatrix = glm::scale(globalMatrix, localScale);
-    globalMatrix = glm::scale(globalMatrix, scale);
+    localMatrix = mat4(1.0f);
+    localMatrix = glm::translate(localMatrix, position);
+    localMatrix *= glm::mat4_cast(rotation * localRotation); // FIXME: This is just not it
+    localMatrix = glm::scale(localMatrix, localScale);
+    localMatrix = glm::scale(localMatrix, scale);
+    globalMatrix = parent_global * localMatrix;
+    dirty_ = false;
 }
 
 vec3 Transform::getPosition() const
@@ -106,6 +122,7 @@ vec3 Transform::getPosition() const
 void Transform::setPosition(const vec3& newPosition) 
 {
     position = newPosition;
+    dirty_ = true;
 }
 
 quat Transform::getRotation() const
@@ -140,6 +157,8 @@ void Transform::setRotation(const vec3& newRotation, bool local)
     else {
         rotation = rotationQuat;
     }
+
+    dirty_ = true;
 }
 
 void Transform::setRotation(const vec3& axis, double angle, bool local) {
@@ -151,6 +170,8 @@ void Transform::setRotation(const vec3& axis, double angle, bool local) {
     else {
         rotation = rotationQuat;
     }
+
+    dirty_ = true;
 }
 
 void Transform::setRotation(const glm::quat& rotation_quat, bool local) {
@@ -158,6 +179,8 @@ void Transform::setRotation(const glm::quat& rotation_quat, bool local) {
         localRotation *= rotation_quat;
     else
         rotation *= rotation_quat;
+
+    dirty_ = true;
 }
 
 vec3 Transform::getScale() const
@@ -168,6 +191,7 @@ vec3 Transform::getScale() const
 void Transform::setScale(const vec3& newScale)
 {
     scale = newScale;
+    dirty_ = true;
 }
 
 
@@ -256,5 +280,6 @@ void Transform::LoadComponent(const json& transformJSON)
     }
 
     // Update the transformation matrix
-    updateMatrix();
+    updateMatrix(); // For gameobjects outside scene
+    dirty_ = true;
 }

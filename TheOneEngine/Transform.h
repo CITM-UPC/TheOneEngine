@@ -28,10 +28,12 @@ public:
     vec3 getForward(); // Gets forward vector   
     vec3 getUp();      // Gets up vector  
     vec3 getRight();   // Gets right vector
+    bool isDirty() const;
 
     // Gets Transformation model Matrix
-    mat4 getMatrix();
-    void updateMatrix();
+    mat4 getMatrix() const;
+    mat4 getMatrixLocal() const;
+    void updateMatrix(const mat4& parent_global = mat4(1.0f));
 
     vec3 getPosition() const;
     void setPosition(const vec3& newPosition); // Sets position in global space
@@ -63,7 +65,11 @@ public:
     quat localRotation;
     vec3 scale;
     vec3 localScale;
+    mat4 localMatrix;
     mat4 globalMatrix; // Stores the transformations
+
+private:
+    bool dirty_ = false;
 };
 
 #endif //__TRANSFORM_H__
