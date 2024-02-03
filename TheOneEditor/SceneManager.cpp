@@ -440,6 +440,15 @@ std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
         return nullptr;
 }
 
+std::shared_ptr<GameObject> SceneManager::FindGOByName(std::string name) const {
+    for (auto it = gameobjects.begin(); it != gameobjects.end(); ++it) {
+        if (it->second->GetName() == name)
+            return it->second;
+    }
+
+    return nullptr;
+}
+
 std::shared_ptr<GameObject> SceneManager::InstantiateGameObject(unsigned int UID) {
     auto location = gameobjects.find(UID);
     if (location == gameobjects.end())

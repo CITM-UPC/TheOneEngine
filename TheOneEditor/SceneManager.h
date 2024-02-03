@@ -57,6 +57,7 @@ public:
     std::shared_ptr<GameObject> GetRootSceneGO() const;
 
     std::shared_ptr<GameObject> FindGOByUID(uint32_t _UID) const;
+    std::shared_ptr<GameObject> FindGOByName(std::string name) const;
 
     static SceneManager& GetInstance() {
         static SceneManager instance; // Static instance of the class
