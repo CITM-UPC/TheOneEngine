@@ -31,12 +31,12 @@ bool Scripting::CleanUp() {
 
 bool Scripting::Update(double dt) {
 	//TODO: Update inspector variables
+	int instances_size = instances_.size(); // We store the size now so new scripts do not change it
 	if (app->IsPlaying()) {
 		stopped = false;
-		for (auto it = instances_.begin(); it != instances_.end();) {
-			std::shared_ptr<ScriptData> script = (*it).lock();
+		for (int i = 0; i < instances_size; ++i) {
+			std::shared_ptr<ScriptData> script = instances_[i].lock();
 			if (!script) {
-				it = instances_.erase(it);
 				continue;
 			}
 			current_script_ = script;
@@ -52,22 +52,34 @@ bool Scripting::Update(double dt) {
 				else
 					script->table_class["Update"]();
 			}
-			++it;
 		}
 	}
 	// Set Scripts to not started so we call start again
 	else if (!app->IsInGameState() && !stopped) {
 		stopped = true;
-		for (auto it = instances_.begin(); it != instances_.end();) {
-			std::shared_ptr<ScriptData> script = (*it).lock();
+		for (int i = 0; i < instances_size; ++i) {
+			std::shared_ptr<ScriptData> script = instances_[i].lock();
 			if (!script) {
-				it = instances_.erase(it);
 				continue;
 			}
 			script->started = false;
+		}
+	}
+	return true;
+}
+
+bool Scripting::PostUpdate() {
+	// We delete instances that are dereferenced
+	for (auto it = instances_.begin(); it != instances_.end(); ) {
+		std::shared_ptr<ScriptData> script = (*it).lock();
+		if (!script) {
+			it = instances_.erase(it);
+		}
+		else {
 			++it;
 		}
 	}
+
 	return true;
 }
 

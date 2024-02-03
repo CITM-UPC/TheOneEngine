@@ -37,8 +37,7 @@ public:
         return nullptr;
     }
 
-    template <typename TComponent>
-    std::vector<TComponent*> GetAllComponents();
+    std::vector<Component*> GetAllComponents();
 
     template <typename TComponent>
     Component* AddComponent();

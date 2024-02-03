@@ -44,6 +44,7 @@ bool SceneManager::Start()
     //ComponentScript* demo_script = demo->AddScriptComponent("Assets\\Scripts\\DemoTankMovement.lua");
     //app->scripting->CreateScript(demo_script);
     demo = Demo::CreateTank();
+    Demo::CreateBullet();
 
     rotationAngle = 0.0f;
     rotationSpeed = 30.0f;
@@ -455,27 +456,33 @@ std::shared_ptr<GameObject> SceneManager::InstantiateGameObject(unsigned int UID
         return std::shared_ptr<GameObject>();
 
     std::shared_ptr<GameObject> original = location->second;
-    std::shared_ptr<GameObject> ret = std::make_shared<GameObject>(original->GetName());
+    std::shared_ptr<GameObject> ret = std::make_shared<GameObject>(original->GetName() + std::to_string(instance_counter));
+    rootSceneGO->children.push_back(ret);
+    ret->parent = rootSceneGO;
     gameobjects[ret->GetUID()] = ret;
-
     ret->AddComponent<Transform>();
 
-    Mesh* original_mesh = original->GetComponent<Mesh>();
-    if (original_mesh) {
-        Mesh* ret_mesh = (Mesh*)ret->AddComponent<Mesh>();
-        ret_mesh->mesh = original_mesh->mesh;
-        ret_mesh->meshData = original_mesh->meshData;
-    }
-
-    std::vector<ComponentScript*> scripts = original->GetAllComponents<ComponentScript>();
-    for (auto script : scripts) {
-        ComponentScript* ret_script = ret->AddScriptComponent("");
-        ret_script->data->path = script->data->path;
-        ret_script->data->name = script->data->name;
-        app->scripting->CreateScript(ret_script);
+    std::vector<Component*> original_components = original->GetAllComponents();
+    Mesh* ret_mesh = nullptr;
+    ComponentScript* ret_script = nullptr;
+    for (Component* component : original_components) {
+        switch (component->GetType()) {
+        case ComponentType::Mesh:
+            ret_mesh = (Mesh*)ret->AddComponent<Mesh>();
+            ret_mesh->mesh = ((Mesh*)component)->mesh;
+            ret_mesh->meshData = ((Mesh*)component)->meshData;
+            break;
+        case ComponentType::Script:
+            ret_script = ret->AddScriptComponent("");
+            ret_script->data->path = ((ComponentScript*)component)->data->path;
+            ret_script->data->name = ((ComponentScript*)component)->data->name;
+            app->scripting->CreateScript(ret_script);
+            break;
+        }
     }
 
     instances.push_back(ret);
+    ++instance_counter;
     return ret;
 }
 
@@ -603,4 +610,5 @@ void SceneManager::DeleteInstancedObjects() {
     }
 
     instances.clear();
+    instance_counter = 0;
 }

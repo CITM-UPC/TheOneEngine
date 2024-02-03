@@ -65,14 +65,11 @@ void GameObject::Draw()
 }
 
 // Component ----------------------------------------
-template<typename TComponent>
-std::vector<TComponent*> GameObject::GetAllComponents() {
-	static_assert(std::is_base_of<Component, TComponent>::value, "TComponent must inherit from Component");
-	std::vector<TComponent>* ret;
+std::vector<Component*> GameObject::GetAllComponents() {
+	std::vector<Component*> ret;
 
-	for (const auto& component : components) {
-		if (dynamic_cast<TComponent*>(component.get()))
-			ret->push_back(static_cast<TComponent*>(component.get()));
+	for (int i = 0; i < components.size(); ++i) {
+		ret.push_back(components[i].get());
 	}
 
 	return ret;

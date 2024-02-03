@@ -5,9 +5,11 @@ lua_table.Input = Scripting.Input()
 lua_table.Transform = Scripting.Transform()
 
 local owner_UID
+local bullet_UID
 
 function lua_table:Awake()
     owner_UID = lua_table.GameObject:GetMyUID()
+    bullet_UID = lua_table.GameObject:FindGOByName("InstanceBullet")
 end
 
 function lua_table:Start()
@@ -24,6 +26,20 @@ function lua_table:Update()
     end
 
     -- TODO: Mouse clicking should instantiate a new bullet?
+    if lua_table.Input:IsMBDown("left") then
+        Shoot()
+    end
+end
+
+function Shoot()
+    -- We get our coordinates and orientation
+    local my_position = lua_table.Transform:GetGlobalPosition(owner_UID)
+    local my_rotation = lua_table.Transform:GetGlobalRotation(owner_UID)
+
+    -- We instance the bullet and set its position and rotation
+    local new_bullet_UID = lua_table.GameObject:InstantiateGameObject(bullet_UID)
+    lua_table.Transform:SetPosition(new_bullet_UID, my_position[1], my_position[2], my_position[3])
+    lua_table.Transform:SetRotation(new_bullet_UID, my_rotation[1], my_rotation[2], my_rotation[3])
 end
 
 return lua_table

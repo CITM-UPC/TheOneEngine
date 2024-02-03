@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "../TheOneEngine/GameObject.h"
 #include "../TheOneEngine/Transform.h"
+#include "../TheOneEngine/ComponentScript.h"
 
 std::shared_ptr<GameObject> Demo::CreateTank() {
 
@@ -40,5 +41,13 @@ std::shared_ptr<GameObject> Demo::CreateTank() {
 }
 
 std::shared_ptr<GameObject> Demo::CreateBullet() {
-	return std::shared_ptr<GameObject>();
+	std::shared_ptr<GameObject> bullet = app->sceneManager->CreateSphere(0.5);
+	bullet->Disable();
+	bullet->SetName("InstanceBullet");
+
+	ComponentScript* script = bullet->AddScriptComponent("Assets\\Scripts\\DemoBullet.lua");
+	script->Disable();
+	app->scripting->CreateScript(script);
+
+	return bullet;
 }

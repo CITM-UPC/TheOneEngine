@@ -95,6 +95,7 @@ private:
     std::shared_ptr<GameObject> demo;
     double rotationAngle;
     double rotationSpeed;
+    uint instance_counter;
 
 };
 

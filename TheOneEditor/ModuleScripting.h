@@ -20,6 +20,7 @@ public:
 	bool Awake() override;
 	bool CleanUp() override;
 	bool Update(double dt) override;
+	bool PostUpdate() override;
 
 	// Own functions
 	void CreateScript(ComponentScript* component);
