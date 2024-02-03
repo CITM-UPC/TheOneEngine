@@ -375,18 +375,26 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     return cubeGO;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateSphere()
+std::shared_ptr<GameObject> SceneManager::CreateSphere(float radius, int slices, int slacks)
 {
     std::shared_ptr<GameObject> sphereGO = std::make_shared<GameObject>("Sphere");
     gameobjects[sphereGO->GetUID()] = sphereGO;
     sphereGO.get()->AddComponent<Transform>();
-    sphereGO.get()->AddComponent<Mesh>();
+    Mesh* component_mesh = (Mesh*)sphereGO.get()->AddComponent<Mesh>();
 
     sphereGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
+    par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(slices, slacks);
+
+    if (mesh) {
+        par_shapes_scale(mesh, radius / 2, radius / 2, radius / 2);
+        MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Sphere");
+        component_mesh->mesh = data;
+    }
+
     rootSceneGO.get()->children.emplace_back(sphereGO);
     
-    return nullptr;
+    return sphereGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()

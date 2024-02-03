@@ -44,7 +44,7 @@ public:
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateExistingMeshGO(std::string fbxName);
     std::shared_ptr<GameObject> CreateCube();
-    std::shared_ptr<GameObject> CreateSphere();
+    std::shared_ptr<GameObject> CreateSphere(float radius = 1.0f, int slices = 25, int slacks = 25);
     std::shared_ptr<GameObject> CreateMF();
 
     // Get/Set
