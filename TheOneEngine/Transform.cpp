@@ -1,5 +1,7 @@
 #include "Transform.h"
 #include "GameObject.h"
+#define GLM_ENABLE_EXPERIMENTAL
+#include "glm/gtx/matrix_decompose.hpp"
 
 Transform::Transform(std::shared_ptr<GameObject> containerGO)
     : Component(containerGO, ComponentType::Transform),
@@ -107,16 +109,21 @@ void Transform::updateMatrix(const mat4& parent_global)
 {
     localMatrix = mat4(1.0f);
     localMatrix = glm::translate(localMatrix, position);
-    localMatrix *= glm::mat4_cast(rotation * localRotation); // FIXME: This is just not it
+    localMatrix *= glm::mat4_cast(localRotation);
     localMatrix = glm::scale(localMatrix, localScale);
     localMatrix = glm::scale(localMatrix, scale);
     globalMatrix = parent_global * localMatrix;
+    updateGlobalTRS();
     dirty_ = false;
 }
 
 vec3 Transform::getPosition() const
 {
     return position;
+}
+
+vec3 Transform::getGlobalPosition() const {
+    return globalPosition;
 }
 
 void Transform::setPosition(const vec3& newPosition) 
@@ -181,6 +188,12 @@ void Transform::setRotation(const glm::quat& rotation_quat, bool local) {
         rotation *= rotation_quat;
 
     dirty_ = true;
+}
+
+void Transform::updateGlobalTRS() {
+    vec3 skew;
+    vec4 perspective;
+    glm::decompose(globalMatrix, scale, rotation, globalPosition, skew, perspective);
 }
 
 vec3 Transform::getScale() const

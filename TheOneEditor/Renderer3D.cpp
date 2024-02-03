@@ -161,7 +161,7 @@ void Renderer3D::CameraInput(double dt)
         camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
         camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
 
-        camera->setRotation(vec3f(camera->pitch, camera->yaw, 0.0f), false);
+        camera->setRotation(vec3f(camera->pitch, camera->yaw, 0.0f));
 
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
