@@ -69,7 +69,7 @@ bool PanelInspector::Draw()
 
                 if (ImGui::BeginTable("", 4, tableFlags))
                 {
-                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableSetupColumn("##", ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("Y", ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("Z", ImGuiTableColumnFlags_WidthStretch);
@@ -78,7 +78,7 @@ bool PanelInspector::Draw()
 
                     // Headers
                     ImGui::TableSetColumnIndex(0);
-                    ImGui::TableHeader("");
+                    ImGui::TableHeader("##");
                     ImGui::TableSetColumnIndex(1);
                     ImGui::TableHeader("X");
                     ImGui::TableSetColumnIndex(2);
