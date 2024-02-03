@@ -65,6 +65,7 @@ public:
 	bool IsPlaying();
 	bool IsInGameState();
 	void Stop();
+	float GetGameTime();
 
 private:
 	

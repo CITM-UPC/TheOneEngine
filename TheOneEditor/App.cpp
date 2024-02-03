@@ -393,3 +393,7 @@ void App::Stop()
 	LOG(LogType::LOG_INFO, "GameState changed to NONE");
 
 }
+
+float App::GetGameTime() {
+	return game_time;
+}
