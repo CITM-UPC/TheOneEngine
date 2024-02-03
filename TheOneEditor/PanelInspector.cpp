@@ -290,8 +290,8 @@ bool PanelInspector::Draw()
             }
         }
 
-        ImGui::End();
 	}	
+    ImGui::End();
 
 	return true;
 }

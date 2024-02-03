@@ -71,8 +71,8 @@ bool PanelProject::Draw()
 		}
 
 		ImGui::PopStyleVar();
-		ImGui::End();
 	}
+	ImGui::End();
 
 	return true;
 }
