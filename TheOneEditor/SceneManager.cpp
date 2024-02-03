@@ -8,6 +8,8 @@
 #include "ModuleScripting.h"
 #include "DemoFunctions.h"
 
+#include "../TheOneEngine/par_shapes.h"
+
 namespace fs = std::filesystem;
 
 SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
@@ -84,7 +86,7 @@ bool SceneManager::Update(double dt)
 
     if (app->state == GameState::NONE) {
         demo->GetComponent<Transform>()->setRotation({ 0, 0, 0 });
-        demo->GetComponent<Transform>()->setPosition({ 0, 0, 0 });
+        demo->GetComponent<Transform>()->setPosition({ 0, 10, 0 });
         rotationAngle = 0.0;
     }
 
@@ -325,9 +327,48 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     std::shared_ptr<GameObject> cubeGO = std::make_shared<GameObject>("Cube");
     gameobjects[cubeGO->GetUID()] = cubeGO;
     cubeGO.get()->AddComponent<Transform>();
-    cubeGO.get()->AddComponent<Mesh>();
+    Mesh* component_mesh = (Mesh*)cubeGO.get()->AddComponent<Mesh>();
 
     cubeGO.get()->parent = rootSceneGO.get()->weak_from_this();
+
+    // We create the cube using planes and rotating and joining them
+    par_shapes_mesh* mesh = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* top = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* bottom = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* back = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* left = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* right = par_shapes_create_plane(1, 1);
+
+    float axisX[3] = { 1, 0, 0 };
+    float axisY[3] = { 0, 1, 0 };
+
+    par_shapes_translate(mesh, -0.5f, -0.5f, 0.5f);
+
+    par_shapes_rotate(top, -float(PAR_PI * 0.5), axisX);
+    par_shapes_translate(top, -0.5f, 0.5f, 0.5f);
+
+    par_shapes_rotate(bottom, float(PAR_PI * 0.5), axisX);
+    par_shapes_translate(bottom, -0.5f, -0.5f, -0.5f);
+
+    par_shapes_rotate(back, float(PAR_PI), axisX);
+    par_shapes_translate(back, -0.5f, 0.5f, -0.5f);
+
+    par_shapes_rotate(left, float(-PAR_PI * 0.5), axisY);
+    par_shapes_translate(left, -0.5f, -0.5f, -0.5f);
+
+    par_shapes_rotate(right, float(PAR_PI * 0.5), axisY);
+    par_shapes_translate(right, 0.5f, -0.5f, 0.5f);
+
+    par_shapes_merge_and_free(mesh, top);
+    par_shapes_merge_and_free(mesh, bottom);
+    par_shapes_merge_and_free(mesh, back);
+    par_shapes_merge_and_free(mesh, left);
+    par_shapes_merge_and_free(mesh, right);
+
+    if (mesh) {
+        MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Cube");
+        component_mesh->mesh = data;
+    }
 
     rootSceneGO.get()->children.emplace_back(cubeGO);
 
@@ -344,7 +385,7 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
     sphereGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
     rootSceneGO.get()->children.emplace_back(sphereGO);
-
+    
     return nullptr;
 }
 
