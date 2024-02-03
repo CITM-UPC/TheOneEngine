@@ -34,6 +34,7 @@ bool PanelConsole::Draw()
 
 			for (const auto& log : app->GetLogs())
 			{
+				stylecolor = false;
 				switch (log.type)
 				{
 					case LogType::LOG_INFO:

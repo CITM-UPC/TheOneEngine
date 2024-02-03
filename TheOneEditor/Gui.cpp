@@ -316,10 +316,8 @@ bool Gui::CleanUp()
 
 void Gui::Draw()
 {
-    ImGui::EndFrame();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    ImGui::EndFrame();
 
     // hekbas look into this
     /*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -409,7 +407,6 @@ void Gui::MainWindowDockspace()
         //    ImGui::DockBuilderFinish(dockspace_id);
         //}
     }
-    ImGui::End();
 }
 
 

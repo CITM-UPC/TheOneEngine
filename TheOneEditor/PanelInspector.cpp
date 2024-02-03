@@ -293,7 +293,5 @@ bool PanelInspector::Draw()
         ImGui::End();
 	}	
 
-    ImGui::PopStyleVar();
-
 	return true;
 }
