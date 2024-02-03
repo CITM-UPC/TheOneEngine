@@ -31,7 +31,7 @@ std::shared_ptr<GameObject> Demo::CreateTank() {
 
 	transform = turret->GetComponent<Transform>();
 	transform->setScale({ 0.5, 0.5, 1 });
-	transform->setPosition({ 0, 1, 1 });
+	transform->setPosition({ 0, 0.5, 0.5 });
 	script = turret->AddScriptComponent("Assets\\Scripts\\DemoTurretMovement.lua");
 	app->scripting->CreateScript(script);
 	turret->SetName("Turret");

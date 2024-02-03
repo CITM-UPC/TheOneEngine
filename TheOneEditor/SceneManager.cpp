@@ -86,7 +86,7 @@ bool SceneManager::Update(double dt)
 
     if (app->state == GameState::NONE) {
         demo->GetComponent<Transform>()->setRotation({ 0, 0, 0 });
-        demo->GetComponent<Transform>()->setPosition({ 0, 10, 0 });
+        demo->GetComponent<Transform>()->setPosition({ 0, 1, 0 });
         rotationAngle = 0.0;
     }
 

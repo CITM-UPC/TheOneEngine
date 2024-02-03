@@ -143,7 +143,7 @@ void Renderer3D::CreateRay()
 
 void Renderer3D::CameraInput(double dt)
 {
-    if (!app->gui->panelScene->isHovered)
+    if (!app->gui->panelScene->isHovered || app->IsPlaying())
         return;
 
     Camera* camera = sceneCamera.get()->GetComponent<Camera>();
