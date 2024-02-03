@@ -79,6 +79,9 @@
     <ClCompile Include="ScriptingInput.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="ScriptingApp.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -151,6 +154,9 @@
       <Filter>Scripting</Filter>
     </ClInclude>
     <ClInclude Include="ScriptingInput.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingApp.h">
       <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>

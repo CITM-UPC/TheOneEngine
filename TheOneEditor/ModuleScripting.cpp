@@ -8,6 +8,7 @@
 #include "ScriptingTransform.h"
 #include "ScriptingGameObject.h"
 #include "ScriptingInput.h"
+#include "ScriptingApp.h"
 
 
 Scripting::Scripting(App* app) : Module(app){}
@@ -64,6 +65,7 @@ bool Scripting::Update(double dt) {
 				continue;
 			}
 			script->started = false;
+			++it;
 		}
 	}
 	return true;
@@ -112,6 +114,11 @@ void Scripting::PopulateLuaState() {
 		.addFunction("ISMBIdle", &ScriptingInput::ISMBIdle)
 		.addFunction("GetMouseMovementX", &ScriptingInput::GetMouseMovementX)
 		.addFunction("GetMouseMovementY", &ScriptingInput::GetMouseMovementY)
+		.endClass()
+		// App scripting
+		.beginClass<ScriptingApp>("App")
+		.addConstructor<void(*) (void)>()
+		.addFunction("GetGameTime", &ScriptingApp::GetGameTime)
 		.endClass()
 		.endNamespace();
 }

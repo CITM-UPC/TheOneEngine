@@ -33,7 +33,7 @@ private:
 	lua_State* luastate_= nullptr;
 	std::vector<std::weak_ptr<ScriptData>> instances_;
 	std::weak_ptr<ScriptData> current_script_;
-	bool stopped = false;
+	bool stopped = true;
 
 
 
