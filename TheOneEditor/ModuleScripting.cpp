@@ -31,6 +31,7 @@ bool Scripting::CleanUp() {
 bool Scripting::Update(double dt) {
 	//TODO: Update inspector variables
 	if (app->IsPlaying()) {
+		stopped = false;
 		for (auto it = instances_.begin(); it != instances_.end();) {
 			std::shared_ptr<ScriptData> script = (*it).lock();
 			if (!script) {
@@ -51,6 +52,18 @@ bool Scripting::Update(double dt) {
 					script->table_class["Update"]();
 			}
 			++it;
+		}
+	}
+	// Set Scripts to not started so we call start again
+	else if (!app->IsInGameState() && !stopped) {
+		stopped = true;
+		for (auto it = instances_.begin(); it != instances_.end();) {
+			std::shared_ptr<ScriptData> script = (*it).lock();
+			if (!script) {
+				it = instances_.erase(it);
+				continue;
+			}
+			script->started = false;
 		}
 	}
 	return true;
