@@ -62,7 +62,7 @@ bool PanelInspector::Draw()
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
 
                 view_pos = transform->getPosition();
-                view_rot = transform->getEulerAngles();
+                view_rot = transform->getLocalEulerAngles();
                 view_sca = transform->getScale();
 
                 ImGuiTableFlags tableFlags = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit;
