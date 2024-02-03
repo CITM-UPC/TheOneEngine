@@ -63,6 +63,8 @@ public:
         return instance;
     }
 
+    std::shared_ptr<GameObject> InstantiateGameObject(unsigned int UID);
+
     // GameObject Management
     void DestroyGameObject(unsigned int UID);
 
@@ -80,11 +82,13 @@ private:
     SceneManager() {}
 
     void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
+    void DeleteInstancedObjects();
 
 private:
     //uint selectedGameObject;
     std::shared_ptr<GameObject> rootSceneGO;
     std::shared_ptr<GameObject> selectedGameObject;
+    std::vector<std::weak_ptr<GameObject>> instances;
     MeshLoader* meshLoader;
 
     std::shared_ptr<GameObject> demo;

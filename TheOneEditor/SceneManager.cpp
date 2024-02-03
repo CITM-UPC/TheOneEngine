@@ -9,6 +9,7 @@
 #include "DemoFunctions.h"
 
 #include "../TheOneEngine/par_shapes.h"
+#include "../TheOneEngine/ScriptData.h"
 
 namespace fs = std::filesystem;
 
@@ -87,6 +88,7 @@ bool SceneManager::Update(double dt)
     if (app->state == GameState::NONE) {
         demo->GetComponent<Transform>()->setRotation({ 0, 0, 0 });
         demo->GetComponent<Transform>()->setPosition({ 0, 1, 0 });
+        DeleteInstancedObjects();
         rotationAngle = 0.0;
     }
 
@@ -438,6 +440,36 @@ std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
         return nullptr;
 }
 
+std::shared_ptr<GameObject> SceneManager::InstantiateGameObject(unsigned int UID) {
+    auto location = gameobjects.find(UID);
+    if (location == gameobjects.end())
+        return std::shared_ptr<GameObject>();
+
+    std::shared_ptr<GameObject> original = location->second;
+    std::shared_ptr<GameObject> ret = std::make_shared<GameObject>(original->GetName());
+    gameobjects[ret->GetUID()] = ret;
+
+    ret->AddComponent<Transform>();
+
+    Mesh* original_mesh = original->GetComponent<Mesh>();
+    if (original_mesh) {
+        Mesh* ret_mesh = (Mesh*)ret->AddComponent<Mesh>();
+        ret_mesh->mesh = original_mesh->mesh;
+        ret_mesh->meshData = original_mesh->meshData;
+    }
+
+    std::vector<ComponentScript*> scripts = original->GetAllComponents<ComponentScript>();
+    for (auto script : scripts) {
+        ComponentScript* ret_script = ret->AddScriptComponent("");
+        ret_script->data->path = script->data->path;
+        ret_script->data->name = script->data->name;
+        app->scripting->CreateScript(ret_script);
+    }
+
+    instances.push_back(ret);
+    return ret;
+}
+
 void SceneManager::DestroyGameObject(unsigned int UID) {
     auto object = gameobjects.find(UID);
     if (object == gameobjects.end())
@@ -551,4 +583,15 @@ void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
         gameObject.get()->Draw();
         RecurseDrawChildren(gameObject);
     }
+}
+
+void SceneManager::DeleteInstancedObjects() {
+    for (auto object : instances) {
+        std::shared_ptr<GameObject> to_delete = object.lock();
+        if (!to_delete)
+            continue;
+        DestroyGameObject(to_delete->GetUID());
+    }
+
+    instances.clear();
 }
