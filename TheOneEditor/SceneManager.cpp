@@ -36,12 +36,7 @@ bool SceneManager::Start()
     
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
     CreateMeshGO("Assets\\Meshes\\street.fbx");
-    CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
-    for (auto mesh : GetGameObjects()) {
-        if (mesh->GetName() == "Cadillac_CT4_V_2022_LowPoly") {
-            demo = mesh;
-        }
-    }
+    demo = CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
     ComponentScript* demo_script = demo->AddScriptComponent("Assets\\Scripts\\DemoTankMovement.lua");
     app->scripting->CreateScript(demo_script);
 
@@ -215,6 +210,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             {
                 meshGO.get()->parent = rootSceneGO;
                 rootSceneGO.get()->children.push_back(meshGO);
+                return meshGO;
             }
             else
             {
@@ -222,6 +218,8 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                 emptyParent.get()->children.push_back(meshGO);
             }
         }
+
+        return emptyParent;
 
        /* if (!textures.empty())
        {
