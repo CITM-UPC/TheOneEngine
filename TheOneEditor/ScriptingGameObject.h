@@ -9,6 +9,7 @@ public:
 
 	unsigned int GetMyUID() const;
 	void DestroyGameObject(unsigned int go_UUID);
+	unsigned int InstantiateGameObject(unsigned int go_UUID);
 };
 
 #endif

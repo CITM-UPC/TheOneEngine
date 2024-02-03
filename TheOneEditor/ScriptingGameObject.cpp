@@ -16,3 +16,11 @@ unsigned int ScriptingGameObject::GetMyUID() const {
 void ScriptingGameObject::DestroyGameObject(unsigned int go_UUID) {
 	app->sceneManager->DestroyGameObject(go_UUID);
 }
+
+unsigned int ScriptingGameObject::InstantiateGameObject(unsigned int go_UUID) {
+	std::shared_ptr<GameObject> newGO = app->sceneManager->InstantiateGameObject(go_UUID);
+	if (newGO)
+		return newGO->GetUID();
+	else
+		return 0;
+}

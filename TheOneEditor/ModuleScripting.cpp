@@ -99,6 +99,7 @@ void Scripting::PopulateLuaState() {
 		.addConstructor<void(*) (void)>()
 		.addFunction("GetMyUID", &ScriptingGameObject::GetMyUID)
 		.addFunction("DestroyGameObject", &ScriptingGameObject::DestroyGameObject)
+		.addFunction("InstantiateGameObject", &ScriptingGameObject::InstantiateGameObject)
 		.endClass()
 		// Input Scripting
 		.beginClass<ScriptingInput>("Input")
