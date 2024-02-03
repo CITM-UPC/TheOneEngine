@@ -63,6 +63,9 @@ public:
         return instance;
     }
 
+    // GameObject Management
+    void DestroyGameObject(unsigned int UID);
+
     /*SCENE SERIALIZATION*/
     void SaveScene();
     void LoadScene(const std::string& filename);

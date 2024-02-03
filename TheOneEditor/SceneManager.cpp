@@ -385,6 +385,22 @@ std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
         return nullptr;
 }
 
+void SceneManager::DestroyGameObject(unsigned int UID) {
+    auto object = gameobjects.find(UID);
+    if (object == gameobjects.end())
+        return;
+    
+    std::shared_ptr<GameObject> to_delete = object->second;
+    gameobjects.erase(object);
+    std::shared_ptr<GameObject> parent = to_delete->parent.lock();
+    for (auto child = parent->children.begin(); child != parent->children.end(); ++child) {
+        if ((*child) == to_delete) {
+            parent->children.erase(child);
+            break;
+        }
+    }
+}
+
 void SceneManager::SaveScene()
 {
     fs::path filename = fs::path(ASSETS_PATH) / "Scenes" / "scene.toe";
