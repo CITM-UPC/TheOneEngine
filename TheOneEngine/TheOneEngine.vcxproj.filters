@@ -19,6 +19,9 @@
     <Filter Include="Loaders">
       <UniqueIdentifier>{ef205215-f4dd-4daf-80aa-0d87803bc3cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{6b3bd9b0-341e-4668-9469-df02cfe2b689}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -62,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="FileUtils.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="luadefs.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptData.h">
+      <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

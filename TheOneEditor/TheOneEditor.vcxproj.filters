@@ -144,12 +144,6 @@
     <ClInclude Include="ModuleScripting.h">
       <Filter>Modules</Filter>
     </ClInclude>
-    <ClInclude Include="ScriptData.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
-    <ClInclude Include="luadefs.h">
-      <Filter>Scripting</Filter>
-    </ClInclude>
     <ClInclude Include="ScriptingTransform.h">
       <Filter>Scripting</Filter>
     </ClInclude>

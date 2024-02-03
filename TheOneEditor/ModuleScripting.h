@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include <vector>
+#include <memory>
 
 // LuaBridge's Lua Virtual Machine Class
 struct lua_State;
@@ -22,7 +23,7 @@ public:
 
 	// Own functions
 	void CreateScript(ComponentScript* component);
-	const ScriptData* GetCurrentScript() const;
+	const std::weak_ptr<ScriptData> GetCurrentScript() const;
 
 private:
 	void PopulateLuaState();
@@ -30,8 +31,8 @@ private:
 
 private:
 	lua_State* luastate_= nullptr;
-	std::vector<ScriptData*> instances_;
-	ScriptData* current_script_ = nullptr;
+	std::vector<std::weak_ptr<ScriptData>> instances_;
+	std::weak_ptr<ScriptData> current_script_;
 
 
 

@@ -1,20 +1,23 @@
 #include "ComponentScript.h"
 #include "FileUtils.h"
 #include "GameObject.h"
+#include "ScriptData.h"
 
 ComponentScript::ComponentScript(std::shared_ptr<GameObject> containerGO) :
     Component(containerGO, ComponentType::Script) {
     unique = false;
-    // These need to be loaded
-    path_ = "NULL";
-    script_name_ = "NULL";
+    // Path needs to be loaded
+    data = std::make_shared<ScriptData>();
+    data->owner = this;
 }
 
 ComponentScript::ComponentScript(std::shared_ptr<GameObject> containerGO, const char* path) :
 	Component(containerGO, ComponentType::Script) {
 	unique = false;
-	path_ = Fileutils::GetWorkingDir() + path; // We need an absolute path
-	script_name_ = Fileutils::GetNameFromPath(path);
+    data = std::make_shared<ScriptData>();
+    data->owner = this;
+    data->path = Fileutils::GetWorkingDir() + path; // The path must be absolute
+    data->name = Fileutils::GetNameFromPath(path);
 }
 
 ComponentScript::~ComponentScript() {}
@@ -25,8 +28,8 @@ json ComponentScript::SaveComponent() {
     savejson["Type"] = type;
     savejson["Name"] = name;
     savejson["UID"] = UID;
-    savejson["Path"] = path_;
-    savejson["ScriptName"] = script_name_;
+    savejson["Path"] = data->path;
+    savejson["ScriptName"] = data->name;
 
     return savejson;
 }
@@ -39,9 +42,9 @@ void ComponentScript::LoadComponent(const json& scriptjson) {
         UID = scriptjson["UID"];
     }
     if (scriptjson.contains("Path")) {
-        path_ = scriptjson["Path"];
+        data->path = scriptjson["Path"];
     }    
     if (scriptjson.contains("ScriptName")) {
-        script_name_ = scriptjson["ScriptName"];
+        data->name = scriptjson["ScriptName"];
     }
 }

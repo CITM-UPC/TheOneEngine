@@ -1,7 +1,7 @@
 #include "ScriptingTransform.h"
 #include "SceneManager.h"
 #include "App.h"
-#include "luadefs.h"
+#include "../TheOneEngine/luadefs.h"
 #include "../TheOneEngine/Transform.h"
 
 luabridge::LuaRef ScriptingTransform::GetPosition(unsigned int go_UUID, lua_State* lua_state) const{

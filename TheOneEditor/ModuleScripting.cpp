@@ -1,6 +1,6 @@
 #include "ModuleScripting.h"
-#include "ScriptData.h"
-#include "luadefs.h"
+#include "../TheOneEngine/ScriptData.h"
+#include "../TheOneEngine/luadefs.h"
 #include "../TheOneEngine/ComponentScript.h"
 #include "App.h"
 
@@ -23,9 +23,7 @@ bool Scripting::Awake() {
 }
 
 bool Scripting::CleanUp() {
-	current_script_ = nullptr;
-	for (ScriptData* it : instances_)
-		if (it) delete it;
+	current_script_.reset();
 	instances_.clear();
 	return true;
 }
@@ -33,7 +31,12 @@ bool Scripting::CleanUp() {
 bool Scripting::Update(double dt) {
 	//TODO: Update inspector variables
 	if (app->IsPlaying()) {
-		for (ScriptData* script : instances_) {
+		for (auto it = instances_.begin(); it != instances_.end();) {
+			std::shared_ptr<ScriptData> script = (*it).lock();
+			if (!script) {
+				it = instances_.erase(it);
+				continue;
+			}
 			current_script_ = script;
 			if (!script->awoken) { // We wake the script regardless of it being active or not
 				script->table_class["Awake"]();
@@ -47,19 +50,18 @@ bool Scripting::Update(double dt) {
 				else
 					script->table_class["Update"]();
 			}
+			++it;
 		}
 	}
 	return true;
 }
 
 void Scripting::CreateScript(ComponentScript* component) {
-	ScriptData* instance = new ScriptData;
-	instance->owner = component;
-	instances_.push_back(instance);
-	CompileScriptTable(instance);
+	instances_.push_back(component->data);
+	CompileScriptTable(component->data.get());
 }
 
-const ScriptData* Scripting::GetCurrentScript() const {
+const std::weak_ptr<ScriptData> Scripting::GetCurrentScript() const {
 	return current_script_;
 }
 
@@ -103,9 +105,9 @@ void Scripting::PopulateLuaState() {
 
 void Scripting::CompileScriptTable(ScriptData* script) {
 	if (luastate_) {
-		int compiled = luaL_dofile(luastate_, script->owner->GetPath().c_str());
+		int compiled = luaL_dofile(luastate_, script->path.c_str());
 		if (compiled == LUA_OK) {
-			std::string get_table_name = "GetTable" + script->owner->GetScriptName();
+			std::string get_table_name = "GetTable" + script->name;
 			luabridge::LuaRef get_table = luabridge::getGlobal(luastate_, get_table_name.c_str());
 
 			if (!get_table.isNil()) {
@@ -114,7 +116,7 @@ void Scripting::CompileScriptTable(ScriptData* script) {
 			}
 		} else {
 			std::string error = lua_tostring(luastate_, -1);
-			LOG(LogType::LOG_ERROR, "Failed to compile script %s, error: %s", script->owner->GetScriptName().data(), error.data());
+			LOG(LogType::LOG_ERROR, "Failed to compile script %s, error: %s", script->name.data(), error.data());
 		}
 	}
 }

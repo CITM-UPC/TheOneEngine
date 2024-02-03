@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include <string>
+struct ScriptData;
 
 class ComponentScript : public Component {
 public:
@@ -14,12 +15,10 @@ public:
 	json SaveComponent() override;
 	void LoadComponent(const json& scriptjson) override;
 
-	std::string GetPath() const { return path_; };
-	std::string GetScriptName() const { return script_name_; };
+public:
+	std::shared_ptr<ScriptData> data;
 
 private:
-	std::string path_;
-	std::string script_name_;
 	//TODO: Store here variables from the script
 };
 
