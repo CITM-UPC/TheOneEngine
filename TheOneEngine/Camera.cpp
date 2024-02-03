@@ -76,7 +76,7 @@ void Camera::rotate(const vec3f& eulerRotation, bool local)
 {
     if (auto sharedGO = this->containerGO.lock())
     {
-        sharedGO.get()->GetComponent<Transform>()->rotate(eulerRotation, local);
+        sharedGO.get()->GetComponent<Transform>()->rotate((vec3)eulerRotation, local);
     }
     else
     {
