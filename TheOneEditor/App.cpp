@@ -7,6 +7,7 @@
 #include "SceneManager.h"
 #include "Gui.h"
 #include "Renderer3D.h"
+#include "ModuleScripting.h"
 
 #include "PanelAbout.h"
 #include "PanelConsole.h"
@@ -16,7 +17,9 @@
 #include "PanelScene.h"
 #include "PanelSettings.h"
 #include "Timer.h"
+
 #include "..\TheOneEngine\Transform.h"
+#include "..\TheOneEngine\EngineCore.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -26,6 +29,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	input = new Input(this);
 	hardware = new Hardware(this);
 	sceneManager = new SceneManager(this);
+	scripting = new Scripting(this);
 	gui = new Gui(this);
 	renderer3D = new Renderer3D(this);
 
@@ -36,6 +40,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(input, true);
 	AddModule(hardware, true);
 	AddModule(sceneManager, true);
+	AddModule(scripting, true);
 	AddModule(gui, true);
 
 	// Render last to swap buffer
@@ -387,4 +392,8 @@ void App::Stop()
 	state = GameState::NONE;
 	LOG(LogType::LOG_INFO, "GameState changed to NONE");
 
+}
+
+float App::GetGameTime() {
+	return game_time;
 }

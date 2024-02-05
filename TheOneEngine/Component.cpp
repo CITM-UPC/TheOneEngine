@@ -46,6 +46,7 @@ void Component::CreateNameFromType(ComponentType type)
 		case ComponentType::Camera: name = "Camera"; break;
 		case ComponentType::Mesh: name = "Mesh"; break;
 		case ComponentType::Texture: name = "Texture"; break;
+		case ComponentType::Script: name = "Script " + std::to_string(UID); break;
 		case ComponentType::Unknown: name = "Unknown"; break;
 		default: name = "Specified Type was not found"; break;
 	}

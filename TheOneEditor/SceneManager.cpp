@@ -4,6 +4,11 @@
 
 #include <fstream>
 #include <filesystem>
+#include "../TheOneEngine/ComponentScript.h"
+#include "ModuleScripting.h"
+#include "DemoFunctions.h"
+
+#include "../TheOneEngine/par_shapes.h"
 
 namespace fs = std::filesystem;
 
@@ -34,13 +39,10 @@ bool SceneManager::Start()
     
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
     CreateMeshGO("Assets\\Meshes\\street.fbx");
-    CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
-
-    for (auto mesh : GetGameObjects()) {
-        if (mesh->GetName() == "Cadillac_CT4_V_2022_LowPoly") {
-            demo = mesh;
-        }
-    }
+    //demo = CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
+    //ComponentScript* demo_script = demo->AddScriptComponent("Assets\\Scripts\\DemoTankMovement.lua");
+    //app->scripting->CreateScript(demo_script);
+    demo = Demo::CreateTank();
 
     rotationAngle = 0.0f;
     rotationSpeed = 30.0f;
@@ -53,6 +55,8 @@ bool SceneManager::Start()
 
 bool SceneManager::PreUpdate()
 {
+    for (auto child : rootSceneGO->children)
+        child->UpdateTransform();
     return true;
 }
 
@@ -72,16 +76,17 @@ bool SceneManager::Update(double dt)
 
 
     if (app->IsPlaying()) {
-        demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);
-
-        rotationAngle += rotationSpeed * dt;
-
-        if (rotationAngle >= 360.0f)
-            rotationAngle -= 360.0f;
+        //demo->GetComponent<Transform>()->setRotation({ 0, 1, 0 }, rotationAngle);
+        //
+        //rotationAngle += rotationSpeed * dt;
+        //
+        //if (rotationAngle >= 360.0f)
+        //    rotationAngle -= 360.0f;
     }
 
     if (app->state == GameState::NONE) {
-        demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, 0.0);
+        demo->GetComponent<Transform>()->setRotation({ 0, 0, 0 });
+        demo->GetComponent<Transform>()->setPosition({ 0, 1, 0 });
         rotationAngle = 0.0;
     }
 
@@ -97,6 +102,7 @@ bool SceneManager::PostUpdate()
 
 bool SceneManager::CleanUp()
 {
+    gameobjects.clear();
     return true;
 }
 
@@ -125,6 +131,7 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO(std::string name)
     emptyGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
     rootSceneGO.get()->children.emplace_back(emptyGO);
+    gameobjects[emptyGO->GetUID()] = emptyGO;
 
     return emptyGO;
 }
@@ -178,6 +185,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         for (auto& mesh : meshes)
         {
             std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
+            gameobjects[meshGO->GetUID()] = meshGO;
             meshGO.get()->AddComponent<Transform>();
             meshGO.get()->AddComponent<Mesh>();
             //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
@@ -208,6 +216,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             {
                 meshGO.get()->parent = rootSceneGO;
                 rootSceneGO.get()->children.push_back(meshGO);
+                return meshGO;
             }
             else
             {
@@ -215,6 +224,8 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                 emptyParent.get()->children.push_back(meshGO);
             }
         }
+
+        return emptyParent;
 
        /* if (!textures.empty())
        {
@@ -282,6 +293,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
             meshLoader->BufferData(mData);
 
             std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mData.meshName);
+            gameobjects[meshGO->GetUID()] = meshGO;
             meshGO.get()->AddComponent<Transform>();
             meshGO.get()->AddComponent<Mesh>();
             //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
@@ -313,27 +325,76 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
 std::shared_ptr<GameObject> SceneManager::CreateCube()
 {
     std::shared_ptr<GameObject> cubeGO = std::make_shared<GameObject>("Cube");
+    gameobjects[cubeGO->GetUID()] = cubeGO;
     cubeGO.get()->AddComponent<Transform>();
-    cubeGO.get()->AddComponent<Mesh>();
+    Mesh* component_mesh = (Mesh*)cubeGO.get()->AddComponent<Mesh>();
 
     cubeGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
+    // We create the cube using planes and rotating and joining them
+    par_shapes_mesh* mesh = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* top = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* bottom = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* back = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* left = par_shapes_create_plane(1, 1);
+    par_shapes_mesh* right = par_shapes_create_plane(1, 1);
+
+    float axisX[3] = { 1, 0, 0 };
+    float axisY[3] = { 0, 1, 0 };
+
+    par_shapes_translate(mesh, -0.5f, -0.5f, 0.5f);
+
+    par_shapes_rotate(top, -float(PAR_PI * 0.5), axisX);
+    par_shapes_translate(top, -0.5f, 0.5f, 0.5f);
+
+    par_shapes_rotate(bottom, float(PAR_PI * 0.5), axisX);
+    par_shapes_translate(bottom, -0.5f, -0.5f, -0.5f);
+
+    par_shapes_rotate(back, float(PAR_PI), axisX);
+    par_shapes_translate(back, -0.5f, 0.5f, -0.5f);
+
+    par_shapes_rotate(left, float(-PAR_PI * 0.5), axisY);
+    par_shapes_translate(left, -0.5f, -0.5f, -0.5f);
+
+    par_shapes_rotate(right, float(PAR_PI * 0.5), axisY);
+    par_shapes_translate(right, 0.5f, -0.5f, 0.5f);
+
+    par_shapes_merge_and_free(mesh, top);
+    par_shapes_merge_and_free(mesh, bottom);
+    par_shapes_merge_and_free(mesh, back);
+    par_shapes_merge_and_free(mesh, left);
+    par_shapes_merge_and_free(mesh, right);
+
+    if (mesh) {
+        MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Cube");
+        component_mesh->mesh = data;
+    }
+
     rootSceneGO.get()->children.emplace_back(cubeGO);
 
-    return nullptr;
+    return cubeGO;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateSphere()
+std::shared_ptr<GameObject> SceneManager::CreateSphere(float radius, int slices, int slacks)
 {
     std::shared_ptr<GameObject> sphereGO = std::make_shared<GameObject>("Sphere");
+    gameobjects[sphereGO->GetUID()] = sphereGO;
     sphereGO.get()->AddComponent<Transform>();
-    sphereGO.get()->AddComponent<Mesh>();
+    Mesh* component_mesh = (Mesh*)sphereGO.get()->AddComponent<Mesh>();
 
     sphereGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
-    rootSceneGO.get()->children.emplace_back(sphereGO);
+    par_shapes_mesh* mesh = par_shapes_create_parametric_sphere(slices, slacks);
 
-    return nullptr;
+    if (mesh) {
+        par_shapes_scale(mesh, radius / 2, radius / 2, radius / 2);
+        MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Sphere");
+        component_mesh->mesh = data;
+    }
+
+    rootSceneGO.get()->children.emplace_back(sphereGO);
+    
+    return sphereGO;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateMF()
@@ -370,19 +431,27 @@ std::shared_ptr<GameObject> SceneManager::GetRootSceneGO() const
 
 std::shared_ptr<GameObject> SceneManager::FindGOByUID(uint32_t _UID) const
 {
-    for (const auto& go : rootSceneGO.get()->children)
-    {
-        if (go.get()->GetUID() == _UID) 
-        {
-            return go;
-        }
-        else
-        {
-            FindGOByUID(_UID);
+    auto it = gameobjects.find(_UID);
+    if (it != gameobjects.end())
+        return it->second;
+    else
+        return nullptr;
+}
+
+void SceneManager::DestroyGameObject(unsigned int UID) {
+    auto object = gameobjects.find(UID);
+    if (object == gameobjects.end())
+        return;
+    
+    std::shared_ptr<GameObject> to_delete = object->second;
+    gameobjects.erase(object);
+    std::shared_ptr<GameObject> parent = to_delete->parent.lock();
+    for (auto child = parent->children.begin(); child != parent->children.end(); ++child) {
+        if ((*child) == to_delete) {
+            parent->children.erase(child);
+            break;
         }
     }
-
-    return nullptr;
 }
 
 void SceneManager::SaveScene()
@@ -449,9 +518,20 @@ void SceneManager::LoadScene(const std::string& filename)
         {
             // Create a new game object
             auto newGameObject = CreateEmptyGO();
+            auto it = gameobjects.find(newGameObject->GetUID());
+            gameobjects.erase(it);
 
             // Load the game object from JSON
             newGameObject->LoadGameObject(gameObjectJSON);
+            gameobjects[newGameObject->GetUID()] = newGameObject; // We load it with the new UID
+            // FIXME: Due to inheritance we'd have to go through all children and grab their scripts too
+            // for now we just don't load scripts automatically
+            // Load Scripts
+            //std::vector<ComponentScript*> script_components = newGameObject->GetAllComponents<ComponentScript>();
+            //for (auto& script : script_components) {
+            //    app->scripting->CreateScript(script);
+            //}
+            //script_components.clear();
 
         }
 

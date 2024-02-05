@@ -4,8 +4,8 @@
 Transform::Transform(std::shared_ptr<GameObject> containerGO)
     : Component(containerGO, ComponentType::Transform),
     globalMatrix(1.0f),
-    position(0.0f), rotation(1, 0, 0, 0), scale(1.0f), eulerAngles(0,0,0),
-    localScale(1.0f), localRotation(1, 0, 0, 0), localEulerAngles(0, 0, 0)
+    position(0.0f), rotation(1, 0, 0, 0), scale(1.0f),
+    localScale(1.0f), localRotation(1, 0, 0, 0)
 {}
 
 Transform::~Transform() {}
@@ -20,6 +20,7 @@ void Transform::translate(const vec3& translation, bool local)
     else {
         position += rotation * translation;
     }
+    dirty_ = true;
 }
 
 void Transform::rotate(const vec3& axis, double angle, bool local)
@@ -27,15 +28,12 @@ void Transform::rotate(const vec3& axis, double angle, bool local)
     glm::quat rotationQuat = glm::angleAxis(glm::radians(angle), axis);
 
     if (local) {
-        localRotation = rotationQuat;
-        //localRotation = glm::normalize(localRotation);
-        localEulerAngles = glm::eulerAngles(localRotation);
+        localRotation *= rotationQuat;
     }
     else {
-        rotation = rotationQuat;
-        //rotation = glm::normalize(rotation);
-        this->eulerAngles = glm::eulerAngles(rotation);
+        rotation *= rotationQuat;
     }
+    dirty_ = true;
 }
 
 void Transform::rotate(const vec3& eulerAngles, bool local)
@@ -43,15 +41,21 @@ void Transform::rotate(const vec3& eulerAngles, bool local)
     glm::quat rotationQuat = glm::quat(glm::radians(eulerAngles));
 
     if (local) {
-        localRotation = rotationQuat;
-        //localRotation = glm::normalize(localRotation);
-        localEulerAngles = glm::eulerAngles(localRotation);
+        localRotation *= rotationQuat;
     }
     else {
-        rotation = rotationQuat;
-        //rotation = glm::normalize(rotation);
-        this->eulerAngles = glm::eulerAngles(rotation);
+        rotation *= rotationQuat;
     }
+    dirty_ = true;
+}
+
+void Transform::rotate(const glm::quat& rotation_quat, bool local) {
+    if (local)
+        localRotation *= rotation_quat;
+    else
+        rotation *= rotation_quat;
+
+    dirty_ = true;
 }
 
 void Transform::scaleBy(const vec3& scaling, bool local) 
@@ -62,6 +66,8 @@ void Transform::scaleBy(const vec3& scaling, bool local)
     else {
         scale *= scaling;
     }
+    dirty_ = true;
+
 }
 
 
@@ -84,19 +90,28 @@ vec3 Transform::getRight()
     return glm::normalize(globalMatrix[0]);
 }
 
-mat4 Transform::getMatrix() 
+bool Transform::isDirty() const {
+    return dirty_;
+}
+
+mat4 Transform::getMatrix() const
 {
-    updateMatrix();
     return globalMatrix;
 }
 
-void Transform::updateMatrix()
+mat4 Transform::getMatrixLocal() const {
+    return localMatrix;
+}
+
+void Transform::updateMatrix(const mat4& parent_global)
 {
-    globalMatrix = mat4(1.0f);
-    globalMatrix = glm::translate(globalMatrix, position);
-    globalMatrix *= glm::mat4_cast(rotation * localRotation);
-    globalMatrix = glm::scale(globalMatrix, localScale);
-    globalMatrix = glm::scale(globalMatrix, scale);
+    localMatrix = mat4(1.0f);
+    localMatrix = glm::translate(localMatrix, position);
+    localMatrix *= glm::mat4_cast(rotation * localRotation); // FIXME: This is just not it
+    localMatrix = glm::scale(localMatrix, localScale);
+    localMatrix = glm::scale(localMatrix, scale);
+    globalMatrix = parent_global * localMatrix;
+    dirty_ = false;
 }
 
 vec3 Transform::getPosition() const
@@ -107,6 +122,7 @@ vec3 Transform::getPosition() const
 void Transform::setPosition(const vec3& newPosition) 
 {
     position = newPosition;
+    dirty_ = true;
 }
 
 quat Transform::getRotation() const
@@ -131,10 +147,40 @@ vec3 Transform::getLocalEulerAngles() const
     return eulerAngles;
 }
 
-void Transform::setRotation(const vec3& newRotation)
+void Transform::setRotation(const vec3& newRotation, bool local)
 {
-    eulerAngles = newRotation;
-    rotation = EulerAnglesToQuaternion(eulerAngles);
+    glm::quat rotationQuat = glm::quat(glm::radians(newRotation));
+
+    if (local) {
+        localRotation = rotationQuat;
+    }
+    else {
+        rotation = rotationQuat;
+    }
+
+    dirty_ = true;
+}
+
+void Transform::setRotation(const vec3& axis, double angle, bool local) {
+    glm::quat rotationQuat = glm::angleAxis(glm::radians(angle), axis);
+
+    if (local) {
+        localRotation = rotationQuat;
+    }
+    else {
+        rotation = rotationQuat;
+    }
+
+    dirty_ = true;
+}
+
+void Transform::setRotation(const glm::quat& rotation_quat, bool local) {
+    if (local)
+        localRotation *= rotation_quat;
+    else
+        rotation *= rotation_quat;
+
+    dirty_ = true;
 }
 
 vec3 Transform::getScale() const
@@ -145,6 +191,7 @@ vec3 Transform::getScale() const
 void Transform::setScale(const vec3& newScale)
 {
     scale = newScale;
+    dirty_ = true;
 }
 
 
@@ -233,5 +280,6 @@ void Transform::LoadComponent(const json& transformJSON)
     }
 
     // Update the transformation matrix
-    updateMatrix();
+    updateMatrix(); // For gameobjects outside scene
+    dirty_ = true;
 }

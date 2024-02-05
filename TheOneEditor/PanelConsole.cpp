@@ -30,9 +30,11 @@ bool PanelConsole::Draw()
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(5, 15));
 
 			std::string logType;
+			bool stylecolor = false;
 
 			for (const auto& log : app->GetLogs())
 			{
+				stylecolor = false;
 				switch (log.type)
 				{
 					case LogType::LOG_INFO:
@@ -42,21 +44,25 @@ bool PanelConsole::Draw()
 					case LogType::LOG_ASSIMP:
 						logType = "[ASSIMP] ";
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.75, 0.25, 0.75, 1));
+						stylecolor = true;
 						break;
 
 					case LogType::LOG_OK:
 						logType = "[OK] ";
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
+						stylecolor = true;
 						break;
 
 					case LogType::LOG_WARNING:
 						logType = "[WARNING] ";
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+						stylecolor = true;
 						break;
 
 					case LogType::LOG_ERROR:
 						logType = "[ERROR] ";
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+						stylecolor = true;
 						break;
 				}
 				
@@ -64,7 +70,8 @@ bool PanelConsole::Draw()
 					logType.insert(0, "\t");
 
 				ImGui::Text(logType.c_str());
-				ImGui::PopStyleColor();
+				if (stylecolor)
+					ImGui::PopStyleColor();
 				ImGui::SameLine();
 				ImGui::Text(log.message.c_str());
 			}
@@ -74,11 +81,11 @@ bool PanelConsole::Draw()
 			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
 				ImGui::SetScrollHereY(1.0f);
 
-			ImGui::EndChild();
 		}
+		ImGui::EndChild();
 
-		ImGui::End();
 	}
+	ImGui::End();
 
 	return true;
 }

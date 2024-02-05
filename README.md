@@ -53,10 +53,10 @@ Here is a non-exhaustive list of EOP's main features:
 - Mouse picking
 - Frustum culling
 - Resource Management
+- Scripting System
 
 ## 3.2. To implement
 Here is a list of EOP's coming features
-- Scripting System
 - Scripting Editor
   
 # 4. Details
@@ -71,6 +71,8 @@ Here is a list of EOP's coming features
 - rapidjson (JSON parser/generator)
 - imGui (GUI)
 - imPlot (2D plotting for ImGui)
+- LuaBridge
+- lua
 
 ## 4.3. Requirements
 TheOne requires:

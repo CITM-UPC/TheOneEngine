@@ -67,6 +67,24 @@
     <ClCompile Include="Window.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="ModuleScripting.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptingTransform.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptingGameObject.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptingInput.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptingApp.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="DemoFunctions.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -129,6 +147,24 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleScripting.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingTransform.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingGameObject.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingInput.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptingApp.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="DemoFunctions.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Panels">
@@ -148,6 +184,9 @@
     </Filter>
     <Filter Include="Timer">
       <UniqueIdentifier>{b74f5a04-4e4d-412c-a6db-646ebed46523}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{af35bb23-0c6d-40b8-92f9-0bff0b584644}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

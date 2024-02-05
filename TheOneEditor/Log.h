@@ -3,7 +3,6 @@
 #pragma once
 
 #include <string>
-#include "PanelConsole.h"
 
 enum class LogType
 {

@@ -16,6 +16,7 @@
 #include <string>
 #include <memory>
 #include <algorithm>
+#include <unordered_map>
 
 #define NOT_SPECIFIED ""
 
@@ -43,7 +44,7 @@ public:
     std::shared_ptr<GameObject> CreateMeshGO(std::string path);
     std::shared_ptr<GameObject> CreateExistingMeshGO(std::string fbxName);
     std::shared_ptr<GameObject> CreateCube();
-    std::shared_ptr<GameObject> CreateSphere();
+    std::shared_ptr<GameObject> CreateSphere(float radius = 1.0f, int slices = 25, int slacks = 25);
     std::shared_ptr<GameObject> CreateMF();
 
     // Get/Set
@@ -62,11 +63,17 @@ public:
         return instance;
     }
 
+    // GameObject Management
+    void DestroyGameObject(unsigned int UID);
+
     /*SCENE SERIALIZATION*/
     void SaveScene();
     void LoadScene(const std::string& filename);
 
     //MeshLoader GetMeshLoader();
+
+public:
+    std::unordered_map <unsigned int, std::shared_ptr<GameObject>> gameobjects;
 
 private:
     // Private constructor to enforce singleton pattern

@@ -17,6 +17,9 @@
 #include <filesystem>
 #include <fstream>
 
+#include "par_shapes.h"
+
+
 
 namespace fs = std::filesystem;
 using namespace std;
@@ -197,6 +200,49 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
     
 
     return meshesBufferedData;
+}
+
+MeshBufferedData MeshLoader::LoadMeshFromPar(par_shapes_mesh* mesh, std::string name) {
+    std::vector<V3T2> vertex_data;
+    std::vector<unsigned int> index_data;
+
+    for (int i = 0; i < mesh->npoints; ++i) {
+        vec3f vert = { mesh->points[3 * i],mesh->points[(3 * i) + 1], mesh->points[(3 * i) + 2] };
+        vertex_data.push_back({ vert, vec2f(mesh->tcoords[2 * i], mesh->tcoords[(2 * i + 1)]) });
+    }
+    for (int i = 0; i < mesh->ntriangles * 3; ++i) {
+        index_data.push_back(mesh->triangles[i]);
+    }
+
+    meshData =
+    {
+        name,
+        Formats::F_V3T2,
+        vertex_data,
+        index_data
+    };
+    BufferData(meshData);
+    meshBuffData.meshName = name;
+
+    for (size_t i = 0; i < mesh->npoints; i++) {
+        vec3f glmNormal(mesh->normals[3 * i], mesh->normals[(3 * i) + 1], mesh->normals[(3 * i) + 2]);
+        meshData.meshNorms.push_back(glmNormal);
+        vec3f glmVertex(mesh->points[3 * i], mesh->points[(3 * i) + 1], mesh->points[(3 * i) + 2]);
+        meshData.meshVerts.push_back(glmVertex);
+    }
+    for (size_t f = 0; f < mesh->ntriangles; ++f) {
+        vec3f v0(mesh->points[mesh->triangles[3 * f]], mesh->points[mesh->triangles[3 * f] + 1], mesh->points[mesh->triangles[3 * f] + 2]);
+        vec3f v1(mesh->points[mesh->triangles[(3 * f) + 1]], mesh->points[mesh->triangles[(3 * f) + 1] + 1], mesh->points[mesh->triangles[(3 * f) + 1] + 2]);
+        vec3f v2(mesh->points[mesh->triangles[(3 * f) + 2]], mesh->points[mesh->triangles[(3 * f) + 2] + 1], mesh->points[mesh->triangles[(3 * f) + 2] + 2]);
+
+        vec3f faceNormal = glm::cross(v1 - v0, v2 - v0);
+        faceNormal = glm::normalize(faceNormal);
+        meshData.meshFaceNorms.push_back(faceNormal);
+
+        vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
+        meshData.meshFaceCenters.push_back(faceCenter);
+    }
+    return meshBuffData;
 }
 
 std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string& path, std::shared_ptr<GameObject> containerGO)

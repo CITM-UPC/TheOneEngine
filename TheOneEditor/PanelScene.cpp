@@ -64,7 +64,6 @@ bool PanelScene::Draw()
                 ImGui::EndMenu();
             }
 
-            ImGui::PopStyleVar();
             ImGui::EndMenuBar();
         }
 

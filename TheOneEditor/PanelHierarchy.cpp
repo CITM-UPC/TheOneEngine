@@ -64,8 +64,8 @@ bool PanelHierarchy::Draw()
 			ImGui::TreePop();
 		}
 
-		ImGui::End();
 	}
+	ImGui::End();
 
 	return true;
 }

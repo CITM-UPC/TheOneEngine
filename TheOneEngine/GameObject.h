@@ -12,16 +12,17 @@
 #include <list>
 #include <memory>
 
+class ComponentScript;
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 
-    GameObject();
     GameObject(std::string name = "gameObject");
     ~GameObject();
 
     void Update(double dt);
+    void UpdateTransform(mat4 parent_matrix = mat4(1.0f), bool dirty = false);
     void Draw();
 
     // Components
@@ -37,28 +38,15 @@ public:
     }
 
     template <typename TComponent>
-    bool AddComponent()
-    {
-        Component* component = this->GetComponent<TComponent>();
+    std::vector<TComponent*> GetAllComponents();
 
-        // Check for already existing Component
-        if (component != nullptr)
-        {
-            LOG(LogType::LOG_WARNING, "Component already applied");
-            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
-            LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
+    template <typename TComponent>
+    Component* AddComponent();
 
-            return false;
-        }
-
-        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());
-        newComponent->Enable(); // hekbas: Enable the component if necessary?
-        components.push_back(std::move(newComponent));
-
-        return true;
-    }
+    ComponentScript* AddScriptComponent(const char* path);
 
     void RemoveComponent(ComponentType type);
+    void RemoveComponent(uint UID);
 
     // Get/Set
     bool IsEnabled() const;

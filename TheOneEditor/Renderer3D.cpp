@@ -11,6 +11,8 @@
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
+#include "..\TheOneEngine\EngineCore.h"
+
 
 
 Renderer3D::Renderer3D(App* app) : Module(app)
@@ -141,7 +143,7 @@ void Renderer3D::CreateRay()
 
 void Renderer3D::CameraInput(double dt)
 {
-    if (!app->gui->panelScene->isHovered)
+    if (!app->gui->panelScene->isHovered || app->IsPlaying())
         return;
 
     Camera* camera = sceneCamera.get()->GetComponent<Camera>();
@@ -159,7 +161,7 @@ void Renderer3D::CameraInput(double dt)
         camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
         camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
 
-        camera->rotate(vec3f(camera->pitch, camera->yaw, 0.0f), false);
+        camera->setRotation(vec3f(camera->pitch, camera->yaw, 0.0f), false);
 
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {

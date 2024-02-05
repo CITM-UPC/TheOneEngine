@@ -118,6 +118,7 @@ bool Gui::Start()
 
 
     // Setup Platform/Renderer backends
+    const char* video = SDL_GetCurrentVideoDriver(); //Imgui does not like it in debug unless this is included?
     ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->window->glContext);
     ImGui_ImplOpenGL3_Init("#version 330 core");
 
@@ -315,10 +316,8 @@ bool Gui::CleanUp()
 
 void Gui::Draw()
 {
-    ImGui::EndFrame();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    ImGui::EndFrame();
 
     // hekbas look into this
     /*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -408,7 +407,6 @@ void Gui::MainWindowDockspace()
         //    ImGui::DockBuilderFinish(dockspace_id);
         //}
     }
-    ImGui::End();
 }
 
 
@@ -504,7 +502,7 @@ void Gui::MainMenuWindow()
 
 void Gui::MainMenuHelp()
 {
-    if (ImGui::MenuItem("About TheOneEngine"))
+    if (ImGui::MenuItem("About Engine of Power"))
     {
         app->gui->panelAbout->SwitchState();
     }
@@ -513,7 +511,7 @@ void Gui::MainMenuHelp()
 
     if (ImGui::MenuItem("Documentation"))
     {
-        OpenURL("https://github.com/CITM-UPC/TheOneEngine");
+        OpenURL("https://github.com/CITM-UPC/EngineOfPower");
     }
     
     ImGui::Separator();

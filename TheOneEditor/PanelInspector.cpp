@@ -62,14 +62,14 @@ bool PanelInspector::Draw()
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
 
                 view_pos = transform->getPosition();
-                view_rot = transform->getEulerAngles();
+                view_rot = transform->getLocalEulerAngles();
                 view_sca = transform->getScale();
 
                 ImGuiTableFlags tableFlags = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit;
 
                 if (ImGui::BeginTable("", 4, tableFlags))
                 {
-                    ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
+                    ImGui::TableSetupColumn("##", ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("X", ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("Y", ImGuiTableColumnFlags_WidthStretch);
                     ImGui::TableSetupColumn("Z", ImGuiTableColumnFlags_WidthStretch);
@@ -78,7 +78,7 @@ bool PanelInspector::Draw()
 
                     // Headers
                     ImGui::TableSetColumnIndex(0);
-                    ImGui::TableHeader("");
+                    ImGui::TableHeader("##");
                     ImGui::TableSetColumnIndex(1);
                     ImGui::TableHeader("X");
                     ImGui::TableSetColumnIndex(2);
@@ -166,7 +166,7 @@ bool PanelInspector::Draw()
                     transform->updateMatrix();
                 }
                 else if (needRefresh_rot) {
-                    transform->setRotation(view_rot);
+                    transform->setRotation((vec3)view_rot);
                     transform->updateMatrix();
                 }
                 else if (needRefresh_sca) {
@@ -290,10 +290,8 @@ bool PanelInspector::Draw()
             }
         }
 
-        ImGui::End();
 	}	
-
-    ImGui::PopStyleVar();
+    ImGui::End();
 
 	return true;
 }

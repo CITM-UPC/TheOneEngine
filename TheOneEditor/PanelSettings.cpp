@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "Input.h"
 #include "Hardware.h"
+#include "..\TheOneEngine\EngineCore.h"
 
 #include "imgui.h"
 #include "implot.h"
@@ -61,8 +62,8 @@ bool PanelSettings::Draw()
 			if (ImGui::Button("Software", buttonSize))
 				selected = SelectedSetting::SOFTWARE;
 
-			ImGui::EndChild();
 		}
+		ImGui::EndChild();
 
 		ImGui::SameLine();
 
@@ -82,11 +83,11 @@ bool PanelSettings::Draw()
 				default: Performance(); break;
 			}
 
-			ImGui::EndChild();
 		}
+		ImGui::EndChild();
 
-		ImGui::End();
 	}
+	ImGui::End();
 
 	ImGui::PopStyleVar();
 
