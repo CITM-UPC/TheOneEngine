@@ -269,6 +269,53 @@ void Mesh::LoadComponent(const json& meshJSON)
     
 }
 
+void Mesh::GenerateVAO() {
+    // Create and bind a vertex array
+    glGenVertexArrays(1, &VAO_);
+    glBindVertexArray(VAO_);
+
+    // Bind the VBO
+    glBindBuffer(GL_ARRAY_BUFFER, VBO_);
+
+    // Set vertex attribute pointers
+    // TODO: Bind more than just position and texcoords
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(V3T2), (void*)(offsetof(V3T2, v)));
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(V3T2), (void*)(offsetof(V3T2, t)));
+    glEnableVertexAttribArray(1);
+
+    // Unbind both VAO and VBO
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Mesh::GenerateVBO() {
+    if (meshData.vertex_data.size() > 0) {
+        // Create and bind VBO and then buffer our vertex data into it
+        glGenBuffers(1, &VBO_);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO_);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * meshData.vertex_data.size(), meshData.vertex_data.data(), GL_STATIC_DRAW);
+        // Unbind VBO
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+    }
+    else
+        LOG(LogType::LOG_ERROR, "Could not create VBO, no vertex data");
+}
+
+void Mesh::GenerateEBO() {
+    if (meshData.index_data.size() > 0) {
+        // Create and bind EBO and then buffer our index data into it
+        glGenBuffers(1, &EBO_);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO_);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * meshData.index_data.size(), meshData.index_data.data(), GL_STATIC_DRAW);
+        // Unbind VBO
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+    else
+        LOG(LogType::LOG_ERROR, "Could not create EBO, no index data");
+}
+
 
 static inline void glVec3(const vec3& v) { glVertex3dv(&v.x); }
 

@@ -29,6 +29,12 @@ public:
     json SaveComponent();
     void LoadComponent(const json& meshJSON);
 
+    void GenerateShaderObjects();
+
+    unsigned int VAO() const { return VAO_; };
+    unsigned int VBO() const { return VBO_; };
+    unsigned int EBO() const { return EBO_; };
+
 public:
 
     MeshBufferedData mesh;
@@ -61,7 +67,16 @@ private:
     //void DrawWireframe();
     void DrawOBB();
 
+    void GenerateVAO();
+    void GenerateVBO();
+    void GenerateEBO();
+
     MeshLoader* meshLoader;
+
+    // Shader
+    unsigned int VAO_;
+    unsigned int VBO_;
+    unsigned int EBO_;
 };
 
 #endif // !__MESH_H__
