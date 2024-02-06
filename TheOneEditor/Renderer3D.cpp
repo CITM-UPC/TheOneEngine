@@ -241,5 +241,8 @@ void Renderer3D::CameraInput(double dt)
         camera->setPosition(targetPos * 100.0f);
     }
 
+    if (transform->isDirty())
+        transform->updateMatrix();
+        
     camera->updateCameraVectors();
 }

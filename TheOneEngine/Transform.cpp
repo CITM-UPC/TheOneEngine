@@ -76,19 +76,16 @@ void Transform::scaleBy(const vec3& scaling, bool local)
 // Get / Set ----------------------------------------------------
 vec3 Transform::getForward() 
 {
-    updateMatrix();
     return glm::normalize(globalMatrix[2]);
 }
 
 vec3 Transform::getUp() 
 {
-    updateMatrix();
     return glm::normalize(globalMatrix[1]);
 }
 
 vec3 Transform::getRight() 
 {
-    updateMatrix();
     return glm::normalize(globalMatrix[0]);
 }
 
