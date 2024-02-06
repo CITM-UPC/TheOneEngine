@@ -30,12 +30,20 @@ public:
 
     void CreateRay();
 
+private:
+
+    void CreateCheckersTexture();
+
+
 public:
 
     //hekbas test
     double dtSum = 0;
 
     std::shared_ptr<GameObject> sceneCamera;
+
+private:
+    unsigned int checkers_tex_;
 };
 
 #endif // !__RENDERER_3D_H__
