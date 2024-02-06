@@ -245,7 +245,7 @@ MeshBufferedData MeshLoader::LoadMeshFromPar(par_shapes_mesh* mesh, std::string 
     return meshBuffData;
 }
 
-std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string& path, std::shared_ptr<GameObject> containerGO)
+std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string& path)
 {
     const auto scene_ptr = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs);
 
@@ -260,8 +260,13 @@ std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string&
             aiString aiPath;
             material->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
             fs::path texPath = fs::path(path).parent_path() / fs::path(aiPath.C_Str()).filename();
-            auto texture_ptr = make_shared<Texture>(texPath.string());
-            texture_ptrs.push_back(texture_ptr);
+            if (fs::exists(texPath)) {
+                texture_ptrs.push_back(std::make_shared<Texture>(texPath.string()));
+            }
+            else {
+                LOG(LogType::LOG_ERROR, "Texture File does not exist: %s", texPath.string());
+                texture_ptrs.push_back(nullptr);
+            }
         }
 
         aiReleaseImport(scene_ptr);
