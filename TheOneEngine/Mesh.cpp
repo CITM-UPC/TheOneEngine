@@ -269,6 +269,12 @@ void Mesh::LoadComponent(const json& meshJSON)
     
 }
 
+void Mesh::GenerateShaderObjects() {
+    GenerateVBO();
+    GenerateEBO();
+    GenerateVAO();
+}
+
 void Mesh::GenerateVAO() {
     // Create and bind a vertex array
     glGenVertexArrays(1, &VAO_);

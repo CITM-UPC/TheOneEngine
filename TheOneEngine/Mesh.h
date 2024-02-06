@@ -74,9 +74,9 @@ private:
     MeshLoader* meshLoader;
 
     // Shader
-    unsigned int VAO_;
-    unsigned int VBO_;
-    unsigned int EBO_;
+    unsigned int VAO_ = 0;
+    unsigned int VBO_ = 0;
+    unsigned int EBO_ = 0;
 };
 
 #endif // !__MESH_H__
