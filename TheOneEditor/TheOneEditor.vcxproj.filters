@@ -85,6 +85,9 @@
     <ClCompile Include="DemoFunctions.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Rendering</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -165,6 +168,9 @@
     <ClInclude Include="DemoFunctions.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Rendering</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Panels">
@@ -187,6 +193,9 @@
     </Filter>
     <Filter Include="Scripting">
       <UniqueIdentifier>{af35bb23-0c6d-40b8-92f9-0bff0b584644}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Rendering">
+      <UniqueIdentifier>{200a664b-e9ba-44be-bb3c-96c6f6647c34}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
