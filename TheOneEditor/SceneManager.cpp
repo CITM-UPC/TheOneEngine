@@ -7,6 +7,7 @@
 #include "../TheOneEngine/ComponentScript.h"
 #include "ModuleScripting.h"
 #include "DemoFunctions.h"
+#include "Renderer3D.h"
 
 #include "../TheOneEngine/par_shapes.h"
 #include "../TheOneEngine/ScriptData.h"
@@ -98,7 +99,7 @@ bool SceneManager::Update(double dt)
 
 bool SceneManager::PostUpdate()
 {
-    RecurseDrawChildren(rootSceneGO);
+    //RecurseDrawChildren(rootSceneGO);
 
     return true;
 }
@@ -190,11 +191,11 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
             gameobjects[meshGO->GetUID()] = meshGO;
             meshGO.get()->AddComponent<Transform>();
-            meshGO.get()->AddComponent<Mesh>();
+            Mesh* go_mesh = (Mesh*) meshGO.get()->AddComponent<Mesh>();
             //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
-            meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
-            meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
+            go_mesh->mesh = mesh;
+            go_mesh->mesh.texture = textures[mesh.materialIndex];
             //meshGO.get()->GetComponent<Texture>() = &meshGO.get()->GetComponent<Mesh>()->mesh.texture;
 
             //Load MeshData from custom files
@@ -205,15 +206,16 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
                 {
                     MeshData mData = meshLoader->deserializeMeshData(file);
 
-                    meshGO.get()->GetComponent<Mesh>()->meshData = mData;
-                    meshGO.get()->GetComponent<Mesh>()->path = file;
+                    go_mesh->meshData = mData;
+                    go_mesh->path = file;
                 }
                 
             }
 
             // hekbas: need to set Transform?
 
-            meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
+            go_mesh->GenerateAABB();
+            go_mesh->GenerateShaderObjects();
 
             if (isSingleMesh)
             {
@@ -298,16 +300,17 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
             std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mData.meshName);
             gameobjects[meshGO->GetUID()] = meshGO;
             meshGO.get()->AddComponent<Transform>();
-            meshGO.get()->AddComponent<Mesh>();
+            Mesh* go_mesh = (Mesh*)meshGO.get()->AddComponent<Mesh>();
             //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
-            meshGO.get()->GetComponent<Mesh>()->meshData = mData;
-            meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
-            meshGO.get()->GetComponent<Mesh>()->path = file;
+            go_mesh->meshData = mData;
+            go_mesh->mesh = meshLoader->GetBufferData();
+            go_mesh->path = file;
+            go_mesh->GenerateShaderObjects();
             //meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex]; //Implement texture deserialization
             // hekbas: need to set Transform?
 
-            meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
+            go_mesh->GenerateAABB();
 
             if (isSingleMesh)
             {
@@ -371,6 +374,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     if (mesh) {
         MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Cube");
         component_mesh->mesh = data;
+        component_mesh->GenerateShaderObjects();
     }
 
     rootSceneGO.get()->children.emplace_back(cubeGO);
@@ -393,6 +397,7 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere(float radius, int slices,
         par_shapes_scale(mesh, radius / 2, radius / 2, radius / 2);
         MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Sphere");
         component_mesh->mesh = data;
+        component_mesh->GenerateShaderObjects();
     }
 
     rootSceneGO.get()->children.emplace_back(sphereGO);
@@ -471,6 +476,7 @@ std::shared_ptr<GameObject> SceneManager::InstantiateGameObject(unsigned int UID
             ret_mesh = (Mesh*)ret->AddComponent<Mesh>();
             ret_mesh->mesh = ((Mesh*)component)->mesh;
             ret_mesh->meshData = ((Mesh*)component)->meshData;
+            ret_mesh->GenerateShaderObjects();
             break;
         case ComponentType::Script:
             ret_script = ret->AddScriptComponent("");
@@ -484,6 +490,10 @@ std::shared_ptr<GameObject> SceneManager::InstantiateGameObject(unsigned int UID
     instances.push_back(ret);
     ++instance_counter;
     return ret;
+}
+
+void SceneManager::RenderScene() {
+    RecurseDrawChildren(rootSceneGO);
 }
 
 void SceneManager::DestroyGameObject(unsigned int UID) {
@@ -596,7 +606,7 @@ void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 {
     for (const auto gameObject : parentGO.get()->children)
     {
-        gameObject.get()->Draw();
+        app->renderer3D->DrawGameObject(gameObject);
         RecurseDrawChildren(gameObject);
     }
 }

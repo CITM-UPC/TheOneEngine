@@ -35,6 +35,7 @@ public:
     unsigned int VBO() const { return VBO_; };
     unsigned int EBO() const { return EBO_; };
 
+    void DrawAABB();
 public:
 
     MeshBufferedData mesh;
@@ -59,7 +60,6 @@ public:
 
 private:
     
-    void DrawAABB();
 
     void DrawVertexNormals();
     void DrawFaceNormals();

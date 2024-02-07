@@ -27,6 +27,8 @@ public:
 
     bool CleanUp();
 
+    void DrawGameObject(std::shared_ptr<GameObject> object);
+
     void CameraInput(double dt);
 
     void CreateRay();

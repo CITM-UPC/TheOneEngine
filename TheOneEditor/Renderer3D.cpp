@@ -13,6 +13,8 @@
 #include "..\TheOneEngine\Camera.h"
 #include "..\TheOneEngine\EngineCore.h"
 
+#include "glm/gtc/type_ptr.hpp"
+
 
 
 Renderer3D::Renderer3D(App* app) : Module(app)
@@ -66,13 +68,24 @@ bool Renderer3D::Update(double dt)
 
 bool Renderer3D::PostUpdate()
 {
-    // Scene camera
-    /*Camera* sceneCam = sceneCamera.get()->GetComponent<Camera>();
-    app->engine->Render(sceneCam);*/
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glClearDepth(1.0f);
 
-    // hekbas testing Mesh load/draw
-    /*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
-    for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_COLOR_MATERIAL);
+    Camera* cam = sceneCamera->GetComponent<Camera>();
+    mat4f gl_viewmatrix = glm::transpose(cam->getViewMatrix());
+    mat4f gl_projmatrix = glm::transpose(cam->getProjMatrix());
+
+    // Send proj and view matrix to shader
+    glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_View"), 1, GL_FALSE, glm::value_ptr(gl_viewmatrix));
+    glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_Proj"), 1, GL_FALSE, glm::value_ptr(gl_projmatrix));
+
+    app->engine->DrawGrid(1000, 10);
+    app->engine->DrawAxis();
+
+    app->sceneManager->RenderScene();
 
     app->gui->Draw();
 
@@ -85,6 +98,39 @@ bool Renderer3D::CleanUp()
 {
 
     return true;
+}
+
+void Renderer3D::DrawGameObject(std::shared_ptr<GameObject> object) {
+    Mesh* mesh = object->GetComponent<Mesh>();
+    if (!mesh)
+        return;
+
+    if (mesh->drawAABB)
+        mesh->DrawAABB();
+
+    glUseProgram(default_shader_.id);
+
+    Transform* transform = object->GetComponent<Transform>();
+    mat4f model = glm::transpose(transform->getMatrix());
+    glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
+
+    unsigned int texture = checkers_tex_;
+    if (mesh->mesh.texture) {
+        texture = mesh->mesh.texture->Id();
+    }
+
+    // Bind stuff and render
+    glBindTexture(GL_TEXTURE_2D, texture);
+    glBindVertexArray(mesh->VAO());
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->EBO());
+    glDrawElements(GL_TRIANGLES, mesh->mesh.numIndexs, GL_UNSIGNED_INT, nullptr);
+
+
+    // Unbind everything
+    glBindVertexArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glUseProgram(0);
 }
 
 void Renderer3D::CreateRay()
@@ -179,11 +225,13 @@ void Renderer3D::FillDefaultShaders(Shader& shader) const {
 		layout (location = 1) in vec2 a_TexCoord;
 		
 		uniform vec4 u_Model;
+        uniform vec4 u_View;
+        uniform vec4 u_Proj;
 		
 		out vec2 v_TexCoord;
 		
 		void main() {
-			gl_Position = u_Model * vec4(a_Position, 1.0f);
+			gl_Position = u_Proj * u_View * u_Model * vec4(a_Position, 1.0f);
 			v_TexCoord = a_TexCoord;
 		})";
 
@@ -277,4 +325,5 @@ void Renderer3D::CameraInput(double dt)
         transform->updateMatrix();
 
     camera->updateCameraVectors();
+    camera->updateViewMatrix();
 }

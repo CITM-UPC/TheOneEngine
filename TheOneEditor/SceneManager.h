@@ -66,6 +66,8 @@ public:
 
     std::shared_ptr<GameObject> InstantiateGameObject(unsigned int UID);
 
+    void RenderScene();
+
     // GameObject Management
     void DestroyGameObject(unsigned int UID);
 

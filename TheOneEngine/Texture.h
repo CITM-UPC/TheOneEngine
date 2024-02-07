@@ -25,6 +25,7 @@ public:
 	~Texture();
 
 	//void SetTexture(Ptr texture);
+	unsigned int Id() const { return _id; };
 
 	json SaveComponent();
 	void LoadComponent(const json& meshJSON);

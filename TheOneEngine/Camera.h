@@ -62,7 +62,8 @@ public:
     void setRotation(const vec3f& eulerRotation, bool local = true);
 
 
-    const mat4f& getViewMatrix();
+    const mat4f& getViewMatrix() const;
+    const mat4f& getProjMatrix() const;
     void updateViewMatrix();
 
     void updateCameraVectors();

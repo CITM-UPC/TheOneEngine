@@ -108,9 +108,13 @@ void Camera::setRotation(const vec3f& eulerRotation, bool local) {
     updateViewMatrix();
 }
 
-const mat4f& Camera::getViewMatrix()
+const mat4f& Camera::getViewMatrix() const
 {
     return viewMatrix;
+}
+
+const mat4f& Camera::getProjMatrix() const     {
+    return projectionMatrix;
 }
 
 void Camera::updateViewMatrix()
