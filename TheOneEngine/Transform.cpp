@@ -108,7 +108,6 @@ void Transform::updateMatrix(const mat4& parent_global)
     localMatrix = glm::translate(localMatrix, position);
     localMatrix *= glm::mat4_cast(localRotation);
     localMatrix = glm::scale(localMatrix, localScale);
-    localMatrix = glm::scale(localMatrix, scale);
     globalMatrix = parent_global * localMatrix;
     updateGlobalTRS();
     dirty_ = false;
@@ -195,12 +194,12 @@ void Transform::updateGlobalTRS() {
 
 vec3 Transform::getScale() const
 {
-    return scale;
+    return localScale;
 }
 
 void Transform::setScale(const vec3& newScale)
 {
-    scale = newScale;
+    localScale = newScale;
     dirty_ = true;
 }
 
