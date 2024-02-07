@@ -372,8 +372,11 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
     par_shapes_merge_and_free(mesh, right);
 
     if (mesh) {
-        MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Cube");
-        component_mesh->mesh = data;
+        MeshBufferedData buffer_data;
+        MeshData data;
+        meshLoader->LoadMeshFromPar(mesh, "Cube", data, buffer_data);
+        component_mesh->mesh = buffer_data;
+        component_mesh->meshData = data;
         component_mesh->GenerateShaderObjects();
     }
 
@@ -395,8 +398,11 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere(float radius, int slices,
 
     if (mesh) {
         par_shapes_scale(mesh, radius / 2, radius / 2, radius / 2);
-        MeshBufferedData data = meshLoader->LoadMeshFromPar(mesh, "Sphere");
-        component_mesh->mesh = data;
+        MeshBufferedData buffer_data;
+        MeshData data;
+        meshLoader->LoadMeshFromPar(mesh, "Sphere", data, buffer_data);
+        component_mesh->mesh = buffer_data;
+        component_mesh->meshData = data;
         component_mesh->GenerateShaderObjects();
     }
 
@@ -477,6 +483,7 @@ std::shared_ptr<GameObject> SceneManager::InstantiateGameObject(unsigned int UID
             ret_mesh->mesh = ((Mesh*)component)->mesh;
             ret_mesh->meshData = ((Mesh*)component)->meshData;
             ret_mesh->GenerateShaderObjects();
+            ret_mesh->GenerateAABB();
             break;
         case ComponentType::Script:
             ret_script = ret->AddScriptComponent("");

@@ -66,7 +66,7 @@ public:
 	virtual ~MeshLoader();
 
 	std::vector<MeshBufferedData> LoadMesh(const std::string& path);
-	MeshBufferedData LoadMeshFromPar(par_shapes_mesh* mesh, std::string name);
+	void LoadMeshFromPar(par_shapes_mesh* mesh, std::string name, MeshData& data, MeshBufferedData& buffered_data);
 	std::vector<std::shared_ptr<Texture>> LoadTexture(const std::string& path);
 
 	void BufferData(MeshData meshData);

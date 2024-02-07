@@ -202,7 +202,7 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
     return meshesBufferedData;
 }
 
-MeshBufferedData MeshLoader::LoadMeshFromPar(par_shapes_mesh* mesh, std::string name) {
+void MeshLoader::LoadMeshFromPar(par_shapes_mesh* mesh, std::string name, MeshData& data, MeshBufferedData& buffered_data) {
     std::vector<V3T2> vertex_data;
     std::vector<unsigned int> index_data;
 
@@ -214,22 +214,22 @@ MeshBufferedData MeshLoader::LoadMeshFromPar(par_shapes_mesh* mesh, std::string 
         index_data.push_back(mesh->triangles[i]);
     }
 
-    meshData =
+    data =
     {
         name,
         Formats::F_V3T2,
         vertex_data,
         index_data
     };
-    BufferData(meshData);
+    BufferData(data);
     meshBuffData.meshName = name;
     meshBuffData.texture = nullptr;
 
     for (size_t i = 0; i < mesh->npoints; i++) {
         vec3f glmNormal(mesh->normals[3 * i], mesh->normals[(3 * i) + 1], mesh->normals[(3 * i) + 2]);
-        meshData.meshNorms.push_back(glmNormal);
+        data.meshNorms.push_back(glmNormal);
         vec3f glmVertex(mesh->points[3 * i], mesh->points[(3 * i) + 1], mesh->points[(3 * i) + 2]);
-        meshData.meshVerts.push_back(glmVertex);
+        data.meshVerts.push_back(glmVertex);
     }
     for (size_t f = 0; f < mesh->ntriangles; ++f) {
         vec3f v0(mesh->points[mesh->triangles[3 * f]], mesh->points[mesh->triangles[3 * f] + 1], mesh->points[mesh->triangles[3 * f] + 2]);
@@ -243,7 +243,7 @@ MeshBufferedData MeshLoader::LoadMeshFromPar(par_shapes_mesh* mesh, std::string 
         vec3f faceCenter = (v0 + v1 + v2) / 3.0f;
         meshData.meshFaceCenters.push_back(faceCenter);
     }
-    return meshBuffData;
+    buffered_data = meshBuffData;
 }
 
 std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string& path)
