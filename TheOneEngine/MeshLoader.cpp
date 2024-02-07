@@ -223,6 +223,7 @@ MeshBufferedData MeshLoader::LoadMeshFromPar(par_shapes_mesh* mesh, std::string 
     };
     BufferData(meshData);
     meshBuffData.meshName = name;
+    meshBuffData.texture = nullptr;
 
     for (size_t i = 0; i < mesh->npoints; i++) {
         vec3f glmNormal(mesh->normals[3 * i], mesh->normals[(3 * i) + 1], mesh->normals[(3 * i) + 2]);

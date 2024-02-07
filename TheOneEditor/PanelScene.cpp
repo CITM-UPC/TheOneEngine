@@ -89,8 +89,8 @@ bool PanelScene::Draw()
         app->engine->OnWindowResize(x, y, width, height);
 
         // Render Scene Camera 
-        /*Camera* sceneCam = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
-        app->engine->Render(sceneCam);*/
+        Camera* sceneCam = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
+        app->engine->Render(sceneCam);
 
         // Game cameras Frustum
         /*for (const auto GO : app->sceneManager->GetGameObjects())

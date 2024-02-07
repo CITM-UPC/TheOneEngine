@@ -9,6 +9,9 @@
 #include <array>
 #include <cstdio>
 #include <cassert>
+
+#include "../TheOneEditor/App.h"
+#include "EngineCore.h"
 using namespace std;
 
 Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh) {
@@ -61,7 +64,8 @@ void Mesh::DrawComponent()
 
     case Formats::F_V3T2:
         glEnable(GL_TEXTURE_2D);
-        if (mesh.texture.get() && !drawChecker) mesh.texture->bind();
+        if (mesh.texture.get()) mesh.texture->bind();
+        else glBindTexture(GL_TEXTURE_2D, app->engine->CheckersId());
         //else mesh.checkboard.get()->bind();
 
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -87,6 +91,7 @@ void Mesh::DrawComponent()
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindTexture(GL_TEXTURE_2D, 0);
 
     glDisableClientState(GL_VERTEX_ARRAY);
     glDisableClientState(GL_COLOR_ARRAY);

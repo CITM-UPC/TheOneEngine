@@ -37,11 +37,20 @@ public:
 	bool GetVSync();
 	bool SetVSync(bool vsync);
 
+	unsigned int CheckersId() const { return checkers_tex_; };
+
+private:
+	void CreateCheckersTexture();
+
+
 public:
 	
 	bool vsync = false;
 
 private:
+
+	unsigned int checkers_tex_;
+
 
 };
 

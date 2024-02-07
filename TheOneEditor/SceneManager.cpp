@@ -606,7 +606,7 @@ void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 {
     for (const auto gameObject : parentGO.get()->children)
     {
-        app->renderer3D->DrawGameObject(gameObject);
+        gameObject->Draw();
         RecurseDrawChildren(gameObject);
     }
 }

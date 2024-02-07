@@ -18,7 +18,7 @@ void EngineCore::Awake()
 
 void EngineCore::Start()
 {
-    
+    CreateCheckersTexture();
 }
 
 void EngineCore::Update(double dt)
@@ -57,6 +57,37 @@ void EngineCore::Render(Camera* camera)
     //DrawFrustum(camera->viewMatrix);
 
     assert(glGetError() == GL_NONE);
+}
+
+void EngineCore::CreateCheckersTexture() {
+    // Create the checkers data
+    const unsigned int k_tex_width = 32;
+    const unsigned int k_tex_height = 32;
+    GLubyte checkers_texture[k_tex_height][k_tex_width][4];
+
+    for (int i = 0; i < k_tex_height; i++) {
+        for (int j = 0; j < k_tex_width; j++) {
+            int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
+            checkers_texture[i][j][0] = (GLubyte)c;
+            checkers_texture[i][j][1] = (GLubyte)c;
+            checkers_texture[i][j][2] = (GLubyte)c;
+            checkers_texture[i][j][3] = (GLubyte)255;
+        }
+    }
+
+    // OpenGL Stuff
+    glGenTextures(1, &checkers_tex_);
+    glBindTexture(GL_TEXTURE_2D, checkers_tex_);
+
+    // Set parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+    // Send pixels to texture
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, k_tex_width, k_tex_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkers_texture);
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void EngineCore::DrawAxis()

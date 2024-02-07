@@ -41,8 +41,6 @@ bool Renderer3D::Start()
     camera_transform->setPosition(vec3f(0, 15, -70));
     camera_transform->updateMatrix();
 
-    CreateCheckersTexture();
-
     FillDefaultShaders(default_shader_);
     default_shader_.CompileShader();
 
@@ -68,22 +66,22 @@ bool Renderer3D::Update(double dt)
 
 bool Renderer3D::PostUpdate()
 {
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-    glClearDepth(1.0f);
+    //glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    //glClearDepth(1.0f);
 
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_COLOR_MATERIAL);
-    Camera* cam = sceneCamera->GetComponent<Camera>();
-    mat4f gl_viewmatrix = glm::transpose(cam->getViewMatrix());
-    mat4f gl_projmatrix = glm::transpose(cam->getProjMatrix());
+    //glEnable(GL_DEPTH_TEST);
+    //glEnable(GL_CULL_FACE);
+    //glEnable(GL_COLOR_MATERIAL);
+    //Camera* cam = sceneCamera->GetComponent<Camera>();
+    //mat4f gl_viewmatrix = glm::transpose(cam->getViewMatrix());
+    //mat4f gl_projmatrix = glm::transpose(cam->getProjMatrix());
 
-    // Send proj and view matrix to shader
-    glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_View"), 1, GL_FALSE, glm::value_ptr(gl_viewmatrix));
-    glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_Proj"), 1, GL_FALSE, glm::value_ptr(gl_projmatrix));
+    //// Send proj and view matrix to shader
+    //glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_View"), 1, GL_FALSE, glm::value_ptr(gl_viewmatrix));
+    //glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_Proj"), 1, GL_FALSE, glm::value_ptr(gl_projmatrix));
 
-    app->engine->DrawGrid(1000, 10);
-    app->engine->DrawAxis();
+    //app->engine->DrawGrid(1000, 10);
+    //app->engine->DrawAxis();
 
     app->sceneManager->RenderScene();
 
@@ -114,7 +112,7 @@ void Renderer3D::DrawGameObject(std::shared_ptr<GameObject> object) {
     mat4f model = glm::transpose(transform->getMatrix());
     glUniformMatrix4fv(glGetUniformLocation(default_shader_.id, "u_Model"), 1, GL_FALSE, glm::value_ptr(model));
 
-    unsigned int texture = checkers_tex_;
+    unsigned int texture = 0;
     if (mesh->mesh.texture) {
         texture = mesh->mesh.texture->Id();
     }
@@ -185,37 +183,7 @@ void Renderer3D::CreateRay()
 
 }
 
-void Renderer3D::CreateCheckersTexture()
-{
-    // Create the checkers data
-    const unsigned int k_tex_width = 32;
-    const unsigned int k_tex_height = 32;
-    GLubyte checkers_texture[k_tex_height][k_tex_width][4];
 
-	for (int i = 0; i < k_tex_height; i++) {
-		for (int j = 0; j < k_tex_width; j++) {
-			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
-			checkers_texture[i][j][0] = (GLubyte)c;
-			checkers_texture[i][j][1] = (GLubyte)c;
-			checkers_texture[i][j][2] = (GLubyte)c;
-			checkers_texture[i][j][3] = (GLubyte)255;
-		}
-	}
-
-    // OpenGL Stuff
-    glGenTextures(1, &checkers_tex_);
-    glBindTexture(GL_TEXTURE_2D, checkers_tex_);
-
-    // Set parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-    // Send pixels to texture
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, k_tex_width, k_tex_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, checkers_texture);
-    glBindTexture(GL_TEXTURE_2D, 0);
-}
 
 void Renderer3D::FillDefaultShaders(Shader& shader) const {
     // Simple Vertex Shader

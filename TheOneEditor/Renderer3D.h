@@ -35,7 +35,6 @@ public:
 
 private:
 
-    void CreateCheckersTexture();
     void FillDefaultShaders(Shader& shader) const;
 
 
@@ -47,7 +46,6 @@ public:
     std::shared_ptr<GameObject> sceneCamera;
 
 private:
-    unsigned int checkers_tex_;
     Shader default_shader_;
 };
 
