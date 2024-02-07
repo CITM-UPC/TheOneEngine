@@ -6,7 +6,7 @@ function GetTableDemoBullet()
     
     local owner_UID
     local start_time
-    local destroy_seconds = 15
+    local destroy_seconds = 5
     
     function lua_table:Awake()
         owner_UID = lua_table.GameObject:GetMyUID()

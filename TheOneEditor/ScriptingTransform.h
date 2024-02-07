@@ -19,7 +19,7 @@ public:
 
 	luabridge::LuaRef	GetRotation(unsigned int go_UUID, lua_State* lua_state) const;
 	luabridge::LuaRef	GetGlobalRotation(unsigned int go_UUID, lua_State* lua_state) const;
-	void				SetRotation(unsigned int go_UUID, float x, float y, float z);
+	void				SetRotation(unsigned int go_UUID, float w, float x, float y, float z);
 	void				Rotate(unsigned int go_UUID, float x, float y, float z);
 	void				RotateOnAxis(unsigned int go_UUID, float axis_x, float axis_y, float axis_z, float angle);
 };

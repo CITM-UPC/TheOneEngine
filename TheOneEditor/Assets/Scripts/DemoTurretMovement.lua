@@ -38,8 +38,9 @@ function Shoot()
 
     -- We instance the bullet and set its position and rotation
     local new_bullet_UID = lua_table.GameObject:InstantiateGameObject(bullet_UID)
-    lua_table.Transform:SetPosition(new_bullet_UID, my_position[1], my_position[2], my_position[3])
-    lua_table.Transform:SetRotation(new_bullet_UID, my_rotation[1], my_rotation[2], my_rotation[3])
+    lua_table.Transform:SetPosition(new_bullet_UID, my_position["x"], my_position["y"], my_position["z"])
+    lua_table.Transform:Translate(new_bullet_UID, 0, 0, 1) -- Move to the tip
+    lua_table.Transform:SetRotation(new_bullet_UID, my_rotation["w"], my_rotation["x"], my_rotation["y"], my_rotation["z"])
 end
 
 return lua_table
