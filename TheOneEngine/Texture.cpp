@@ -22,12 +22,13 @@ Texture::Texture(const std::string& path, std::shared_ptr<GameObject> containerG
     this->height = static_cast<uint>(height);
     auto channels = ilGetInteger(IL_IMAGE_CHANNELS);
     auto format = ilGetInteger(IL_IMAGE_FORMAT);
+    auto type = ilGetInteger(IL_IMAGE_TYPE);
     auto data = ilGetData();
 
     //load image as a texture in VRAM
     glGenTextures(1, &_id);
     glBindTexture(GL_TEXTURE_2D, _id);
-    glTexImage2D(GL_TEXTURE_2D, 0, channels, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, channels, width, height, 0, format, type, data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
