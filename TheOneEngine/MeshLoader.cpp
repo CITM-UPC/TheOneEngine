@@ -264,7 +264,7 @@ std::vector<std::shared_ptr<Texture>> MeshLoader::LoadTexture(const std::string&
                 texture_ptrs.push_back(std::make_shared<Texture>(texPath.string()));
             }
             else {
-                LOG(LogType::LOG_ERROR, "Texture File does not exist: %s", texPath.string());
+                LOG(LogType::LOG_ERROR, "Texture File does not exist: %s", texPath.string().c_str());
                 texture_ptrs.push_back(nullptr);
             }
         }
