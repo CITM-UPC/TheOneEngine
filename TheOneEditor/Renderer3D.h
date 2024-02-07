@@ -5,6 +5,7 @@
 #include "Module.h"
 
 #include <memory>
+#include "Shader.h"
 
 
 class EngineCore;
@@ -33,6 +34,7 @@ public:
 private:
 
     void CreateCheckersTexture();
+    void FillDefaultShaders(Shader& shader) const;
 
 
 public:
@@ -44,6 +46,7 @@ public:
 
 private:
     unsigned int checkers_tex_;
+    Shader default_shader_;
 };
 
 #endif // !__RENDERER_3D_H__
