@@ -55,8 +55,12 @@ void EngineCore::Render(Camera* camera)
     DrawAxis();
 
     //DrawFrustum(camera->viewMatrix);
+    GLenum err;
+    if ((err = glGetError()) != GL_NO_ERROR) {
+        LOG(LogType::LOG_ERROR, "OpenGL Error: %s", glewGetErrorString(err));
+    }
 
-    assert(glGetError() == GL_NONE);
+    assert(err == GL_NO_ERROR);
 }
 
 void EngineCore::CreateCheckersTexture() {
