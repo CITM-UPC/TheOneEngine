@@ -119,7 +119,7 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 
 // CONFIGURATION -----------------------------------------------------------------
 #define TITLE "EngineOfPower"
-#define VERSION "v0.1"
+#define VERSION "v0.1.1"
 #define ORGANIZATION "[CITM - UPC]"
 
 // Folder paths
