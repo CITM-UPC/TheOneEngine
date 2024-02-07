@@ -11,6 +11,7 @@
 #include <cassert>
 
 #include "../TheOneEditor/App.h"
+#include "glm/gtc/type_ptr.hpp"
 #include "EngineCore.h"
 using namespace std;
 
@@ -37,7 +38,7 @@ void Mesh::DrawComponent()
     if (auto gameObject = GetContainerGO())
     {
         glPushMatrix();
-        glMultMatrixd(&gameObject.get()->GetComponent<Transform>()->getMatrix()[0].x);
+        glMultMatrixd(glm::value_ptr(gameObject.get()->GetComponent<Transform>()->getMatrix()));
     }
     
     glColor4ub(255, 255, 255, 255);

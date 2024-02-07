@@ -102,14 +102,18 @@ mat4 Transform::getMatrixLocal() const {
     return localMatrix;
 }
 
-void Transform::updateMatrix(const mat4& parent_global)
+void Transform::updateMatrix(Transform* parent_transform)
 {
+    mat4 parent_global = mat4(1.0f);
+    if (parent_transform)
+        parent_global = parent_transform->getMatrix();
+        
     localMatrix = mat4(1.0f);
     localMatrix = glm::translate(localMatrix, position);
     localMatrix *= glm::mat4_cast(localRotation);
     localMatrix = glm::scale(localMatrix, localScale);
     globalMatrix = parent_global * localMatrix;
-    updateGlobalTRS();
+    updateGlobalTRS(parent_transform);
     dirty_ = false;
 }
 
@@ -179,22 +183,30 @@ void Transform::setRotation(const vec3& axis, double angle, bool local) {
 
 void Transform::setRotation(const glm::quat& rotation_quat, bool local) {
     if (local)
-        localRotation *= rotation_quat;
+        localRotation = rotation_quat;
     else
-        rotation *= rotation_quat;
+        rotation = rotation_quat;
 
     dirty_ = true;
 }
 
-void Transform::updateGlobalTRS() {
-    vec3 skew;
-    vec4 perspective;
-    glm::decompose(globalMatrix, scale, rotation, globalPosition, skew, perspective);
+void Transform::updateGlobalTRS(Transform* parent_transform) {
+    vec3 parent_position = parent_transform ? parent_transform->getGlobalPosition() : vec3(0.f);
+    quat parent_rotation = parent_transform ? parent_transform->getRotation() : quat(1, 0, 0, 0);
+    vec3 parent_scale = parent_transform ? parent_transform->getScaleGlobal() : vec3(1.f);
+
+    globalPosition = parent_position + position;
+    rotation = parent_rotation * localRotation;
+    scale = parent_scale * localScale;
 }
 
 vec3 Transform::getScale() const
 {
     return localScale;
+}
+
+vec3 Transform::getScaleGlobal() const {
+    return scale;
 }
 
 void Transform::setScale(const vec3& newScale)
