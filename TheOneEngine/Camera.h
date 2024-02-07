@@ -11,39 +11,56 @@
 
 #include <memory>
 
-struct Frustum
+
+struct Plane
 {
-    glm::vec3 nearTopLeft;
-    glm::vec3 nearTopRight;
-    glm::vec3 nearBottomLeft;
-    glm::vec3 nearBottomRight;
+    //plane eq -> ax + by + cz + d = 0
+    glm::vec3 normal;
+    double distance;
+};
 
-    glm::vec3 farTopLeft;
-    glm::vec3 farTopRight;
-    glm::vec3 farBottomLeft;
-    glm::vec3 farBottomRight;
+struct Frustum : public Plane
+{
+    Plane nearPlane;  //do NOT change name to near
+    Plane farPlane;   //do NOT change name to far
+    Plane left;
+    Plane right;
+    Plane top;
+    Plane bot;
 
-    void update(const glm::mat4& viewProjectionMatrix)
+    static Plane ComputePlane(glm::vec3 a, glm::vec3 b, glm::vec3 c)
     {
-        // Extract frustum planes from the combined view-projection matrix
-        nearTopLeft = extractPlane(viewProjectionMatrix, 3, 0, 2);
-        nearTopRight = extractPlane(viewProjectionMatrix, 3, 1, 2);
-        nearBottomLeft = extractPlane(viewProjectionMatrix, 3, 0, 3);
-        nearBottomRight = extractPlane(viewProjectionMatrix, 3, 1, 3);
-
-        farTopLeft = extractPlane(viewProjectionMatrix, 2, 0, 2);
-        farTopRight = extractPlane(viewProjectionMatrix, 2, 1, 2);
-        farBottomLeft = extractPlane(viewProjectionMatrix, 2, 0, 3);
-        farBottomRight = extractPlane(viewProjectionMatrix, 2, 1, 3);
+        Plane plane;
+        plane.normal = glm::normalize(glm::cross(b - a, c - a));
+        plane.distance = glm::dot(plane.normal, a);
+        return plane;
     }
 
-    glm::vec3 extractPlane(const glm::mat4& mat, int row, int col1, int col2)
+    static Plane FromNumbers(glm::vec4 numbers)
     {
-        glm::vec3 normal;
-        normal.x = mat[col1][0] - mat[row][0];
-        normal.y = mat[col1][1] - mat[row][1];
-        normal.z = mat[col1][2] - mat[row][2];
-        return glm::normalize(normal);
+        Plane plane;
+        plane.normal.x = numbers.x;
+        plane.normal.y = numbers.y;
+        plane.normal.z = numbers.z;
+        plane.distance = numbers.w;
+        return plane;
+    }
+
+    void Update(const glm::mat4& vpm)
+    {
+        // Extract frustum planes from the combined view-projection matrix
+
+        glm::vec4 row1 = glm::vec4(vpm[0][0], vpm[1][0], vpm[2][0], vpm[3][0]);
+        glm::vec4 row2 = glm::vec4(vpm[0][1], vpm[1][1], vpm[2][1], vpm[3][1]);
+        glm::vec4 row3 = glm::vec4(vpm[0][2], vpm[1][2], vpm[2][2], vpm[3][2]);
+        glm::vec4 row4 = glm::vec4(vpm[0][3], vpm[1][3], vpm[2][3], vpm[3][3]);
+       
+        left = FromNumbers(row4 + row1);
+        right = FromNumbers(row4 - row1);       
+        bot = FromNumbers(row4 + row2);
+        top = FromNumbers(row4 - row2);
+        nearPlane = FromNumbers(row4 + row3);
+        farPlane = FromNumbers(row4 - row3);
     }
 };
 
@@ -60,13 +77,14 @@ public:
     void rotate(const vec3f& eulerRotation, bool local = true);
 
     const mat4f& getViewMatrix();
-    void updateViewMatrix();
 
-    void updateCameraVectors();
-
-    void UpdateFrustum();
+    //update
+    void UpdateCamera();
+    void UpdateCameraVectors();
+    void UpdateViewMatrix();
     void UpdateProjectionMatrix();
     void UpdateViewProjectionMatrix();
+    void UpdateFrustum();
 
 public:
 

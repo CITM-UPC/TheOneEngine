@@ -209,5 +209,5 @@ void Renderer3D::CameraInput(double dt)
         camera->setPosition(targetPos * 100.0f);
     }
 
-    camera->updateCameraVectors();
+    camera->UpdateCamera();
 }

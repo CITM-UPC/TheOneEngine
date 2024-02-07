@@ -5,8 +5,8 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     aspect(1.777), fov(65), zNear(0.1), zFar(15000),
     yaw(0), pitch(0),
     viewMatrix(1.0f),
-    forward(), right(), up(),
-    eye(), center(),
+    forward(0, 0, 0), right(0, 0, 0), up(0, 0, 0),
+    eye(0, 0, 0), center(0, 0, 0),
     drawFrustum(true)
 {
     Transform* transform = containerGO.get()->GetComponent<Transform>();
@@ -18,9 +18,6 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
         up = transform->getUp();
         eye = transform->getPosition();
         center = eye - forward; //hekbas maybe +
-
-        updateCameraVectors();
-        updateViewMatrix();
     }
     else
     {
@@ -42,7 +39,7 @@ void Camera::translate(const vec3f& translation, bool local)
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
 
-    updateViewMatrix();
+    UpdateCamera();
 }
 
 void Camera::setPosition(const vec3f& newPosition)
@@ -56,7 +53,7 @@ void Camera::setPosition(const vec3f& newPosition)
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
 
-    updateViewMatrix();
+    UpdateCamera();
 }
 
 void Camera::rotate(const vec3f& axis, float angle, bool local)
@@ -70,7 +67,7 @@ void Camera::rotate(const vec3f& axis, float angle, bool local)
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
 
-    updateViewMatrix();
+    UpdateCamera();
 }
 
 void Camera::rotate(const vec3f& eulerRotation, bool local)
@@ -84,7 +81,7 @@ void Camera::rotate(const vec3f& eulerRotation, bool local)
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }
 
-    updateViewMatrix();
+    UpdateCamera();
 }
 
 const mat4f& Camera::getViewMatrix()
@@ -92,23 +89,19 @@ const mat4f& Camera::getViewMatrix()
     return viewMatrix;
 }
 
-void Camera::updateViewMatrix()
-{
-    if (auto sharedGO = this->containerGO.lock())
-    {
-        viewMatrix = glm::inverse(sharedGO.get()->GetComponent<Transform>()->getMatrix());
-    }
-    else
-    {
-        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
-    }
 
+// update camera
+
+void Camera::UpdateCamera()
+{
+    UpdateCameraVectors();
+    UpdateViewMatrix();
     UpdateProjectionMatrix();
     UpdateViewProjectionMatrix();
     UpdateFrustum();
 }
 
-void Camera::updateCameraVectors()
+void Camera::UpdateCameraVectors()
 {
     if (auto sharedGO = this->containerGO.lock())
     {
@@ -127,9 +120,17 @@ void Camera::updateCameraVectors()
     }
 }
 
-void Camera::UpdateFrustum()
+void Camera::UpdateViewMatrix()
 {
-    frustum.update(viewProjectionMatrix);
+    if (auto sharedGO = this->containerGO.lock())
+    {
+        Camera* camera = sharedGO.get()->GetComponent<Camera>();
+        viewMatrix = glm::lookAt(camera->eye, camera->center, camera->up);
+    }
+    else
+    {
+        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+    }
 }
 
 void Camera::UpdateProjectionMatrix()
@@ -140,4 +141,9 @@ void Camera::UpdateProjectionMatrix()
 void Camera::UpdateViewProjectionMatrix()
 {
     viewProjectionMatrix = projectionMatrix * (mat4)viewMatrix;
+}
+
+void Camera::UpdateFrustum()
+{
+    frustum.Update(viewProjectionMatrix);
 }

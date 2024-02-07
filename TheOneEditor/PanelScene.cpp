@@ -102,7 +102,7 @@ bool PanelScene::Draw()
             Camera* gameCam = GO.get()->GetComponent<Camera>();
 
             if (gameCam != nullptr && gameCam->drawFrustum)
-                app->engine->DrawFrustum(gameCam->viewProjectionMatrix);
+                app->engine->DrawFrustum(gameCam->frustum);
         }
 	}
 

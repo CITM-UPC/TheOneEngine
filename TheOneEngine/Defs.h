@@ -16,6 +16,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include "glm/gtc/type_ptr.hpp"
 
 // NULL just in case ----------------------
 #ifdef NULL

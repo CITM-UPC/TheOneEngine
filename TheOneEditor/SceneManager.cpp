@@ -95,6 +95,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCameraGO(std::string name)
     std::shared_ptr<GameObject> cameraGO = std::make_shared<GameObject>(name);
     cameraGO.get()->AddComponent<Transform>();
     cameraGO.get()->AddComponent<Camera>();
+    cameraGO.get()->GetComponent<Camera>()->UpdateCamera();
 
     cameraGO.get()->parent = rootSceneGO.get()->weak_from_this();
 
