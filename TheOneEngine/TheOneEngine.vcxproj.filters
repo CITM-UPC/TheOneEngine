@@ -60,6 +60,12 @@
     <ClInclude Include="Cube.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Listener.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -91,6 +97,12 @@
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
