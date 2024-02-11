@@ -1,4 +1,5 @@
 #include "Transform.h"
+#include "GameObject.h"
 
 Transform::Transform(std::shared_ptr<GameObject> containerGO)
     : Component(containerGO, ComponentType::Transform),
@@ -154,4 +155,83 @@ quat Transform::EulerAnglesToQuaternion(const vec3& eulerAngles)
     quaternion *= glm::angleAxis(eulerAngles.y, vec3(0, 1, 0));    // Rotate around the Y-axis (pitch)
     quaternion *= glm::angleAxis(eulerAngles.x, vec3(1, 0, 0));    // Rotate around the X-axis (roll)
     return quaternion;
+}
+
+json Transform::SaveComponent()
+{
+    json transformJSON;
+
+    transformJSON["Name"] = name;
+    transformJSON["Type"] = type;
+    if (auto pGO = containerGO.lock())
+    {
+        transformJSON["ParentUID"] = pGO.get()->GetUID();
+    }
+    transformJSON["UID"] = UID;
+    transformJSON["Position"] = { position.x, position.y, position.z };
+    transformJSON["Rotation"] = { rotation.w, rotation.x, rotation.y, rotation.z };
+    transformJSON["LocalRotation"] = { localRotation.w, localRotation.x, localRotation.y, localRotation.z };
+    transformJSON["Scale"] = { scale.x, scale.y, scale.z };
+    transformJSON["LocalScale"] = { localScale.x, localScale.y, localScale.z };
+
+    return transformJSON;
+}
+
+void Transform::LoadComponent(const json& transformJSON)
+{
+    // Load basic properties
+    if (transformJSON.contains("UID"))
+    {
+        UID = transformJSON["UID"];
+    }
+
+    if (transformJSON.contains("Name"))
+    {
+        name = transformJSON["Name"];
+    }
+
+    // Load parent UID and set parent
+    /*if (transformJSON.contains("ParentUID"))
+    {
+        uint32_t parentUID = transformJSON["ParentUID"];
+
+        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
+        {
+            containerGO = parentGameObject;
+        }
+    }*/
+
+    // Load transformation properties
+    if (transformJSON.contains("Position"))
+    {
+        const auto& positionArray = transformJSON["Position"];
+        position = { positionArray[0], positionArray[1], positionArray[2] };
+    }
+
+    if (transformJSON.contains("Rotation"))
+    {
+        const auto& rotationArray = transformJSON["Rotation"];
+        rotation = quat(rotationArray[1], rotationArray[2], rotationArray[3], rotationArray[0]);
+    }
+
+    if (transformJSON.contains("LocalRotation"))
+    {
+        const auto& localRotationArray = transformJSON["LocalRotation"];
+        localRotation = quat(localRotationArray[1], localRotationArray[2], localRotationArray[3], localRotationArray[0]);
+    }
+
+    if (transformJSON.contains("Scale"))
+    {
+        const auto& scaleArray = transformJSON["Scale"];
+        scale = { scaleArray[0], scaleArray[1], scaleArray[2] };
+    }
+
+    if (transformJSON.contains("LocalScale"))
+    {
+        const auto& localScaleArray = transformJSON["LocalScale"];
+        localScale = { localScaleArray[0], localScaleArray[1], localScaleArray[2] };
+    }
+
+    // Update the transformation matrix
+    updateMatrix();
 }

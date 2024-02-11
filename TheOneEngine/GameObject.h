@@ -76,8 +76,8 @@ public:
     void CreateUID();
     uint32 GetUID() { return UID; }
 
-    void SaveGameObject(const std::shared_ptr<GameObject>& gameObject, json& parentJson);
-    std::shared_ptr<GameObject> LoadGameObject();
+    json SaveGameObject();
+    void LoadGameObject(const json& gameObjectJSON);
 
 public:
     std::weak_ptr<GameObject> parent;

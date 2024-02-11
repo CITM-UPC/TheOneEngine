@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="AudioEngine">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="AudioEngine\Core">
+      <UniqueIdentifier>{cae8f942-1cca-458b-ba94-1f62e9b80eec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AudioEngine\Utils">
+      <UniqueIdentifier>{f5fde439-f4db-4add-9abc-fad9047ee7d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AudioEngine\Wwise">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkFileLocationBase.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkFilePackage.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkFilePackageLUT.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkGeneratedSoundBanksResolver.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkJobWorkerMgr.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkMultipleFileLocation.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Common\AkPlatformProfilerHookStubs.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Win32\AkDefaultIOHookDeferred.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Win32\AkPlatformProfilerHooks.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Wwise\SDK\include\Win32\stdafx.cpp">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioCore.cpp">
+      <Filter>AudioEngine\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkDefaultLowLevelIODispatcher.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFileHelpersBase.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFileLocationBase.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackage.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIO.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIODeferred.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkFilePackageLUT.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkGeneratedSoundBanksResolver.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkJobWorkerMgr.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkMultipleFileLocation.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Common\AkPlatformProfilerHooks.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Win32\AkDefaultIOHookDeferred.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Win32\AkFileHelpers.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Wwise\SDK\include\Win32\stdafx.h">
+      <Filter>AudioEngine\Wwise</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioCore.h">
+      <Filter>AudioEngine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioUtility.h">
+      <Filter>AudioEngine\Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Wwise\SDK\include\Common\AkFilePackageLowLevelIO.inl">
+      <Filter>AudioEngine\Wwise</Filter>
+    </None>
+  </ItemGroup>
+</Project>

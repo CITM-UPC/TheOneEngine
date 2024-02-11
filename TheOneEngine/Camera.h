@@ -86,6 +86,9 @@ public:
     void UpdateViewProjectionMatrix();
     void UpdateFrustum();
 
+    json SaveComponent();
+    void LoadComponent(const json& meshJSON);
+
 public:
 
     double fov;

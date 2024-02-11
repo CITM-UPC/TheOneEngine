@@ -3,6 +3,7 @@
 #include "App.h"
 #include "Log.h"
 
+#include "Time.h"
 #include "Gui.h"
 #include "Window.h"
 #include "Hardware.h"
@@ -260,6 +261,19 @@ bool Gui::Update(double dt)
             ImGui::EndMenu();
         }
         
+
+        // Play/Pause/Stop
+        ImGui::Dummy(ImVec2(250.0f, 0.0f));
+        if (ImGui::Button("Play")) {
+            app->Play();
+        }
+        if (ImGui::Button("Pause")) {
+            app->Pause();
+        }
+        if (ImGui::Button("Stop")) {
+            app->Stop();
+        }
+
         ImGui::EndMainMenuBar();
     }
 
@@ -322,7 +336,7 @@ void Gui::HandleInput(SDL_Event* event)
 void Gui::OpenURL(const char* url) const
 {
     // hekbas need shellapi
-    ShellExecute(0, 0, url, 0, 0, SW_SHOW);
+    ShellExecuteA(0, 0, url, 0, 0, SW_SHOW);
 }
 
 void Gui::PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags plotFlags, ImPlotAxisFlags axisFlags)
@@ -405,7 +419,11 @@ bool Gui::MainMenuFile()
     bool ret = true;
 
     if (ImGui::MenuItem("New", 0, false, false)) {}
-    if (ImGui::MenuItem("Open", "Ctrl+O", false, false)) {}
+    if (ImGui::MenuItem("Open", "Ctrl+O", false)) 
+    {
+        std::string filename = "Assets/Scenes/scene.toe";
+        app->sceneManager->LoadScene(filename);
+    }
     if (ImGui::BeginMenu("Open Recent"))
     {
         ImGui::EndMenu();
@@ -413,7 +431,10 @@ bool Gui::MainMenuFile()
 
     ImGui::Separator();
 
-    if (ImGui::MenuItem("Save", "Ctrl+S", false, false)) {}
+    if (ImGui::MenuItem("Save", "Ctrl+S", false)) 
+    {
+        app->sceneManager->SaveScene();
+    }
     if (ImGui::MenuItem("Save As..", 0, false, false)) {}
 
     ImGui::Separator();

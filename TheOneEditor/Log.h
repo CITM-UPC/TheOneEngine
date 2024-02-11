@@ -9,6 +9,7 @@ enum class LogType
 {
 	LOG_INFO,
 	LOG_ASSIMP,
+	LOG_AUDIO,
 
 	LOG_OK,
 	LOG_WARNING,

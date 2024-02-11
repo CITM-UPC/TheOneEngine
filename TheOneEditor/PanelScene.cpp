@@ -14,9 +14,6 @@ PanelScene::~PanelScene() {}
 
 bool PanelScene::Draw()
 {
-    // Flag to track whether Button 2 was clicked
-    static bool showCameraSettings = false;
-
 	ImGuiWindowFlags settingsFlags = 0;
     settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 

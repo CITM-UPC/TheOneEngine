@@ -1,0 +1,332 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{75DF6EA2-6197-B0EF-CA9E-894BB6754BE0}</ProjectGuid>
+    <IgnoreWarnCompileDuplicatedFilename>true</IgnoreWarnCompileDuplicatedFilename>
+    <Keyword>MFCDLLProj</Keyword>
+    <RootNamespace>Subversion</RootNamespace>
+    <ProjectName>Subversion</ProjectName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <VcpkgEnabled Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</VcpkgEnabled>
+    <VcpkgEnabled Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</VcpkgEnabled>
+    <WindowsTargetPlatformVersion>10.0.20348.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <OutDir>..\..\..\..\Authoring\x64\$(Configuration)\bin\SourceControl\</OutDir>
+    <IntDir>..\..\..\..\Authoring\Build\160DbgObj\Subversion\</IntDir>
+    <TargetName>Subversion</TargetName>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <OutDir>..\..\..\..\Authoring\x64\$(Configuration)\bin\SourceControl\</OutDir>
+    <IntDir>..\..\..\..\Authoring\Build\160RelObj\Subversion\</IntDir>
+    <TargetName>Subversion</TargetName>
+    <TargetExt>.dll</TargetExt>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>WIN64;DEBUG;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Subversion\include;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr-util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN64;DEBUG;_DEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Subversion\include;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr-util;..\..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <AdditionalDependencies>..\..\..\..\Authoring\source\3rdParty\Subversion\$(Platform)\$(Configuration)\lib\libapr_tsvn.lib;..\..\..\..\Authoring\source\3rdParty\Subversion\$(Platform)\$(Configuration)\lib\libsvn_tsvn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\..\..\..\Authoring\Build\160DbgLib\Subversion.lib</ImportLibrary>
+      <ModuleDefinitionFile>Subversion.def</ModuleDefinitionFile>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>WIN64;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Subversion\include;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr-util;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <MinimalRebuild>false</MinimalRebuild>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN64;NDEBUG;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\include;.;..\Common;..\..\..\..\Authoring\source\3rdParty\Subversion\include;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr;..\..\..\..\Authoring\source\3rdParty\Subversion\include\apr-util;..\..\Common;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>..\..\..\..\Authoring\source\3rdParty\Subversion\$(Platform)\$(Configuration)\lib\libapr_tsvn.lib;..\..\..\..\Authoring\source\3rdParty\Subversion\$(Platform)\$(Configuration)\lib\libsvn_tsvn.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>..\..\..\..\Authoring\Build\160RelLib\Subversion.lib</ImportLibrary>
+      <ModuleDefinitionFile>Subversion.def</ModuleDefinitionFile>
+      <TargetMachine>MachineX64</TargetMachine>
+      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Common\OperationResults.h" />
+    <ClInclude Include="..\Common\SourceControlHelpers.h" />
+    <ClInclude Include="DlgCommitMessage.h" />
+    <ClInclude Include="DlgConfiguration.h" />
+    <ClInclude Include="DlgLockMessage.h" />
+    <ClInclude Include="DlgOnCreateModify.h" />
+    <ClInclude Include="DlgRename.h" />
+    <ClInclude Include="Subversion.h" />
+    <ClInclude Include="SubversionPool.h" />
+    <ClInclude Include="SubversionSourceControl.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Common\OperationResults.cpp" />
+    <ClCompile Include="..\Common\SourceControlHelpers.cpp" />
+    <ClCompile Include="DlgCommitMessage.cpp" />
+    <ClCompile Include="DlgConfiguration.cpp" />
+    <ClCompile Include="DlgLockMessage.cpp" />
+    <ClCompile Include="DlgOnCreateModify.cpp" />
+    <ClCompile Include="DlgRename.cpp" />
+    <ClCompile Include="DllInterface.cpp" />
+    <ClCompile Include="Subversion.cpp" />
+    <ClCompile Include="SubversionPool.cpp" />
+    <ClCompile Include="SubversionSourceControl.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Subversion.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Subversion.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\intl3_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libapr_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libapr_tsvn.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libaprutil_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libaprutil_tsvn.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libsasl.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libsasl.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libsvn_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\debug\bin\libsvn_tsvn.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\intl3_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libapr_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libapr_tsvn.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libaprutil_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libaprutil_tsvn.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libsasl.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libsasl.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libsvn_tsvn.dll">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).dll" del /F /Q "$(OutDir)..\%(Filename).dll"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).dll"
+copy /y /b "$(OutDir)..\%(Filename).dll" +,, "$(OutDir)..\%(Filename).dll"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\..\Authoring\source\3rdParty\Subversion\X64\release\bin\libsvn_tsvn.pdb">
+      <FileType>Document</FileType>
+      <Command>if not exist "$(OutDir)" mkdir "$(OutDir)"
+if exist "$(OutDir)..\%(Filename).pdb" del /F /Q "$(OutDir)..\%(Filename).pdb"
+copy /y "%(FullPath)" "$(OutDir)..\%(Filename).pdb"
+copy /y /b "$(OutDir)..\%(Filename).pdb" +,, "$(OutDir)..\%(Filename).pdb"</Command>
+      <Outputs>$(OutDir)..\%(Filename)%(Extension)</Outputs>
+      <Message>Copying "%(Filename)%(Extension)" to output parent...</Message>
+    </CustomBuild>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

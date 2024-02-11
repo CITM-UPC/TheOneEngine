@@ -45,6 +45,12 @@ public:
     std::shared_ptr<GameObject> CreateCube();
     std::shared_ptr<GameObject> CreateSphere();
     std::shared_ptr<GameObject> CreateMF();
+    std::shared_ptr<GameObject> CreateTeapot(std::string path);
+
+    //static
+    GameObject* spatialObject1 = nullptr;
+    //movable
+    GameObject* spatialObject2 = nullptr;
 
     // Get/Set
     uint GetNumberGO() const;
@@ -55,11 +61,23 @@ public:
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
 
+    std::shared_ptr<GameObject> FindGOByUID(uint32_t _UID) const;
+
+    static SceneManager& GetInstance() {
+        static SceneManager instance; // Static instance of the class
+        return instance;
+    }
+
     /*SCENE SERIALIZATION*/
     void SaveScene();
     void LoadScene(const std::string& filename);
 
+    //MeshLoader GetMeshLoader();
+
 private:
+    // Private constructor to enforce singleton pattern
+    SceneManager() {}
+
     void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
@@ -67,6 +85,11 @@ private:
     std::shared_ptr<GameObject> rootSceneGO;
     std::shared_ptr<GameObject> selectedGameObject;
     MeshLoader* meshLoader;
+
+    std::shared_ptr<GameObject> demo;
+    double rotationAngle;
+    double rotationSpeed;
+
 };
 
 #endif // !__SCENE_MANAGER_H__

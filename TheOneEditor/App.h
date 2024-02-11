@@ -3,9 +3,8 @@
 #pragma once
 
 #include "Log.h"
-
+#include "Timer.h"
 #include "..\TheOneEngine\EngineCore.h"
-
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -24,6 +23,12 @@ class SceneManager;
 class Gui;
 class Renderer3D;
 
+enum class GameState {
+	NONE,
+	PLAY,
+	PAUSE,
+	PLAY_ONCE
+};
 
 class App
 {
@@ -52,7 +57,15 @@ public:
 	void SetFrameRate(int refreshRate);
 
 	double GetDT() const;
+	void SetDT(double dt);
 
+	GameState state;
+	void Play();
+	void Pause();
+	void PlayOnce();
+	bool IsPlaying();
+	bool IsInGameState();
+	void Stop();
 
 private:
 	
@@ -63,7 +76,12 @@ private:
 	bool PostUpdate();
 	void FinishUpdate();
 
+	Timer* game_timer;
+	Timer* start_timer;
 
+	float time_since_start;
+	float game_time;
+	float scale_time;
 public:
 
 	EngineCore* engine = nullptr;

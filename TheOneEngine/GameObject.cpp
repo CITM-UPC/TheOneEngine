@@ -4,6 +4,7 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "UIDGen.h"
+#include "../TheOneEditor/SceneManager.h"
 
 #include "Math.h"
 
@@ -132,9 +133,108 @@ void GameObject::CreateUID()
 	UID = UIDGen::GenerateUID();
 }
 
-void GameObject::SaveGameObject(const std::shared_ptr<GameObject>& gameObject, json& parentJson)
+json GameObject::SaveGameObject()
 {
+	json gameObjectJSON;
 
+	if (auto pGO = parent.lock())
+	{
+		gameObjectJSON["ParentUID"] = pGO.get()->UID;
+	}
 
+	gameObjectJSON["UID"] = UID;
+	gameObjectJSON["Name"] = name;
+	gameObjectJSON["Static"] = isStatic;
+	gameObjectJSON["Enabled"] = enabled;
 
+	if (!components.empty())
+	{
+		json componentsJSON;
+
+		for (const auto& component : components)
+		{
+			componentsJSON.push_back(component.get()->SaveComponent());
+		}
+		gameObjectJSON["Components"] = componentsJSON;
+	}
+
+	if (!children.empty())
+	{
+		json childrenGOJSON;
+
+		for (const auto& go : children)
+		{
+			childrenGOJSON.push_back(go.get()->SaveGameObject());
+		}
+		gameObjectJSON["GameObjects"] = childrenGOJSON;
+	}
+
+	return gameObjectJSON;
+}
+
+void GameObject::LoadGameObject(const json& gameObjectJSON)
+{
+	// Load basic properties
+	if (gameObjectJSON.contains("UID"))
+	{
+		UID = gameObjectJSON["UID"];
+	}
+
+	if (gameObjectJSON.contains("Name"))
+	{
+		name = gameObjectJSON["Name"];
+	}
+
+	if (gameObjectJSON.contains("Static"))
+	{
+		isStatic = gameObjectJSON["Static"];
+	}
+
+	if (gameObjectJSON.contains("Enabled"))
+	{
+		enabled = gameObjectJSON["Enabled"];
+	}
+
+	// Load components
+	if (gameObjectJSON.contains("Components"))
+	{
+		const json& componentsJSON = gameObjectJSON["Components"];
+
+		for (const auto& componentJSON : componentsJSON)
+		{
+
+			// Assuming each component has a LoadComponent function
+			if (componentJSON["Type"] == 0)
+			{
+				this->AddComponent<Transform>();
+				this->GetComponent<Transform>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == 1)
+			{
+				this->AddComponent<Camera>();
+				this->GetComponent<Camera>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == 2)
+			{
+				this->AddComponent<Mesh>();
+				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
+			}
+		}
+	}
+
+	// Load child game objects
+	if (gameObjectJSON.contains("GameObjects"))
+	{
+		const json& childrenGOJSON = gameObjectJSON["GameObjects"];
+
+		for (const auto& childJSON : childrenGOJSON)
+		{
+			auto childGameObject = std::make_shared<GameObject>("Empty GO");
+			childGameObject->LoadGameObject(childJSON);
+
+			// Add the loaded child game object to the current game object
+			childGameObject.get()->parent = this->weak_from_this().lock();
+			this->children.emplace_back(childGameObject);
+		}
+	}
 }

@@ -46,6 +46,30 @@ Texture::~Texture() {
     if (_id) glDeleteTextures(1, &_id);
 }
 
+json Texture::SaveComponent()
+{
+    json textureJSON;
+
+    /*textureJSON["Name"] = name;
+    textureJSON["Type"] = type;
+    if (auto pGO = containerGO.lock())
+    {
+        textureJSON["ParentUID"] = pGO.get()->GetUID();
+    }
+    textureJSON["UID"] = UID;
+    textureJSON["Active"] = active;
+    textureJSON["Path"] = path;
+    textureJSON["Width"] = width;
+    textureJSON["Height"] = height;*/
+
+    return textureJSON;
+}
+
+void Texture::LoadComponent(const json& meshJSON)
+{
+
+}
+
 void Texture::bind() const {
     glBindTexture(GL_TEXTURE_2D, _id);
 }

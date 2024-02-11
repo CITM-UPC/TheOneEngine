@@ -26,6 +26,8 @@ public:
 
 	//void SetTexture(Ptr texture);
 
+	json SaveComponent();
+	void LoadComponent(const json& meshJSON);
 
 private:
 	/*Texture(const Texture&);

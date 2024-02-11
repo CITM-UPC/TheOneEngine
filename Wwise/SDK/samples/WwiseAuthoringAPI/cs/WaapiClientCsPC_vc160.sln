@@ -1,0 +1,48 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{C11D5431-2DDE-CF67-F618-19E562981444}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaapiClientCore", "WaapiClientCore\WaapiClientCore.csproj", "{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaapiClientJson", "WaapiClientJson\WaapiClientJson.csproj", "{102D363C-7CB8-A300-85C9-26F5F1D3FF00}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00} = {BF45323C-2BD1-9F00-34E2-22F5A0ECFB00}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WaapiClientSample", "WaapiClientSample\WaapiClientSample.csproj", "{B8632D36-247A-2BCC-6DF1-B6EDD946FC53}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00} = {BF45323C-2BD1-9F00-34E2-22F5A0ECFB00}
+		{102D363C-7CB8-A300-85C9-26F5F1D3FF00} = {102D363C-7CB8-A300-85C9-26F5F1D3FF00}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00}.Debug|x64.ActiveCfg = Debug|x64
+		{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00}.Debug|x64.Build.0 = Debug|x64
+		{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00}.Release|x64.ActiveCfg = Release|x64
+		{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00}.Release|x64.Build.0 = Release|x64
+		{102D363C-7CB8-A300-85C9-26F5F1D3FF00}.Debug|x64.ActiveCfg = Debug|x64
+		{102D363C-7CB8-A300-85C9-26F5F1D3FF00}.Debug|x64.Build.0 = Debug|x64
+		{102D363C-7CB8-A300-85C9-26F5F1D3FF00}.Release|x64.ActiveCfg = Release|x64
+		{102D363C-7CB8-A300-85C9-26F5F1D3FF00}.Release|x64.Build.0 = Release|x64
+		{B8632D36-247A-2BCC-6DF1-B6EDD946FC53}.Debug|x64.ActiveCfg = Debug|x64
+		{B8632D36-247A-2BCC-6DF1-B6EDD946FC53}.Debug|x64.Build.0 = Debug|x64
+		{B8632D36-247A-2BCC-6DF1-B6EDD946FC53}.Debug|x64.Deploy.0 = Debug|x64
+		{B8632D36-247A-2BCC-6DF1-B6EDD946FC53}.Release|x64.ActiveCfg = Release|x64
+		{B8632D36-247A-2BCC-6DF1-B6EDD946FC53}.Release|x64.Build.0 = Release|x64
+		{B8632D36-247A-2BCC-6DF1-B6EDD946FC53}.Release|x64.Deploy.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BF45323C-2BD1-9F00-34E2-22F5A0ECFB00} = {C11D5431-2DDE-CF67-F618-19E562981444}
+		{102D363C-7CB8-A300-85C9-26F5F1D3FF00} = {C11D5431-2DDE-CF67-F618-19E562981444}
+		{B8632D36-247A-2BCC-6DF1-B6EDD946FC53} = {C11D5431-2DDE-CF67-F618-19E562981444}
+	EndGlobalSection
+EndGlobal
