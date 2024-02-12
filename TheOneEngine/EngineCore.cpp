@@ -107,51 +107,38 @@ void EngineCore::DrawGrid(int grid_size, int grid_step)
 
 void EngineCore::DrawFrustum(const Frustum& frustum)
 {
-    // Draw lines for the frustum planes
-    glBegin(GL_LINES);
+    glColor3f(1, 1, 1);
+    glLineWidth(0.5);
 
-    // Draw lines for the near plane
-    glColor3f(1.0f, 0.0f, 0.0f);
-    glVertex3fv(glm::value_ptr(frustum.nearPlane.normal * float(frustum.nearPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.right.normal * float(frustum.right.distance)));
+    // Draw near plane
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(frustum.vertices[0].x, frustum.vertices[0].y, frustum.vertices[0].z);
+    glVertex3f(frustum.vertices[1].x, frustum.vertices[1].y, frustum.vertices[1].z);
+    glVertex3f(frustum.vertices[2].x, frustum.vertices[2].y, frustum.vertices[2].z);
+    glVertex3f(frustum.vertices[3].x, frustum.vertices[3].y, frustum.vertices[3].z);
+    glEnd();
 
-    glVertex3fv(glm::value_ptr(frustum.nearPlane.normal * float(frustum.nearPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.left.normal * float(frustum.left.distance)));
-
-    glVertex3fv(glm::value_ptr(frustum.nearPlane.normal * float(frustum.nearPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.top.normal * float(frustum.top.distance)));
-
-    glVertex3fv(glm::value_ptr(frustum.nearPlane.normal * float(frustum.nearPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.bot.normal * float(frustum.bot.distance)));
-
-    // Draw lines for the far plane
-    glColor3f(0.0f, 1.0f, 0.0f);
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.right.normal * float(frustum.right.distance)));
-
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.left.normal * float(frustum.left.distance)));
-
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.top.normal * float(frustum.top.distance)));
-
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
-    glVertex3fv(glm::value_ptr(frustum.bot.normal * float(frustum.bot.distance)));
+    // Draw far plane
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(frustum.vertices[4].x, frustum.vertices[4].y, frustum.vertices[4].z);
+    glVertex3f(frustum.vertices[5].x, frustum.vertices[5].y, frustum.vertices[5].z);
+    glVertex3f(frustum.vertices[6].x, frustum.vertices[6].y, frustum.vertices[6].z);
+    glVertex3f(frustum.vertices[7].x, frustum.vertices[7].y, frustum.vertices[7].z);
+    glEnd();
 
     // Draw lines connecting near and far planes
-    glColor3f(1.0f, 1.0f, 1.0f);
-    glVertex3fv(glm::value_ptr(frustum.right.normal * float(frustum.right.distance)));
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
+    glBegin(GL_LINES);
+    glVertex3f(frustum.vertices[0].x, frustum.vertices[0].y, frustum.vertices[0].z);
+    glVertex3f(frustum.vertices[4].x, frustum.vertices[4].y, frustum.vertices[4].z);
 
-    glVertex3fv(glm::value_ptr(frustum.left.normal * float(frustum.left.distance)));
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
+    glVertex3f(frustum.vertices[1].x, frustum.vertices[1].y, frustum.vertices[1].z);
+    glVertex3f(frustum.vertices[5].x, frustum.vertices[5].y, frustum.vertices[5].z);
 
-    glVertex3fv(glm::value_ptr(frustum.top.normal * float(frustum.top.distance)));
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
+    glVertex3f(frustum.vertices[2].x, frustum.vertices[2].y, frustum.vertices[2].z);
+    glVertex3f(frustum.vertices[6].x, frustum.vertices[6].y, frustum.vertices[6].z);
 
-    glVertex3fv(glm::value_ptr(frustum.bot.normal * float(frustum.bot.distance)));
-    glVertex3fv(glm::value_ptr(frustum.farPlane.normal * float(frustum.farPlane.distance)));
-
+    glVertex3f(frustum.vertices[3].x, frustum.vertices[3].y, frustum.vertices[3].z);
+    glVertex3f(frustum.vertices[7].x, frustum.vertices[7].y, frustum.vertices[7].z);
     glEnd();
 }
 

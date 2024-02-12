@@ -33,7 +33,7 @@ bool SceneManager::Start()
     //CreateSphere();
     
     //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
-    CreateMeshGO("Assets\\Meshes\\street.fbx");
+    /*CreateMeshGO("Assets\\Meshes\\street.fbx");
     CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
 
     for (auto mesh : GetGameObjects()) {
@@ -43,7 +43,7 @@ bool SceneManager::Start()
     }
 
     rotationAngle = 0.0f;
-    rotationSpeed = 30.0f;
+    rotationSpeed = 30.0f;*/
 
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
@@ -81,7 +81,7 @@ bool SceneManager::Update(double dt)
     if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && app->state == GameState::PLAY)
         spatialObject2->GetComponent<Transform>()->setPosition({ spatialObject2->GetComponent<Transform>()->getPosition().x -1 ,15,0 });
 
-    if (app->IsPlaying()) {
+    /*if (app->IsPlaying()) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);
 
         rotationAngle += rotationSpeed * dt;
@@ -94,7 +94,7 @@ bool SceneManager::Update(double dt)
         demo->GetComponent<Transform>()->rotate({ 1, 0, 0 }, 0.0);
         rotationAngle = 0.0;
         spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
-    }
+    }*/
 
     app->engine->audio->SetSpatial1Transform(
         spatialObject1->GetComponent<Transform>()->getPosition().x,

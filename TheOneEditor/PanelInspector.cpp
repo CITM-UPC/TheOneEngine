@@ -268,21 +268,41 @@ bool PanelInspector::Draw()
 
             if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
+                bool isDirty = false;
+
                 float fov = static_cast<float>(camera->fov);
                 float aspect = static_cast<float>(camera->aspect);
                 float zNear = static_cast<float>(camera->zNear);
                 float zFar = static_cast<float>(camera->zFar);
 
-                ImGui::SliderFloat("FOV", &fov, 20.0, 120.0);
-                ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0);
-                ImGui::Text("Clipping Plane");
-                ImGui::SliderFloat("Near", &zNear, 0.01, 10.0);
-                ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0);
+                if (ImGui::SliderFloat("FOV", &fov, 20.0, 120.0))
+                {
+                    camera->fov = fov;
+                    isDirty = true;
+                }
 
-                camera->fov = fov;
-                camera->aspect = aspect;
-                camera->zNear = zNear;
-                camera->zFar = zFar;
+                if (ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0))
+                {
+                    camera->aspect = aspect;
+                    isDirty = true;
+                }
+
+                ImGui::Text("Clipping Planes");
+                if (ImGui::SliderFloat("Near", &zNear, 0.01, 10.0))
+                {
+                    camera->zNear = zNear;
+                    isDirty = true;
+                }
+                
+                if (ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0))
+                {
+                    camera->zFar = zFar;
+                    isDirty = true;
+                }
+                
+                if (isDirty)
+                    camera->UpdateCamera();
+
 
                 ImGui::Checkbox("Draw Frustrum", &camera->drawFrustum);
 

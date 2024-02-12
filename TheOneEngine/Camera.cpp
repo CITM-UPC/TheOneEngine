@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Camera),
-    aspect(1.777), fov(65), zNear(0.1), zFar(15000),
+    aspect(1.777), fov(65), zNear(0.1), zFar(500),
     yaw(0), pitch(0),
     viewMatrix(1.0f),
     forward(0, 0, 0), right(0, 0, 0), up(0, 0, 0),
@@ -139,7 +139,7 @@ void Camera::UpdateProjectionMatrix()
 
 void Camera::UpdateViewProjectionMatrix()
 {
-    viewProjectionMatrix = projectionMatrix * (mat4)viewMatrix;
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
 }
 
 void Camera::UpdateFrustum()
@@ -166,6 +166,7 @@ json Camera::SaveComponent()
     cameraJSON["Pitch"] = pitch;
 
     //Maybe not necessary to serialize
+    //hekbas - correct, Frustum can be created from camera
     /*cameraJSON["Frustum"]["nearTopLeft"] = { frustum.nearTopLeft.x, frustum.nearTopLeft.y, frustum.nearTopLeft.z };
     cameraJSON["Frustum"]["nearTopRight"] = { frustum.nearTopRight.x, frustum.nearTopRight.y, frustum.nearTopRight.z };
     cameraJSON["Frustum"]["nearBottomLeft"] = { frustum.nearBottomLeft.x, frustum.nearBottomLeft.y, frustum.nearBottomLeft.z };
@@ -237,7 +238,5 @@ void Camera::LoadComponent(const json& cameraJSON)
     // ...
 
     // Optional: Recalculate view and projection matrices based on loaded data
-    UpdateProjectionMatrix();
-    UpdateViewProjectionMatrix();
-    UpdateFrustum();
+    UpdateCamera();
 }

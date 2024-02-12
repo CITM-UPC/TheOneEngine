@@ -21,6 +21,7 @@ GameObject::GameObject(std::string name)
 	// hekbas - shared_from_this() must NOT be called in the constructor!!!
 	// uncomenting the following line causes undefined behaviour
 	//AddComponent(ComponentType::Transform);
+
 	Enable();
 }
 

@@ -17,8 +17,8 @@
           "Name": "Transform",
           "ParentUID": 3452816845,
           "Position": [
-            0.0,
-            0.0,
+            -10.0,
+            8.0,
             0.0
           ],
           "Rotation": [
@@ -33,81 +33,23 @@
             1.0
           ],
           "Type": 0,
-          "UID": 2825470617
+          "UID": 1593451923
         },
         {
-          "Aspect": 1.777,
-          "FOV": 65.0,
+          "Aspect": 3.0409998893737793,
+          "FOV": 21.915000915527344,
           "Name": "Camera",
           "ParentUID": 3452816845,
           "Pitch": 0.0,
           "Type": 1,
-          "UID": 3579837753,
+          "UID": 548089384,
           "Yaw": 0.0,
-          "zFar": 15000.0,
-          "zNear": 0.1
+          "zFar": 189.03700256347656,
+          "zNear": 3.183000087738037
         }
       ],
       "Enabled": true,
-      "GameObjects": [
-        {
-          "Components": [
-            {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Name": "Transform",
-              "ParentUID": 3452816845,
-              "Position": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Rotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 1340223937
-            },
-            {
-              "Active": false,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "Library/Meshes/mf/Mesh_0067.mesh",
-              "Type": 2,
-              "UID": 1873703062
-            }
-          ],
-          "Enabled": true,
-          "Name": "Mesh_0067",
-          "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
-        }
-      ],
-      "Name": "Camera",
+      "Name": "Game Camera",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845
@@ -129,8 +71,8 @@
           "Name": "Transform",
           "ParentUID": 3452816845,
           "Position": [
-            0.0,
-            0.0,
+            -50.0,
+            15.0,
             0.0
           ],
           "Rotation": [
@@ -145,107 +87,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 1481541235
-        }
-      ],
-      "Enabled": true,
-      "GameObjects": [
-        {
-          "Components": [
-            {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Name": "Transform",
-              "ParentUID": 3452816845,
-              "Position": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Rotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 1152424848
-            },
-            {
-              "Active": false,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "Library/Meshes/mf/Mesh_0068.mesh",
-              "Type": 2,
-              "UID": 3207374515
-            }
-          ],
-          "Enabled": true,
-          "Name": "Mesh_0068",
-          "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
-        }
-      ],
-      "Name": "mf",
-      "ParentUID": 3452816845,
-      "Static": false,
-      "UID": 3452816845
-    },
-    {
-      "Components": [
-        {
-          "LocalRotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "LocalScale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Name": "Transform",
-          "ParentUID": 3452816845,
-          "Position": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Rotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Type": 0,
-          "UID": 247404634
+          "UID": 3663216895
         },
         {
           "Active": false,
@@ -257,71 +99,69 @@
           "DrawWireframe": false,
           "Name": "Mesh",
           "ParentUID": 3452816845,
-          "Path": "Library/Meshes/mf/Mesh_0069.mesh",
+          "Path": "Library/Meshes/teapot/Teapot.mesh",
           "Type": 2,
-          "UID": 2663244580
+          "UID": 3539129933
         }
       ],
       "Enabled": true,
-      "GameObjects": [
+      "Name": "Teapot",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
         {
-          "Components": [
-            {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Name": "Transform",
-              "ParentUID": 3452816845,
-              "Position": [
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Rotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Scale": [
-                1.0,
-                1.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 777984609
-            },
-            {
-              "Active": false,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "Library/Meshes/mf/Mesh_0546.mesh",
-              "Type": 2,
-              "UID": 3939261832
-            }
+          "LocalRotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
           ],
-          "Enabled": true,
-          "Name": "Mesh_0546",
+          "LocalScale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Name": "Transform",
           "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
+          "Position": [
+            50.0,
+            15.0,
+            0.0
+          ],
+          "Rotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 2331820426
+        },
+        {
+          "Active": false,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/teapot/Teapot.mesh",
+          "Type": 2,
+          "UID": 1056674349
         }
       ],
-      "Name": "Mesh_0069",
+      "Enabled": true,
+      "Name": "Teapot",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845
