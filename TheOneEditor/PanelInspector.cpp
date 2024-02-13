@@ -18,7 +18,7 @@ PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, n
     needRefresh_sca = false;
 
     view_pos = { 0, 0, 0 };
-    view_rot = { 0, 0, 0 };
+    view_rot_rad = { 0, 0, 0 };
     view_sca = { 0, 0, 0 };
 }
 
@@ -31,17 +31,17 @@ bool PanelInspector::Draw()
 	if (ImGui::Begin("Inspector", &enabled, settingsFlags))
 	{
         ImGuiIO& io = ImGui::GetIO();
-
         ImVec4 clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
+        ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once);
 
-        ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once); //Sets window size only once with ImGuiCond_Once, if fixed size erase it.
+        std::shared_ptr<GameObject> selectedGO = app->sceneManager->GetSelectedGO();
 
-        if (app->sceneManager->GetSelectedGO() != nullptr)
+        if (selectedGO != nullptr)
         {
             /*Name*/
             //ImGui::Checkbox("Active", &gameObjSelected->isActive);
             ImGui::SameLine(); ImGui::Text("GameObject:");
-            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, selectedGO.get()->GetName().c_str());
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Tag + Layer*/
@@ -55,15 +55,46 @@ bool PanelInspector::Draw()
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Transform Component*/
-            Transform* transform = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>();
+            Transform* transform = selectedGO.get()->GetComponent<Transform>();
 
             if (transform != nullptr && ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
 
                 view_pos = transform->getPosition();
-                view_rot = transform->getEulerAngles();
+                view_rot_rad = transform->getEulerAngles();
                 view_sca = transform->getScale();
+
+                //[-pi, pi]
+                if (view_rot_deg.x > 0)
+                {
+                    view_rot_deg.x = view_rot_rad.x * RADTODEG;
+                }
+                else
+                {
+                    view_rot_deg.x = 360 + view_rot_rad.x * RADTODEG;
+                }
+
+                //[-pi/2, pi/2]
+                if (view_rot_deg.y > 0)
+                {
+                    view_rot_deg.y = view_rot_rad.y * RADTODEG;
+                }
+                else
+                {
+                    view_rot_deg.y = 360 + view_rot_rad.y * RADTODEG;
+                }
+
+                //[-pi, pi]
+                if (view_rot_deg.z > 0)
+                {
+                    view_rot_deg.z = view_rot_rad.z * RADTODEG;
+                }
+                else
+                {
+                    view_rot_deg.z = 360 + view_rot_rad.z * RADTODEG;
+                }
+
 
                 ImGuiTableFlags tableFlags = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit;
 
@@ -117,21 +148,24 @@ bool PanelInspector::Draw()
                     ImGui::Text("Rotation");
 
                     ImGui::TableSetColumnIndex(1);
-                    if (ImGui::DragFloat("##RotX", &view_rot.x, 0.5F, 0, 0, "%.3f", 1))
+                    if (ImGui::DragFloat("##RotX", &view_rot_deg.x, 1.0f, 0, 0, "%.3f", 1))
                     {
                         needRefresh_rot = true;
+                        view_rot_rad.x = view_rot_deg.x * DEGTORAD;
                     }
 
                     ImGui::TableSetColumnIndex(2);
-                    if (ImGui::DragFloat("##RotY", &view_rot.y, 0.5F, 0, 0, "%.3f", 1))
+                    if (ImGui::DragFloat("##RotY", &view_rot_deg.y, 1.0f, 0, 0, "%.3f", 1))
                     {
                         needRefresh_rot = true;
+                        view_rot_rad.y = view_rot_deg.y * DEGTORAD;
                     }
 
                     ImGui::TableSetColumnIndex(3);
-                    if (ImGui::DragFloat("##RotZ", &view_rot.z, 0.5F, 0, 0, "%.3f", 1))
+                    if (ImGui::DragFloat("##RotZ", &view_rot_deg.z, 1.0f, 0, 0, "%.3f", 1))
                     {
                         needRefresh_rot = true;
+                        view_rot_rad.z = view_rot_deg.z * DEGTORAD;
                     }
 
                     ImGui::TableNextRow();
@@ -141,19 +175,19 @@ bool PanelInspector::Draw()
                     ImGui::Text("Scale");
 
                     ImGui::TableSetColumnIndex(1);
-                    if (ImGui::DragFloat("##ScaleX", &view_sca.x, 0.5F, 0, 0, "%.3f", 1))
+                    if (ImGui::DragFloat("##ScaleX", &view_sca.x, 0.1F, 0, 0, "%.3f", 1))
                     {
                         needRefresh_sca = true;
                     }
 
                     ImGui::TableSetColumnIndex(2);
-                    if (ImGui::DragFloat("##ScaleY", &view_sca.y, 0.5F, 0, 0, "%.3f", 1))
+                    if (ImGui::DragFloat("##ScaleY", &view_sca.y, 0.1F, 0, 0, "%.3f", 1))
                     {
                         needRefresh_sca = true;
                     }
 
                     ImGui::TableSetColumnIndex(3);
-                    if (ImGui::DragFloat("##ScaleZ", &view_sca.z, 0.5F, 0, 0, "%.3f", 1))
+                    if (ImGui::DragFloat("##ScaleZ", &view_sca.z, 0.1F, 0, 0, "%.3f", 1))
                     {
                         needRefresh_sca = true;
                     }
@@ -166,13 +200,19 @@ bool PanelInspector::Draw()
                     transform->updateMatrix();
                 }
                 else if (needRefresh_rot) {
-                    transform->setRotation(view_rot);
+                    transform->setRotation(view_rot_rad);
                     transform->updateMatrix();
                 }
                 else if (needRefresh_sca) {
                     transform->setScale(view_sca);
                     transform->updateMatrix();
                 }
+
+                //Check if camera needs to be updated
+                Camera* camera = selectedGO.get()->GetComponent<Camera>();
+                if (camera && (needRefresh_pos || needRefresh_rot || needRefresh_sca))
+                    camera->UpdateCamera();
+                
 
                 needRefresh_pos = false;
                 needRefresh_rot = false;
@@ -193,7 +233,7 @@ bool PanelInspector::Draw()
             //ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
 
             /*Mesh Component*/
-            Mesh* mesh = app->sceneManager->GetSelectedGO().get()->GetComponent<Mesh>();
+            Mesh* mesh = selectedGO.get()->GetComponent<Mesh>();
 
             if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -226,7 +266,7 @@ bool PanelInspector::Draw()
 
 
             /*Texture Component*/
-            Texture* texture = app->sceneManager->GetSelectedGO().get()->GetComponent<Texture>();
+            Texture* texture = selectedGO.get()->GetComponent<Texture>();
 
             if (texture != nullptr && ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -264,7 +304,7 @@ bool PanelInspector::Draw()
             }
 
             /*Camera Component*/
-            Camera* camera = app->sceneManager->GetSelectedGO().get()->GetComponent<Camera>();
+            Camera* camera = selectedGO.get()->GetComponent<Camera>();
 
             if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
