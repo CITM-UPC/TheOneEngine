@@ -66,7 +66,7 @@ bool PanelInspector::Draw()
                 view_sca = transform->getScale();
 
                 //[-pi, pi]
-                if (view_rot_deg.x > 0)
+                if (view_rot_rad.x >= 0)
                 {
                     view_rot_deg.x = view_rot_rad.x * RADTODEG;
                 }
@@ -76,7 +76,7 @@ bool PanelInspector::Draw()
                 }
 
                 //[-pi/2, pi/2]
-                if (view_rot_deg.y > 0)
+                if (view_rot_rad.y >= 0)
                 {
                     view_rot_deg.y = view_rot_rad.y * RADTODEG;
                 }
@@ -86,7 +86,7 @@ bool PanelInspector::Draw()
                 }
 
                 //[-pi, pi]
-                if (view_rot_deg.z > 0)
+                if (view_rot_rad.z >= 0)
                 {
                     view_rot_deg.z = view_rot_rad.z * RADTODEG;
                 }
@@ -334,7 +334,7 @@ bool PanelInspector::Draw()
                     isDirty = true;
                 }
                 
-                if (ImGui::SliderFloat("Far ", &zFar, 1.0, 1500.0))
+                if (ImGui::SliderFloat("Far ", &zFar, 1.0, 10000.0))
                 {
                     camera->zFar = zFar;
                     isDirty = true;

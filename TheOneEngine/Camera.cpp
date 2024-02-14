@@ -1,7 +1,7 @@
 #include "Camera.h"
 
 Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Camera),
-    aspect(1.777), fov(65), zNear(0.1), zFar(500),
+    aspect(1.777), fov(65), zNear(0.1), zFar(1000),
     yaw(0), pitch(0),
     viewMatrix(1.0f),
     forward(0, 0, 0), right(0, 0, 0), up(0, 0, 0),
