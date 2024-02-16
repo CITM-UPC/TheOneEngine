@@ -14,9 +14,7 @@ public:
 	bool Draw();
 
 private:
-	bool needRefresh_pos;
-	bool needRefresh_rot;
-	bool needRefresh_sca;
+	bool matrixDirty;
 
 	vec3f view_pos;
 	vec3f view_rot_rad;

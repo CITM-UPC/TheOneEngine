@@ -13,9 +13,7 @@
 
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) 
 {
-    needRefresh_pos = false; 
-    needRefresh_rot = false;
-    needRefresh_sca = false;
+    matrixDirty = false;
 
     view_pos = { 0, 0, 0 };
     view_rot_rad = { 0, 0, 0 };
@@ -61,41 +59,31 @@ bool PanelInspector::Draw()
             {
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
 
+                matrixDirty = false;
+
                 view_pos = transform->getPosition();
                 view_rot_rad = transform->getEulerAngles();
                 view_sca = transform->getScale();
 
                 //[-pi, pi]
                 if (view_rot_rad.x >= 0)
-                {
                     view_rot_deg.x = view_rot_rad.x * RADTODEG;
-                }
                 else
-                {
                     view_rot_deg.x = 360 + view_rot_rad.x * RADTODEG;
-                }
 
                 //[-pi/2, pi/2]
                 if (view_rot_rad.y >= 0)
-                {
                     view_rot_deg.y = view_rot_rad.y * RADTODEG;
-                }
                 else
-                {
                     view_rot_deg.y = 360 + view_rot_rad.y * RADTODEG;
-                }
 
                 //[-pi, pi]
                 if (view_rot_rad.z >= 0)
-                {
                     view_rot_deg.z = view_rot_rad.z * RADTODEG;
-                }
                 else
-                {
                     view_rot_deg.z = 360 + view_rot_rad.z * RADTODEG;
-                }
 
-
+                
                 ImGuiTableFlags tableFlags = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit;
 
                 if (ImGui::BeginTable("", 4, tableFlags))
@@ -126,19 +114,22 @@ bool PanelInspector::Draw()
                     ImGui::TableSetColumnIndex(1);
                     if (ImGui::DragFloat("##PosX", &view_pos.x, 0.5F, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_pos = true;
+                        transform->setPosition(view_pos);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(2);
                     if (ImGui::DragFloat("##PosY", &view_pos.y, 0.5F, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_pos = true;
+                        transform->setPosition(view_pos);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(3);
                     if (ImGui::DragFloat("##PosZ", &view_pos.z, 0.5F, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_pos = true;
+                        transform->setPosition(view_pos);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableNextRow();
@@ -150,22 +141,25 @@ bool PanelInspector::Draw()
                     ImGui::TableSetColumnIndex(1);
                     if (ImGui::DragFloat("##RotX", &view_rot_deg.x, 1.0f, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_rot = true;
                         view_rot_rad.x = view_rot_deg.x * DEGTORAD;
+                        transform->setRotation(view_rot_rad);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(2);
                     if (ImGui::DragFloat("##RotY", &view_rot_deg.y, 1.0f, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_rot = true;
                         view_rot_rad.y = view_rot_deg.y * DEGTORAD;
+                        transform->setRotation(view_rot_rad);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(3);
                     if (ImGui::DragFloat("##RotZ", &view_rot_deg.z, 1.0f, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_rot = true;
                         view_rot_rad.z = view_rot_deg.z * DEGTORAD;
+                        transform->setRotation(view_rot_rad);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableNextRow();
@@ -177,46 +171,36 @@ bool PanelInspector::Draw()
                     ImGui::TableSetColumnIndex(1);
                     if (ImGui::DragFloat("##ScaleX", &view_sca.x, 0.1F, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_sca = true;
+                        transform->setScale(view_sca);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(2);
                     if (ImGui::DragFloat("##ScaleY", &view_sca.y, 0.1F, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_sca = true;
+                        transform->setScale(view_sca);
+                        matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(3);
                     if (ImGui::DragFloat("##ScaleZ", &view_sca.z, 0.1F, 0, 0, "%.3f", 1))
                     {
-                        needRefresh_sca = true;
+                        transform->setScale(view_sca);
+                        matrixDirty = true;
                     }
 
                     ImGui::EndTable();
                 }
 
-                if (needRefresh_pos){
-                    transform->setPosition(view_pos);
+                if (matrixDirty)
                     transform->updateMatrix();
-                }
-                else if (needRefresh_rot) {
-                    transform->setRotation(view_rot_rad);
-                    transform->updateMatrix();
-                }
-                else if (needRefresh_sca) {
-                    transform->setScale(view_sca);
-                    transform->updateMatrix();
-                }
+
 
                 //Check if camera needs to be updated
                 Camera* camera = selectedGO.get()->GetComponent<Camera>();
-                if (camera && (needRefresh_pos || needRefresh_rot || needRefresh_sca))
+                if (camera && (matrixDirty))
                     camera->UpdateCamera();
                 
-
-                needRefresh_pos = false;
-                needRefresh_rot = false;
-                needRefresh_sca = false;
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
