@@ -4,7 +4,7 @@
 
 #include "Defs.h"
 #include "GameObject.h"
-#include "Transform.h"
+#include "Ray.h"
 
 #include "..\TheOneEditor\Log.h"
 #include "..\TheOneEditor\Input.h"
@@ -115,6 +115,8 @@ public:
     void UpdateProjectionMatrix();
     void UpdateViewProjectionMatrix();
     void UpdateFrustum();
+
+    Ray ComputeCameraRay(float x, float y);
 
     json SaveComponent();
     void LoadComponent(const json& meshJSON);

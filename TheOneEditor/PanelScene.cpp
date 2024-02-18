@@ -5,8 +5,12 @@
 #include "SceneManager.h"
 #include "Window.h"
 #include "imgui.h"
+#include "Log.h"
 
 #include "..\TheOneEngine\EngineCore.h"
+#include "..\TheOneEngine\Ray.h"
+
+#include <vector>
 
 PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), isHovered(false) {}
 
@@ -101,10 +105,44 @@ bool PanelScene::Draw()
             if (gameCam != nullptr && gameCam->drawFrustum)
                 app->engine->DrawFrustum(gameCam->frustum);
         }
+
+
+        // Mouse Picking ----------------------------------
+        if (isHovered && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+        {
+            float dpi = 1;
+            auto clickPos = glm::vec2(app->input->GetMouseX() - windowPos.x / dpi, app->input->GetMouseY() - windowPos.y / dpi);
+
+            Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCam, int(windowPos.x / dpi), int(windowPos.y / dpi));
+
+            rays.push_back(ray);
+            //editor->SelectObject(ray);
+        }
+
+        //Draw Rays
+        for (auto ray : rays)
+        {
+            app->engine->DrawRay(ray);
+        }
 	}
 
     ImGui::End();
     ImGui::PopStyleVar();
 
 	return true;
+}
+
+Ray PanelScene::GetScreenRay(int x, int y, Camera* camera, int width, int height)
+{
+    if (!camera)
+    {
+        LOG(LogType::LOG_ERROR, "Invalid camera, can't create Ray");
+        return Ray();
+    }
+
+    //Normalised Device Coordinates
+    float rayX = (2.0f * x) / width - 1.0f;
+    float rayY = (2.0f * y) / height - 1.0f;
+
+    return camera->ComputeCameraRay(rayX, -rayY);
 }

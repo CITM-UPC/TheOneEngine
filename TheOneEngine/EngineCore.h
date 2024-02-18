@@ -9,6 +9,8 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Ray.h"
+
 #include "..\TheOneAudio\AudioCore.h"
 
 #include <chrono>
@@ -33,6 +35,7 @@ public:
 	void DrawAxis();
 	void DrawGrid(int grid_size, int grid_step);
 	void DrawFrustum(const Frustum& frustum);
+	void DrawRay(const Ray& ray);
 
 	// (x, y) Indicate the bottom left corner1
 	void OnWindowResize(int x, int y, int width, int height);

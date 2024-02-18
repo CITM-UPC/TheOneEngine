@@ -41,11 +41,13 @@ bool PanelConsole::Draw()
 
 					case LogType::LOG_ASSIMP:
 						logType = "[ASSIMP] ";
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.75, 0.25, 0.75, 1));
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
 						break;
+
 					case LogType::LOG_AUDIO:
 						logType = "[AUDIO] ";
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.75, 0.25, 0.75, 1));
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
+						break;
 
 					case LogType::LOG_OK:
 						logType = "[OK] ";

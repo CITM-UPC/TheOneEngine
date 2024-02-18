@@ -3,7 +3,8 @@
 #include <array>
 #include "types.h"
 
-struct AABBox {
+struct AABBox
+{
 	vec3 min{std::numeric_limits<double>::max()};
 	vec3 max{std::numeric_limits<double>::min()};
 	inline vec3 center() const { return (min + max) * 0.5; }
@@ -21,14 +22,18 @@ struct AABBox {
 	inline std::array<vec3, 8> verts() const { return { a(), b(), c(), d(), e(), f(), g(), h() }; }
 };
 
-struct OBBox {
-	union {
+struct OBBox
+{
+	union
+	{
 		struct { vec3 a, b, c, d, e, f, g, h; };
 		std::array<vec3, 8> verts;
 	};
 
-	inline AABBox AABB() const {
+	inline AABBox AABB() const
+	{
 		AABBox aabb = { a,a };
+
 		for (const auto& v : verts) {
 			aabb.min = glm::min(aabb.min, v);
 			aabb.max = glm::max(aabb.max, v);
@@ -37,7 +42,8 @@ struct OBBox {
 	}
 };
 
-inline OBBox operator*(const mat4& transform, const AABBox& aabb) {
+inline OBBox operator*(const mat4& transform, const AABBox& aabb)
+{
 	OBBox bbox;
 	bbox.a = transform * vec4(aabb.a(), 1);
 	bbox.b = transform * vec4(aabb.b(), 1);

@@ -4,6 +4,11 @@
 
 #include "Panel.h"
 
+#include<vector>
+
+class Ray;
+class Camera;
+
 class PanelScene : public Panel
 {
 public:
@@ -12,8 +17,11 @@ public:
 
 	bool Draw();
 
+	Ray GetScreenRay(int x, int y, Camera* camera, int width, int height);
+
 public:
 	bool isHovered;
+	std::vector<Ray> rays;
 };
 
 #endif // !__PANEL_SCENE_H__

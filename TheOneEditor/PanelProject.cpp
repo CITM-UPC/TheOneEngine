@@ -64,7 +64,7 @@ bool PanelProject::Draw()
 			ImGui::TableNextColumn();
 
 			//if (currentFolder != nullptr)
-			//Inspector
+			//hekbas - need to implement Inspector
 
 
 			ImGui::EndTable();

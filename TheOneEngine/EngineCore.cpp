@@ -142,6 +142,17 @@ void EngineCore::DrawFrustum(const Frustum& frustum)
     glEnd();
 }
 
+void EngineCore::DrawRay(const Ray& ray)
+{
+    uint magnitude = 1000;
+    glColor3f(1.0f, 0.0f, 0.0f);
+
+    glBegin(GL_LINES);
+    glVertex3f(ray.Origin.x, ray.Origin.y, ray.Origin.z);
+    glVertex3f(ray.Direction.x * magnitude, ray.Direction.y * magnitude, ray.Direction.z * magnitude);
+    glEnd();
+}
+
 void EngineCore::OnWindowResize(int x, int y, int width, int height)
 {
     glViewport(x, y, width, height);
@@ -158,6 +169,7 @@ bool EngineCore::GetVSync()
     return vsync;
 }
 
+//heakbs - parameter not used?
 bool EngineCore::SetVSync(bool vsync)
 {
     if (this->vsync)

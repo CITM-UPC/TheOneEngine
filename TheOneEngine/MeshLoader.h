@@ -53,7 +53,7 @@ struct MeshBufferedData
 	std::string texturePath;
 	std::shared_ptr<Texture> texture;
 	uint materialIndex;
-	//Texture::Ptr checkboard = std::shared_ptr<Texture>(new Texture); // JULS: for the checkers texture
+	//Texture::Ptr checkers = std::shared_ptr<Texture>(new Texture);
 };
 
 class MeshLoader

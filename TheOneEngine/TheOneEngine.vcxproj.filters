@@ -19,6 +19,9 @@
     <Filter Include="Loaders">
       <UniqueIdentifier>{ef205215-f4dd-4daf-80aa-0d87803bc3cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{cb5e54cb-4331-4568-a233-96dbbf6a216a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -60,6 +63,9 @@
     <ClInclude Include="Cube.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Ray.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -91,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Ray.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

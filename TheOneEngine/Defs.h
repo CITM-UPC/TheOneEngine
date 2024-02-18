@@ -29,10 +29,29 @@
 /// Keep a value between 0.0f and 1.0f
 #define CAP(n) ((n <= 0.0f) ? n=0.0f : (n >= 1.0f) ? n=1.0f : n=n)
 
+#define TO_BOOL( a )  ( (a != 0) ? true : false )
+
+
+/// Math
+#define PI		 3.1415926535897932384f
 #define DEGTORAD 0.0174532925199432957f
 #define RADTODEG 57.295779513082320876f
-#define PI		 3.14159265359f
-#define TO_BOOL( a )  ( (a != 0) ? true : false )
+//#define INFINITY = std::numeric_limits<float>::infinity();
+
+/// Convert degrees to radians.
+template <class T>
+inline T ToRadians(const T degrees)
+{
+    return DEGTORAD * degrees;
+}
+
+/// Convert radians to degrees.
+template <class T>
+inline T ToDegrees(const T radians)
+{
+    return RADTODEG * radians;
+}
+
 
 /// Useful helpers, InRange checker, min, max and clamp
 #define MIN( a, b ) ( ((a) < (b)) ? (a) : (b) )
@@ -48,6 +67,8 @@
 /// Camera Settings
 #define MIN_FOV 15.0f
 #define MAX_FOV 120.0f
+#define MIN_NEARCLIP 0.01f
+
 
 /// Performance macros
 //#define PERF_START(timer) timer.Start()
