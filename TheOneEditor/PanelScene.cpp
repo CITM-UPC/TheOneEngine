@@ -87,7 +87,9 @@ bool PanelScene::Draw()
         int width, height;
         app->gui->CalculateSizeAspectRatio(regionSize.x, regionSize.y, width, height);
 
-        // Viewport coordinates
+        // Set glViewport coordinates
+        // SDL origin at top left corner (+x >, +y v)
+        // glViewport origin at bottom left corner  (+x >, +y ^)
         int x = static_cast<int>(windowPos.x);
         int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
@@ -110,10 +112,10 @@ bool PanelScene::Draw()
         // Mouse Picking ----------------------------------
         if (isHovered && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
         {
-            float dpi = 1;
-            auto clickPos = glm::vec2(app->input->GetMouseX() - windowPos.x / dpi, app->input->GetMouseY() - windowPos.y / dpi);
+            int sdlY = SDLWindowHeight - y - height;
+            auto clickPos = glm::vec2(app->input->GetMouseX() - x, app->input->GetMouseY() - sdlY);
 
-            Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCam, int(windowPos.x / dpi), int(windowPos.y / dpi));
+            Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCam, width, height);
 
             rays.push_back(ray);
             //editor->SelectObject(ray);
@@ -140,9 +142,9 @@ Ray PanelScene::GetScreenRay(int x, int y, Camera* camera, int width, int height
         return Ray();
     }
 
-    //Normalised Device Coordinates
+    //Normalised Device Coordinates [-1, 1]
     float rayX = (2.0f * x) / width - 1.0f;
-    float rayY = (2.0f * y) / height - 1.0f;
+    float rayY = - (2.0f * y) / height + 1.0f;
 
-    return camera->ComputeCameraRay(rayX, -rayY);
+    return camera->ComputeCameraRay(rayX, rayY);
 }

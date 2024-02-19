@@ -156,18 +156,12 @@ void Camera::UpdateFrustum()
 
 Ray Camera::ComputeCameraRay(float x, float y)
 {
-    glm::mat4 projInverse = glm::inverse(projectionMatrix);
-    glm::mat4 viewInverse = glm::inverse(viewMatrix);
     glm::mat4 viewProjInverse = glm::inverse(viewProjectionMatrix);
 
-    glm::vec4 eyeSpace = viewProjInverse * glm::vec4(x, y, 1.0f, 0.0f);
-    //eyeSpace.z = -1.0;
-    //eyeSpace.w = 0.0;
+    //glm::vec4 worldOrigin = viewProjInverse * glm::vec4(x, y, -1.0f, 1.0f);
+    glm::vec4 worldDirection = viewProjInverse * glm::vec4(x, y, 1.0f, 1.0f);
 
-    //glm::vec4 worldSpace = viewInverse * eyeSpace;
-    glm::vec3 mouseRay = glm::normalize(glm::vec3(eyeSpace.x, eyeSpace.y, eyeSpace.z));
-
-    return Ray(eye, mouseRay);
+    return Ray(eye, glm::normalize(worldDirection));
 }
 
 

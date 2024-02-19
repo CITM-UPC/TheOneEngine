@@ -49,7 +49,7 @@ bool PanelInspector::Draw()
             ImGui::SameLine();
 
             ImGui::SetNextItemWidth(100.0f);
-            if (ImGui::BeginCombo("Layer", "Default", ImGuiComboFlags_HeightSmall)){ ImGui::EndCombo(); }
+            if (ImGui::BeginCombo("Layer", "Default", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Transform Component*/
@@ -324,8 +324,7 @@ bool PanelInspector::Draw()
                     isDirty = true;
                 }
                 
-                if (isDirty)
-                    camera->UpdateCamera();
+                if (isDirty) camera->UpdateCamera();
 
 
                 ImGui::Checkbox("Draw Frustrum", &camera->drawFrustum);
