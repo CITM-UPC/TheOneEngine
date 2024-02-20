@@ -11,7 +11,8 @@
 #include <cassert>
 using namespace std;
 
-Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh) {
+Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh)
+{
     drawNormalsFaces = false;
     drawNormalsVerts = false;
     drawAABB = true;
@@ -132,7 +133,8 @@ void Mesh::DrawFaceNormals()
     glEnd();
 }
 
-void Mesh::GenerateAABB() {
+void Mesh::GenerateAABB()
+{
     glGenBuffers(1, &mesh.vertex_buffer_id);
     glBindBuffer(GL_ARRAY_BUFFER, mesh.vertex_buffer_id);
     
@@ -304,7 +306,8 @@ void Mesh::DrawAABB()
     glEnd();
 }
 
-void Mesh::DrawOBB() {
+void Mesh::DrawOBB()
+{
     glColor3f(1, 0, 1);
     glLineWidth(2);
     vec3f* obb_points = nullptr;

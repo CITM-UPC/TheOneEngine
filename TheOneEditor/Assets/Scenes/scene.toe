@@ -33,19 +33,19 @@
             1.0
           ],
           "Type": 0,
-          "UID": 1593451923
+          "UID": 1066296441
         },
         {
-          "Aspect": 3.0409998893737793,
-          "FOV": 21.915000915527344,
+          "Aspect": 1.777,
+          "FOV": 65.0,
           "Name": "Camera",
           "ParentUID": 3452816845,
           "Pitch": 0.0,
           "Type": 1,
-          "UID": 548089384,
+          "UID": 896069147,
           "Yaw": 0.0,
-          "zFar": 189.03700256347656,
-          "zNear": 3.183000087738037
+          "zFar": 1000.0,
+          "zNear": 0.1
         }
       ],
       "Enabled": true,
@@ -87,7 +87,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 3663216895
+          "UID": 3240592271
         },
         {
           "Active": false,
@@ -101,7 +101,7 @@
           "ParentUID": 3452816845,
           "Path": "Library/Meshes/teapot/Teapot.mesh",
           "Type": 2,
-          "UID": 3539129933
+          "UID": 323661394
         }
       ],
       "Enabled": true,
@@ -143,7 +143,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 2331820426
+          "UID": 3551317856
         },
         {
           "Active": false,
@@ -157,7 +157,7 @@
           "ParentUID": 3452816845,
           "Path": "Library/Meshes/teapot/Teapot.mesh",
           "Type": 2,
-          "UID": 1056674349
+          "UID": 1886067991
         }
       ],
       "Enabled": true,

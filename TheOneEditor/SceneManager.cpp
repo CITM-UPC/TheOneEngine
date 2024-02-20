@@ -32,8 +32,8 @@ bool SceneManager::Start()
     //CreateCube();
     //CreateSphere();
     
-    //CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
-    /*CreateMeshGO("Assets\\Meshes\\street.fbx");
+    CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
+    CreateMeshGO("Assets\\Meshes\\street_new.fbx");
     CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
 
     for (auto mesh : GetGameObjects()) {
@@ -43,7 +43,7 @@ bool SceneManager::Start()
     }
 
     rotationAngle = 0.0f;
-    rotationSpeed = 30.0f;*/
+    rotationSpeed = 30.0f;
 
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
@@ -172,12 +172,12 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
     {
         std::string name = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
 
-        //Take name before editing for meshData lookUp
+        // Take name before editing for meshData lookUp
         std::string folderName = "Library/Meshes/" + name + "/";
 
         name = GenerateUniqueName(name);
 
-        // Create emptyGO parent if meshes >1
+        // Create emptyGO parent if meshes > 1
         bool isSingleMesh = meshes.size() > 1 ? false : true;
         std::shared_ptr<GameObject> emptyParent = isSingleMesh ? nullptr : CreateEmptyGO();
         if (!isSingleMesh) emptyParent.get()->SetName(name);
@@ -199,14 +199,35 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
         for (auto& mesh : meshes)
         {
             std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mesh.meshName);
+
+            // Transform ---------------------------------
             meshGO.get()->AddComponent<Transform>();
+
+            // get local transformations
+            //aivector3d translation, scaling;
+            //aiquaternion rotation;
+            //// local pos, rot & scale
+            //node->mtransformation.decompose(scaling, rotation, translation);
+
+            //// set the scale in value of 1 but keeping the dimensions
+            ////float max_ = max(scaling.x, scaling.y);
+            ////max_ = max(max_, scaling.z);
+
+            //float3 pos(translation.x, translation.y, translation.z);
+            ////float3 scale(scaling.x / max_, scaling.y / max_, scaling.z / max_);
+            //float3 scale(scaling.x, scaling.y, scaling.z);
+            //quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
+
+            //ret->pos = pos;
+            //ret->scale = scale;
+            //ret->rot = rot;           
+
+            // Mesh  --------------------------------------
             meshGO.get()->AddComponent<Mesh>();
-            //meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
             meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
             meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
-            //meshGO.get()->GetComponent<Texture>() = &meshGO.get()->GetComponent<Mesh>()->mesh.texture;
-
+            
             //Load MeshData from custom files
             for (const auto& file : fileNames)
             {
@@ -217,12 +238,10 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 
                     meshGO.get()->GetComponent<Mesh>()->meshData = mData;
                     meshGO.get()->GetComponent<Mesh>()->path = file;
-                }
-                
+                }               
             }
-
-            // hekbas: need to set Transform?
-
+           
+            // AABB
             meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
 
             if (isSingleMesh)
@@ -234,30 +253,30 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             {
                 meshGO.get()->parent = emptyParent;
                 emptyParent.get()->children.push_back(meshGO);
-
             }
         }
 
-       /* if (!textures.empty())
-       {
-            if (meshes.size() == 1)
-            {
-                ComponentTexture* texture = (ComponentTexture*)GetComponent(ComponentType::TEXTURE);
-                textures->setTexture((*meshes.begin())->texture);
-                defaultTexture = texture->getTexture()->path;
-            }
-            else
-            {
-                for (auto i = meshes.begin(); i != meshes.end(); ++i)
-                {
-                    ComponentTexture* texturePart = (ComponentTexture*)GOPart->GetComponent(ComponentType::TEXTURE);
-                    texturePart->setTexture((*i)->texture);
-                    defaultTexture = texturePart->getTexture()->path;
-                }
-            }
-        }*/
-
-        
+        // hekbas: Implement Texture/Material Component
+        //meshGO.get()->AddComponent<Texture>();
+        //meshGO.get()->GetComponent<Texture>() = &meshGO.get()->GetComponent<Mesh>()->mesh.texture;
+        /* if (!textures.empty())
+        {
+             if (meshes.size() == 1)
+             {
+                 ComponentTexture* texture = (ComponentTexture*)GetComponent(ComponentType::TEXTURE);
+                 textures->setTexture((*meshes.begin())->texture);
+                 defaultTexture = texture->getTexture()->path;
+             }
+             else
+             {
+                 for (auto i = meshes.begin(); i != meshes.end(); ++i)
+                 {
+                     ComponentTexture* texturePart = (ComponentTexture*)GOPart->GetComponent(ComponentType::TEXTURE);
+                     texturePart->setTexture((*i)->texture);
+                     defaultTexture = texturePart->getTexture()->path;
+                 }
+             }
+         }*/       
     }
 
     return nullptr;

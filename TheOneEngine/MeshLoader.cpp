@@ -103,21 +103,28 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
     auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
 
     std::string fileName = scene->GetShortFilename(path.c_str());
-
     std::string sceneName = fileName.substr(fileName.find_last_of("\\/") + 1, fileName.find_last_of('.') - fileName.find_last_of("\\/") - 1);
-
     std::string folderName = "Library/Meshes/" + sceneName + "/";
 
     std::filesystem::create_directories(folderName);
 
     if (scene != NULL)
     {
+        aiMatrix4x4 globalTransform = scene->mRootNode->mTransformation;
+
         for (size_t m = 0; m < scene->mNumMeshes; ++m)
         {
             auto mesh = scene->mMeshes[m];
             auto faces = mesh->mFaces;
             vec3f* verts = (vec3f*)mesh->mVertices;
             vec3f* texCoords = (vec3f*)mesh->mTextureCoords[0];
+
+            // Apply global transformation to vertices
+            for (size_t i = 0; i < mesh->mNumVertices; ++i)
+            {
+                aiVector3D transformedVertex = globalTransform * mesh->mVertices[i];
+                verts[i] = vec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z);
+            }
 
             std::vector<V3T2> vertex_data;
             std::vector<unsigned int> index_data;
