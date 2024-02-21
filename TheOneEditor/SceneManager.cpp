@@ -225,7 +225,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             }
            
             // AABB
-            meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
+            meshGO.get()->GenerateAABBFromMesh();
 
             if (isSingleMesh)
             {
@@ -318,7 +318,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
             //meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex]; //Implement texture deserialization
             // hekbas: need to set Transform?
 
-            meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
+            meshGO.get()->GenerateAABBFromMesh();
 
             if (isSingleMesh)
             {
@@ -427,7 +427,7 @@ std::shared_ptr<GameObject> SceneManager::CreateTeapot(std::string path)
 
             // hekbas: need to set Transform?
 
-            meshGO.get()->GetComponent<Mesh>()->GenerateAABB();
+            meshGO.get()->GenerateAABBFromMesh();
 
             if (isSingleMesh)
             {

@@ -8,7 +8,7 @@ Window::Window(App* app) :
     window(nullptr),
     glContext(),
     displayMode(DisplayMode::WINDOWED),
-    resolution(Resolution::R_1920x1080),
+    resolution(Resolution::R_1280x720),
     borderless(false),
     refreshRate(0)
 {}
@@ -38,7 +38,7 @@ bool Window::Awake()
 bool Window::Start()
 {
     displayMode = DisplayMode::WINDOWED;
-    resolution = Resolution::R_1920x1080;
+    resolution = Resolution::R_1280x720;
 
     SetResolution(resolution);
 

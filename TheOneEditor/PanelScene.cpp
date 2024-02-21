@@ -12,7 +12,16 @@
 
 #include <vector>
 
-PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), isHovered(false) {}
+PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), isHovered(false)
+{
+    drawMesh = true;
+    drawWireframe = false;
+    drawNormalsVerts = false;
+    drawNormalsFaces = false;
+    drawAABB = true;
+    drawOBB = false;
+    drawChecker = false;
+}
 
 PanelScene::~PanelScene() {}
 
@@ -34,7 +43,7 @@ bool PanelScene::Draw()
         // Top Bar --------------------------
         if (ImGui::BeginMenuBar())
         {
-            //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
+            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
 
             if (ImGui::BeginMenu("Camera"))
             {
@@ -64,7 +73,19 @@ bool PanelScene::Draw()
             if (ImGui::BeginMenu("Gizmo"))
             {
                 ImGui::Text("Gizmo Options");
-                ImGui::Text("This section isn't finished, my precious...");
+                ImGui::Text("It seems like hekbas forgot to implement ImGuizmo...");
+
+                ImGui::EndMenu();
+            }
+            if (ImGui::BeginMenu("Render"))
+            {
+                ImGui::Checkbox("Mesh", &drawMesh);
+                ImGui::Checkbox("Wireframe", &drawWireframe);
+                ImGui::Checkbox("Vertex normals", &drawNormalsVerts);
+                ImGui::Checkbox("Face normals", &drawNormalsFaces);
+                ImGui::Checkbox("AABB", &drawAABB);
+                ImGui::Checkbox("OBB", &drawOBB);
+
                 ImGui::EndMenu();
             }
 

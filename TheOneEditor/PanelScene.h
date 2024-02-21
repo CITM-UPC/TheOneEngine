@@ -22,6 +22,14 @@ public:
 public:
 	bool isHovered;
 	std::vector<Ray> rays;
+
+	bool drawMesh;
+	bool drawWireframe;
+	bool drawNormalsVerts;
+	bool drawNormalsFaces;
+	bool drawAABB;
+	bool drawOBB;
+	bool drawChecker;
 };
 
 #endif // !__PANEL_SCENE_H__

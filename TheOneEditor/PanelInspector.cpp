@@ -205,16 +205,6 @@ bool PanelInspector::Draw()
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
 
-            //static char buf[5] = "0";
-            //ImGui::Text("Position");
-            ////ImGui::ItemSize(ImRect(ImVec2(0, 0), ImVec2(5, 5)));
-            //ImGui::PushItemWidth(40.0f);
-            //ImGui::SameLine();
-            //ImGui::InputText("x", buf, IM_ARRAYSIZE(buf));
-            //ImGui::SameLine();
-            //ImGui::InputText("y", buf, IM_ARRAYSIZE(buf));
-            //ImGui::SameLine();
-            //ImGui::InputText("z", buf, IM_ARRAYSIZE(buf));
 
             /*Mesh Component*/
             Mesh* mesh = selectedGO.get()->GetComponent<Mesh>();
@@ -234,19 +224,20 @@ bool PanelInspector::Draw()
                 ImGui::Text("Faces: ");
                 ImGui::SameLine();  ImGui::Text(std::to_string(mesh->mesh.numFaces).c_str());
 
-                ImGui::Checkbox("Active Mesh", &mesh->active);
-                ImGui::Checkbox("Active vertex normals", &mesh->drawNormalsVerts);
-                ImGui::Checkbox("Active face normals", &mesh->drawNormalsFaces);
-                ImGui::Checkbox("Active Wireframe", &mesh->drawWireframe);
-                ImGui::Checkbox("Active AABB", &mesh->drawAABB);
-                ImGui::Checkbox("Active OBB", &mesh->drawOBB);
+                ImGui::Checkbox("Mesh", &mesh->active);
+                ImGui::Checkbox("Vertex normals", &mesh->drawNormalsVerts);
+                ImGui::Checkbox("Face normals", &mesh->drawNormalsFaces);
+                ImGui::Checkbox("Wireframe", &mesh->drawWireframe);
+                ImGui::Checkbox("AABB", &mesh->drawAABB);
+                ImGui::Checkbox("OBB", &mesh->drawOBB);
                 //ImGui::Checkbox("Active checkboard", &mesh->drawChecker);
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
             
-            /*Material Component*/
 
+            /*Material Component*/
+            //hekbas todo
 
 
             /*Texture Component*/

@@ -4,19 +4,22 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "UIDGen.h"
+#include "BBox.hpp"
+
+
 #include "../TheOneEditor/SceneManager.h"
 
 #include "Math.h"
 
 
-GameObject::GameObject(std::string name)
-	: name(name),
+GameObject::GameObject(std::string name) :
+	name(name),
 	parent(),
 	children(),
 	components(),
 	enabled(true),
 	isStatic(false),
-	index(-1)
+	aabb()
 {
 	// hekbas - shared_from_this() must NOT be called in the constructor!!!
 	// uncomenting the following line causes undefined behaviour
@@ -40,6 +43,9 @@ void GameObject::Update(double dt)
 	// Update childs
 	for (const auto& child : children)
 		child->Update(dt);
+
+	// Recalculate AABBs
+	aabb = CalculateAABB();
 }
 
 void GameObject::Draw()
@@ -49,7 +55,11 @@ void GameObject::Draw()
 		if (component && component->IsEnabled())
 			component->DrawComponent();
 	}
+
+	//if (drawAABB)
+		DrawAABB();
 }
+
 
 // Component ----------------------------------------
 void GameObject::RemoveComponent(ComponentType type)
@@ -68,6 +78,161 @@ void GameObject::RemoveComponent(ComponentType type)
 //{
 //	return components;
 //}
+
+
+// AABB -------------------------------------
+void GameObject::GenerateAABBFromMesh()
+{
+	Mesh* mesh = GetComponent<Mesh>();
+
+	glGenBuffers(1, &mesh->mesh.vertex_buffer_id);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->mesh.vertex_buffer_id);
+
+	switch (mesh->mesh.format)
+	{
+	case Formats::F_V3:
+		glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
+		for (const auto& v : std::span((V3*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
+			aabb.min = glm::min(aabb.min, vec3(v.v));
+			aabb.max = glm::max(aabb.max, vec3(v.v));
+		}
+		break;
+
+	case Formats::F_V3C4:
+		glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
+		for (const auto& v : std::span((V3C4*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
+			aabb.min = glm::min(aabb.min, vec3(v.v));
+			aabb.max = glm::max(aabb.max, vec3(v.v));
+		}
+		break;
+
+	case Formats::F_V3T2:
+		glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
+		for (const auto& v : std::span((V3T2*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
+			aabb.min = glm::min(aabb.min, vec3(v.v));
+			aabb.max = glm::max(aabb.max, vec3(v.v));
+		}
+		break;
+	}
+
+	//GLenum error = glGetError();
+	//if (error != GL_NO_ERROR) {
+	//    // Print the raw error code
+	//    fprintf(stderr, "OpenGL error code: %d\n", error);
+	//
+	//    // Print the corresponding error string
+	//    const char* errorString = reinterpret_cast<const char*>(gluErrorString(error));
+	//    fprintf(stderr, "OpenGL error: %s\n", errorString ? errorString : "Unknown");
+	//
+	//    assert(false); // Trigger an assertion failure for debugging
+	//}
+
+}
+
+AABBox GameObject::CalculateAABB()
+{
+	AABBox aabb = this->aabb;
+
+	for (const auto& child : children)
+	{
+		AABBox childAABB = (child.get()->GetComponent<Transform>()->getMatrix() * child.get()->CalculateAABB()).AABB();
+		aabb.min = glm::min(aabb.min, childAABB.min);
+		aabb.max = glm::max(aabb.max, childAABB.max);
+	}
+
+	return aabb;
+}
+
+AABBox GameObject::CalculateAABBWithChildren()
+{
+	AABBox aabb = CalculateAABB();
+	// Transform the AABB to the coordinate system of the parent objects
+	mat4 parentTransform = GetComponent<Transform>()->GetWorldTransform();
+	OBBox obb = parentTransform * aabb;
+	return obb.AABB();
+}
+
+static inline void glVec3(const vec3& v) { glVertex3dv(&v.x); }
+
+void GameObject::DrawAABB()
+{
+	glLineWidth(1);
+	glColor4ub(255, 255, 255, 64);
+
+	glBegin(GL_LINE_STRIP);
+	glVec3(aabb.a());
+	glVec3(aabb.b());
+	glVec3(aabb.c());
+	glVec3(aabb.d());
+	glVec3(aabb.a());
+
+	glVec3(aabb.e());
+	glVec3(aabb.f());
+	glVec3(aabb.g());
+	glVec3(aabb.h());
+	glVec3(aabb.e());
+	glEnd();
+
+	glBegin(GL_LINES);
+	glVec3(aabb.h());
+	glVec3(aabb.d());
+	glVec3(aabb.f());
+	glVec3(aabb.b());
+	glVec3(aabb.g());
+	glVec3(aabb.c());
+	glEnd();
+
+	glColor4ub(255, 255, 255, 255);
+}
+
+void GameObject::DrawOBB()
+{
+	glColor3f(1, 0, 1);
+	glLineWidth(2);
+	vec3f* obb_points = nullptr;
+	//obb.GetCornerPoints(obb_points);
+	//
+	//glBegin(GL_LINES);
+	//
+	//glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
+	//glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
+	//
+	//glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
+	//glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
+	//
+	//glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
+	//glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
+	//
+	//glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
+	//glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
+	//
+	//glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
+	//glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
+	//
+	//glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
+	//glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
+	//
+	//glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
+	//glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
+	//
+	//glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
+	//glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
+	//
+	//glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
+	//glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
+	//
+	//glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
+	//glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
+	//
+	//glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
+	//glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
+	//
+	//glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
+	//glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
+	//
+	//glLineWidth(1);
+	//glEnd();
+}
 
 
 // Get/Set ------------------------------------------
@@ -100,8 +265,6 @@ void GameObject::Disable()
 
 void GameObject::Delete()
 {
-
-
 	for (const auto& component : components)
 		component.get_deleter();
 
@@ -134,6 +297,8 @@ void GameObject::CreateUID()
 	UID = UIDGen::GenerateUID();
 }
 
+
+// Save/Load ------------------------------------------
 json GameObject::SaveGameObject()
 {
 	json gameObjectJSON;

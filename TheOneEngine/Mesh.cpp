@@ -14,6 +14,7 @@
 
 Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Mesh)
 {
+    active = true;
     drawNormalsFaces = false;
     drawNormalsVerts = false;
     drawAABB = true;
@@ -31,84 +32,12 @@ Mesh::~Mesh()
     if (_indexs_buffer_id) glDeleteBuffers(1, &_indexs_buffer_id);*/
 }
 
-// AABBs
-void Mesh::GenerateAABB()
-{
-    glGenBuffers(1, &mesh.vertex_buffer_id);
-    glBindBuffer(GL_ARRAY_BUFFER, mesh.vertex_buffer_id);
-
-    switch (mesh.format) {
-    case Formats::F_V3:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * mesh.numVerts, meshData.vertex_data.data(), GL_STATIC_DRAW);
-        for (const auto& v : std::span((V3*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            aabb.min = glm::min(aabb.min, vec3(v.v));
-            aabb.max = glm::max(aabb.max, vec3(v.v));
-        }
-        break;
-
-    case Formats::F_V3C4:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * mesh.numVerts, meshData.vertex_data.data(), GL_STATIC_DRAW);
-        for (const auto& v : std::span((V3C4*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            aabb.min = glm::min(aabb.min, vec3(v.v));
-            aabb.max = glm::max(aabb.max, vec3(v.v));
-        }
-        break;
-
-    case Formats::F_V3T2:
-        glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * mesh.numVerts, meshData.vertex_data.data(), GL_STATIC_DRAW);
-        for (const auto& v : std::span((V3T2*)meshData.vertex_data.data(), meshData.vertex_data.size())) {
-            aabb.min = glm::min(aabb.min, vec3(v.v));
-            aabb.max = glm::max(aabb.max, vec3(v.v));
-        }
-        break;
-    }
-
-    //GLenum error = glGetError();
-    //if (error != GL_NO_ERROR) {
-    //    // Print the raw error code
-    //    fprintf(stderr, "OpenGL error code: %d\n", error);
-    //
-    //    // Print the corresponding error string
-    //    const char* errorString = reinterpret_cast<const char*>(gluErrorString(error));
-    //    fprintf(stderr, "OpenGL error: %s\n", errorString ? errorString : "Unknown");
-    //
-    //    assert(false); // Trigger an assertion failure for debugging
-    //}
-
-}
-
-AABBox Mesh::CalculateAABB(GameObject& gameObject)
-{
-    AABBox aabb = gameObject.GetComponent<Mesh>()->aabb;
-
-    for (const auto& child : gameObject.children)
-    {
-        AABBox childAABB = (child.get()->GetComponent<Transform>()->getMatrix() * CalculateAABB(*child)).AABB();
-        aabb.min = glm::min(aabb.min, childAABB.min);
-        aabb.max = glm::max(aabb.max, childAABB.max);
-    }
-
-    return aabb;
-}
-
-AABBox Mesh::CalculateAABBWithChildren(GameObject& gameObject)
-{
-    AABBox aabb = CalculateAABB(gameObject);
-    // Transform the AABB to the coordinate system of the parent objects
-    mat4 parentTransform = gameObject.GetComponent<Transform>()->GetWorldTransform();
-    OBBox obb = parentTransform * aabb;
-    return obb.AABB();
-}
-
 
 // Draw
 void Mesh::DrawComponent()
 {
     glLineWidth(1);
-    glColor4ub(255, 255, 255, 255);
-
-    // uncomment the line below for WIREFRAME MODE
-    //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glColor4ub(255, 255, 255, 255); 
 
     glBindBuffer(GL_ARRAY_BUFFER, mesh.vertex_buffer_id);
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -117,14 +46,49 @@ void Mesh::DrawComponent()
     glPushMatrix();
     glMultMatrixd(&containerGO.get()->GetComponent<Transform>()->getMatrix()[0].x);
 
+    ConfigureVertexFormat();
 
-    //hekbas: AABB test
-    //aabb = CalculateAABBWithChildren(*containerGO);
-    aabb = CalculateAABB(*containerGO);
-    if (drawAABB) DrawAABB();
+    if (active)
+    {
+        if (drawWireframe)
+        {
+            glDisable(GL_TEXTURE_2D);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        }
+        else
+        {
+            glEnable(GL_TEXTURE_2D);
+            glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        }
+
+        if (mesh.indexs_buffer_id)
+        {
+            glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.indexs_buffer_id);
+            glDrawElements(GL_TRIANGLES, mesh.numIndexs, GL_UNSIGNED_INT, nullptr);
+        }
+        else
+            glDrawArrays(GL_TRIANGLES, 0, mesh.numVerts);
+
+        if (drawNormalsVerts) DrawVertexNormals();
+        if (drawNormalsFaces) DrawFaceNormals();
 
 
-    // Mesh
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        glDisableClientState(GL_VERTEX_ARRAY);
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        glDisable(GL_TEXTURE_2D);
+    }
+    
+    GLenum error = glGetError();
+
+    glPopMatrix();
+}
+
+void Mesh::ConfigureVertexFormat()
+{
     switch (mesh.format)
     {
     case Formats::F_V3:
@@ -147,37 +111,12 @@ void Mesh::DrawComponent()
         glTexCoordPointer(2, GL_FLOAT, sizeof(V3T2), (void*)sizeof(V3));
         break;
     }
-
-    if (mesh.indexs_buffer_id) {
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh.indexs_buffer_id);
-        glDrawElements(GL_TRIANGLES, mesh.numIndexs, GL_UNSIGNED_INT, nullptr);
-    }
-    else
-        glDrawArrays(GL_TRIANGLES, 0, mesh.numVerts);
-    
-    if (drawNormalsVerts && !meshData.meshVerts.empty() && !meshData.meshNorms.empty())
-        DrawVertexNormals();
-
-    if (drawNormalsFaces && !meshData.meshFaceCenters.empty() && !meshData.meshFaceNorms.empty())
-        DrawFaceNormals();
-
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_COLOR_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-    glDisable(GL_TEXTURE_2D);
-
-
-    GLenum error = glGetError();
-
-    glPopMatrix();
 }
 
 void Mesh::DrawVertexNormals() 
 {
+    if (meshData.meshVerts.empty() || meshData.meshNorms.empty()) return;
+
     glLineWidth(normalLineWidth);
     glColor3f(1.0f, 1.0f, 0.0f);
     glBegin(GL_LINES);
@@ -196,6 +135,8 @@ void Mesh::DrawVertexNormals()
 
 void Mesh::DrawFaceNormals() 
 {
+    if (meshData.meshFaceCenters.empty() || meshData.meshFaceNorms.empty()) return;
+
     glLineWidth(normalLineWidth);
     glColor3f(1.0f, 0.0f, 1.0f);
     glBegin(GL_LINES);
@@ -209,88 +150,6 @@ void Mesh::DrawFaceNormals()
 
     glColor3f(0.0f, 1.0f, 1.0f);
     glEnd();
-}
-
-static inline void glVec3(const vec3& v) { glVertex3dv(&v.x); }
-
-void Mesh::DrawAABB() 
-{
-    glLineWidth(1);
-    glColor4ub(255, 255, 255, 64);
-
-    glBegin(GL_LINE_STRIP); 
-    glVec3(aabb.a());
-    glVec3(aabb.b());
-    glVec3(aabb.c());
-    glVec3(aabb.d());
-    glVec3(aabb.a());
-    
-    glVec3(aabb.e());
-    glVec3(aabb.f());
-    glVec3(aabb.g());
-    glVec3(aabb.h());
-    glVec3(aabb.e());
-    glEnd();
-    
-    glBegin(GL_LINES);
-    glVec3(aabb.h());
-    glVec3(aabb.d());
-    glVec3(aabb.f());
-    glVec3(aabb.b());
-    glVec3(aabb.g());
-    glVec3(aabb.c());
-    glEnd();
-
-    glColor4ub(255, 255, 255, 255);
-}
-
-void Mesh::DrawOBB()
-{
-    glColor3f(1, 0, 1);
-    glLineWidth(2);
-    vec3f* obb_points = nullptr;
-    //obb.GetCornerPoints(obb_points);
-    //
-    //glBegin(GL_LINES);
-    //
-    //glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
-    //glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
-    //
-    //glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
-    //glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
-    //
-    //glVertex3f(obb.CornerPoint(0).x, obb.CornerPoint(0).y, obb.CornerPoint(0).z);
-    //glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
-    //
-    //glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
-    //glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
-    //
-    //glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
-    //glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
-    //
-    //glVertex3f(obb.CornerPoint(1).x, obb.CornerPoint(1).y, obb.CornerPoint(1).z);
-    //glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
-    //
-    //glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
-    //glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
-    //
-    //glVertex3f(obb.CornerPoint(4).x, obb.CornerPoint(4).y, obb.CornerPoint(4).z);
-    //glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
-    //
-    //glVertex3f(obb.CornerPoint(2).x, obb.CornerPoint(2).y, obb.CornerPoint(2).z);
-    //glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
-    //
-    //glVertex3f(obb.CornerPoint(5).x, obb.CornerPoint(5).y, obb.CornerPoint(5).z);
-    //glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
-    //
-    //glVertex3f(obb.CornerPoint(6).x, obb.CornerPoint(6).y, obb.CornerPoint(6).z);
-    //glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
-    //
-    //glVertex3f(obb.CornerPoint(3).x, obb.CornerPoint(3).y, obb.CornerPoint(3).z);
-    //glVertex3f(obb.CornerPoint(7).x, obb.CornerPoint(7).y, obb.CornerPoint(7).z);
-    //
-    //glLineWidth(1);
-    //glEnd();
 }
 
 

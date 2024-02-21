@@ -4,6 +4,7 @@
 
 #include "Defs.h"
 #include "Component.h"
+#include "BBox.hpp"
 
 #include "..\TheOneEditor\Log.h"
 
@@ -23,6 +24,7 @@ public:
 
     void Update(double dt);
     void Draw();
+
 
     // Components
     template <typename TComponent>
@@ -60,6 +62,15 @@ public:
 
     void RemoveComponent(ComponentType type);
 
+
+    // AABB
+    void GenerateAABBFromMesh();
+    AABBox CalculateAABB();
+    AABBox CalculateAABBWithChildren();
+    void DrawAABB();
+    void DrawOBB();
+
+
     // Get/Set
     bool IsEnabled() const;
     void Enable();
@@ -89,7 +100,7 @@ private:
     std::vector<std::unique_ptr<Component>> components;
     uint32_t UID;
     bool enabled;
-    int index;
+    AABBox aabb;
 };
 
 #endif // !__GAME_OBJECT_H__

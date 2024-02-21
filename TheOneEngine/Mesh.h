@@ -15,16 +15,12 @@
 class GameObject;
 struct MeshBufferData;
 
-class Mesh : public Component, public Graphic
+class Mesh : public Component
 {
 public:
 
     Mesh(std::shared_ptr<GameObject> containerGO);
     virtual ~Mesh();
-
-    void GenerateAABB();
-    AABBox CalculateAABB(GameObject& gameObject);
-    AABBox CalculateAABBWithChildren(GameObject& gameObject);
 
     void DrawComponent();
 
@@ -33,13 +29,10 @@ public:
 
 private:
 
-    void DrawAABB();
-
+    void ConfigureVertexFormat();
     void DrawVertexNormals();
     void DrawFaceNormals();
-
     //void DrawWireframe();
-    void DrawOBB();
 
 public:
 
@@ -48,12 +41,12 @@ public:
 
     bool active;
     bool drawWireframe;
+    bool drawNormalsVerts;
+    bool drawNormalsFaces;
     bool drawAABB;
     bool drawOBB;
     bool drawChecker;
-
-    bool drawNormalsVerts;
-    bool drawNormalsFaces;
+   
     int normalLineWidth;
     float normalLineLength;
 

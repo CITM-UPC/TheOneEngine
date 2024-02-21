@@ -179,7 +179,13 @@ void PanelSettings::Input()
 	ImGui::TextColored(grey, "%.1f", io.MouseWheel);
 
 	// Keys Down
-	struct funcs { static bool IsLegacyNativeDupe(ImGuiKey key) { return key < 512 && ImGui::GetIO().KeyMap[key] != -1; } }; // Hide Native<>ImGuiKey duplicates when both exists in the array
+	struct funcs
+	{
+		static bool IsLegacyNativeDupe(ImGuiKey key)
+		{ 
+			return key < 512 && ImGui::GetIO().KeyMap[key] != -1;
+		}
+	}; // Hide Native<>ImGuiKey duplicates when both exists in the array
 	ImGuiKey start_key = (ImGuiKey)0;
 
 	ImGui::Text("Keys down:");
@@ -207,7 +213,6 @@ void PanelSettings::Input()
 
 void PanelSettings::Renderer()
 {
-
 }
 
 void PanelSettings::Hardware()
@@ -299,8 +304,6 @@ void PanelSettings::Hardware()
 	ImGui::Text(" VRAM Available");
 	ImGui::SameLine();
 	ImGui::TextColored(grey, "%.1f MB", hardware_info.vram_mb_available);
-
-	
 }
 
 void PanelSettings::Software()
@@ -333,4 +336,3 @@ void PanelSettings::Software()
 	ImGui::SameLine();
 	ImGui::TextColored(grey, "5.2.5");
 }
-// --------------------------------------------------

@@ -17,8 +17,8 @@
           "Name": "Transform",
           "ParentUID": 3452816845,
           "Position": [
-            -10.0,
-            8.0,
+            0.0,
+            0.0,
             0.0
           ],
           "Rotation": [
@@ -33,135 +33,125 @@
             1.0
           ],
           "Type": 0,
-          "UID": 1066296441
-        },
-        {
-          "Aspect": 1.777,
-          "FOV": 65.0,
-          "Name": "Camera",
-          "ParentUID": 3452816845,
-          "Pitch": 0.0,
-          "Type": 1,
-          "UID": 896069147,
-          "Yaw": 0.0,
-          "zFar": 1000.0,
-          "zNear": 0.1
+          "UID": 1789657448
         }
       ],
       "Enabled": true,
-      "Name": "Game Camera",
-      "ParentUID": 3452816845,
-      "Static": false,
-      "UID": 3452816845
-    },
-    {
-      "Components": [
+      "GameObjects": [
         {
-          "LocalRotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 3042905708
+            },
+            {
+              "Active": true,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/baker_house/Untitled.001.mesh",
+              "Type": 2,
+              "UID": 521701738
+            }
           ],
-          "LocalScale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Name": "Transform",
+          "Enabled": true,
+          "Name": "Untitled.001",
           "ParentUID": 3452816845,
-          "Position": [
-            -50.0,
-            15.0,
-            0.0
-          ],
-          "Rotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Type": 0,
-          "UID": 3240592271
+          "Static": false,
+          "UID": 3452816845
         },
         {
-          "Active": false,
-          "DrawAABB": true,
-          "DrawChecker": false,
-          "DrawNormalsFaces": false,
-          "DrawNormalsVerts": false,
-          "DrawOBB": false,
-          "DrawWireframe": false,
-          "Name": "Mesh",
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1222135075
+            },
+            {
+              "Active": true,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/baker_house/Untitled.mesh",
+              "Type": 2,
+              "UID": 3240659428
+            }
+          ],
+          "Enabled": true,
+          "Name": "Untitled",
           "ParentUID": 3452816845,
-          "Path": "Library/Meshes/teapot/Teapot.mesh",
-          "Type": 2,
-          "UID": 323661394
+          "Static": false,
+          "UID": 3452816845
         }
       ],
-      "Enabled": true,
-      "Name": "Teapot",
-      "ParentUID": 3452816845,
-      "Static": false,
-      "UID": 3452816845
-    },
-    {
-      "Components": [
-        {
-          "LocalRotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "LocalScale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Name": "Transform",
-          "ParentUID": 3452816845,
-          "Position": [
-            50.0,
-            15.0,
-            0.0
-          ],
-          "Rotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Scale": [
-            1.0,
-            1.0,
-            1.0
-          ],
-          "Type": 0,
-          "UID": 3551317856
-        },
-        {
-          "Active": false,
-          "DrawAABB": true,
-          "DrawChecker": false,
-          "DrawNormalsFaces": false,
-          "DrawNormalsVerts": false,
-          "DrawOBB": false,
-          "DrawWireframe": false,
-          "Name": "Mesh",
-          "ParentUID": 3452816845,
-          "Path": "Library/Meshes/teapot/Teapot.mesh",
-          "Type": 2,
-          "UID": 1886067991
-        }
-      ],
-      "Enabled": true,
-      "Name": "Teapot",
+      "Name": "baker_house",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845
