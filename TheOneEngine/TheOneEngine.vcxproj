@@ -102,6 +102,9 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>copy "..\mono\bin\" "..\x64\Debug\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -132,6 +135,9 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
     <Lib>
       <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>copy "..\mono\bin\" "..\x64\Release\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
