@@ -70,7 +70,7 @@ bool PanelHierarchy::Draw()
 	return true;
 }
 
-void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
+void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> parentGO)
 {
 	if (ImGui::BeginPopupContextItem())
 	{
@@ -87,9 +87,16 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 		if (ImGui::MenuItem("Remove"))
 		{
 			//Historn: Change to remove function
-			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
-			//go.get()->Delete();
-			go.get()->Disable();
+			LOG(LogType::LOG_INFO, "Use Count: %d", parentGO.use_count());
+			//Erase GameObject from children rootGO Vector
+			/*app->sceneManager->GetRootSceneGO().get()->children;
+			for (auto go : app->sceneManager->GetRootSceneGO().get()->children)
+			{
+				if (go == parentGO)
+				{
+					go.
+				}
+			}*/
 		}
 
 		ImGui::EndPopup();
