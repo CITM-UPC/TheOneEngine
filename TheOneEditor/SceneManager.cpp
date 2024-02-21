@@ -33,7 +33,7 @@ bool SceneManager::Start()
     //CreateSphere();
     
     CreateMeshGO("Assets\\Meshes\\baker_house.fbx");
-    CreateMeshGO("Assets\\Meshes\\street_new.fbx");
+    /*CreateMeshGO("Assets\\Meshes\\street_new.fbx");
     CreateMeshGO("Assets\\Meshes\\Cadillac_CT4_V_2022.fbx");
 
     for (auto mesh : GetGameObjects()) {
@@ -52,7 +52,7 @@ bool SceneManager::Start()
     spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
     
     spatialObject1 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
-    spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });
+    spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });*/
 
     return true;
 }
@@ -76,10 +76,10 @@ bool SceneManager::Update(double dt)
         LoadScene(filename);
     }
     //Audio moving
-    if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->state == GameState::PLAY)
+    /*if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->state == GameState::PLAY)
         spatialObject2->GetComponent<Transform>()->setPosition({spatialObject2->GetComponent<Transform>()->getPosition().x + 1 ,15,0 });
     if (app->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT && app->state == GameState::PLAY)
-        spatialObject2->GetComponent<Transform>()->setPosition({ spatialObject2->GetComponent<Transform>()->getPosition().x -1 ,15,0 });
+        spatialObject2->GetComponent<Transform>()->setPosition({ spatialObject2->GetComponent<Transform>()->getPosition().x -1 ,15,0 });*/
 
     /*if (app->IsPlaying()) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);
@@ -96,14 +96,14 @@ bool SceneManager::Update(double dt)
         spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
     }*/
 
-    app->engine->audio->SetSpatial1Transform(
+    /*app->engine->audio->SetSpatial1Transform(
         spatialObject1->GetComponent<Transform>()->getPosition().x,
         spatialObject1->GetComponent<Transform>()->getPosition().y,
         spatialObject1->GetComponent<Transform>()->getPosition().z);
     app->engine->audio->SetSpatial2Transform(
         spatialObject2->GetComponent<Transform>()->getPosition().x,
         spatialObject2->GetComponent<Transform>()->getPosition().y,
-        0);
+        0);*/
 
     return true;
 }
@@ -203,24 +203,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
             // Transform ---------------------------------
             meshGO.get()->AddComponent<Transform>();
 
-            // get local transformations
-            //aivector3d translation, scaling;
-            //aiquaternion rotation;
-            //// local pos, rot & scale
-            //node->mtransformation.decompose(scaling, rotation, translation);
-
-            //// set the scale in value of 1 but keeping the dimensions
-            ////float max_ = max(scaling.x, scaling.y);
-            ////max_ = max(max_, scaling.z);
-
-            //float3 pos(translation.x, translation.y, translation.z);
-            ////float3 scale(scaling.x / max_, scaling.y / max_, scaling.z / max_);
-            //float3 scale(scaling.x, scaling.y, scaling.z);
-            //quat rot(rotation.x, rotation.y, rotation.z, rotation.w);
-
-            //ret->pos = pos;
-            //ret->scale = scale;
-            //ret->rot = rot;           
+          
 
             // Mesh  --------------------------------------
             meshGO.get()->AddComponent<Mesh>();

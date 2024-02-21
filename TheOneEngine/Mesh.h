@@ -22,22 +22,30 @@ public:
     Mesh(std::shared_ptr<GameObject> containerGO);
     virtual ~Mesh();
 
-    void DrawComponent();
-
     void GenerateAABB();
+    AABBox CalculateAABB(GameObject& gameObject);
+    AABBox CalculateAABBWithChildren(GameObject& gameObject);
+
+    void DrawComponent();
 
     json SaveComponent();
     void LoadComponent(const json& meshJSON);
+
+private:
+
+    void DrawAABB();
+
+    void DrawVertexNormals();
+    void DrawFaceNormals();
+
+    //void DrawWireframe();
+    void DrawOBB();
 
 public:
 
     MeshBufferedData mesh;
     MeshData meshData;
 
-    //now inside MeshBufferedData
-    //std::vector<std::shared_ptr<Texture>> texture;
-
-public:
     bool active;
     bool drawWireframe;
     bool drawAABB;
@@ -52,14 +60,6 @@ public:
     std::string path;
 
 private:
-    
-    void DrawAABB();
-
-    void DrawVertexNormals();
-    void DrawFaceNormals();
-
-    //void DrawWireframe();
-    void DrawOBB();
 
     MeshLoader* meshLoader;
 };

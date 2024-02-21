@@ -73,7 +73,7 @@ bool Renderer3D::Update(double dt)
 
     app->engine->Update(dt);
 
-    app->engine->audio->SetListenerTransform(
+    /*app->engine->audio->SetListenerTransform(
         sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
@@ -91,7 +91,7 @@ bool Renderer3D::Update(double dt)
     app->engine->audio->SetSpatial2Transform(
         app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().x,
         app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().y,
-        0);
+        0);*/
 
     return true;
 }

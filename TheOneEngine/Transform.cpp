@@ -99,6 +99,21 @@ void Transform::updateMatrix()
     globalMatrix = glm::scale(globalMatrix, scale);
 }
 
+// Traverse the hierarchy to multiply the transformation matrices of parent objects
+mat4 Transform::GetWorldTransform()
+{
+    mat4 worldTransform = globalMatrix;   
+    GameObject* parent = containerGO.lock().get()->parent.lock().get();
+
+    while (parent->GetName() != "Scene")
+    {
+        worldTransform = parent->GetComponent<Transform>()->globalMatrix * worldTransform;
+        parent = parent->parent.lock().get();
+    }
+
+    return worldTransform;
+}
+
 vec3 Transform::getPosition() const
 {
     return position;

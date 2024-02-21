@@ -58,6 +58,5 @@ ComponentType Component::GetType() const
 
 std::shared_ptr<GameObject> Component::GetContainerGO() const
 {
-	std::shared_ptr<GameObject> sharedPtr = containerGO.lock();
-	return sharedPtr;
+	return containerGO.lock();
 }

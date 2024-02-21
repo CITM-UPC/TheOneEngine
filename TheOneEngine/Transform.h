@@ -31,6 +31,7 @@ public:
     // Gets Transformation model Matrix
     mat4 getMatrix();
     void updateMatrix();
+    mat4 GetWorldTransform();
 
     vec3 getPosition() const;
     void setPosition(const vec3& newPosition); // Sets position in global space
