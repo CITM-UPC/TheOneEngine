@@ -74,15 +74,10 @@ public:
     void SetStatic(bool isStatic);
 
     void CreateUID();
-    uint32 GetUID() const { return UID; }
+    uint32 GetUID() { return UID; }
 
     json SaveGameObject();
     void LoadGameObject(const json& gameObjectJSON);
-
-    // Define equality operator for GameObject
-    bool operator==(const GameObject& other) const {
-        return UID == other.UID;
-    }
 
 public:
     std::weak_ptr<GameObject> parent;

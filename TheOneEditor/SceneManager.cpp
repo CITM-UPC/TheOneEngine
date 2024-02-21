@@ -455,7 +455,7 @@ std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
     return rootSceneGO.get()->children;
 }
 
-void SceneManager::SetSelectedGO(const std::shared_ptr<GameObject>& gameObj)
+void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
     selectedGameObject = gameObj;
 }
@@ -566,7 +566,7 @@ void SceneManager::LoadScene(const std::string& filename)
 
 }
 
-void SceneManager::RecurseDrawChildren(const std::shared_ptr<GameObject>& parentGO)
+void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 {
     for (const auto gameObject : parentGO.get()->children)
     {

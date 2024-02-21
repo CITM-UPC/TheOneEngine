@@ -17,13 +17,13 @@ public:
 	PanelHierarchy(PanelType type, std::string name);
 	~PanelHierarchy();
 
-	void RecurseShowChildren(const std::shared_ptr<GameObject>& parent);
+	void RecurseShowChildren(std::shared_ptr<GameObject> parent);
 
 	bool Draw();
 
 	void ContextMenu(std::shared_ptr<GameObject> go);
 
-	bool ReparentDragDrop(const std::shared_ptr<GameObject>& childGO);
+	bool ReparentDragDrop(std::shared_ptr<GameObject> childGO);
 
 private:
 	bool open_selected;

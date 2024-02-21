@@ -10,7 +10,7 @@ PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, n
 
 PanelHierarchy::~PanelHierarchy() {}
 
-void PanelHierarchy::RecurseShowChildren(const std::shared_ptr<GameObject>& parent)
+void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 {
 	for (const auto childGO : parent.get()->children)
 	{
@@ -76,11 +76,7 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 	{
 		if (ImGui::MenuItem("Create Empty"))
 		{
-			//Historn: Add Create Empty GO function
-			GameObject* newGO = app->sceneManager->CreateEmptyGO().get();
-			go.get()->children.emplace_back(newGO);
-			newGO->parent = go.get()->weak_from_this();
-			reparent = true;
+			//Historn: Add Duplicate function
 		}
 		
 		if (ImGui::MenuItem("Duplicate"))
@@ -93,15 +89,14 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 			//Historn: Change to remove function
 			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
 			//go.get()->Delete();
-			go.get()->Delete();
-			//go.reset();
+			go.get()->Disable();
 		}
 
 		ImGui::EndPopup();
 	}
 }
 
-bool PanelHierarchy::ReparentDragDrop(const std::shared_ptr<GameObject>& childGO)
+bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 {
 
 	if (ImGui::BeginDragDropSource())
@@ -133,7 +128,7 @@ bool PanelHierarchy::ReparentDragDrop(const std::shared_ptr<GameObject>& childGO
 
 			dragging->parent = childGO.get()->weak_from_this();
 
-			GameObject* newChild = dragging->weak_from_this().lock().get();
+			std::shared_ptr<GameObject> newChild = dragging->weak_from_this().lock();
 
 			if (oldParent != nullptr)
 			{

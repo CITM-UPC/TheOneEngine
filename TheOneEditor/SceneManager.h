@@ -57,7 +57,7 @@ public:
     std::vector<std::shared_ptr<GameObject>>GetGameObjects();
     
     std::shared_ptr<GameObject> GetSelectedGO() const;
-    void SetSelectedGO(const std::shared_ptr<GameObject>& gameObj);
+    void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
     std::shared_ptr<GameObject> GetRootSceneGO() const;
 
@@ -78,7 +78,7 @@ private:
     // Private constructor to enforce singleton pattern
     SceneManager() {}
 
-    void RecurseDrawChildren(const std::shared_ptr<GameObject>& parentGO);
+    void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
 
 private:
     //uint selectedGameObject;
