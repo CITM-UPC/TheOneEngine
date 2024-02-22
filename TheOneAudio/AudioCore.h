@@ -4,6 +4,9 @@
 
 #include "AudioUtility.h"
 
+//max audioevents at the same time, number can be changed if needed
+#define MAX_AUDIO_EVENTS 20
+
 class AudioEvent
 {
 public:
@@ -26,15 +29,22 @@ public:
 
 	void CleanUp();
 
+	//return -1 if failed
+	AkGameObjectID RegisterGameObject(std::string name);
+	void PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID, AudioEvent* audioEvent);
+
 	void PlayEngine();
 	void PauseEngine();
 
-	void SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
-	void SetSpatial1Transform(float posx, float posy, float posz);
-	void SetSpatial2Transform(float posx, float posy, float posz);
+	//transform the game object that events are attached to
+	void SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
+
+	//transform the position and reset the orientation to the game object that events are attached to
+	void SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz);
 
 	bool isGameOn;
 
+	//function called when an event finishes, to make AudioEvent know it ended
 	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
 
 private:
@@ -45,6 +55,12 @@ private:
 	bool InitMusicEngine();
 	bool InitSpatialAudio();
 	bool InitCommunication();
+
+	//vector of all game object ids
+	std::vector<AkGameObjectID> gameObjectIDs;
+
+	//
+	std::vector<AkGameObjectID> audioEventsArray;
 
 	// Camera
 	AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC;

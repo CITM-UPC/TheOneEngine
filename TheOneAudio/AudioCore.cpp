@@ -258,8 +258,6 @@ void AudioCore::Update(double dt)
     }
 }
 
-
-
 void AudioCore::CleanUp()
 {
 #ifndef AK_OPTIMIZED
@@ -279,6 +277,29 @@ void AudioCore::CleanUp()
 
     AK::MemoryMgr::Term();
 
+}
+
+AkGameObjectID AudioCore::RegisterGameObject(std::string name)
+{
+    if (AK::SoundEngine::RegisterGameObj((AkGameObjectID)gameObjectIDs.size(), name.c_str()) == AK_Success)
+    {
+        std::string log = "Game Object " + name + " Succesfully Registered";
+        LOG(LogType::LOG_AUDIO, log.c_str());
+        gameObjectIDs.push_back((AkGameObjectID)gameObjectIDs.size());
+        return gameObjectIDs.size() - 1;
+    }
+    else
+    {
+        std::string log = "Game Object " + name + " ERROR on Register";
+        LOG(LogType::LOG_AUDIO, log.c_str());
+        return -1;
+    }
+}
+
+void AudioCore::PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID, AudioEvent* audioEvent)
+{
+    AK::SoundEngine::PostEvent(eventToPlay, goID, AkCallbackType::AK_EndOfEvent, audioEvent->event_call_back, (void*)audioEvent);
+    audioEvent->playing_id = 1L;
 }
 
 void AudioCore::PlayEngine()
@@ -301,46 +322,45 @@ void AudioCore::PlayEngine()
 void AudioCore::PauseEngine()
 {
     isGameOn = false;
+
+    //will STOP all sounds (not pause)
+
+    for (size_t i = 0; i < gameObjectIDs.size(); i++)
+    {
+        AK::SoundEngine::StopAll(gameObjectIDs[i]);
+    }
+
+
+    //old code not deleted yet just in case
     AK::SoundEngine::StopAll(GAME_OBJECT_ID_BACKGROUNDMUSIC);
     AK::SoundEngine::StopAll(GAME_OBJECT_ID_SPATIALSOUND1);
     AK::SoundEngine::StopAll(GAME_OBJECT_ID_SPATIALSOUND2);
 }
 
-void AudioCore::SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
+void AudioCore::SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
 {
     //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
     AkSoundPosition tTransform;
     tTransform.SetPosition({ -posx, posy, -posz });
     tTransform.SetOrientation({ ofx, ofy, ofz }, { otx, oty, otz });
-    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_BACKGROUNDMUSIC, tTransform) != AK_Success)
+    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
     {
         LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
     }
 }
 
-void AudioCore::SetSpatial1Transform(float posx, float posy, float posz)
+void AudioCore::SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz)
 {
     //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
     AkSoundPosition tTransform;
     tTransform.SetPosition({ -posx, posy, -posz });
     tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
-    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_SPATIALSOUND1, tTransform) != AK_Success)
+    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to spatialsound1 (emiter 1)");
+        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
     }
 }
 
-void AudioCore::SetSpatial2Transform(float posx, float posy, float posz)
-{
-    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
-    AkSoundPosition tTransform;
-    tTransform.SetPosition({ -posx, posy, -posz });
-    tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
-    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_SPATIALSOUND2, tTransform) != AK_Success)
-    {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to spatialsound2 (emiter 2)");
-    }
-}
 
 void AudioCore::EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo)
 {
