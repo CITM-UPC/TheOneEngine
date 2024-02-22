@@ -11,6 +11,7 @@
 #include "Texture.h"
 #include "Ray.h"
 
+#include "Mono_Manager.h"
 #include "..\TheOneAudio\AudioCore.h"
 
 #include <chrono>
@@ -47,6 +48,7 @@ public:
 	
 	bool vsync = false;
 	AudioCore* audio = nullptr;
+	MonoManager* monoManager = nullptr;
 
 private:
 
