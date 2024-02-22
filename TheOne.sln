@@ -10,6 +10,10 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneAudio", "TheOneAudio\TheOneAudio.vcxproj", "{606662A0-B707-4C97-8361-5D46FD7FD1F3}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TheOneBuilder", "TheOneBuilder\TheOneBuilder.vcxproj", "{3E741995-6B13-4752-915C-CD495EC5DC00}"
+	ProjectSection(ProjectDependencies) = postProject
+		{606662A0-B707-4C97-8361-5D46FD7FD1F3} = {606662A0-B707-4C97-8361-5D46FD7FD1F3}
+		{0E04F5B4-D4A2-4F7B-B350-A0EDCAE8A446} = {0E04F5B4-D4A2-4F7B-B350-A0EDCAE8A446}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
