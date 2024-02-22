@@ -4,7 +4,7 @@
 
 void MonoManager::InitMono()
 {
-    mono_set_assemblies_path("mono/lib/4.5");
+    mono_set_assemblies_path("../mono/lib/4.5");
 
     MonoDomain* rootDomain = mono_jit_init("MyScriptRuntime");
 	if (rootDomain == nullptr)
@@ -29,11 +29,9 @@ void MonoManager::ShutDownMono()
 	mono_domain_set(mono_get_root_domain(), false);
 
 	mono_domain_unload(monoAppDomain);
-	delete monoAppDomain;
 	monoAppDomain = nullptr;
 
 	mono_jit_cleanup(monoRootDomain);
-	delete monoRootDomain;
 	monoRootDomain = nullptr;
 }
 

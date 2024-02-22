@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\mono\include\mono\jit\jit.h"
-#include "..\mono\include\mono\metadata\assembly.h"
-#include "..\mono\include\mono\metadata\attrdefs.h"
+#include "mono\jit\jit.h"
+#include "mono\metadata\assembly.h"
+#include "mono\metadata\attrdefs.h"
 
 #include <string>
 
