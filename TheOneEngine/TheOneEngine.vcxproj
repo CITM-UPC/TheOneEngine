@@ -20,7 +20,7 @@
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshLoader.h" />
-    <ClInclude Include="Mono_Manager.h" />
+    <ClInclude Include="MonoManager.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="EngineCore.h" />
@@ -35,7 +35,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshLoader.cpp" />
-    <ClCompile Include="Mono_Manager.cpp" />
+    <ClCompile Include="MonoManager.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="EngineCore.cpp" />

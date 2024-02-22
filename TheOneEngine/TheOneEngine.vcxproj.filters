@@ -69,7 +69,7 @@
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="Mono_Manager.h">
+    <ClInclude Include="MonoManager.h">
       <Filter>Scripting</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +107,7 @@
     <ClCompile Include="Ray.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="Mono_Manager.cpp">
+    <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
   </ItemGroup>
