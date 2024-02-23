@@ -15,15 +15,20 @@ public:
     void InitMono();
     void ShutDownMono();
 
-    MonoAssembly* LoadAssembly(std::string assemblyPath);
-    MonoClass* GetClass(MonoAssembly* assembly, std::string className);
-    MonoObject* InstantiateClass(std::string assemblyPath, std::string className);
+    MonoObject* InstantiateClass(const std::string& assemblyPath, const char* namespaceName, const char* className);
 
-    void CallCsharp(MonoObject* objectInstance);
-    void AddInternalCalls();
+    //Testing function only. Prints all the classes loaded in the given assembly onto the debug console (not LOG).
+    void PrintAssemblyClasses(const std::string& assemblyPath);
+
+private:
+    char* ReadBytes(const std::string& filepath, uint32_t* outSize);
+    MonoAssembly* LoadCSharpAssembly(const std::string& assemblyPath);
+    MonoClass* GetClassInAssembly(MonoAssembly* assembly, const char* namespaceName, const char* className);
 
 private:
     MonoDomain* monoRootDomain = nullptr;
     MonoDomain* monoAppDomain = nullptr;
+
+    MonoAssembly* mainAssembly = nullptr;
 };
 
