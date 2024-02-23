@@ -31,7 +31,7 @@ public:
 
 	//return -1 if failed
 	AkGameObjectID RegisterGameObject(std::string name);
-	void PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID, AudioEvent* audioEvent);
+	void PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID);
 
 	void PlayEngine();
 	void PauseEngine();
@@ -59,8 +59,9 @@ private:
 	//vector of all game object ids
 	std::vector<AkGameObjectID> gameObjectIDs;
 
-	//
-	std::vector<AkGameObjectID> audioEventsArray;
+	//vector of all audio events that must be used
+	//WHEN ITERATING IT USE AS MAX VALUE MAX_AUDIO_EVENTS
+	std::vector<AudioEvent*> audioEvents;
 
 	// Camera
 	AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC;

@@ -260,6 +260,19 @@ void AudioCore::Update(double dt)
 
 void AudioCore::CleanUp()
 {
+    //must delete vectors and stuff
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    {
+        //function to delete them here
+        if (audioEvents[i] != NULL)
+        {
+            delete(audioEvents[i]);
+        }
+    }
+    
+    audioEvents.clear();
+
+
 #ifndef AK_OPTIMIZED
     AK::Comm::Term();
 #endif // AK_OPTIMIZED
@@ -296,10 +309,19 @@ AkGameObjectID AudioCore::RegisterGameObject(std::string name)
     }
 }
 
-void AudioCore::PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID, AudioEvent* audioEvent)
+void AudioCore::PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID)
 {
-    AK::SoundEngine::PostEvent(eventToPlay, goID, AkCallbackType::AK_EndOfEvent, audioEvent->event_call_back, (void*)audioEvent);
-    audioEvent->playing_id = 1L;
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    {
+        if (audioEvents[i]->playing_id == 0L)
+        {
+            AK::SoundEngine::PostEvent(eventToPlay, goID, AkCallbackType::AK_EndOfEvent, audioEvents[i]->event_call_back, (void*)audioEvents[i]);
+            audioEvents[i]->playing_id = 1L;
+            return;
+        }
+    }
+    std::string log = "Maximum amount of audio events at the same time reached: " + MAX_AUDIO_EVENTS;
+    LOG(LogType::LOG_AUDIO, log.c_str());
 }
 
 void AudioCore::PlayEngine()
