@@ -14,7 +14,6 @@ bool AudioEvent::IsEventPlaying()
 
 AudioCore::AudioCore()
 {
-    isGameOn = false;
     nextSong = false;
 }
 
@@ -195,7 +194,7 @@ void AudioCore::Update(double dt)
     AK::SoundEngine::RenderAudio();
 
 
-    if (isGameOn)
+    if (state == EngineState::PLAYING)
     {
 
     }
@@ -257,13 +256,14 @@ AkGameObjectID AudioCore::RegisterGameObject(std::string name)
     }
 }
 
-void AudioCore::PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID)
+void AudioCore::PlayEvent(AkUniqueID event, AkGameObjectID goID)
 {
     for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
     {
+        //if we found unused audio event we use it
         if (audioEvents[i]->playing_id == 0L)
         {
-            AK::SoundEngine::PostEvent(eventToPlay, goID, AkCallbackType::AK_EndOfEvent, audioEvents[i]->event_call_back, (void*)audioEvents[i]);
+            AK::SoundEngine::PostEvent(event, goID, AkCallbackType::AK_EndOfEvent, audioEvents[i]->event_call_back, (void*)audioEvents[i]);
             audioEvents[i]->playing_id = 1L;
             return;
         }
@@ -272,33 +272,62 @@ void AudioCore::PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID)
     LOG(LogType::LOG_AUDIO, log.c_str());
 }
 
-void AudioCore::StopEvent(AkGameObjectID goID)
+void AudioCore::StopEvent(AkUniqueID event, AkGameObjectID goID)
 {
-    AK::SoundEngine::StopAll(gameObjectIDs[goID]);
+    AK::SoundEngine::ExecuteActionOnEvent(event, AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Stop, gameObjectIDs[goID]);
 }
 
-void AudioCore::PauseEvent(AkGameObjectID goID)
+void AudioCore::PauseEvent(AkUniqueID event, AkGameObjectID goID)
 {
-    //TO IMPLEMENT
+    AK::SoundEngine::ExecuteActionOnEvent(event, AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Pause, gameObjectIDs[goID]);
 }
 
-void AudioCore::ResumeEvent(AkGameObjectID goID)
+void AudioCore::ResumeEvent(AkUniqueID event, AkGameObjectID goID)
 {
-    //TO IMPLEMENT
+    AK::SoundEngine::ExecuteActionOnEvent(event, AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, gameObjectIDs[goID]);
 }
 
 void AudioCore::PlayEngine()
 {
-    isGameOn = true;
+    if (state == EngineState::PAUSED)
+    {
+        //resume stuff
+        for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+        {
+            if (audioEvents[i] != NULL)
+            {
+                AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, audioEvents[i]->playing_id);
+            }
+        }
+    }
+    else if (state == EngineState::STOPPED)
+    {
+        //play stuff
 
+    }
+
+    state = EngineState::PLAYING;
 }
 
 void AudioCore::PauseEngine()
 {
-    isGameOn = false;
+    state = EngineState::PAUSED;
+
+    //will PAUSE all sounds
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    {
+        if (audioEvents[i] != NULL)
+        {
+            AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Pause, audioEvents[i]->playing_id);
+        }
+    }
+}
+
+void AudioCore::StopEngine()
+{
+    state = EngineState::STOPPED;
 
     //will STOP all sounds (not pause)
-
     for (size_t i = 0; i < gameObjectIDs.size(); i++)
     {
         AK::SoundEngine::StopAll(gameObjectIDs[i]);

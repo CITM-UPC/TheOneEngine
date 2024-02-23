@@ -18,6 +18,13 @@ public:
 	AkCallbackFunc event_call_back;			// Call back function
 };
 
+enum struct EngineState
+{
+	STOPPED = 0,
+	PLAYING = 1,
+	PAUSED = 2
+};
+
 class AudioCore
 {
 public:
@@ -35,16 +42,17 @@ public:
 	//return -1 if failed
 	AkGameObjectID RegisterGameObject(std::string name);
 	//function to play an event
-	void PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID);
+	void PlayEvent(AkUniqueID event, AkGameObjectID goID);
 	//function to stop event
-	void StopEvent(AkGameObjectID goID);
+	void StopEvent(AkUniqueID event, AkGameObjectID goID);
 	//function to pause event
-	void PauseEvent(AkGameObjectID goID);
+	void PauseEvent(AkUniqueID event, AkGameObjectID goID);
 	//function to resume the event if it has been paused
-	void ResumeEvent(AkGameObjectID goID);
+	void ResumeEvent(AkUniqueID event, AkGameObjectID goID);
 
 	void PlayEngine();
 	void PauseEngine();
+	void StopEngine();
 
 	//transform the game object that events are attached to
 	void SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
@@ -52,7 +60,7 @@ public:
 	//transform the position and reset the orientation to the game object that events are attached to
 	void SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz);
 
-	bool isGameOn;
+	EngineState state = EngineState::STOPPED;
 
 	//function called when an event finishes, to make AudioEvent know it ended
 	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
