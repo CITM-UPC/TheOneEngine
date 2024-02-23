@@ -315,10 +315,10 @@ bool Gui::CleanUp()
 
 void Gui::Draw()
 {
-    ImGui::EndFrame();
+    //hekbas - Automatically called by ImGui::Render()
+    //ImGui::EndFrame();
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-    ImGui::EndFrame();
 
     // hekbas look into this
     /*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)

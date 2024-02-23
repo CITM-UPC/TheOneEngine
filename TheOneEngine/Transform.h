@@ -7,6 +7,12 @@
 
 #include <memory>
 
+enum Space
+{
+    LOCAL,
+    GLOBAL
+};
+
 class GameObject;
 
 class Transform : public Component

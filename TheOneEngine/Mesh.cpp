@@ -113,7 +113,7 @@ void Mesh::ConfigureVertexFormat()
     }
 }
 
-void Mesh::DrawVertexNormals() 
+void Mesh::DrawVertexNormals()
 {
     if (meshData.meshVerts.empty() || meshData.meshNorms.empty()) return;
 

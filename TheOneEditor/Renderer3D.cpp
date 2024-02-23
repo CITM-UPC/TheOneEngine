@@ -39,7 +39,7 @@ bool Renderer3D::Start()
     sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
     
 
-    app->engine->audio->SetListenerTransform(
+    /*app->engine->audio->SetListenerTransform(
         sceneCamera.get()->GetComponent<Transform>()->getPosition().x, 
         sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().z, 
@@ -48,7 +48,7 @@ bool Renderer3D::Start()
         sceneCamera.get()->GetComponent<Transform>()->getForward().z, 
         sceneCamera.get()->GetComponent<Transform>()->getUp().x,
         sceneCamera.get()->GetComponent<Transform>()->getUp().y,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().z);
+        sceneCamera.get()->GetComponent<Transform>()->getUp().z);*/
 
 
     // hekbas test adding same component
