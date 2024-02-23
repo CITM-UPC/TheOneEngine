@@ -39,7 +39,7 @@ public:
 	//set default listener
 	void SetDefaultListener(AkGameObjectID goID);
 
-	//return -1 if failed
+	//register a wwise game object and return its id or return -1 if failed
 	AkGameObjectID RegisterGameObject(std::string name);
 	//function to play an event
 	void PlayEvent(AkUniqueID event, AkGameObjectID goID);
@@ -50,9 +50,14 @@ public:
 	//function to resume the event if it has been paused
 	void ResumeEvent(AkUniqueID event, AkGameObjectID goID);
 
+	//audio engine functions
 	void PlayEngine();
 	void PauseEngine();
 	void StopEngine();
+
+	//volume functions
+	//percentage, from 0 (mute) to 100 (max)
+	void SetGlobalSound(float volume);
 
 	//transform the game object that events are attached to
 	void SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);

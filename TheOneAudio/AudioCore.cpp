@@ -334,6 +334,19 @@ void AudioCore::StopEngine()
     }
 }
 
+void AudioCore::SetGlobalSound(float volume)
+{
+    if (volume < 0.0f)
+    {
+        volume = 0.0f;
+    }
+    else if (volume > 100.0f)
+    {
+        volume = 100.0f;
+    }
+    AK::SoundEngine::SetOutputVolume(AK::SoundEngine::GetOutputID(AK_INVALID_UNIQUE_ID, 0.0f), (AkReal32)(volume * 0.01f));
+}
+
 void AudioCore::SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
 {
     //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
