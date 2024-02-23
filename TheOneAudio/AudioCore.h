@@ -34,7 +34,14 @@ public:
 
 	//return -1 if failed
 	AkGameObjectID RegisterGameObject(std::string name);
+	//function to play an event
 	void PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID);
+	//function to stop event
+	void StopEvent(AkGameObjectID goID);
+	//function to pause event
+	void PauseEvent(AkGameObjectID goID);
+	//function to resume the event if it has been paused
+	void ResumeEvent(AkGameObjectID goID);
 
 	void PlayEngine();
 	void PauseEngine();
@@ -65,22 +72,6 @@ private:
 	//vector of all audio events that must be used
 	//WHEN ITERATING IT USE AS MAX VALUE MAX_AUDIO_EVENTS
 	std::vector<AudioEvent*> audioEvents;
-
-	//// Camera
-	//AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC;
-	//// Static
-	//AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND1;
-	//// Moving
-	//AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND2;
-
-	//// 1st music background
-	//AudioEvent* music1;
-	//// 2nd music background
-	//AudioEvent* music2;
-	//// Static
-	//AudioEvent* spatial1;
-	//// Moving
-	//AudioEvent* spatial2;
 
 	//true: music1
 	//false: music2

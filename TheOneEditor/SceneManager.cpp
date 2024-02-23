@@ -96,11 +96,13 @@ bool SceneManager::Update(double dt)
         spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
     }
 
-    app->engine->audio->SetSpatial1Transform(
+    app->engine->audio->SetAudioGameObjectPosition(
+        //here must the gameobject compoment -> wwisegameobject   of the spatial 1
         spatialObject1->GetComponent<Transform>()->getPosition().x,
         spatialObject1->GetComponent<Transform>()->getPosition().y,
         spatialObject1->GetComponent<Transform>()->getPosition().z);
-    app->engine->audio->SetSpatial2Transform(
+    app->engine->audio->SetAudioGameObjectPosition(
+        //here must the gameobject compoment -> wwisegameobject   of the spatial 2
         spatialObject2->GetComponent<Transform>()->getPosition().x,
         spatialObject2->GetComponent<Transform>()->getPosition().y,
         0);

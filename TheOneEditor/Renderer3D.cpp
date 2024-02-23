@@ -36,8 +36,9 @@ bool Renderer3D::Start()
     sceneCamera.get()->AddComponent<Camera>();
     sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 15, -70));
     
-    app->engine->audio->SetListenerTransform(
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().x, 
+    app->engine->audio->SetAudioGameObjectTransform(
+        //here must the gameobject compoment -> wwisegameobject   of the camera
+        sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().z, 
         sceneCamera.get()->GetComponent<Transform>()->getForward().x, 
@@ -73,7 +74,8 @@ bool Renderer3D::Update(double dt)
 
     app->engine->Update(dt);
 
-    app->engine->audio->SetListenerTransform(
+    app->engine->audio->SetAudioGameObjectTransform(
+        //here must the gameobject compoment -> wwisegameobject   of the camera
         sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
@@ -84,11 +86,13 @@ bool Renderer3D::Update(double dt)
         sceneCamera.get()->GetComponent<Transform>()->getUp().y,
         sceneCamera.get()->GetComponent<Transform>()->getUp().z);
 
-    app->engine->audio->SetSpatial1Transform(
+    app->engine->audio->SetAudioGameObjectPosition(
+        //here must the gameobject compoment -> wwisegameobject   of the spatial sound 1
         app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().x,
         app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().y,
         app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().z);
-    app->engine->audio->SetSpatial2Transform(
+    app->engine->audio->SetAudioGameObjectPosition(
+        //here must the gameobject compoment -> wwisegameobject   of the spatial sound 2
         app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().x,
         app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().y,
         0);
