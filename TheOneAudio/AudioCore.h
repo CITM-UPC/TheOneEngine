@@ -29,6 +29,9 @@ public:
 
 	void CleanUp();
 
+	//set default listener
+	void SetDefaultListener(AkGameObjectID goID);
+
 	//return -1 if failed
 	AkGameObjectID RegisterGameObject(std::string name);
 	void PlayEvent(AkUniqueID eventToPlay, AkGameObjectID goID);
@@ -63,21 +66,21 @@ private:
 	//WHEN ITERATING IT USE AS MAX VALUE MAX_AUDIO_EVENTS
 	std::vector<AudioEvent*> audioEvents;
 
-	// Camera
-	AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC;
-	// Static
-	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND1;
-	// Moving
-	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND2;
+	//// Camera
+	//AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC;
+	//// Static
+	//AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND1;
+	//// Moving
+	//AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND2;
 
-	// 1st music background
-	AudioEvent* music1;
-	// 2nd music background
-	AudioEvent* music2;
-	// Static
-	AudioEvent* spatial1;
-	// Moving
-	AudioEvent* spatial2;
+	//// 1st music background
+	//AudioEvent* music1;
+	//// 2nd music background
+	//AudioEvent* music2;
+	//// Static
+	//AudioEvent* spatial1;
+	//// Moving
+	//AudioEvent* spatial2;
 
 	//true: music1
 	//false: music2
