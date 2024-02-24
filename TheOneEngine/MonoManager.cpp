@@ -68,6 +68,58 @@ MonoObject* MonoManager::InstantiateClass(const std::string& assemblyPath, const
     return classInstance;
 }
 
+void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall)
+{
+    // Get the MonoClass pointer from the instance
+    MonoClass* instanceClass = mono_object_get_class(monoBehaviourInstance);
+
+    // Get a reference to the method in the class
+    MonoMethod* method = mono_class_get_method_from_name(instanceClass, functionToCall.c_str(), 0);
+
+    if (method == nullptr)
+    {
+        std::cout << "Could not find method " << functionToCall << std::endl;
+        return;
+    }
+
+    // Call the C# method on the objectInstance instance, and get any potential exceptions
+    MonoObject* exception = nullptr;
+    mono_runtime_invoke(method, monoBehaviourInstance, nullptr, &exception);
+
+    //Handle the exception
+    if (exception != nullptr)
+    {
+        std::cout << "Exception occurred" << std::endl;
+        return;
+    }
+}
+
+void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall, void** params, int parameterCount)
+{
+    // Get the MonoClass pointer from the instance
+    MonoClass* instanceClass = mono_object_get_class(monoBehaviourInstance);
+
+    // Get a reference to the method in the class
+    MonoMethod* method = mono_class_get_method_from_name(instanceClass, functionToCall.c_str(), parameterCount);
+
+    if (method == nullptr)
+    {
+        std::cout << "Could not find method " << functionToCall << std::endl;
+        return;
+    }
+
+    // Call the C# method on the objectInstance instance, and get any potential exceptions
+    MonoObject* exception = nullptr;
+    mono_runtime_invoke(method, monoBehaviourInstance, params, &exception);
+
+    //Handle the exception
+    if (exception != nullptr)
+    {
+        std::cout << "Exception occurred" << std::endl;
+        return;
+    }
+}
+
 void MonoManager::PrintAssemblyClasses(const std::string& assemblyPath)
 {
     MonoImage* image = mono_assembly_get_image(mainAssembly);

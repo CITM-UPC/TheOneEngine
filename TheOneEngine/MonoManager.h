@@ -17,6 +17,9 @@ public:
 
     MonoObject* InstantiateClass(const std::string& assemblyPath, const char* namespaceName, const char* className);
 
+    void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall);
+    void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall, void** params, int parameterCount);
+
     //Testing function only. Prints all the classes loaded in the given assembly onto the debug console (not LOG).
     void PrintAssemblyClasses(const std::string& assemblyPath);
 
