@@ -67,6 +67,9 @@ public:
 
 	EngineState state = EngineState::STOPPED;
 
+	float globalVolume = 100.0f;
+
+
 	//function called when an event finishes, to make AudioEvent know it ended
 	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
 

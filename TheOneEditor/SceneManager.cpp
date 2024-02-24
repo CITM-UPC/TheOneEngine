@@ -1,6 +1,7 @@
 #include "App.h"
 #include "SceneManager.h"
 #include "Log.h"
+#include "Renderer3D.h"
 
 #include <fstream>
 #include <filesystem>
@@ -54,11 +55,65 @@ bool SceneManager::Start()
     spatialObject1 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
     spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });
 
+
+    int camera = app->engine->audio->RegisterGameObject("Camera");
+    int spatial1 = app->engine->audio->RegisterGameObject("Spatial1");
+
+
+    app->engine->audio->SetDefaultListener(camera);
+
+
+
     return true;
 }
 
 bool SceneManager::PreUpdate()
 {
+    //static const AkUniqueID MUSIC1 = 1730564819U;
+    //static const AkUniqueID MUSIC2 = 1730564816U;
+    //static const AkUniqueID SPATIAL1 = 2134552412U;
+    //static const AkUniqueID SPATIAL2 = 2134552415U;
+    //testing
+    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+    {
+        app->engine->audio->PlayEvent(1730564819U, 0);
+    }
+    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+    {
+        app->engine->audio->StopEvent(1730564819U, 0);
+    }
+    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+    {
+        app->engine->audio->PauseEvent(1730564819U, 0);
+    }
+    if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+    {
+        app->engine->audio->ResumeEvent(1730564819U, 0);
+    }
+
+    if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_REPEAT)
+    {
+        app->engine->audio->SetGlobalSound(app->engine->audio->globalVolume - 2);
+    }
+    if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_REPEAT)
+    {
+        app->engine->audio->SetGlobalSound(app->engine->audio->globalVolume + 2);
+    }
+
+    app->engine->audio->SetAudioGameObjectTransform(
+        0,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getForward().x,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getForward().y,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getForward().z,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getUp().x,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getUp().y,
+        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getUp().z);
+
+    
+
     return true;
 }
 
@@ -96,16 +151,16 @@ bool SceneManager::Update(double dt)
         spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
     }
 
-    app->engine->audio->SetAudioGameObjectPosition(
-        //here must the gameobject compoment -> wwisegameobject   of the spatial 1
-        spatialObject1->GetComponent<Transform>()->getPosition().x,
-        spatialObject1->GetComponent<Transform>()->getPosition().y,
-        spatialObject1->GetComponent<Transform>()->getPosition().z);
-    app->engine->audio->SetAudioGameObjectPosition(
-        //here must the gameobject compoment -> wwisegameobject   of the spatial 2
-        spatialObject2->GetComponent<Transform>()->getPosition().x,
-        spatialObject2->GetComponent<Transform>()->getPosition().y,
-        0);
+    //app->engine->audio->SetAudioGameObjectPosition(
+    //    //here must the gameobject compoment -> wwisegameobject   of the spatial 1
+    //    spatialObject1->GetComponent<Transform>()->getPosition().x,
+    //    spatialObject1->GetComponent<Transform>()->getPosition().y,
+    //    spatialObject1->GetComponent<Transform>()->getPosition().z);
+    //app->engine->audio->SetAudioGameObjectPosition(
+    //    //here must the gameobject compoment -> wwisegameobject   of the spatial 2
+    //    spatialObject2->GetComponent<Transform>()->getPosition().x,
+    //    spatialObject2->GetComponent<Transform>()->getPosition().y,
+    //    0);
 
     return true;
 }

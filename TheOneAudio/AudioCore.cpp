@@ -184,8 +184,11 @@ void AudioCore::Awake()
     //creating audio events
     for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
     {
-        audioEvents[i] = new AudioEvent();
+        audioEvents.push_back(new AudioEvent);
     }
+
+    SetGlobalSound(globalVolume);
+
 }
 
 void AudioCore::Update(double dt)
@@ -344,6 +347,7 @@ void AudioCore::SetGlobalSound(float volume)
     {
         volume = 100.0f;
     }
+    globalVolume = volume;
     AK::SoundEngine::SetOutputVolume(AK::SoundEngine::GetOutputID(AK_INVALID_UNIQUE_ID, 0.0f), (AkReal32)(volume * 0.01f));
 }
 
