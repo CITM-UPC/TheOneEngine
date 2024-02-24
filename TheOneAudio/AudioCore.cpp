@@ -246,15 +246,13 @@ AkGameObjectID AudioCore::RegisterGameObject(std::string name)
 {
     if (AK::SoundEngine::RegisterGameObj((AkGameObjectID)gameObjectIDs.size(), name.c_str()) == AK_Success)
     {
-        std::string log = "Game Object " + name + " Succesfully Registered";
-        LOG(LogType::LOG_AUDIO, log.c_str());
+        LOG(LogType::LOG_AUDIO, "Game Object %s SUCCES on Register", name.c_str());
         gameObjectIDs.push_back((AkGameObjectID)gameObjectIDs.size());
         return gameObjectIDs.size() - 1;
     }
     else
     {
-        std::string log = "Game Object " + name + " ERROR on Register";
-        LOG(LogType::LOG_AUDIO, log.c_str());
+        LOG(LogType::LOG_AUDIO, "Game Object %s ERROR on Register", name.c_str());
         return -1;
     }
 }
@@ -271,8 +269,7 @@ void AudioCore::PlayEvent(AkUniqueID event, AkGameObjectID goID)
             return;
         }
     }
-    std::string log = "Maximum amount of audio events at the same time reached: " + MAX_AUDIO_EVENTS;
-    LOG(LogType::LOG_AUDIO, log.c_str());
+    LOG(LogType::LOG_AUDIO, "Maximum amount of audio events at the same time reached: %d", MAX_AUDIO_EVENTS);
 }
 
 void AudioCore::StopEvent(AkUniqueID event, AkGameObjectID goID)
