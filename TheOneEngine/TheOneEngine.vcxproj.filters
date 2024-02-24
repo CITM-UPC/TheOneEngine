@@ -72,6 +72,9 @@
     <ClInclude Include="MonoManager.h">
       <Filter>Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -109,6 +112,9 @@
     </ClCompile>
     <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

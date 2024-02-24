@@ -22,6 +22,7 @@
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="MonoManager.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="Script.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="EngineCore.h" />
     <ClInclude Include="Transform.h" />
@@ -37,6 +38,7 @@
     <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="MonoManager.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="Script.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="EngineCore.cpp" />
     <ClCompile Include="Transform.cpp" />

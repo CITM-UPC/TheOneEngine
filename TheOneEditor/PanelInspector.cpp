@@ -6,6 +6,7 @@
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
+#include "..\TheOneEngine\Script.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -319,6 +320,16 @@ bool PanelInspector::Draw()
 
 
                 ImGui::Checkbox("Draw Frustrum", &camera->drawFrustum);
+
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+            }
+            
+            /*Script Component*/
+            Script* script = selectedGO.get()->GetComponent<Script>();
+
+            if (script != nullptr && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
