@@ -22,6 +22,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{cb5e54cb-4331-4568-a233-96dbbf6a216a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Audio">
+      <UniqueIdentifier>{28ff298f-96d9-49e6-a589-a4e2474d62ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -63,6 +66,15 @@
     <ClInclude Include="Cube.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Listener.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioObject.h">
+      <Filter>GameObject\Audio</Filter>
+    </ClInclude>
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
@@ -100,6 +112,15 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Listener.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioObject.cpp">
+      <Filter>GameObject\Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

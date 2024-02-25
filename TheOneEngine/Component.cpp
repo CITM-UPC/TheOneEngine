@@ -46,6 +46,8 @@ void Component::CreateNameFromType(ComponentType type)
 		case ComponentType::Camera: name = "Camera"; break;
 		case ComponentType::Mesh: name = "Mesh"; break;
 		case ComponentType::Texture: name = "Texture"; break;
+		case ComponentType::Listener: name = "Listener"; break;
+		case ComponentType::Source: name = "Source"; break;
 		case ComponentType::Unknown: name = "Unknown"; break;
 		default: name = "Specified Type was not found"; break;
 	}

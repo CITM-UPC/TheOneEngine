@@ -14,17 +14,7 @@ bool AudioEvent::IsEventPlaying()
 
 AudioCore::AudioCore()
 {
-    isGameOn = false;
     nextSong = false;
-
-    music1 = NULL;
-    music2 = NULL;
-    spatial1 = NULL;
-    spatial2 = NULL;
-
-    GAME_OBJECT_ID_BACKGROUNDMUSIC = 100;
-    GAME_OBJECT_ID_SPATIALSOUND1 = 200;
-    GAME_OBJECT_ID_SPATIALSOUND2 = 300;
 }
 
 bool AudioCore::InitEngine()
@@ -62,7 +52,7 @@ bool AudioCore::InitEngine()
     }
     else
     {
-        LOG(LogType::LOG_AUDIO, "Could not load MantelEngine bank");
+        LOG(LogType::LOG_AUDIO, "Could not load TheOneEngine bank");
         return false;
     }
 
@@ -191,77 +181,43 @@ void AudioCore::Awake()
     else
         LOG(LogType::LOG_AUDIO, "Could not initialize the Audio Engine.");
 
-    //registering music to game object
-    if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_BACKGROUNDMUSIC, "Music1") == AK_Success)
-        LOG(LogType::LOG_AUDIO, "Game Object BackgroundMusic Succesfully Registered");
-    else
-        LOG(LogType::LOG_AUDIO, "Game Object BackgroundMusic ERROR on Register");
-
-    //registering spatialsound1 to game object
-    if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_SPATIALSOUND1, "SpatialSound1") == AK_Success)
-        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 1 Succesfully Registered");
-    else
-        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 1 ERROR on Register");
-
-    //registering spatialsound2 to game object
-    if (AK::SoundEngine::RegisterGameObj(GAME_OBJECT_ID_SPATIALSOUND2, "SpatialSound2") == AK_Success)
-        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 2 Succesfully Registered");
-    else
-        LOG(LogType::LOG_AUDIO, "Game Object Spatial Sound 2 ERROR on Register");
-
-    //set default listener
-    AK::SoundEngine::SetDefaultListeners(&GAME_OBJECT_ID_BACKGROUNDMUSIC, 1);
-
     //creating audio events
-    music1 = new AudioEvent();
-    music2 = new AudioEvent();
-    spatial1 = new AudioEvent();
-    spatial2 = new AudioEvent();
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    {
+        audioEvents.push_back(new AudioEvent);
+    }
+
+    SetGlobalSound(globalVolume);
+
 }
 
 void AudioCore::Update(double dt)
 {
     //always call this function on update to make things work
     AK::SoundEngine::RenderAudio();
-    if (isGameOn)
+
+
+    if (state == EngineState::PLAYING)
     {
-        //music 1
-        //if its turn of the music1 (nextSong == true) and neither of both songs are playing
-        if (nextSong && !music1->IsEventPlaying() && !music2->IsEventPlaying())
-        {
-            AK::SoundEngine::PostEvent(AK::EVENTS::MUSIC1, GAME_OBJECT_ID_BACKGROUNDMUSIC, AkCallbackType::AK_EndOfEvent, music1->event_call_back, (void*)music1);
-            music1->playing_id = 1L;
-            nextSong = false;
-        }
-        //music 2
-        //if its turn of the music2 (nextSong == false) and neither of both songs are playing
-        else if (!nextSong && !music1->IsEventPlaying() && !music2->IsEventPlaying())
-        {
-            AK::SoundEngine::PostEvent(AK::EVENTS::MUSIC2, GAME_OBJECT_ID_BACKGROUNDMUSIC, AkCallbackType::AK_EndOfEvent, music2->event_call_back, (void*)music2);
-            music2->playing_id = 1L;
-            nextSong = true;
-        }
 
-        //spatial sound 1
-        if (!spatial1->IsEventPlaying())
-        {
-            AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL1, GAME_OBJECT_ID_SPATIALSOUND1, AkCallbackType::AK_EndOfEvent, spatial1->event_call_back, (void*)spatial1);
-            spatial1->playing_id = 1L;
-        }
-
-        //spatial sound 2
-        if (!spatial2->IsEventPlaying())
-        {
-            AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL2, GAME_OBJECT_ID_SPATIALSOUND2, AkCallbackType::AK_EndOfEvent, spatial2->event_call_back, (void*)spatial2);
-            spatial2->playing_id = 1L;
-        }
     }
 }
 
-
-
 void AudioCore::CleanUp()
 {
+    //must delete vectors and stuff
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    {
+        //function to delete them here
+        if (audioEvents[i] != NULL)
+        {
+            delete(audioEvents[i]);
+        }
+    }
+    
+    audioEvents.clear();
+
+
 #ifndef AK_OPTIMIZED
     AK::Comm::Term();
 #endif // AK_OPTIMIZED
@@ -281,66 +237,141 @@ void AudioCore::CleanUp()
 
 }
 
+void AudioCore::SetDefaultListener(AkGameObjectID goID)
+{
+    AK::SoundEngine::SetDefaultListeners(&goID, 1);
+}
+
+AkGameObjectID AudioCore::RegisterGameObject(std::string name)
+{
+    if (AK::SoundEngine::RegisterGameObj((AkGameObjectID)gameObjectIDs.size(), name.c_str()) == AK_Success)
+    {
+        LOG(LogType::LOG_AUDIO, "Game Object %s SUCCES on Register", name.c_str());
+        gameObjectIDs.push_back((AkGameObjectID)gameObjectIDs.size());
+        return gameObjectIDs.size() - 1;
+    }
+    else
+    {
+        LOG(LogType::LOG_AUDIO, "Game Object %s ERROR on Register", name.c_str());
+        return -1;
+    }
+}
+
+void AudioCore::PlayEvent(AkUniqueID event, AkGameObjectID goID)
+{
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    {
+        //if we found unused audio event we use it
+        if (audioEvents[i]->playing_id == 0L)
+        {
+            AK::SoundEngine::PostEvent(event, goID, AkCallbackType::AK_EndOfEvent, audioEvents[i]->event_call_back, (void*)audioEvents[i]);
+            audioEvents[i]->playing_id = 1L;
+            return;
+        }
+    }
+    LOG(LogType::LOG_AUDIO, "Maximum amount of audio events at the same time reached: %d", MAX_AUDIO_EVENTS);
+}
+
+void AudioCore::StopEvent(AkUniqueID event, AkGameObjectID goID)
+{
+    AK::SoundEngine::ExecuteActionOnEvent(event, AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Stop, gameObjectIDs[goID]);
+}
+
+void AudioCore::PauseEvent(AkUniqueID event, AkGameObjectID goID)
+{
+    AK::SoundEngine::ExecuteActionOnEvent(event, AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Pause, gameObjectIDs[goID]);
+}
+
+void AudioCore::ResumeEvent(AkUniqueID event, AkGameObjectID goID)
+{
+    AK::SoundEngine::ExecuteActionOnEvent(event, AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, gameObjectIDs[goID]);
+}
+
 void AudioCore::PlayEngine()
 {
-    isGameOn = true;
+    if (state == EngineState::PAUSED)
+    {
+        //resume stuff
+        for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+        {
+            if (audioEvents[i] != NULL)
+            {
+                AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, audioEvents[i]->playing_id);
+            }
+        }
+    }
+    else if (state == EngineState::STOPPED)
+    {
+        //play stuff
 
-    //music 1
-    AK::SoundEngine::PostEvent(AK::EVENTS::MUSIC1, GAME_OBJECT_ID_BACKGROUNDMUSIC, AkCallbackType::AK_EndOfEvent, music1->event_call_back, (void*)music1);
-    music1->playing_id = 1L;
+    }
 
-    //spatial sound 1
-    AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL1, GAME_OBJECT_ID_SPATIALSOUND1, AkCallbackType::AK_EndOfEvent, spatial1->event_call_back, (void*)spatial1);
-    spatial1->playing_id = 1L;
-
-    //spatial sound 2
-    AK::SoundEngine::PostEvent(AK::EVENTS::SPATIAL2, GAME_OBJECT_ID_SPATIALSOUND2, AkCallbackType::AK_EndOfEvent, spatial2->event_call_back, (void*)spatial2);
-    spatial2->playing_id = 1L;
+    state = EngineState::PLAYING;
 }
 
 void AudioCore::PauseEngine()
 {
-    isGameOn = false;
-    AK::SoundEngine::StopAll(GAME_OBJECT_ID_BACKGROUNDMUSIC);
-    AK::SoundEngine::StopAll(GAME_OBJECT_ID_SPATIALSOUND1);
-    AK::SoundEngine::StopAll(GAME_OBJECT_ID_SPATIALSOUND2);
+    state = EngineState::PAUSED;
+
+    //will PAUSE all sounds
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    {
+        if (audioEvents[i] != NULL)
+        {
+            AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Pause, audioEvents[i]->playing_id);
+        }
+    }
 }
 
-void AudioCore::SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
+void AudioCore::StopEngine()
+{
+    state = EngineState::STOPPED;
+
+    //will STOP all sounds (not pause)
+    for (size_t i = 0; i < gameObjectIDs.size(); i++)
+    {
+        AK::SoundEngine::StopAll(gameObjectIDs[i]);
+    }
+}
+
+void AudioCore::SetGlobalSound(float volume)
+{
+    if (volume < 0.0f)
+    {
+        volume = 0.0f;
+    }
+    else if (volume > 100.0f)
+    {
+        volume = 100.0f;
+    }
+    globalVolume = volume;
+    AK::SoundEngine::SetOutputVolume(AK::SoundEngine::GetOutputID(AK_INVALID_UNIQUE_ID, 0.0f), (AkReal32)(volume * 0.01f));
+}
+
+void AudioCore::SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
 {
     //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
     AkSoundPosition tTransform;
     tTransform.SetPosition({ -posx, posy, -posz });
     tTransform.SetOrientation({ ofx, ofy, ofz }, { otx, oty, otz });
-    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_BACKGROUNDMUSIC, tTransform) != AK_Success)
+    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
     {
         LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
     }
 }
 
-void AudioCore::SetSpatial1Transform(float posx, float posy, float posz)
+void AudioCore::SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz)
 {
     //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
     AkSoundPosition tTransform;
     tTransform.SetPosition({ -posx, posy, -posz });
     tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
-    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_SPATIALSOUND1, tTransform) != AK_Success)
+    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to spatialsound1 (emiter 1)");
+        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
     }
 }
 
-void AudioCore::SetSpatial2Transform(float posx, float posy, float posz)
-{
-    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
-    AkSoundPosition tTransform;
-    tTransform.SetPosition({ -posx, posy, -posz });
-    tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
-    if (AK::SoundEngine::SetPosition(GAME_OBJECT_ID_SPATIALSOUND2, tTransform) != AK_Success)
-    {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to spatialsound2 (emiter 2)");
-    }
-}
 
 void AudioCore::EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo)
 {

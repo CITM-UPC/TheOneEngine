@@ -15,6 +15,8 @@ enum class ComponentType
 	Camera,
 	Mesh,
     Texture,
+    Listener,
+    Source,
 	Unknown
 };
 
