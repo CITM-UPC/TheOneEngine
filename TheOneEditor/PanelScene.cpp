@@ -114,11 +114,11 @@ bool PanelScene::Draw()
         int x = static_cast<int>(windowPos.x);
         int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
-        app->engine->OnWindowResize(x, y, width, height);
+        engine->OnWindowResize(x, y, width, height);
 
         // Render Scene Camera 
         Camera* sceneCam = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
-        app->engine->Render(sceneCam);
+        engine->Render(sceneCam);
 
         // Game cameras Frustum
         for (const auto GO : app->sceneManager->GetGameObjects())
@@ -126,7 +126,7 @@ bool PanelScene::Draw()
             Camera* gameCam = GO.get()->GetComponent<Camera>();
 
             if (gameCam != nullptr && gameCam->drawFrustum)
-                app->engine->DrawFrustum(gameCam->frustum);
+                engine->DrawFrustum(gameCam->frustum);
         }
 
 
@@ -145,7 +145,7 @@ bool PanelScene::Draw()
         //Draw Rays
         for (auto ray : rays)
         {
-            app->engine->DrawRay(ray);
+            engine->DrawRay(ray);
         }
 	}
 

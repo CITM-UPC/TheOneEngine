@@ -1,6 +1,6 @@
 #include "Log.h"
-#include "../TheOneEditor/App.h"
-#include "../TheOneEngine/Defs.h"
+#include "EngineCore.h"
+#include "Defs.h"
 
 #include <windows.h>
 #include <stdio.h>
@@ -22,9 +22,9 @@ void Log(const char file[], int line, LogType type, const char* format, ...)
 	OutputDebugStringA(tmpString2);
 
 	// Log to Editor Console
-	if (app != nullptr)
+	if (engine != nullptr)
 	{
 		sprintf_s(tmpString2, BUFFER_SIZE, "%s", tmpString1);
-		app->AddLog(type, tmpString2);
+		engine->AddLog(type, tmpString2);
 	}	
 }

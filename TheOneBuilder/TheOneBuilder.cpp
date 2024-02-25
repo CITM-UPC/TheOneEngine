@@ -11,14 +11,16 @@
 //#include <list>
 //#include <stdlib.h>
 
+EngineCore* engine = NULL;
+
 int main(int argc, char* args[])
 {
-    EngineCore* eCore = new EngineCore();
+    engine = new EngineCore();
     double dt = 0.16;
 
-    eCore->Awake();
-    eCore->Start();
-    eCore->Update(dt);
+    engine->Awake();
+    engine->Start();
+    engine->Update(dt);
     
 
     return EXIT_SUCCESS;

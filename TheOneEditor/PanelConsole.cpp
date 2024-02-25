@@ -3,6 +3,7 @@
 #include "Gui.h"
 #include "imgui.h"
 
+#include "../TheOneEngine/EngineCore.h"
 #include "../TheOneEngine/Log.h"
 
 PanelConsole::PanelConsole(PanelType type, std::string name) : Panel(type, name) {}
@@ -17,7 +18,7 @@ bool PanelConsole::Draw()
 	if (ImGui::Begin("Console", &enabled, consoleFlags))
 	{
 		if (ImGui::SmallButton("Clear"))
-			app->CleanLogs();
+			engine->CleanLogs();
 
 		ImGui::Separator();
 
@@ -31,7 +32,7 @@ bool PanelConsole::Draw()
 
 			std::string logType;
 
-			for (const auto& log : app->GetLogs())
+			for (const auto& log : engine->GetLogs())
 			{
 				switch (log.type)
 				{

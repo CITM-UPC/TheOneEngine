@@ -21,14 +21,14 @@ Renderer3D::~Renderer3D() {}
 
 bool Renderer3D::Awake()
 {
-    app->engine->Awake();
+    engine->Awake();
 
     return true;
 }
 
 bool Renderer3D::Start()
 {
-    app->engine->Start();
+    engine->Start();
 
     // Creating Editor Camera GO (Outside hierarchy)
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
@@ -39,7 +39,7 @@ bool Renderer3D::Start()
     sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
     
 
-    app->engine->audio->SetListenerTransform(
+    engine->audio->SetListenerTransform(
         sceneCamera.get()->GetComponent<Transform>()->getPosition().x, 
         sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
         sceneCamera.get()->GetComponent<Transform>()->getPosition().z, 
@@ -71,7 +71,7 @@ bool Renderer3D::Update(double dt)
     CameraInput(dt);
     app->gui->panelScene->isHovered = false;
 
-    app->engine->Update(dt);
+    engine->Update(dt);
 
     /*app->engine->audio->SetListenerTransform(
         sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
@@ -115,7 +115,7 @@ bool Renderer3D::PostUpdate()
 
 bool Renderer3D::CleanUp()
 {
-    app->engine->CleanUp();
+    engine->CleanUp();
     return true;
 }
 

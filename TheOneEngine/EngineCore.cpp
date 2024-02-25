@@ -191,3 +191,24 @@ bool EngineCore::SetVSync(bool vsync)
 
     return true;
 }
+
+std::vector<LogInfo> EngineCore::GetLogs()
+{
+    return logs;
+}
+
+void EngineCore::AddLog(LogType type, const char* entry)
+{
+    if (logs.size() > MAX_LOGS_CONSOLE)
+        logs.erase(logs.begin());
+
+    std::string toAdd = entry;
+    LogInfo info = { type, toAdd };
+
+    logs.push_back(info);
+}
+
+void EngineCore::CleanLogs()
+{
+    logs.clear();
+}

@@ -48,9 +48,7 @@ public:
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
-	std::vector<LogInfo> GetLogs();
-	void AddLog(LogType type, const char* entry);
-	void CleanLogs();
+	
 
 	int GetFrameRate() const;
 	void SetFrameRate(int refreshRate);
@@ -83,7 +81,7 @@ private:
 	float scale_time;
 public:
 
-	EngineCore* engine = nullptr;
+	//EngineCore* engine = nullptr;
 
 	// Modules
 	Window* window = nullptr;
@@ -101,10 +99,6 @@ private:
 	std::string organization;
 
 	std::list<Module*> modules;
-
-	// Logs
-	LogInfo logInfo;
-	std::vector<LogInfo> logs;
 
 	// Fps control
 	std::chrono::duration<double> targetFrameDuration;

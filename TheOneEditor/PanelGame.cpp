@@ -69,7 +69,7 @@ bool PanelGame::Draw()
         int x = static_cast<int>(windowPos.x);
         int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
-        app->engine->OnWindowResize(x, y, width, height);
+        engine->OnWindowResize(x, y, width, height);
 
         // Render Game cameras
         for (const auto GO : app->sceneManager->GetGameObjects())
@@ -77,7 +77,7 @@ bool PanelGame::Draw()
             Camera* gameCam = GO.get()->GetComponent<Camera>();
 
             if (gameCam == nullptr) continue;
-            app->engine->Render(gameCam);
+            engine->Render(gameCam);
         }
     }
 
