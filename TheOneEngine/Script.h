@@ -15,7 +15,7 @@ class Script : public Component
 {
 public:
 
-    Script(std::shared_ptr<GameObject> containerGO);
+    Script(std::shared_ptr<GameObject> containerGO, std::string name);
     virtual ~Script();
 
     void DrawComponent();
@@ -26,6 +26,7 @@ public:
 public:
 
     MonoObject* monoBehaviourInstance = nullptr;
+    std::string scriptName;
 
 };
 

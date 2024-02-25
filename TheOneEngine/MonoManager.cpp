@@ -149,10 +149,10 @@ void MonoManager::PrintAssemblyClasses(const std::string& assemblyPath)
     }
 }
 
-bool MonoManager::IsClassInMainAssembly(std::string className)
+bool MonoManager::IsClassInMainAssembly(const char* className)
 {
     MonoImage* image = mono_assembly_get_image(monoData.mainAssembly);
-    MonoClass* cSharpClass = mono_class_from_name(image, "", className.c_str());
+    MonoClass* cSharpClass = mono_class_from_name(image, "", className);
 
     if (cSharpClass != nullptr) { return true; }
 
