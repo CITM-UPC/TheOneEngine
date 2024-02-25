@@ -8,6 +8,20 @@
 
 class MonoManager
 {
+    struct MonoManagerData
+    {
+        MonoDomain* monoRootDomain = nullptr;
+        MonoDomain* monoAppDomain = nullptr;
+
+        MonoAssembly* mainAssembly = nullptr;
+
+        unsigned long currentUUID = -1;
+    };
+
+private:
+
+    static MonoManagerData monoData;
+
 public:
     MonoManager() {}
     ~MonoManager() {}
@@ -15,7 +29,7 @@ public:
     void InitMono();
     void ShutDownMono();
 
-    MonoObject* InstantiateClass(const std::string& assemblyPath, const char* namespaceName, const char* className);
+    static MonoObject* InstantiateClass(const char* className, unsigned long = -1);
 
     void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall);
     void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall, void** params, int parameterCount);
@@ -26,12 +40,6 @@ public:
 private:
     char* ReadBytes(const std::string& filepath, uint32_t* outSize);
     MonoAssembly* LoadCSharpAssembly(const std::string& assemblyPath);
-    MonoClass* GetClassInAssembly(MonoAssembly* assembly, const char* namespaceName, const char* className);
-
-private:
-    MonoDomain* monoRootDomain = nullptr;
-    MonoDomain* monoAppDomain = nullptr;
-
-    MonoAssembly* mainAssembly = nullptr;
+    static MonoClass* GetClassInAssembly(MonoAssembly* assembly, const char* namespaceName, const char* className);
 };
 

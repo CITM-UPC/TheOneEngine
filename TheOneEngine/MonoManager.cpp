@@ -9,6 +9,8 @@ const std::string mainAssemblyPath = "../TheOneScriptingEngine/bin/Debug/TheOneS
 const std::string mainAssemblyPath = "../TheOneScriptingEngine/bin/Release/TheOneScriptingEngine.dll";
 #endif
 
+MonoManager::MonoManagerData MonoManager::monoData;
+
 void MonoManager::InitMono()
 {
     mono_set_assemblies_path("../mono/lib/4.5");
@@ -21,30 +23,34 @@ void MonoManager::InitMono()
 	}
 
 	// Store the root domain pointer
-	monoRootDomain = rootDomain;
+	monoData.monoRootDomain = rootDomain;
 
 	char appDomainName[] = "MyAppDomain";
-	monoAppDomain = mono_domain_create_appdomain(appDomainName, nullptr);
-	mono_domain_set(monoAppDomain, true);
+    monoData.monoAppDomain = mono_domain_create_appdomain(appDomainName, nullptr);
+	mono_domain_set(monoData.monoAppDomain, true);
 
-    mainAssembly = LoadCSharpAssembly(mainAssemblyPath);
+    monoData.mainAssembly = LoadCSharpAssembly(mainAssemblyPath);
 }
 
 void MonoManager::ShutDownMono()
 {
 	mono_domain_set(mono_get_root_domain(), false);
 
-	mono_domain_unload(monoAppDomain);
-	monoAppDomain = nullptr;
+	mono_domain_unload(monoData.monoAppDomain);
+    monoData.monoAppDomain = nullptr;
 
-	mono_jit_cleanup(monoRootDomain);
-	monoRootDomain = nullptr;
+	mono_jit_cleanup(monoData.monoRootDomain);
+    monoData.monoRootDomain = nullptr;
+
+    monoData.mainAssembly = nullptr;
 }
 
-MonoObject* MonoManager::InstantiateClass(const std::string& assemblyPath, const char* namespaceName, const char* className)
+MonoObject* MonoManager::InstantiateClass(const char* className, unsigned long goUUID)
 {
+    monoData.currentUUID = goUUID;
+
     // Get a reference to the class we want to instantiate
-    MonoClass* classToInstantiate = GetClassInAssembly(mainAssembly, namespaceName, className);
+    MonoClass* classToInstantiate = GetClassInAssembly(monoData.mainAssembly, "", className);
 
     if (classToInstantiate == nullptr)
     {
@@ -53,7 +59,7 @@ MonoObject* MonoManager::InstantiateClass(const std::string& assemblyPath, const
     }
 
     // Allocate an instance of our class
-    MonoObject* classInstance = mono_object_new(monoAppDomain, classToInstantiate);
+    MonoObject* classInstance = mono_object_new(monoData.monoAppDomain, classToInstantiate);
 
     if (classInstance == nullptr)
     {
@@ -64,6 +70,8 @@ MonoObject* MonoManager::InstantiateClass(const std::string& assemblyPath, const
     // Call the parameterless (default) constructor
     mono_runtime_object_init(classInstance);
     std::cout << "Instance of " << className << " created and initialized." << std::endl;
+
+    monoData.currentUUID = -1;
 
     return classInstance;
 }
@@ -122,7 +130,7 @@ void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::str
 
 void MonoManager::PrintAssemblyClasses(const std::string& assemblyPath)
 {
-    MonoImage* image = mono_assembly_get_image(mainAssembly);
+    MonoImage* image = mono_assembly_get_image(monoData.mainAssembly);
     const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
     int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
 
