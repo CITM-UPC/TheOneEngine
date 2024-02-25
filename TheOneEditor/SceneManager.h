@@ -3,14 +3,14 @@
 #pragma once
 
 #include "Module.h"
-#include "..\TheOneEngine\Defs.h"
-#include "..\TheOneEngine\GameObject.h"
-#include "..\TheOneEngine\Component.h"
-#include "..\TheOneEngine\MeshLoader.h"
-#include "..\TheOneEngine\Transform.h"
-#include "..\TheOneEngine\Camera.h"
-#include "..\TheOneEngine\Mesh.h"
-#include "..\TheOneEngine\Texture.h"
+#include "../TheOneEngine/Defs.h"
+#include "../TheOneEngine/GameObject.h"
+#include "../TheOneEngine/Component.h"
+#include "../TheOneEngine/MeshLoader.h"
+#include "../TheOneEngine/Transform.h"
+#include "../TheOneEngine/Camera.h"
+#include "../TheOneEngine/Mesh.h"
+#include "../TheOneEngine/Texture.h"
 
 #include <vector>
 #include <string>

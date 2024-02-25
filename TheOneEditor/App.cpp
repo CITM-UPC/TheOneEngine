@@ -1,5 +1,4 @@
 #include "App.h"
-#include "Log.h"
 
 #include "Window.h"
 #include "Input.h"
@@ -16,7 +15,8 @@
 #include "PanelScene.h"
 #include "PanelSettings.h"
 #include "Timer.h"
-#include "..\TheOneEngine\Transform.h"
+#include "../TheOneEngine/Transform.h"
+#include "../TheOneEngine/Log.h"
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {

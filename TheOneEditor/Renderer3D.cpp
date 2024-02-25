@@ -6,11 +6,11 @@
 #include "PanelScene.h"
 #include "SceneManager.h"
 
-#include "..\TheOneEngine\GameObject.h"
-#include "..\TheOneEngine\Component.h"
-#include "..\TheOneEngine\Transform.h"
-#include "..\TheOneEngine\Mesh.h"
-#include "..\TheOneEngine\Camera.h"
+#include "../TheOneEngine/GameObject.h"
+#include "../TheOneEngine/Component.h"
+#include "../TheOneEngine/Transform.h"
+#include "../TheOneEngine/Mesh.h"
+#include "../TheOneEngine/Camera.h"
 
 
 Renderer3D::Renderer3D(App* app) : Module(app)

@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 
-#include "../TheOneEditor/Log.h"
+#include "Log.h"
 #include "../TheOneEditor/SceneManager.h"
 
 #include <span>

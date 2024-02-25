@@ -6,7 +6,7 @@
 #include "Window.h"
 #include "imgui.h"
 
-#include "..\TheOneEngine\EngineCore.h"
+#include "../TheOneEngine/EngineCore.h"
 
 PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name) {}
 

@@ -66,6 +66,9 @@
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -100,6 +103,9 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

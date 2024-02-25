@@ -1,6 +1,6 @@
 #include "Log.h"
-#include "App.h"
-#include "..\TheOneEngine\Defs.h"
+#include "../TheOneEditor/App.h"
+#include "../TheOneEngine/Defs.h"
 
 #include <windows.h>
 #include <stdio.h>

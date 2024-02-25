@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <shellapi.h>
 #include "App.h"
-#include "Log.h"
+#include "../TheOneEngine/Log.h"
 
 #include "Time.h"
 #include "Gui.h"

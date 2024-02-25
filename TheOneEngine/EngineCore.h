@@ -11,7 +11,7 @@
 #include "Texture.h"
 #include "Ray.h"
 
-#include "..\TheOneAudio\AudioCore.h"
+#include "../TheOneAudio/AudioCore.h"
 
 #include <chrono>
 #include <memory>

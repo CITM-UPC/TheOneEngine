@@ -5,10 +5,10 @@
 #include "SceneManager.h"
 #include "Window.h"
 #include "imgui.h"
-#include "Log.h"
 
-#include "..\TheOneEngine\EngineCore.h"
-#include "..\TheOneEngine\Ray.h"
+#include "../TheOneEngine/EngineCore.h"
+#include "../TheOneEngine/Ray.h"
+#include "../TheOneEngine/Log.h"
 
 #include <vector>
 

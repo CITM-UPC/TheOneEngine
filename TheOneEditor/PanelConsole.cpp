@@ -3,7 +3,7 @@
 #include "Gui.h"
 #include "imgui.h"
 
-#include "Log.h"
+#include "../TheOneEngine/Log.h"
 
 PanelConsole::PanelConsole(PanelType type, std::string name) : Panel(type, name) {}
 

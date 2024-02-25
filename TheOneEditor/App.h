@@ -2,9 +2,9 @@
 #define __APP_H__
 #pragma once
 
-#include "Log.h"
 #include "Timer.h"
-#include "..\TheOneEngine\EngineCore.h"
+#include "../TheOneEngine/EngineCore.h"
+#include "../TheOneEngine/Log.h"
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -12,7 +12,6 @@
 #include <thread>
 #include <string>
 #include <list>
-
 
 // Forward declaration
 class Module;

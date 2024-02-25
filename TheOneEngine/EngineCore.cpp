@@ -1,8 +1,8 @@
 #include "EngineCore.h"
-#include "..\TheOneEditor\Log.h"
-#include <GL\glew.h>
-#include <glm\ext\matrix_transform.hpp>
-#include <IL\il.h>
+#include "Log.h"
+#include <GL/glew.h>
+#include <glm/ext/matrix_transform.hpp>
+#include <IL/il.h>
 
 #include <memory>
 

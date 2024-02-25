@@ -3,7 +3,7 @@
 #pragma once
 
 #include <string>
-#include "PanelConsole.h"
+#include "../TheOneEditor/PanelConsole.h"
 
 enum class LogType
 {

@@ -3,9 +3,9 @@
 #include "Gui.h"
 #include "SceneManager.h"
 
-#include "..\TheOneEngine\Transform.h"
-#include "..\TheOneEngine\Mesh.h"
-#include "..\TheOneEngine\Camera.h"
+#include "../TheOneEngine/Transform.h"
+#include "../TheOneEngine/Mesh.h"
+#include "../TheOneEngine/Camera.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"

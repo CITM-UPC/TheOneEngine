@@ -5,8 +5,7 @@
 #include "Defs.h"
 #include "Component.h"
 #include "BBox.hpp"
-
-#include "..\TheOneEditor\Log.h"
+#include "Log.h"
 
 #include <string>
 #include <vector>

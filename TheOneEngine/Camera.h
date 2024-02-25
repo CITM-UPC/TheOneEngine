@@ -5,9 +5,9 @@
 #include "Defs.h"
 #include "GameObject.h"
 #include "Ray.h"
+#include "Log.h"
 
-#include "..\TheOneEditor\Log.h"
-#include "..\TheOneEditor\Input.h"
+#include "../TheOneEditor/Input.h"
 
 #include <memory>
 
