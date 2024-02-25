@@ -1,11 +1,27 @@
 // TheOneBuilder.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
+#include "..\TheOneEngine\EngineCore.h"
+//#include <iostream>
+//#include <sstream>
+//#include <vector>
+//#include <chrono>
+//#include <thread>
+//#include <string>
+//#include <list>
+//#include <stdlib.h>
 
-int main()
+int main(int argc, char* args[])
 {
-    std::cout << "Hello World!\n";
+    EngineCore* eCore = new EngineCore();
+    double dt = 0.16;
+
+    eCore->Awake();
+    eCore->Start();
+    eCore->Update(dt);
+    
+
+    return EXIT_SUCCESS;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
