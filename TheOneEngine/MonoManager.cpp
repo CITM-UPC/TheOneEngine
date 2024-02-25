@@ -149,6 +149,16 @@ void MonoManager::PrintAssemblyClasses(const std::string& assemblyPath)
     }
 }
 
+bool MonoManager::IsClassInMainAssembly(std::string className)
+{
+    MonoImage* image = mono_assembly_get_image(monoData.mainAssembly);
+    MonoClass* cSharpClass = mono_class_from_name(image, "", className.c_str());
+
+    if (cSharpClass != nullptr) { return true; }
+
+    return false;
+}
+
 char* MonoManager::ReadBytes(const std::string& filepath, uint32_t* outSize)
 {
     std::ifstream stream(filepath, std::ios::binary | std::ios::ate);

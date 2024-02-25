@@ -35,6 +35,8 @@ public:
     static void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall);
     static void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall, void** params, int parameterCount);
 
+    static void IsClassInMainAssembly(std::string className);
+
     //Testing function only. Prints all the classes loaded in the given assembly onto the debug console (not LOG).
     void PrintAssemblyClasses(const std::string& assemblyPath);
 
