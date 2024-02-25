@@ -75,6 +75,9 @@
     <ClInclude Include="Script.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="MonoRegisterer.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -115,6 +118,9 @@
     </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoRegisterer.cpp">
+      <Filter>Scripting</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

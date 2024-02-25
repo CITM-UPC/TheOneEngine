@@ -1,4 +1,5 @@
 #include "MonoManager.h"
+#include "MonoRegisterer.h"
 
 #include <iostream>
 #include <fstream>
@@ -30,6 +31,8 @@ void MonoManager::InitMono()
 	mono_domain_set(monoData.monoAppDomain, true);
 
     monoData.mainAssembly = LoadCSharpAssembly(mainAssemblyPath);
+
+    MonoRegisterer::RegisterFunctions();
 }
 
 void MonoManager::ShutDownMono()
@@ -45,9 +48,9 @@ void MonoManager::ShutDownMono()
     monoData.mainAssembly = nullptr;
 }
 
-MonoObject* MonoManager::InstantiateClass(const char* className, unsigned long goUUID)
+MonoObject* MonoManager::InstantiateClass(const char* className, unsigned long goUID)
 {
-    monoData.currentUUID = goUUID;
+    monoData.currentUID = goUID;
 
     // Get a reference to the class we want to instantiate
     MonoClass* classToInstantiate = GetClassInAssembly(monoData.mainAssembly, "", className);
@@ -69,9 +72,9 @@ MonoObject* MonoManager::InstantiateClass(const char* className, unsigned long g
 
     // Call the parameterless (default) constructor
     mono_runtime_object_init(classInstance);
-    std::cout << "Instance of " << className << " created and initialized." << std::endl;
+    std::cout << "Instance of " << className << " created and initialized with UID " << goUID << std::endl;
 
-    monoData.currentUUID = -1;
+    monoData.currentUID = -1;
 
     return classInstance;
 }

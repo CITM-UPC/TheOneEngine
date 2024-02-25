@@ -15,7 +15,7 @@ class MonoManager
 
         MonoAssembly* mainAssembly = nullptr;
 
-        unsigned long currentUUID = -1;
+        unsigned long currentUID = -1;
     };
 
 private:
@@ -29,10 +29,11 @@ public:
     void InitMono();
     void ShutDownMono();
 
-    static MonoObject* InstantiateClass(const char* className, unsigned long = -1);
+    static unsigned long GetCurrentUID() { return monoData.currentUID; }
+    static MonoObject* InstantiateClass(const char* className, unsigned long goUID = -1);
 
-    void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall);
-    void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall, void** params, int parameterCount);
+    static void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall);
+    static void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall, void** params, int parameterCount);
 
     //Testing function only. Prints all the classes loaded in the given assembly onto the debug console (not LOG).
     void PrintAssemblyClasses(const std::string& assemblyPath);
