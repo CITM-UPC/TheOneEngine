@@ -52,7 +52,7 @@ bool AudioCore::InitEngine()
     }
     else
     {
-        LOG(LogType::LOG_AUDIO, "Could not load MantelEngine bank");
+        LOG(LogType::LOG_AUDIO, "Could not load TheOneEngine bank");
         return false;
     }
 

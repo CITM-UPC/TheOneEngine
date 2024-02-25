@@ -19,6 +19,9 @@
     <Filter Include="Loaders">
       <UniqueIdentifier>{ef205215-f4dd-4daf-80aa-0d87803bc3cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Audio">
+      <UniqueIdentifier>{28ff298f-96d9-49e6-a589-a4e2474d62ce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="Source.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="AudioObject.h">
+      <Filter>GameObject\Audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -103,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="Source.cpp">
       <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioObject.cpp">
+      <Filter>GameObject\Audio</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
