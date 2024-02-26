@@ -1,5 +1,5 @@
 #include "BuilderApp.h"
-#include "../TheOneEngine/EngineCore.h"
+#include "../TheOneEngine/Log.h"
 
 enum MainState
 {
@@ -78,7 +78,7 @@ int main(int argc, char* args[])
 			LOG(LogType::LOG_INFO, "CLEANUP PHASE ===============================");
 			if (bApp->CleanUp() == true)
 			{
-				//RELEASE(app);
+				RELEASE(bApp);
 				result = EXIT_SUCCESS;
 				state = EXIT;
 			}
