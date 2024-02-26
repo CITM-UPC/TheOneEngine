@@ -1,7 +1,7 @@
 #pragma once
 
 #include <array>
-#include "Defs.h"
+#include "types.h"
 
 struct AABBox
 {

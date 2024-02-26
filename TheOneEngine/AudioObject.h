@@ -1,10 +1,8 @@
 #pragma once
 #include "Defs.h"
-#include "..\TheOneAudio\AudioCore.h"
+#include "..\TheOneAudio\AudioUtility.h"
 #include "GameObject.h"
 #include "Transform.h"
-#include <string>
-#include <memory>
 
 class GameObject;
 
