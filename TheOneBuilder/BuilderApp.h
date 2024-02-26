@@ -16,6 +16,7 @@
 // Forward declaration
 class BuilderModule;
 class BuilderWindow;
+class BuilderRenderer3D;
 
 enum class GameState {
 	NONE,
@@ -76,6 +77,7 @@ public:
 
 	// Modules
 	BuilderWindow* window = nullptr;
+	BuilderRenderer3D* renderer3D = nullptr;
 
 private:
 

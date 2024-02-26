@@ -1,6 +1,7 @@
 #include "BuilderApp.h"
 
 #include "BuilderWindow.h"
+#include "BuilderRenderer3D.h"
 #include "Timer.h"
 #include "../TheOneEngine/Log.h"
 
@@ -11,12 +12,15 @@ BuilderApp::BuilderApp(int argc, char* args[]) : argc(argc), args(args)
 	engine = new EngineCore();
 
 	window = new BuilderWindow(this);
+	renderer3D = new BuilderRenderer3D(this);
 	
-
 	// Ordered for awake / Start / Update
 	// Reverse order for CleanUp
 
 	AddModule(window, true);
+
+	// Render last to swap buffer
+	AddModule(renderer3D, true);
 	
 	state = GameState::NONE;
 	time_since_start = 0.0F;
