@@ -51,9 +51,11 @@ void EngineCore::Render(Camera* camera)
 
     gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
 
-    gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z,
-        camera->center.x, camera->center.y, camera->center.z,
-        camera->up.x, camera->up.y, camera->up.z);
+	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
+
+    gluLookAt(cameraTransform->GetPosition().x, cameraTransform->GetPosition().y, cameraTransform->GetPosition().z,
+        camera->lookAt.x, camera->lookAt.y, camera->lookAt.z,
+		cameraTransform->GetUp().x, cameraTransform->GetUp().y, cameraTransform->GetUp().z);
 
     DrawGrid(1000, 10);
     DrawAxis();
@@ -288,7 +290,7 @@ bool EngineCore::GetVSync()
 //heakbs - parameter not used?
 bool EngineCore::SetVSync(bool vsync)
 {
-    if (this->vsync)
+    if (vsync)
     {
         if (SDL_GL_SetSwapInterval(1) == -1)
         {

@@ -21,6 +21,9 @@ PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), is
     drawAABB = true;
     drawOBB = false;
     drawChecker = false;
+
+	handleSpace = HandleSpace::LOCAL;
+    handlePosition = HandlePosition::PIVOT;
 }
 
 PanelScene::~PanelScene() {}
@@ -88,6 +91,22 @@ bool PanelScene::Draw()
 
                 ImGui::EndMenu();
             }
+
+            // HandleSpace
+            int space = (int)handleSpace;
+            if (ImGui::Combo("##HandleSpace", &space, spaces, 2))
+            {
+                handleSpace = (HandleSpace)space;
+                ImGui::EndCombo();
+            }
+
+			// HandlePosition
+            int position = (int)handlePosition;
+			if (ImGui::Combo("##HandlePosition", &position, positions, 2))
+			{
+                handlePosition = (HandlePosition)position;
+				ImGui::EndCombo();
+			}
 
             ImGui::PopStyleVar();
             ImGui::EndMenuBar();

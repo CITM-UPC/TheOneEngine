@@ -11,6 +11,7 @@ SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 {
     meshLoader = new MeshLoader();
     rootSceneGO = std::make_shared<GameObject>("Scene");
+
 }
 
 SceneManager::~SceneManager()
@@ -75,6 +76,9 @@ bool SceneManager::Update(double dt)
         std::string filename = "Assets/Scenes/scene.toe";
         LoadScene(filename);
     }
+
+    
+
     //Audio moving
     /*if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->state == GameState::PLAY)
         spatialObject2->GetComponent<Transform>()->setPosition({spatialObject2->GetComponent<Transform>()->getPosition().x + 1 ,15,0 });
@@ -119,6 +123,16 @@ bool SceneManager::CleanUp()
 {
     return true;
 }
+
+void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
+{
+    for (const auto gameObject : parentGO.get()->children)
+    {
+        gameObject.get()->Draw();
+        RecurseDrawChildren(gameObject);
+    }
+}
+
 
 std::string SceneManager::GenerateUniqueName(const std::string& baseName)
 {
@@ -567,13 +581,4 @@ void SceneManager::LoadScene(const std::string& filename)
         LOG(LogType::LOG_ERROR, "Scene file does not contain GameObjects information");
     }
 
-}
-
-void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
-{
-    for (const auto gameObject : parentGO.get()->children)
-    {
-        gameObject.get()->Draw();
-        RecurseDrawChildren(gameObject);
-    }
 }

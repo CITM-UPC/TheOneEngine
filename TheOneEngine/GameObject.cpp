@@ -135,7 +135,7 @@ AABBox GameObject::CalculateAABB()
 
 	for (const auto& child : children)
 	{
-		AABBox childAABB = (child.get()->GetComponent<Transform>()->getMatrix() * child.get()->CalculateAABB()).AABB();
+		AABBox childAABB = (child.get()->GetComponent<Transform>()->GetTransform() * child.get()->CalculateAABB()).AABB();
 		aabb.min = glm::min(aabb.min, childAABB.min);
 		aabb.max = glm::max(aabb.max, childAABB.max);
 	}
@@ -147,7 +147,7 @@ AABBox GameObject::CalculateAABBWithChildren()
 {
 	AABBox aabb = CalculateAABB();
 	// Transform the AABB to the coordinate system of the parent objects
-	mat4 parentTransform = GetComponent<Transform>()->GetWorldTransform();
+	mat4 parentTransform = GetComponent<Transform>()->CalculateWorldTransform();
 	OBBox obb = parentTransform * aabb;
 	return obb.AABB();
 }

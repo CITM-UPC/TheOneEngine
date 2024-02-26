@@ -44,7 +44,7 @@ void Mesh::DrawComponent()
 
     std::shared_ptr<GameObject> containerGO = GetContainerGO();
     glPushMatrix();
-    glMultMatrixd(&containerGO.get()->GetComponent<Transform>()->getMatrix()[0].x);
+    glMultMatrixd(&containerGO.get()->GetComponent<Transform>()->CalculateWorldTransform()[0].x);
 
     ConfigureVertexFormat();
 

@@ -34,8 +34,8 @@ bool Renderer3D::Start()
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
     sceneCamera.get()->AddComponent<Transform>();
     sceneCamera.get()->AddComponent<Camera>();
-    sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 3, -10));
-    sceneCamera.get()->GetComponent<Camera>()->center = {0, 0, 0};
+    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 3, -10));
+    sceneCamera.get()->GetComponent<Camera>()->lookAt = {0, 0, 0};
     sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
     
 
@@ -139,29 +139,29 @@ void Renderer3D::CameraInput(double dt)
         camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
         camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
 
-        camera->rotate(vec3f(camera->pitch, camera->yaw, 0.0f), false);
+		//transform->Rotate(vec3f(camera->pitch, camera->yaw, 0.0f), false);
 
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {
-            camera->translate(transform->getForward() * speed);
+			transform->Translate(transform->GetForward() * speed);
         }
         if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
         {
-            camera->translate(-transform->getForward() * speed);
+			transform->Translate(-transform->GetForward() * speed);
         }
         if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
         {
-            camera->translate(transform->getRight() * speed);
+			transform->Translate(transform->GetRight() * speed);
         }
         if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
         {
-            camera->translate(-transform->getRight() * speed);
+			transform->Translate(-transform->GetRight() * speed);
         }
     }
     else
     {
         // Zooming Camera Input
-        camera->translate(transform->getForward() * (double)app->input->GetMouseZ());
+		transform->Translate(transform->GetForward() * (double)app->input->GetMouseZ());
     }
 
     // Orbit Object with Alt + LMB
@@ -170,26 +170,26 @@ void Renderer3D::CameraInput(double dt)
         camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
         camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
 
-        camera->setPosition(camera->center);
+		transform->SetPosition(camera->lookAt);
        
-        camera->rotate(vec3f(0.0f, 1.0f, 0.0f), camera->yaw, false);
-        camera->rotate(vec3f(1.0f, 0.0f, 0.0f), camera->pitch, true);
+        //camera->Rotate(vec3f(0.0f, 1.0f, 0.0f), camera->yaw, false);
+        //camera->Rotate(vec3f(1.0f, 0.0f, 0.0f), camera->pitch, true);
 
         vec3f finalPos;
-        finalPos = transform->getPosition() - transform->getForward();
+        finalPos = transform->GetPosition() - transform->GetForward();
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
-            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0);
+            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 100.0);
         }
 
-        camera->setPosition(finalPos);
+		transform->SetPosition(finalPos);
     }
 
     if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->sceneManager->GetSelectedGO() != nullptr)
     {
-        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - transform->getForward();
+        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - transform->GetForward();
 
-        camera->setPosition(targetPos * 100.0f);
+		transform->SetPosition(targetPos * 100.0f);
     }
 
     camera->UpdateCamera();
