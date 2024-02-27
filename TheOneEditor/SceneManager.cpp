@@ -77,7 +77,11 @@ bool SceneManager::Update(double dt)
         LoadScene(filename);
     }
 
-    
+    // CONTROL_TO_TEST
+    if (app->input->GetKey(SDL_SCANCODE_T) == KEY_REPEAT)
+    {
+        rootSceneGO.get()->children[0].get()->children[1].get()->GetComponent<Transform>()->SetPosition(vec3(0,1,0), HandleSpace::GLOBAL);
+    }
 
     //Audio moving
     /*if (app->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT && app->state == GameState::PLAY)

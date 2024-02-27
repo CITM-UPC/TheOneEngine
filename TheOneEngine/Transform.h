@@ -32,7 +32,7 @@ public:
 
     //Transform
     void Translate(const vec3& translation, const HandleSpace& space = HandleSpace::LOCAL);
-    void SetPosition(const vec3& newPosition, const HandleSpace& space = HandleSpace::GLOBAL);
+    void SetPosition(const vec3& newPosition, const HandleSpace& space = HandleSpace::LOCAL);
 
     void SetRotation(const vec3& eulerAngles, const HandleSpace& space = HandleSpace::LOCAL);
     void Rotate(const vec3& eulerAngles, const HandleSpace& space = HandleSpace::LOCAL);

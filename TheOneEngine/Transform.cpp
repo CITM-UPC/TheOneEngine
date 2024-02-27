@@ -19,6 +19,15 @@ Transform::~Transform() {}
 
 
 // Transform ----------------------------------------------------
+// To Implement on our Function
+//void Transform::Move(vec3 displacement, Space referenceFrame)
+//{
+//    glm::mat3 referenceFrameMat = (glm::mat4)_transformationMatrix;
+//
+//    vec3 vecInRefFrame = referenceFrame == Space::GLOBAL ? displacement * referenceFrameMat : displacement;
+//
+//    _transformationMatrix = glm::translate(_transformationMatrix, vecInRefFrame);
+//}
 
 void Transform::Translate(const vec3& translation, const HandleSpace& space)
 {
@@ -63,8 +72,7 @@ void Transform::SetPosition(const vec3& newPosition, const HandleSpace& space)
     mat4 transform = space == HandleSpace::GLOBAL ? CalculateWorldTransform() : transformMatrix;
     transform[3] = glm::vec4(newPosition, 1.0f);
 
-    if (space == HandleSpace::GLOBAL)
-        transformMatrix = WorldToLocalTransform(containerGO.lock().get(), transform);
+    transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), transform) : transform;
 
     position = transformMatrix[3];
 
@@ -254,7 +262,7 @@ mat4 Transform::CalculateWorldTransform()
 
 mat4 Transform::WorldToLocalTransform(GameObject* GO, mat4 modifiedWorldTransform)
 {
-	GameObject* parent = containerGO.lock().get()->parent.lock().get();
+	GameObject* parent = GO->parent.lock().get();
 
     mat4 localTransform;
 
@@ -262,11 +270,15 @@ mat4 Transform::WorldToLocalTransform(GameObject* GO, mat4 modifiedWorldTransfor
 	{
 		localTransform = WorldToLocalTransform(parent, modifiedWorldTransform);
 
-		localTransform = localTransform * glm::inverse(GO->GetComponent<Transform>()->transformMatrix);
+		localTransform = glm::inverse(GO->GetComponent<Transform>()->transformMatrix) * localTransform;
 	}
+    else if(parent)
+    {
+		localTransform = glm::inverse(GO->GetComponent<Transform>()->transformMatrix) * modifiedWorldTransform;
+    }
     else
     {
-		localTransform = modifiedWorldTransform * glm::inverse(GO->GetComponent<Transform>()->transformMatrix);
+        localTransform = modifiedWorldTransform;
     }
 
 	return localTransform;
