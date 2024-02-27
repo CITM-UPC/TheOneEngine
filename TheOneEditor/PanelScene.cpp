@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "Window.h"
 #include "imgui.h"
+#include "imGuizmo.h"
 #include "Log.h"
 
 #include "..\TheOneEngine\EngineCore.h"
@@ -24,6 +25,7 @@ PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), is
 
 	handleSpace = HandleSpace::LOCAL;
     handlePosition = HandlePosition::PIVOT;
+    gizmoType = -1;
 }
 
 PanelScene::~PanelScene() {}
@@ -40,13 +42,55 @@ bool PanelScene::Draw()
     ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Scene", &enabled, settingsFlags))
 	{
+        // SDL Window
+        int SDLWindowWidth, SDLWindowHeight;
+        app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
+
+        // ImGui Panel
+        ImVec2 windowPos = ImGui::GetWindowPos();
+        ImVec2 windowSize = ImGui::GetWindowSize();
+        ImVec2 regionSize = ImGui::GetContentRegionAvail();
+
+
         if (ImGui::IsWindowHovered())
             isHovered = true;
 
-        // Top Bar --------------------------
+        // Top Bar -------------------------------------------------------------------------
         if (ImGui::BeginMenuBar())
         {
             ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
+
+            // HandlePosition
+            int position = (int)handlePosition;
+            ImGui::SetNextItemWidth(80);
+            if (ImGui::Combo("##HandlePosition", &position, positions, 2))
+            {
+                handlePosition = (HandlePosition)position;
+                ImGui::EndCombo();
+            }
+
+            // HandleSpace
+            int space = (int)handleSpace;
+            ImGui::SetNextItemWidth(80);
+            if (ImGui::Combo("##HandleSpace", &space, spaces, 2))
+            {
+                handleSpace = (HandleSpace)space;
+                ImGui::EndCombo();
+            }
+
+            ImGui::Dummy(ImVec2(regionSize.x - 360.0f, 0.0f));
+
+            if (ImGui::BeginMenu("Render"))
+            {
+                ImGui::Checkbox("Mesh", &drawMesh);
+                ImGui::Checkbox("Wireframe", &drawWireframe);
+                ImGui::Checkbox("Vertex normals", &drawNormalsVerts);
+                ImGui::Checkbox("Face normals", &drawNormalsFaces);
+                ImGui::Checkbox("AABB", &drawAABB);
+                ImGui::Checkbox("OBB", &drawOBB);
+
+                ImGui::EndMenu();
+            }
 
             if (ImGui::BeginMenu("Camera"))
             {
@@ -73,6 +117,7 @@ bool PanelScene::Draw()
 
                 ImGui::EndMenu();
             }
+
             if (ImGui::BeginMenu("Gizmo"))
             {
                 ImGui::Text("Gizmo Options");
@@ -80,49 +125,13 @@ bool PanelScene::Draw()
 
                 ImGui::EndMenu();
             }
-            if (ImGui::BeginMenu("Render"))
-            {
-                ImGui::Checkbox("Mesh", &drawMesh);
-                ImGui::Checkbox("Wireframe", &drawWireframe);
-                ImGui::Checkbox("Vertex normals", &drawNormalsVerts);
-                ImGui::Checkbox("Face normals", &drawNormalsFaces);
-                ImGui::Checkbox("AABB", &drawAABB);
-                ImGui::Checkbox("OBB", &drawOBB);
-
-                ImGui::EndMenu();
-            }
-
-            // HandleSpace
-            int space = (int)handleSpace;
-            if (ImGui::Combo("##HandleSpace", &space, spaces, 2))
-            {
-                handleSpace = (HandleSpace)space;
-                ImGui::EndCombo();
-            }
-
-			// HandlePosition
-            int position = (int)handlePosition;
-			if (ImGui::Combo("##HandlePosition", &position, positions, 2))
-			{
-                handlePosition = (HandlePosition)position;
-				ImGui::EndCombo();
-			}
 
             ImGui::PopStyleVar();
             ImGui::EndMenuBar();
         }
 
 
-        // Viewport Control --------------------------
-        // SDL Window
-        int SDLWindowWidth, SDLWindowHeight;
-        app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
-        ImVec2 windowPos = ImGui::GetWindowPos();
-        ImVec2 windowSize = ImGui::GetWindowSize();
-
-        // ImGui Window
-        ImVec2 regionSize = ImGui::GetContentRegionAvail();
-
+        // Viewport Control ----------------------------------------------------------------
         // Aspect Ratio Size
         int width, height;
         app->gui->CalculateSizeAspectRatio(regionSize.x, regionSize.y, width, height);
@@ -149,7 +158,36 @@ bool PanelScene::Draw()
         }
 
 
-        // Mouse Picking ----------------------------------
+        // ImGuizmo ------------------------------------------------------------------------
+        // Handle Input
+        if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) gizmoType = (ImGuizmo::OPERATION)-1;
+        if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+        if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) gizmoType = ImGuizmo::OPERATION::ROTATE;
+        if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) gizmoType = ImGuizmo::OPERATION::SCALE;
+
+        // Gizmo
+        shared_ptr<GameObject> selectedGO = app->sceneManager->GetSelectedGO();
+
+        if (selectedGO && gizmoType != -1)
+        {
+            ImGuizmo::SetOrthographic(false);
+            ImGuizmo::SetDrawlist();
+            ImGuizmo::SetRect(x, y, width, height);
+
+            //Camera
+            const glm::mat4& cameraProjection = sceneCam->projectionMatrix;
+            glm::mat4 cameraView = sceneCam->viewMatrix;
+
+            //Entity Transform
+            auto tc = selectedGO->GetComponent<Transform>();
+            glm::mat4 transform = tc->CalculateWorldTransform();
+
+            ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+                (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+        }
+
+
+        // Mouse Picking -------------------------------------------------------------------
         if (isHovered && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
         {
             int sdlY = SDLWindowHeight - y - height;
