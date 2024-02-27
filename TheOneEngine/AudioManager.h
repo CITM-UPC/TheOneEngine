@@ -6,9 +6,9 @@ class AudioManager {
 public:
 	AudioManager();
 
-	void Start();
-	void Update();
-	void CleanUp();
+	bool Start();
+	bool Update();
+	bool CleanUp();
 
 
 

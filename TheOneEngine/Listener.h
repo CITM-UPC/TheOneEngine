@@ -13,6 +13,8 @@ public:
     Listener(std::shared_ptr<GameObject> containerGO);
     virtual ~Listener();
 
+    void SetListener(std::string name);
+
     json SaveComponent();
     void LoadComponent(const json& transformJSON);
 
