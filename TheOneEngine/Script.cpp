@@ -2,7 +2,7 @@
 #include "MonoManager.h"
 #include "GameObject.h"
 
-Script::Script(std::shared_ptr<GameObject> containerGO, std::string name) : Component(containerGO, ComponentType::Mesh), scriptName(name)
+Script::Script(std::shared_ptr<GameObject> containerGO, std::string name) : Component(containerGO, ComponentType::Script), scriptName(name)
 {
 	//Init things
 	monoBehaviourInstance = MonoManager::InstantiateClass(name.c_str(), containerGO->GetUID());
