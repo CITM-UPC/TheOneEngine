@@ -62,7 +62,7 @@ bool PanelInspector::Draw()
                 matrixDirty = false;
 
                 view_pos = transform->GetPosition();
-                //view_rot_rad = transform->getEulerAngles();
+                view_rot_rad = transform->GetRotationEuler();
                 view_sca = transform->GetScale();
 
                 //[-pi, pi]
@@ -114,21 +114,21 @@ bool PanelInspector::Draw()
                     ImGui::TableSetColumnIndex(1);
                     if (ImGui::DragFloat("##PosX", &view_pos.x, 0.5F, 0, 0, "%.3f", 1))
                     {
-                        transform->SetPosition(view_pos, HandleSpace::GLOBAL);
+                        transform->SetPosition(view_pos, HandleSpace::LOCAL);
                         matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(2);
                     if (ImGui::DragFloat("##PosY", &view_pos.y, 0.5F, 0, 0, "%.3f", 1))
                     {
-                        transform->SetPosition(view_pos, HandleSpace::GLOBAL);
+                        transform->SetPosition(view_pos, HandleSpace::LOCAL);
                         matrixDirty = true;
                     }
 
                     ImGui::TableSetColumnIndex(3);
                     if (ImGui::DragFloat("##PosZ", &view_pos.z, 0.5F, 0, 0, "%.3f", 1))
                     {
-                        transform->SetPosition(view_pos, HandleSpace::GLOBAL);
+                        transform->SetPosition(view_pos, HandleSpace::LOCAL);
                         matrixDirty = true;
                     }
 

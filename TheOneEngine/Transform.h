@@ -34,7 +34,7 @@ public:
     void Translate(const vec3& translation, const HandleSpace& space = HandleSpace::LOCAL);
     void SetPosition(const vec3& newPosition, const HandleSpace& space = HandleSpace::LOCAL);
 
-    void SetRotation(const vec3& eulerAngles, const HandleSpace& space = HandleSpace::LOCAL);
+    void SetRotation(const vec3& eulerAngles);
     void Rotate(const vec3& eulerAngles, const HandleSpace& space = HandleSpace::LOCAL);
 
     void Scale(const vec3& scaleFactors);
@@ -61,6 +61,8 @@ public:
 	vec3 GetScale() const;
 
     mat4 GetTransform() const;
+
+    vec3 GetRotationEuler() const;
     
 
 

@@ -31,14 +31,26 @@ Transform::~Transform() {}
 
 void Transform::Translate(const vec3& translation, const HandleSpace& space)
 {
-    if (space == HandleSpace::GLOBAL)
-        transformMatrix = CalculateWorldTransform();
+    mat4 newTransform = space == HandleSpace::GLOBAL ? CalculateWorldTransform() : transformMatrix;
+    newTransform = glm::translate(transformMatrix, translation);
 
-    transformMatrix = glm::translate(transformMatrix, translation);
+    transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), newTransform) : newTransform;
+
     position = transformMatrix[3];
 
     UpdateCameraIfPresent();
 }
+
+//void Transform::Translate(const vec3& translation, const HandleSpace& space)
+//{
+//    if (space == HandleSpace::GLOBAL)
+//        transformMatrix = CalculateWorldTransform();
+//
+//    transformMatrix = glm::translate(transformMatrix, translation);
+//    position = transformMatrix[3];
+//
+//    UpdateCameraIfPresent();
+//}
 
 // void Transform::SetPosition(const vec3& newPosition, const HandleSpace& space)
 // {
@@ -51,103 +63,50 @@ void Transform::Translate(const vec3& translation, const HandleSpace& space)
 // 	UpdateCameraIfPresent();
 // }
 
-//void Transform::SetPosition(const vec3& newPosition, const HandleSpace& space)
-//{
-//    mat4 transform = transformMatrix;
-//    if (space == HandleSpace::GLOBAL)
-//        transform = CalculateWorldTransform();
-//
-//    transform[3] = glm::vec4(newPosition, 1.0f);
-//
-//	if (space == HandleSpace::GLOBAL)
-//        transformMatrix = WorldToLocalTransform(CalculateWorldTransform(), transform);
-//
-//    position = transformMatrix[3];
-//
-//    UpdateCameraIfPresent();
-//}
-
 void Transform::SetPosition(const vec3& newPosition, const HandleSpace& space)
 {
-    mat4 transform = space == HandleSpace::GLOBAL ? CalculateWorldTransform() : transformMatrix;
-    transform[3] = glm::vec4(newPosition, 1.0f);
+    mat4 newTransform = space == HandleSpace::GLOBAL ? CalculateWorldTransform() : transformMatrix;
+    newTransform[3] = glm::vec4(newPosition, 1.0f);
 
-    transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), transform) : transform;
+    transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), newTransform) : newTransform;
 
     position = transformMatrix[3];
 
     UpdateCameraIfPresent();
 }
 
-// Function to apply transformation to object B in world coordinates and then adjust its transform to be relative to A
-glm::mat4 applyAndAdjustTransformationRelativeToA(glm::mat4 worldTransformA, glm::mat4 transformB, glm::mat4 modification)
-{
-    // Calculate the new world transformation for B
-    glm::mat4 worldTransformB = worldTransformA * transformB;
-
-    // Apply the modification to the world transformation of B
-    glm::mat4 modifiedWorldTransformB = worldTransformB * modification;
-
-    // Calculate the inverse transformation matrix of A
-    glm::mat4 inverseTransformA = glm::inverse(worldTransformA);
-
-    // Adjust the modified transform to be relative to A
-    glm::mat4 finalTransformB = modifiedWorldTransformB * inverseTransformA;
-
-    return finalTransformB;
-}
-
 void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
-{
-	// Get global or local transform
-	if (space == HandleSpace::GLOBAL)
-		transformMatrix = CalculateWorldTransform();
-
-	// Extract rotation from matrix
-	const glm::mat3 rotMtx(
-		vec3(transformMatrix[0]) / scale[0],
-		vec3(transformMatrix[1]) / scale[1],
-		vec3(transformMatrix[2]) / scale[2]);
-
-	// Convert rotation to quat
-	rotation = glm::normalize(glm::quat_cast(rotMtx));
-
-	// Set rotation AngleAxis from quat
-	vec3 rotationEuler = glm::radians(glm::eulerAngles(rotation));
-
-	quat quaternion = glm::angleAxis(glm::radians(eulerAngles.x), vec3(1, 0, 0));
-	rotation = glm::normalize(quaternion * rotation);
-	quaternion = glm::angleAxis(glm::radians(eulerAngles.y), vec3(0, 1, 0));
-	rotation = glm::normalize(quaternion * rotation);
-	quaternion = glm::angleAxis(glm::radians(eulerAngles.z), vec3(0, 0, 1));
-	rotation = glm::normalize(quaternion * rotation);
-
-	transformMatrix = glm::translate(mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(mat4(1.0f), scale);
-}
-
-void Transform::SetRotation(const vec3& eulerAngles, const HandleSpace& space)
 {
     // Get global or local transform
     if (space == HandleSpace::GLOBAL)
         transformMatrix = CalculateWorldTransform();
 
     // Extract rotation from matrix
-	const glm::mat3 rotMtx(
-		vec3(transformMatrix[0]) / scale[0],
-		vec3(transformMatrix[1]) / scale[1],
-		vec3(transformMatrix[2]) / scale[2]);
-    
+    const glm::mat3 rotMtx(
+        vec3(transformMatrix[0]) / scale[0],
+        vec3(transformMatrix[1]) / scale[1],
+        vec3(transformMatrix[2]) / scale[2]);
+
     // Convert rotation to quat
-	rotation = glm::normalize(glm::quat_cast(rotMtx));
+    rotation = glm::normalize(glm::quat_cast(rotMtx));
 
-    // vec3(x, y, z)
+	// Set rotation AngleAxis from quat
+	vec3 rotationEuler = glm::radians(glm::eulerAngles(rotation));
 
+	quat quaternion = glm::angleAxis(glm::radians(eulerAngles.x), vec3(1, 0, 0));
+	rotation = glm::normalize(rotation * quaternion);
+	quaternion = glm::angleAxis(glm::radians(eulerAngles.y), vec3(0, 1, 0));
+	rotation = glm::normalize(rotation * quaternion);
+	quaternion = glm::angleAxis(glm::radians(eulerAngles.z), vec3(0, 0, 1));
+	rotation = glm::normalize(rotation * quaternion);
 
-    // glm::radians
+    mat4 newTransform = glm::translate(mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(mat4(1.0f), scale);
 
-    // Set rotation AngleAxis from quat
-    vec3 rotationEuler = glm::eulerAngles(rotation);
+    transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), newTransform) : newTransform;
+}
 
+void Transform::SetRotation(const vec3& eulerAngles)
+{
 	quat quaternion = glm::angleAxis(eulerAngles.x, vec3(1, 0, 0));
     rotation = glm::normalize(quaternion);
 	quaternion = glm::angleAxis(eulerAngles.y, vec3(0, 1, 0));
@@ -155,52 +114,7 @@ void Transform::SetRotation(const vec3& eulerAngles, const HandleSpace& space)
 	quaternion = glm::angleAxis(eulerAngles.z, vec3(0, 0, 1));
 	rotation = glm::normalize(quaternion * rotation);
 
-	transformMatrix = glm::translate(mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(mat4(1.0f), scale);
-
-
- //   glm::angleAxis;
-	//glm::eulerAngles()
-
- //   //Global
- //   double X = axisX.clone();
- //   double Y = axisY.clone();
- //   double Z = axisZ.clone();
-
- //   //Local
- //   X = X.applyEuler(cube.rotation);
- //   Y = Y.applyEuler(cube.rotation);
- //   Z = Z.applyEuler(cube.rotation);
-
- //   if (keys["w"]) {
- //       var quaternion = new THREE.Quaternion();
- //       quaternion.setFromAxisAngle(X, -0.05);
- //       cube.applyQuaternion(quaternion);
- //   }
- //   if (keys["s"]) {
- //       var quaternion = new THREE.Quaternion();
- //       quaternion.setFromAxisAngle(X, 0.05);
- //       cube.applyQuaternion(quaternion);
- //   }
- //   if (keys["a"]) {
- //       var quaternion = new THREE.Quaternion();
- //       quaternion.setFromAxisAngle(Y, -0.05);
- //       cube.applyQuaternion(quaternion);
- //   }
- //   if (keys["d"]) {
- //       var quaternion = new THREE.Quaternion();
- //       quaternion.setFromAxisAngle(Y, 0.05);
- //       cube.applyQuaternion(quaternion);
- //   }
- //   if (keys["q"]) {
- //       var quaternion = new THREE.Quaternion();
- //       quaternion.setFromAxisAngle(Z, 0.05);
- //       cube.applyQuaternion(quaternion);
- //   }
- //   if (keys["e"]) {
- //       var quaternion = new THREE.Quaternion();
- //       quaternion.setFromAxisAngle(Z, -0.05);
- //       cube.applyQuaternion(quaternion);
- //   }
+    transformMatrix = glm::translate(mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(mat4(1.0f), scale);
 }
 
 //void Transform::SetRotation()
@@ -328,7 +242,11 @@ mat4 Transform::GetTransform() const
 	return transformMatrix;
 }
 
-
+vec3 Transform::GetRotationEuler() const
+{
+    vec3 eulerAngles = glm::eulerAngles(rotation);
+    return eulerAngles;
+}
 
 
 

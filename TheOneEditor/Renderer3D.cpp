@@ -136,10 +136,11 @@ void Renderer3D::CameraInput(double dt)
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
         /* MOUSE CAMERA MOVEMENT */
-        camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
-        camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
+        camera->yaw = -app->input->GetMouseXMotion() * mouseSensitivity;
+        camera->pitch = app->input->GetMouseYMotion() * mouseSensitivity;
 
-		//transform->Rotate(vec3f(camera->pitch, camera->yaw, 0.0f), false);
+        transform->Rotate(vec3f(0.0f, camera->yaw, 0.0f), HandleSpace::GLOBAL);
+        transform->Rotate(vec3f(camera->pitch, 0.0f, 0.0f), HandleSpace::GLOBAL);
 
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
         {

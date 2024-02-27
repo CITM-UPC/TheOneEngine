@@ -36,7 +36,7 @@ const mat4f& Camera::getViewMatrix()
 
 void Camera::UpdateCamera()
 {
-    //UpdateCameraVectors();
+    UpdateCameraVectors();
     UpdateViewMatrix();
     UpdateProjectionMatrix();
     UpdateViewProjectionMatrix();
