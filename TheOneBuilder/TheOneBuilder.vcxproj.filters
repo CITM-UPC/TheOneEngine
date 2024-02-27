@@ -27,6 +27,9 @@
     <ClCompile Include="BuilderRenderer3D.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="BuilderInput.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuilderWindow.h">
@@ -42,6 +45,9 @@
       <Filter>Timer</Filter>
     </ClInclude>
     <ClInclude Include="BuilderRenderer3D.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BuilderInput.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
