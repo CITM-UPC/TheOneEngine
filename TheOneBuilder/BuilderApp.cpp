@@ -1,6 +1,7 @@
 #include "BuilderApp.h"
 
 #include "BuilderWindow.h"
+#include "BuilderInput.h"
 #include "BuilderRenderer3D.h"
 #include "Timer.h"
 #include "../TheOneEngine/Log.h"
@@ -12,12 +13,14 @@ BuilderApp::BuilderApp(int argc, char* args[]) : argc(argc), args(args)
 	engine = new EngineCore();
 
 	window = new BuilderWindow(this);
+	input = new BuilderInput(this);
 	renderer3D = new BuilderRenderer3D(this);
 	
 	// Ordered for awake / Start / Update
 	// Reverse order for CleanUp
 
 	AddModule(window, true);
+	AddModule(input, true);
 
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
@@ -210,7 +213,6 @@ void BuilderApp::FinishUpdate()
 
 }
 
-
 // -------------------- QUIT --------------------
 bool BuilderApp::CleanUp()
 {
@@ -229,7 +231,6 @@ bool BuilderApp::CleanUp()
 
 	return ret;
 }
-
 
 // -------------------- Get / Set / Funtionalities --------------------
 int BuilderApp::GetArgc() const
@@ -268,7 +269,6 @@ void BuilderApp::SetDT(double dt)
 }
 
 // -------------------- GAME --------------------
-
 void BuilderApp::Play()
 {
 	static std::string actual_scene_name;
@@ -296,7 +296,6 @@ void BuilderApp::Play()
 		engine->audio->PauseEngine();
 
 	}
-
 }
 
 void BuilderApp::Pause()
