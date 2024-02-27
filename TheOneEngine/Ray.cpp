@@ -10,26 +10,26 @@ bool Ray::Intersects(const AABBox& bb, float& t) const
     t = 0.0f;
 
     // Check for ray origin being inside the bb
-    if (bb.min.x <= Origin.x && Origin.x <= bb.max.x &&
-        bb.min.y <= Origin.y && Origin.y <= bb.max.y &&
-        bb.min.z <= Origin.z && Origin.z <= bb.max.z)
+    if (bb.minPoint.x <= Origin.x && Origin.x <= bb.maxPoint.x &&
+        bb.minPoint.y <= Origin.y && Origin.y <= bb.maxPoint.y &&
+        bb.minPoint.z <= Origin.z && Origin.z <= bb.maxPoint.z)
     {
         return true;
     }
 
     // Compute intersection distances
-    float tmin = (bb.min.x - Origin.x) / Direction.x;
-    float tmax = (bb.max.x - Origin.x) / Direction.x;
+    float tmin = (bb.minPoint.x - Origin.x) / Direction.x;
+    float tmax = (bb.maxPoint.x - Origin.x) / Direction.x;
 
-    float tymin = (bb.min.y - Origin.y) / Direction.y;
-    float tymax = (bb.max.y - Origin.y) / Direction.y;
+    float tymin = (bb.minPoint.y - Origin.y) / Direction.y;
+    float tymax = (bb.maxPoint.y - Origin.y) / Direction.y;
 
     if ((tmin > tymax) || (tymin > tmax)) return false;
     if (tymin > tmin) tmin = tymin;
     if (tymax < tmax) tmax = tymax;
 
-    float tzmin = (bb.min.z - Origin.z) / Direction.z;
-    float tzmax = (bb.max.z - Origin.z) / Direction.z;
+    float tzmin = (bb.minPoint.z - Origin.z) / Direction.z;
+    float tzmax = (bb.maxPoint.z - Origin.z) / Direction.z;
 
     if ((tmin > tzmax) || (tzmin > tmax)) return false;
     if (tzmin > tmin) tmin = tzmin;
