@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AudioManager.h" />
     <ClInclude Include="AudioObject.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Component.h" />
@@ -30,6 +31,7 @@
     <ClInclude Include="UIDGen.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="AudioObject.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Component.cpp" />

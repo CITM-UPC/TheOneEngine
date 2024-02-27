@@ -25,6 +25,9 @@
     <Filter Include="GameObject\Audio">
       <UniqueIdentifier>{28ff298f-96d9-49e6-a589-a4e2474d62ce}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{509cbd93-a5a3-42b0-992e-e74ce188fb4c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -78,6 +81,9 @@
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -121,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="AudioObject.cpp">
       <Filter>GameObject\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

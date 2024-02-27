@@ -60,10 +60,10 @@ public:
 	void SetGlobalSound(float volume);
 
 	//transform the game object that events are attached to
-	void SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
+	//void SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
 
 	//transform the position and reset the orientation to the game object that events are attached to
-	void SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz);
+	//void SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz);
 
 	EngineState state = EngineState::STOPPED;
 

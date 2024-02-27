@@ -11,10 +11,11 @@ public:
 	AudioObject(std::shared_ptr<GameObject> containerGO);
 	virtual ~AudioObject();
 
-	virtual void SetPosition(std::shared_ptr<GameObject> containerGO);
-	virtual void SetRotation(std::shared_ptr<GameObject> containerGO);
+	void SetPosition(std::shared_ptr<GameObject> containerGO);
+	void SetRotation(std::shared_ptr<GameObject> containerGO);
 	//void SetTransform(std::shared_ptr<GameObject> containerGO);
 
 private:
 	AkGameObjectID goID;
+
 };

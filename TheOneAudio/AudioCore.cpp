@@ -348,29 +348,31 @@ void AudioCore::SetGlobalSound(float volume)
     AK::SoundEngine::SetOutputVolume(AK::SoundEngine::GetOutputID(AK_INVALID_UNIQUE_ID, 0.0f), (AkReal32)(volume * 0.01f));
 }
 
-void AudioCore::SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
-{
-    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
-    AkSoundPosition tTransform;
-    tTransform.SetPosition({ -posx, posy, -posz });
-    tTransform.SetOrientation({ ofx, ofy, ofz }, { otx, oty, otz });
-    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
-    {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
-    }
-}
 
-void AudioCore::SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz)
-{
-    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
-    AkSoundPosition tTransform;
-    tTransform.SetPosition({ -posx, posy, -posz });
-    tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
-    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
-    {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
-    }
-}
+// Juls: moved this to AudioObject
+//void AudioCore::SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
+//{
+//    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
+//    AkSoundPosition tTransform;
+//    tTransform.SetPosition({ -posx, posy, -posz });
+//    tTransform.SetOrientation({ ofx, ofy, ofz }, { otx, oty, otz });
+//    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
+//    {
+//        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
+//    }
+//}
+//
+//void AudioCore::SetAudioGameObjectPosition(AkGameObjectID goID, float posx, float posy, float posz)
+//{
+//    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE
+//    AkSoundPosition tTransform;
+//    tTransform.SetPosition({ -posx, posy, -posz });
+//    tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
+//    if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
+//    {
+//        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
+//    }
+//}
 
 
 void AudioCore::EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo)
