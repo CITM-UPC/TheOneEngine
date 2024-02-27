@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Panel.h"
+
 #include "../TheOneEngine/Transform.h"
 
 #include<vector>
@@ -38,6 +39,7 @@ public:
 private:
 	HandleSpace handleSpace;
 	HandlePosition handlePosition;
+	int gizmoType;
 
 	const char* spaces[2] =
 	{
