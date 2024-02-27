@@ -6,6 +6,8 @@
 
 typedef unsigned int uint;
 
+class GameObject;
+
 class Scene
 {
 public:
