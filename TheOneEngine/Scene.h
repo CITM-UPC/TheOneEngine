@@ -18,7 +18,7 @@ public:
 private:
 	uint index;
 	std::string sceneName;
-
+	std::shared_ptr<GameObject> rootSceneGO;
 };
 
 
