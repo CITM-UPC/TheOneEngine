@@ -5,10 +5,7 @@ public class MonoBehaviour
 {
     public MonoBehaviour()
     {
-        IntPtr gameObjectPtr = InternalCalls.GetGameObjectPtr(out gameObjectPtr);
-        attachedGameObject = new IGameObject(gameObjectPtr);
-
-        InternalCalls.PrintCSharpPtrInfo(gameObjectPtr);
+        attachedGameObject = new IGameObject();
     }
 
     public IGameObject attachedGameObject;

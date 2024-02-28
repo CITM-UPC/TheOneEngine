@@ -12,6 +12,11 @@ Script::~Script()
 {
 }
 
+void Script::Update()
+{
+	MonoManager::CallScriptFunction(monoBehaviourInstance, "Update");
+}
+
 void Script::DrawComponent()
 {
 }

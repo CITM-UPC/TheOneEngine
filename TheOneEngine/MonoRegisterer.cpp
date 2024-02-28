@@ -11,7 +11,7 @@
 #include <glm/vec3.hpp>
 
 //Constructors
-static GameObject* GetGameObjectPtr(GameObject* gameObject)
+static GameObject* GetGameObjectPtr()
 {
 	return MonoManager::GetCurrentGameObjectPtr();
 }

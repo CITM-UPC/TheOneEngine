@@ -3,9 +3,11 @@ using System.Runtime.CompilerServices;
 
 public class IGameObject
 {
-    public IGameObject(IntPtr GOptr)
+    public IGameObject()
     {
-        containerGOptr = GOptr;
+        containerGOptr = InternalCalls.GetGameObjectPtr();
+        InternalCalls.PrintCSharpPtrInfo(containerGOptr);
+
         transform = new ITransform(containerGOptr);
     }
 

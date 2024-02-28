@@ -5,7 +5,7 @@ class InternalCalls
 {
     //Constructors
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static IntPtr GetGameObjectPtr(out IntPtr gameObjectPtr);
+    internal extern static IntPtr GetGameObjectPtr();
 
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]

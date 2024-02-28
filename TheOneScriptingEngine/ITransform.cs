@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-public class ITransform
+public class ITransform : IComponent
 {
-    private IntPtr containerGOptr;
-
-    public ITransform(IntPtr GOptr)
-    {
-        containerGOptr = GOptr;
-    }
+    public ITransform(IntPtr GOptr) : base(GOptr) { }
 
     public Vector3 position
     {
