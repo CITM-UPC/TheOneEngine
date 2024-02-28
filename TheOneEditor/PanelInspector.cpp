@@ -62,7 +62,7 @@ bool PanelInspector::Draw()
                 matrixDirty = false;
 
                 view_pos = transform->GetPosition();
-                view_rot_rad = transform->GetRotationEuler();
+                view_rot_deg = transform->GetRotationEuler();
                 view_sca = transform->GetScale();
 
                 //[-pi, pi]

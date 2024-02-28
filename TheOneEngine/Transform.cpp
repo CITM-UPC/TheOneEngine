@@ -91,7 +91,7 @@ void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
     rotation = glm::normalize(glm::quat_cast(rotMtx));
 
 	// Set rotation AngleAxis from quat
-	vec3 rotationEuler = glm::radians(glm::eulerAngles(rotation));
+	vec3 rotationEuler = glm::eulerAngles(rotation);
 
 	quat quaternion = glm::angleAxis(glm::radians(eulerAngles.x), vec3(1, 0, 0));
 	rotation = glm::normalize(rotation * quaternion);
@@ -105,12 +105,77 @@ void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
     transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), newTransform) : newTransform;
 }
 
+//AQUI
+//void Transform::RotateTo(double angle, vec3 axis)
+//{
+//	vec3 normalizedVec = glm::normalize(axis);
+
+//	_right = vec3(1 * _scale.x, 0, 0);
+//	_up = vec3(0, 1 * _scale.y, 0);
+//	_forward = vec3(0, 0, 1 * _scale.z);
+
+//	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(angle), normalizedVec);
+//}
+
+//void Transform::RotateTo(vec3 rotVector)
+//{
+//	_right = vec3(1, 0, 0);
+//	_up = vec3(0, 1, 0);
+//	_forward = vec3(0, 0, 1);
+
+//	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(rotVector.x), vec3(1, 0, 0));
+//	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(rotVector.y), vec3(0, 1, 0));
+//	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(rotVector.z), vec3(0, 0, 1));
+
+//	_right *= _scale.x;
+//	_up *= _scale.y;
+//	_forward *= _scale.z;
+//}
+
+//void Transform::Rotate(double angle, vec3 axis, Space referenceFrame)
+//{
+//	glm::mat3 referenceFrameMat = (glm::mat4)_transformationMatrix;
+
+//	vec3 vecInRefFrame = glm::normalize(axis);
+//	if (referenceFrame == Space::GLOBAL)
+//		vecInRefFrame = axis * referenceFrameMat;
+
+//	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(angle), vecInRefFrame);
+//}
+
+//void Transform::SetRotation(const vec3& eulerAngles)
+//{
+//    transformMatrix[0] = vec4(1, 0, 0, transformMatrix[0][3]);
+//    transformMatrix[1] = vec4(0, 1, 0, transformMatrix[1][3]);
+//    transformMatrix[2] = vec4(0, 0, 1, transformMatrix[2][3]);
+//
+//    transformMatrix = glm::rotate(transformMatrix, eulerAngles.x, vec3(1, 0, 0));
+//    transformMatrix = glm::rotate(transformMatrix, eulerAngles.y, vec3(0, 1, 0));
+//    transformMatrix = glm::rotate(transformMatrix, eulerAngles.z, vec3(0, 0, 1));
+//
+//    transformMatrix[0][0] *= scale.x;
+//    transformMatrix[0][1] *= scale.x;
+//    transformMatrix[0][2] *= scale.x;
+//
+//    transformMatrix[1][0] *= scale.y;
+//    transformMatrix[1][1] *= scale.y;
+//    transformMatrix[1][2] *= scale.y;
+//
+//    transformMatrix[2][0] *= scale.z;
+//    transformMatrix[2][1] *= scale.z;
+//    transformMatrix[2][2] *= scale.z;
+//
+//    DecomposeTransform();
+//}
+
 void Transform::SetRotation(const vec3& eulerAngles)
 {
 	quat quaternion = glm::angleAxis(eulerAngles.x, vec3(1, 0, 0));
     rotation = glm::normalize(quaternion);
+
 	quaternion = glm::angleAxis(eulerAngles.y, vec3(0, 1, 0));
 	rotation = glm::normalize(quaternion * rotation);
+
 	quaternion = glm::angleAxis(eulerAngles.z, vec3(0, 0, 1));
 	rotation = glm::normalize(quaternion * rotation);
 
@@ -247,8 +312,6 @@ vec3 Transform::GetRotationEuler() const
     vec3 eulerAngles = glm::eulerAngles(rotation);
     return eulerAngles;
 }
-
-
 
 #pragma region OLD_CODE
 //void Transform::rotate(const vec3& axis, double angle, bool local)
