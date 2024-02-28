@@ -26,6 +26,7 @@ PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), is
 	handleSpace = HandleSpace::LOCAL;
     handlePosition = HandlePosition::PIVOT;
     gizmoType = -1;
+    gizmoMode = ImGuizmo::MODE::LOCAL;
 }
 
 PanelScene::~PanelScene() {}
@@ -49,7 +50,7 @@ bool PanelScene::Draw()
         // ImGui Panel
         ImVec2 windowPos = ImGui::GetWindowPos();
         ImVec2 windowSize = ImGui::GetWindowSize();
-        ImVec2 regionSize = ImGui::GetContentRegionAvail();
+        ImVec2 availWindowSize = ImGui::GetContentRegionAvail();
 
 
         if (ImGui::IsWindowHovered())
@@ -70,15 +71,15 @@ bool PanelScene::Draw()
             }
 
             // HandleSpace
-            int space = (int)handleSpace;
             ImGui::SetNextItemWidth(80);
-            if (ImGui::Combo("##HandleSpace", &space, spaces, 2))
+            if (ImGui::Combo("##HandleSpace", &gizmoMode, spaces, 2))
             {
-                handleSpace = (HandleSpace)space;
+                //handleSpace = (HandleSpace)space;
+                LOG(LogType::LOG_INFO, "gizMode: %d", gizmoMode);
                 ImGui::EndCombo();
             }
 
-            ImGui::Dummy(ImVec2(regionSize.x - 360.0f, 0.0f));
+            ImGui::Dummy(ImVec2(availWindowSize.x - 360.0f, 0.0f));
 
             if (ImGui::BeginMenu("Render"))
             {
@@ -134,7 +135,7 @@ bool PanelScene::Draw()
         // Viewport Control ----------------------------------------------------------------
         // Aspect Ratio Size
         int width, height;
-        app->gui->CalculateSizeAspectRatio(regionSize.x, regionSize.y, width, height);
+        app->gui->CalculateSizeAspectRatio(availWindowSize.x, availWindowSize.y, width, height);
 
         // Set glViewport coordinates
         // SDL origin at top left corner (+x >, +y v)
@@ -172,18 +173,26 @@ bool PanelScene::Draw()
         {
             ImGuizmo::SetOrthographic(false);
             ImGuizmo::SetDrawlist();
-            ImGuizmo::SetRect(x, y, width, height);
+            int viewportTopLeftY = windowPos.y + (windowSize.y - availWindowSize.y);
+            ImGuizmo::SetRect(windowPos.x, viewportTopLeftY, width, height);
 
             //Camera
             const glm::mat4& cameraProjection = sceneCam->projectionMatrix;
             glm::mat4 cameraView = sceneCam->viewMatrix;
 
             //Entity Transform
-            auto tc = selectedGO->GetComponent<Transform>();
+            Transform* tc = selectedGO->GetComponent<Transform>();
             glm::mat4 transform = tc->CalculateWorldTransform();
 
             ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
-                (ImGuizmo::OPERATION)gizmoType, ImGuizmo::LOCAL, glm::value_ptr(transform));
+                (ImGuizmo::OPERATION)gizmoType, (ImGuizmo::MODE)gizmoMode, glm::value_ptr(transform));
+
+            if (ImGuizmo::IsUsing())
+            {
+                tc->SetPosition(transform[3]);
+                //tc->SetRotation();
+                //tc->SetScale();
+            }
         }
 
 

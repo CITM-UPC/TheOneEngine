@@ -40,6 +40,7 @@ private:
 	HandleSpace handleSpace;
 	HandlePosition handlePosition;
 	int gizmoType;
+	int gizmoMode;
 
 	const char* spaces[2] =
 	{

@@ -68,6 +68,7 @@ void Camera::UpdateViewMatrix()
         Camera* camera = GO->GetComponent<Camera>();
         glm::vec3 tempPosition = transform->GetPosition();
         glm::vec3 tempUp = transform->GetUp();
+
         viewMatrix = glm::lookAt(tempPosition, camera->lookAt, tempUp);
     }
     else
