@@ -35,14 +35,15 @@ public:
 
 	bool CleanUp();
 
+public:
+
 	void CreateNewScene();
 
+	// Change between scenes
 	void LoadScene(uint index);
 	void LoadScene(std::string sceneName);
 
-	/*SCENE SERIALIZATION*/
-	void SaveScene();
-	void LoadSceneFromJSON(const std::string& filename);
+	std::string GenerateUniqueName(const std::string& baseName);
 
 	// Create GameObjects functions
 	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
@@ -54,11 +55,19 @@ public:
 	std::shared_ptr<GameObject> CreateMF();
 	std::shared_ptr<GameObject> CreateTeapot(std::string path);
 
+	// SelectedGo (Editor Only???)
+	std::shared_ptr<GameObject> GetSelectedGO() const;
+	void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
+
+	/*SCENE SERIALIZATION*/
+	void SaveScene();
+	void LoadSceneFromJSON(const std::string& filename);
+
 private:
 	void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
 
 public:
-	Scene* currentScene = nullptr;
+	Scene* currentScene = nullptr; //Convert to smart ptr
 
 private:
 	std::shared_ptr<GameObject> selectedGameObject;
@@ -68,13 +77,23 @@ private:
 class Scene
 {
 public:
-	Scene() {}
+	Scene() : sceneName("Scene"), index(0), isDirty(true) {}
+
+	inline Scene(uint _index, std::string name) : sceneName(name), index(_index), isDirty(true) {}
+
 	~Scene() {}
+
+	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
 private:
 	uint index;
 	std::string sceneName;
 	std::shared_ptr<GameObject> rootSceneGO;
+
+	//Historn: This is to remember to save the scene if any change is made
+	bool isDirty;
+
+	std::string path;
 };
 
 #endif // !__SCENE_MANAGER_H__

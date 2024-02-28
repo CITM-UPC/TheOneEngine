@@ -44,7 +44,7 @@ bool SceneManager::Update(double dt)
 bool SceneManager::PostUpdate()
 {
 	// Draw
-	RecurseDrawChildren(rootSceneGO);
+	RecurseDrawChildren(currentScene->GetRootSceneGO());
 
 	return true;
 }
@@ -58,6 +58,15 @@ void SceneManager::CreateNewScene()
 {
 }
 
+void SceneManager::LoadScene(uint index)
+{
+}
+
+void SceneManager::LoadScene(std::string sceneName)
+{
+
+}
+
 void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 {
 	for (const auto gameObject : parentGO.get()->children)
@@ -69,6 +78,8 @@ void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 
 void SceneManager::SaveScene()
 {
+	//Change to save the Scene Class
+
 	fs::path filename = fs::path(ASSETS_PATH) / "Scenes" / "scene.toe";
 	//string filename = "Assets/Scenes/";
 	fs::path folderName = fs::path(ASSETS_PATH) / "Scenes";
@@ -78,7 +89,7 @@ void SceneManager::SaveScene()
 
 	json gameObjectsJSON;
 	/*Save all gameobjects*/
-	for (const auto& go : GetGameObjects())
+	for (const auto& go : currentScene->GetRootSceneGO().get()->children)
 	{
 		gameObjectsJSON.push_back(go.get()->SaveGameObject());
 	}
@@ -91,6 +102,8 @@ void SceneManager::SaveScene()
 
 void SceneManager::LoadSceneFromJSON(const std::string& filename)
 {
+	//Change to load the Scene Class
+	
 	// Check if the scene file exists
 	if (!fs::exists(filename))
 	{
@@ -120,7 +133,7 @@ void SceneManager::LoadSceneFromJSON(const std::string& filename)
 	// Close the file
 	file.close();
 
-	currentScene.get()->children.clear();
+	currentScene->GetRootSceneGO().get()->children.clear();
 
 	// Load game objects from the JSON data
 	if (sceneJSON.contains("GameObjects"))
@@ -142,6 +155,23 @@ void SceneManager::LoadSceneFromJSON(const std::string& filename)
 	{
 		LOG(LogType::LOG_ERROR, "Scene file does not contain GameObjects information");
 	}
+}
+
+std::string SceneManager::GenerateUniqueName(const std::string& baseName)
+{
+	std::string uniqueName = baseName;
+	int counter = 1;
+
+	while (std::any_of(
+		currentScene->GetRootSceneGO().get()->children.begin(), currentScene->GetRootSceneGO().get()->children.end(),
+		[&uniqueName](const std::shared_ptr<GameObject>& obj)
+		{ return obj.get()->GetName() == uniqueName; }))
+	{
+		uniqueName = baseName + "(" + std::to_string(counter) + ")";
+		++counter;
+	}
+
+	return uniqueName;
 }
 
 std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
@@ -208,8 +238,8 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 
 			if (isSingleMesh)
 			{
-				meshGO.get()->parent = rootSceneGO;
-				rootSceneGO.get()->children.push_back(meshGO);
+				meshGO.get()->parent = currentScene->GetRootSceneGO();
+				currentScene->GetRootSceneGO().get()->children.push_back(meshGO);
 			}
 			else
 			{
