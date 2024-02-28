@@ -3,11 +3,11 @@ using System.Runtime.CompilerServices;
 
 public class ITransform
 {
-    private ulong _uid;
+    private IntPtr containerGOptr;
 
-    public ITransform(ulong uid)
+    public ITransform(IntPtr GOptr)
     {
-        _uid = uid;
+        containerGOptr = GOptr;
     }
 
     public Vector3 position
@@ -15,12 +15,18 @@ public class ITransform
         get
         {
             Vector3 outPos;
-            InternalCalls.GetTransform(_uid, out outPos);
+            InternalCalls.GetTransform(containerGOptr, out outPos);
             return outPos;
         }
         set
         {
-            InternalCalls.SetTransform(_uid, ref value);
+            InternalCalls.SetTransform(containerGOptr, ref value);
         }
+    }
+
+    public void Move(Vector3 increment)
+    {
+        Vector3 targetPos = position + increment;
+        InternalCalls.SetTransform(containerGOptr, ref targetPos);
     }
 }

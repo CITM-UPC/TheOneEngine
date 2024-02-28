@@ -5,12 +5,16 @@ class InternalCalls
 {
     //Constructors
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static ulong GetUID(out ulong uid);
+    internal extern static IntPtr GetGameObjectPtr(out IntPtr gameObjectPtr);
 
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static ITransform GetTransform(ulong uid, out Vector3 position);
+    internal extern static ITransform GetTransform(IntPtr GOptr, out Vector3 position);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static ITransform SetTransform(ulong uid, ref Vector3 position);
+    internal extern static ITransform SetTransform(IntPtr GOptr, ref Vector3 position);
+
+    //Debug
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void PrintCSharpPtrInfo(IntPtr GOptr);
 }

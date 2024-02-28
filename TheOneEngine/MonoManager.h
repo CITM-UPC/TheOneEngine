@@ -1,4 +1,5 @@
 #pragma once
+#include "GameObject.h"
 
 #include "mono\jit\jit.h"
 #include "mono\metadata\assembly.h"
@@ -15,7 +16,7 @@ class MonoManager
 
         MonoAssembly* mainAssembly = nullptr;
 
-        unsigned long currentUID = -1;
+        GameObject* currentGameObjectPtr = nullptr;
     };
 
 private:
@@ -29,8 +30,8 @@ public:
     void InitMono();
     void ShutDownMono();
 
-    static unsigned long GetCurrentUID() { return monoData.currentUID; }
-    static MonoObject* InstantiateClass(const char* className, unsigned long goUID = -1);
+    static GameObject* GetCurrentGameObjectPtr() { return monoData.currentGameObjectPtr; }
+    static MonoObject* InstantiateClass(const char* className, GameObject* containerGOptr);
 
     static void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall);
     static void CallScriptFunction(MonoObject* monoBehaviourInstance, std::string functionToCall, void** params, int parameterCount);

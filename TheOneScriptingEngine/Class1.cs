@@ -2,21 +2,16 @@
 
 public class Class1 : MonoBehaviour
 {
-    Class1()
+
+    public override void Update()
     {
-        Console.WriteLine("Called constructor of Class1 with GameObject name: " + attachedGameObject.name + " from C#.");
+        if (attachedGameObject.transform.position.x >= 3.0f)
+        {
+            Console.WriteLine("Current X pos is over 3.0 and has value: " + attachedGameObject.transform.position.x);
+        }
+        else if (attachedGameObject.transform.position.x < 0f)
+        {
+            attachedGameObject.transform.Move(new Vector3(0.01f, 0, 0));
+        }
     }
-
-    public float MyPublicFloatVar = 5.0f;
-
-    public void PrintFloatVar()
-    {
-        Console.WriteLine("MyPublicFloatVar = {0:F}", MyPublicFloatVar);
-    }
-
-    private void IncrementFloatVar(float value)
-    {
-        MyPublicFloatVar += value;
-    }
-
 }

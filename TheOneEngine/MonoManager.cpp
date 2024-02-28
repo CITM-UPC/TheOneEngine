@@ -48,9 +48,9 @@ void MonoManager::ShutDownMono()
     monoData.mainAssembly = nullptr;
 }
 
-MonoObject* MonoManager::InstantiateClass(const char* className, unsigned long goUID)
+MonoObject* MonoManager::InstantiateClass(const char* className, GameObject* containerGOptr)
 {
-    monoData.currentUID = goUID;
+    monoData.currentGameObjectPtr = containerGOptr;
 
     // Get a reference to the class we want to instantiate
     MonoClass* classToInstantiate = GetClassInAssembly(monoData.mainAssembly, "", className);
@@ -72,9 +72,9 @@ MonoObject* MonoManager::InstantiateClass(const char* className, unsigned long g
 
     // Call the parameterless (default) constructor
     mono_runtime_object_init(classInstance);
-    std::cout << "Instance of " << className << " created and initialized with UID " << goUID << std::endl;
+    std::cout << "Instance of " << className << " created and initialized with GO adress " << containerGOptr << " and name " << containerGOptr->GetName() << std::endl;
 
-    monoData.currentUID = -1;
+    monoData.currentGameObjectPtr = nullptr;
 
     return classInstance;
 }

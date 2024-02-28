@@ -5,10 +5,10 @@ public class MonoBehaviour
 {
     public MonoBehaviour()
     {
-        ulong uid;
-        InternalCalls.GetUID(out uid);
-        Console.WriteLine("Received UUID is: " + uid);
-        attachedGameObject = new IGameObject((ulong)uid);
+        IntPtr gameObjectPtr = InternalCalls.GetGameObjectPtr(out gameObjectPtr);
+        attachedGameObject = new IGameObject(gameObjectPtr);
+
+        InternalCalls.PrintCSharpPtrInfo(gameObjectPtr);
     }
 
     public IGameObject attachedGameObject;

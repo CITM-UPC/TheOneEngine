@@ -3,13 +3,13 @@ using System.Runtime.CompilerServices;
 
 public class IGameObject
 {
-    public IGameObject(ulong uuid)
+    public IGameObject(IntPtr GOptr)
     {
-        _uuid = uuid;
-        transform = new ITransform(_uuid);
+        containerGOptr = GOptr;
+        transform = new ITransform(containerGOptr);
     }
 
-    private ulong _uuid;
+    private IntPtr containerGOptr;
 
     public string name;
     public bool isActive;
