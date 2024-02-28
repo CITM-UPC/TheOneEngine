@@ -4,6 +4,7 @@ Source::Source(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
 {
 	volume = 50;
 	path = "";
+	SetTransform(containerGO);
 }
 
 Source::~Source()

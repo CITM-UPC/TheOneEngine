@@ -2,8 +2,7 @@
 
 Listener::Listener(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Listener), AudioObject(containerGO)
 {
-	SetPosition(containerGO);
-	SetRotation(containerGO);
+	SetTransform(containerGO);
 }
 
 Listener::~Listener()

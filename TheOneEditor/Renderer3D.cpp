@@ -11,7 +11,7 @@
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
-
+#include "..\TheOneEngine\Listener.h"
 
 Renderer3D::Renderer3D(App* app) : Module(app)
 {
@@ -37,19 +37,9 @@ bool Renderer3D::Start()
     sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 3, -10));
     sceneCamera.get()->GetComponent<Camera>()->center = {0, 0, 0};
     sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
-    
 
-    //app->engine->audio->SetListenerTransform(
-    //    sceneCamera.get()->GetComponent<Transform>()->getPosition().x, 
-    //    sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
-    //    sceneCamera.get()->GetComponent<Transform>()->getPosition().z, 
-    //    sceneCamera.get()->GetComponent<Transform>()->getForward().x, 
-    //    sceneCamera.get()->GetComponent<Transform>()->getForward().y,
-    //    sceneCamera.get()->GetComponent<Transform>()->getForward().z, 
-    //    sceneCamera.get()->GetComponent<Transform>()->getUp().x,
-    //    sceneCamera.get()->GetComponent<Transform>()->getUp().y,
-    //    sceneCamera.get()->GetComponent<Transform>()->getUp().z);
-
+    // JULS: Listener 
+    sceneCamera.get()->AddComponent<Listener>();
 
     // hekbas test adding same component
     LOG(LogType::LOG_INFO, "# Testing Component Duplication");
@@ -72,6 +62,9 @@ bool Renderer3D::Update(double dt)
     app->gui->panelScene->isHovered = false;
 
     app->engine->Update(dt);
+
+    // JULS: Update should be done in the Audio Manager but for now I will leave it here
+    sceneCamera.get()->GetComponent<Listener>()->SetTransform(sceneCamera);
 
     //app->engine->audio->SetAudioGameObjectTransform(
     //    //here must the gameobject compoment -> wwisegameobject   of the camera

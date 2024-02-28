@@ -10,6 +10,7 @@ public:
 	bool Update();
 	bool CleanUp();
 
+	void AddAudioObject(AudioObject audioGO);
 
 
 private:

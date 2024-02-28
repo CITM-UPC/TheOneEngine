@@ -47,14 +47,15 @@ bool SceneManager::Start()
     rotationSpeed = 30.0f;
 
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
-    gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });
+    gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });*/
 
     spatialObject2 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
     spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
-    
-    spatialObject1 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
-    spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });*/
+    spatialObject2->AddComponent<Source>();
 
+    spatialObject1 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
+    spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });
+    spatialObject1->AddComponent<Source>();
 
     int camera = app->engine->audio->RegisterGameObject("Camera");
     int spatial1 = app->engine->audio->RegisterGameObject("Spatial1");
@@ -100,19 +101,8 @@ bool SceneManager::PreUpdate()
         app->engine->audio->SetGlobalSound(app->engine->audio->globalVolume + 2);
     }
 
-    app->engine->audio->SetAudioGameObjectTransform(
-        0,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getForward().x,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getForward().y,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getForward().z,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getUp().x,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getUp().y,
-        app->renderer3D->sceneCamera.get()->GetComponent<Transform>()->getUp().z);
-
-    
+    //spatialObject2->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
+    //spatialObject1->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject1));
 
     return true;
 }
@@ -151,6 +141,7 @@ bool SceneManager::Update(double dt)
         spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
     }*/
 
+    // JULS: Commented this as functions have been changed
     /*app->engine->audio->SetSpatial1Transform(
         spatialObject1->GetComponent<Transform>()->getPosition().x,
         spatialObject1->GetComponent<Transform>()->getPosition().y,

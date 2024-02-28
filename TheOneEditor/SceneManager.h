@@ -11,6 +11,8 @@
 #include "..\TheOneEngine\Camera.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Texture.h"
+#include "..\TheOneEngine\Listener.h"
+#include "..\TheOneEngine\Source.h"
 
 #include <vector>
 #include <string>

@@ -2,7 +2,9 @@
 
 AudioObject::AudioObject(std::shared_ptr<GameObject> containerGO)
 {
-	SetPosition(containerGO);
+	SetTransform(containerGO);
+
+	//Probably should set the id here with a register object in audio core, that is why the errors (probably)
 }
 
 AudioObject::~AudioObject()
@@ -16,7 +18,8 @@ void AudioObject::SetPosition(std::shared_ptr<GameObject> containerGO)
 
 	if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
 	{
-		LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
+		// I should put this function and rotation in virtual to change logs in Listener and Source
+		LOG(LogType::LOG_AUDIO, "ERROR setting position to the Listener (default listener)");
 	}
 }
 
@@ -37,6 +40,12 @@ void AudioObject::SetRotation(std::shared_ptr<GameObject> containerGO)
 
 	if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
 	{
-		LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
+		LOG(LogType::LOG_AUDIO, "ERROR setting rotation to the Listener (default listener)");
 	}
+}
+
+void AudioObject::SetTransform(std::shared_ptr<GameObject> containerGO)
+{
+	SetPosition(containerGO);
+	//SetRotation(containerGO);
 }
