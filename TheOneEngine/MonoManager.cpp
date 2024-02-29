@@ -4,17 +4,68 @@
 #include <iostream>
 #include <fstream>
 
+std::string GetAssemblyPath()
+{
+    std::string resultingAssembly;
+
+    // Check if the VisualStudioVersion environment variable is set
+
+    char* vsVersion = nullptr;
+    size_t len = 0;
+    errno_t err = _dupenv_s(&vsVersion, &len, "VisualStudioVersion");
+
+    if (err == 0 && vsVersion != nullptr)
+    {
+        // Running from Visual Studio
 #ifdef _DEBUG
-const std::string mainAssemblyPath = "../TheOneScriptingEngine/bin/Debug/TheOneScriptingEngine.dll";
+
+        resultingAssembly = "../TheOneScriptingEngine/bin/Debug/TheOneScriptingEngine.dll";
+
 #else
-const std::string mainAssemblyPath = "../TheOneScriptingEngine/bin/Release/TheOneScriptingEngine.dll";
+
+        resultingAssembly = "../TheOneScriptingEngine/bin/Release/TheOneScriptingEngine.dll";
+
 #endif
+    }
+    else
+    {
+        // Running from generated .exe file
+        resultingAssembly = "TheOneScriptingEngine.dll";
+    }
+
+    free(vsVersion); // Remember to free the memory allocated by _dupenv_s
+    return resultingAssembly;
+}
+std::string GetMonoAssembliesPath()
+{
+    std::string resultingPath;
+
+    // Check if the VisualStudioVersion environment variable is set
+
+    char* vsVersion = nullptr;
+    size_t len = 0;
+    errno_t err = _dupenv_s(&vsVersion, &len, "VisualStudioVersion");
+
+    if (err == 0 && vsVersion != nullptr)
+    {
+        // Running from Visual Studio
+        resultingPath = "../mono/lib/4.5";
+    }
+    else 
+    {
+        // Running from generated .exe file
+        resultingPath = "mono/lib/4.5";
+    }
+
+    free(vsVersion); // Remember to free the memory allocated by _dupenv_s
+    return resultingPath;
+}
 
 MonoManager::MonoManagerData MonoManager::monoData;
 
 void MonoManager::InitMono()
 {
-    mono_set_assemblies_path("../mono/lib/4.5");
+    mono_set_assemblies_path(GetMonoAssembliesPath().c_str());
 
     MonoDomain* rootDomain = mono_jit_init("MyScriptRuntime");
 	if (rootDomain == nullptr)
@@ -30,7 +81,7 @@ void MonoManager::InitMono()
     monoData.monoAppDomain = mono_domain_create_appdomain(appDomainName, nullptr);
 	mono_domain_set(monoData.monoAppDomain, true);
 
-    monoData.mainAssembly = LoadCSharpAssembly(mainAssemblyPath);
+    monoData.mainAssembly = LoadCSharpAssembly(GetAssemblyPath().c_str());
 
     MonoRegisterer::RegisterFunctions();
 }
