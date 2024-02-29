@@ -37,7 +37,7 @@ public:
 
 public:
 
-	void CreateNewScene();
+	void CreateNewScene(uint _index, std::string name);
 
 	// Change between scenes
 	void LoadScene(uint index);
@@ -57,6 +57,10 @@ public:
 	std::shared_ptr<GameObject> CreateSphere();
 	std::shared_ptr<GameObject> CreateMF();
 	std::shared_ptr<GameObject> CreateTeapot(std::string path);
+
+	// Get/Set
+	uint GetNumberGO() const;
+	std::vector<std::shared_ptr<GameObject>>GetGameObjects();
 
 	// SelectedGo (Editor Only???)
 	std::shared_ptr<GameObject> GetSelectedGO() const;
@@ -85,6 +89,12 @@ public:
 	inline Scene(uint _index, std::string name) : sceneName(name), index(_index), isDirty(true) {}
 
 	~Scene() {}
+
+	inline std::string GetSceneName() const { return sceneName; }
+	inline void SetSceneName(std::string name) { sceneName = name; }
+
+	inline uint GetIndex() const { return index; }
+	inline void SetIndex(uint _index) { index = _index; }
 
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
