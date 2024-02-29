@@ -2,7 +2,7 @@
 #include "Input.h"
 #include "Gui.h"
 #include "Window.h"
-#include "SceneManager.h"
+#include "../TheOneEngine/SceneManager.h"
 
 #include "Log.h"
 #include <string>
@@ -168,15 +168,15 @@ bool Input::processSDLEvents()
                         LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileNameExt.data(), assetsDir.string().data());
 
                         //Find Meshes in Library
-                        app->sceneManager->CreateExistingMeshGO(assetsDir.string());
+                        app->renderer3D->engineSceneManager->CreateExistingMeshGO(assetsDir.string());
                     }
                     else
                     {
                         LOG(LogType::LOG_OK, "-%s Imported successfully into: %s", fileNameExt.data(), assetsDir.string().data());
                         std::filesystem::copy(fileDir, assetsDir, std::filesystem::copy_options::overwrite_existing);
 
-                        //Creates GO and Serialize Meshes
-                        app->sceneManager->CreateMeshGO(assetsDir.string());
+                        //Creates GO and Serialize 
+                        app->renderer3D->engineSceneManager->CreateMeshGO(assetsDir.string());
                         LOG(LogType::LOG_OK, "-Created GameObject: %s", assetsDir.string().data());
                     }
                 }

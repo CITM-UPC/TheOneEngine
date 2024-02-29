@@ -6,9 +6,9 @@
 
 #include <memory>
 
-
 class EngineCore;
 class GameObject;
+class SceneManager;
 
 class Renderer3D : public Module
 {
@@ -36,6 +36,8 @@ public:
     double dtSum = 0;
 
     std::shared_ptr<GameObject> sceneCamera;
+    
+    SceneManager* engineSceneManager = nullptr;
 };
 
 #endif // !__RENDERER_3D_H__

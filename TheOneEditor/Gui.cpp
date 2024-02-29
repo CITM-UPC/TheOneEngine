@@ -7,7 +7,7 @@
 #include "Gui.h"
 #include "Window.h"
 #include "Hardware.h"
-#include "SceneManager.h"
+#include "../TheOneEngine/SceneManager.h"
 
 #include "Panel.h"
 #include "PanelAbout.h"
@@ -422,7 +422,7 @@ bool Gui::MainMenuFile()
     if (ImGui::MenuItem("Open", "Ctrl+O", false)) 
     {
         std::string filename = "Assets/Scenes/scene.toe";
-        app->sceneManager->LoadScene(filename);
+        app->renderer3D->engineSceneManager->LoadScene(filename);
     }
     if (ImGui::BeginMenu("Open Recent"))
     {
@@ -433,7 +433,7 @@ bool Gui::MainMenuFile()
 
     if (ImGui::MenuItem("Save", "Ctrl+S", false)) 
     {
-        app->sceneManager->SaveScene();
+        app->renderer3D->engineSceneManager->SaveScene();
     }
     if (ImGui::MenuItem("Save As..", 0, false, false)) {}
 
@@ -474,13 +474,13 @@ void Gui::MainMenuAssets()
 
 void Gui::MainMenuGameObject()
 {
-    if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) { app->sceneManager->CreateEmptyGO(); }
+    if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) { app->renderer3D->engineSceneManager->CreateEmptyGO(); }
 
     if (ImGui::BeginMenu("3D Object", "Ctrl+Shift+N"))
     {
         if (ImGui::MenuItem("Square", 0, false, false)) {}
         if (ImGui::MenuItem("Sphere", 0, false, false)) {}
-        if (ImGui::MenuItem("Less than 12?")) { app->sceneManager->CreateMF(); }
+        if (ImGui::MenuItem("Less than 12?")) { app->renderer3D->engineSceneManager->CreateMF(); }
 
         ImGui::EndMenu();
     }

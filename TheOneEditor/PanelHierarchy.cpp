@@ -1,6 +1,5 @@
 #include "PanelHierarchy.h"
 #include "App.h"
-#include "SceneManager.h"
 #include "Gui.h"
 #include "imgui.h"
 
@@ -19,7 +18,7 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 		if (childGO.get()->children.size() == 0)
 			treeFlags |= ImGuiTreeNodeFlags_Leaf;
 
-		if (childGO == app->sceneManager->GetSelectedGO())
+		if (childGO == app->renderer3D->engineSceneManager->GetSelectedGO())
 			treeFlags |= ImGuiTreeNodeFlags_Selected;
 
 		bool isOpen = ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags);
@@ -29,8 +28,8 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 		if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
 		{
-			app->sceneManager->SetSelectedGO(childGO);
-			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+			app->renderer3D->engineSceneManager->SetSelectedGO(childGO);
+			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetName().c_str());
 		}
 
 		ContextMenu(childGO);
@@ -56,11 +55,11 @@ bool PanelHierarchy::Draw()
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
-		if (ImGui::TreeNodeEx(app->sceneManager->GetRootSceneGO().get()->GetName().data(), treeFlags))
+		if (ImGui::TreeNodeEx(app->renderer3D->engineSceneManager->GetRootSceneGO().get()->GetName().data(), treeFlags))
 		{
 			reparent = false;
-			ReparentDragDrop(app->sceneManager->GetRootSceneGO());
-			RecurseShowChildren(app->sceneManager->GetRootSceneGO());
+			ReparentDragDrop(app->renderer3D->engineSceneManager->GetRootSceneGO());
+			RecurseShowChildren(app->renderer3D->engineSceneManager->GetRootSceneGO());
 			ImGui::TreePop();
 		}
 
@@ -101,16 +100,16 @@ bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 
 	if (ImGui::BeginDragDropSource())
 	{
-		if (childGO != app->sceneManager->GetRootSceneGO())
+		if (childGO != app->renderer3D->engineSceneManager->GetRootSceneGO())
 		{
-			ImGui::SetDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+			ImGui::SetDragDropPayload(app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
 		}
 
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str()))
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetName().c_str()))
 		{
 			GameObject* dragging = *(GameObject**)payload->Data;
 

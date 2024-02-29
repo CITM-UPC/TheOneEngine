@@ -77,8 +77,8 @@ public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
 
 private:
-	std::shared_ptr<GameObject> selectedGameObject;
-	MeshLoader* meshLoader;
+	std::shared_ptr<GameObject> selectedGameObject = nullptr;
+	MeshLoader* meshLoader = nullptr;
 };
 
 class Scene

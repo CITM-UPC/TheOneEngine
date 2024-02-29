@@ -4,14 +4,14 @@
 #include "Window.h"
 #include "Gui.h"
 #include "PanelScene.h"
-#include "SceneManager.h"
 
 #include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Component.h"
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
-
+#include "..\TheOneEngine\EngineCore.h"
+#include "..\TheOneEngine\SceneManager.h"
 
 Renderer3D::Renderer3D(App* app) : Module(app)
 {
@@ -21,6 +21,7 @@ Renderer3D::~Renderer3D() {}
 
 bool Renderer3D::Awake()
 {
+    engineSceneManager = new SceneManager();
     app->engine->Awake();
 
     return true;
@@ -106,6 +107,8 @@ bool Renderer3D::PostUpdate()
     /*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
     for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
 
+    engineSceneManager->PostUpdate();
+
     app->gui->Draw();
 
     SDL_GL_SwapWindow(app->window->window);
@@ -177,17 +180,17 @@ void Renderer3D::CameraInput(double dt)
 
         vec3f finalPos;
         finalPos = transform->getPosition() - transform->getForward();
-        if (app->sceneManager->GetSelectedGO() != nullptr)
+        if (app->renderer3D->engineSceneManager->GetSelectedGO() != nullptr)
         {
-            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0);
+            finalPos = app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - (transform->getForward() * 100.0);
         }
 
         camera->setPosition(finalPos);
     }
 
-    if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->sceneManager->GetSelectedGO() != nullptr)
+    if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->renderer3D->engineSceneManager->GetSelectedGO() != nullptr)
     {
-        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - transform->getForward();
+        vec3f targetPos = app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetComponent<Transform>()->getPosition() - transform->getForward();
 
         camera->setPosition(targetPos * 100.0f);
     }

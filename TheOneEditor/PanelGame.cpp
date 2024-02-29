@@ -2,7 +2,6 @@
 #include "App.h"
 #include "Gui.h"
 #include "Renderer3D.h"
-#include "SceneManager.h"
 #include "Window.h"
 #include "imgui.h"
 
@@ -72,7 +71,7 @@ bool PanelGame::Draw()
         app->engine->OnWindowResize(x, y, width, height);
 
         // Render Game cameras
-        for (const auto GO : app->sceneManager->GetGameObjects())
+        for (const auto GO : app->renderer3D->engineSceneManager->GetGameObjects())
         {
             Camera* gameCam = GO.get()->GetComponent<Camera>();
 

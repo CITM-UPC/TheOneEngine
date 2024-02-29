@@ -1,7 +1,6 @@
 #include "PanelInspector.h"
 #include "App.h"
 #include "Gui.h"
-#include "SceneManager.h"
 
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
@@ -32,7 +31,7 @@ bool PanelInspector::Draw()
         ImVec4 clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
         ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once);
 
-        std::shared_ptr<GameObject> selectedGO = app->sceneManager->GetSelectedGO();
+        std::shared_ptr<GameObject> selectedGO = app->renderer3D->engineSceneManager->GetSelectedGO();
 
         if (selectedGO != nullptr)
         {

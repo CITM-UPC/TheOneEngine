@@ -3,7 +3,6 @@
 #include "Transform.h"
 
 #include "../TheOneEditor/Log.h"
-#include "../TheOneEditor/SceneManager.h"
 
 #include <span>
 #include <vector>

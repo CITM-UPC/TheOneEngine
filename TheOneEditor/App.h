@@ -4,7 +4,9 @@
 
 #include "Log.h"
 #include "Timer.h"
+
 #include "..\TheOneEngine\EngineCore.h"
+
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -13,13 +15,11 @@
 #include <string>
 #include <list>
 
-
 // Forward declaration
 class Module;
 class Window;
 class Input;
 class Hardware;
-class SceneManager;
 class Gui;
 class Renderer3D;
 
@@ -90,7 +90,6 @@ public:
 	Window* window = nullptr;
 	Input* input = nullptr;
 	Hardware* hardware = nullptr;
-	SceneManager* sceneManager = nullptr;
 	Gui* gui = nullptr;
 	Renderer3D* renderer3D = nullptr;
 

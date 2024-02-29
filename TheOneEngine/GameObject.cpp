@@ -6,9 +6,6 @@
 #include "UIDGen.h"
 #include "BBox.hpp"
 
-
-#include "../TheOneEditor/SceneManager.h"
-
 #include "Math.h"
 
 

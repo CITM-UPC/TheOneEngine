@@ -2,7 +2,6 @@
 #include "App.h"
 #include "Gui.h"
 #include "Renderer3D.h"
-#include "SceneManager.h"
 #include "Window.h"
 #include "imgui.h"
 #include "Log.h"
@@ -121,7 +120,7 @@ bool PanelScene::Draw()
         app->engine->Render(sceneCam);
 
         // Game cameras Frustum
-        for (const auto GO : app->sceneManager->GetGameObjects())
+        for (const auto GO : app->renderer3D->engineSceneManager->GetGameObjects())
         {
             Camera* gameCam = GO.get()->GetComponent<Camera>();
 
