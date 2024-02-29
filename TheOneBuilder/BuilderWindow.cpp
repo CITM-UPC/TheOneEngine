@@ -82,7 +82,7 @@ bool BuilderWindow::initSDLWindowWithOpenGL()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
-    std::string title = std::string(TITLE) + "_" + VERSION;
+    std::string title = std::string(GAME_TITLE) + "_" + GAME_VERSION;
     window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     if (!window)

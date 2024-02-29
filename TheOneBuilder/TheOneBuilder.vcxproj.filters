@@ -10,6 +10,9 @@
     <Filter Include="Timer">
       <UniqueIdentifier>{2ea60b0c-b574-4200-bd0e-f92a63561993}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{ed4cb210-069c-48e5-84d7-de833520b2ac}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BuilderWindow.cpp">
@@ -49,6 +52,9 @@
     </ClInclude>
     <ClInclude Include="BuilderInput.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="BuilderDefs.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

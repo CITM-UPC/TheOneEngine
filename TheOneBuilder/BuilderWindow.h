@@ -3,6 +3,7 @@
 #pragma once
 
 #include "BuilderModule.h"
+#include "BuilderDefs.h"
 #include "../TheOneEngine/Defs.h"
 
 #include <SDL2/SDL.h>
