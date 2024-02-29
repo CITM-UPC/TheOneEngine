@@ -67,6 +67,9 @@
     <ClCompile Include="Window.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="GamepadInput.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Log.h">
@@ -127,6 +130,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="GamepadInput.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

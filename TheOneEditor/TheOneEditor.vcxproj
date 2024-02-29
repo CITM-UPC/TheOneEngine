@@ -109,6 +109,7 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="GamepadInput.cpp" />
     <ClCompile Include="Hardware.cpp" />
     <ClCompile Include="Gui.cpp" />
     <ClCompile Include="Importer.cpp" />
@@ -141,6 +142,7 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="GamepadInput.h" />
     <ClInclude Include="Hardware.h" />
     <ClInclude Include="Gui.h" />
     <ClInclude Include="Importer.h" />
