@@ -7,6 +7,11 @@ public struct Vector3
     public float y { get; private set; }
     public float z { get; private set; }
 
+    public static Vector3 zero      { get { return new Vector3(0, 0, 0); } }
+    public static Vector3 right     { get { return new Vector3(1.0f, 0, 0); } }
+    public static Vector3 up        { get { return new Vector3(0, 1.0f, 0); } }
+    public static Vector3 forward   { get { return new Vector3(0, 0, 1.0f); } }
+
     float Magnitude()
     {
         return (float)Math.Sqrt(x * x + y * y + z * z);

@@ -19,6 +19,14 @@ public class ITransform : IComponent
         }
     }
 
+    public Vector3 forward
+    {
+        get
+        {
+            return InternalCalls.GetTransformForward(containerGOptr);
+        }
+    }
+
     public void Move(Vector3 increment)
     {
         Vector3 targetPos = position + increment;
