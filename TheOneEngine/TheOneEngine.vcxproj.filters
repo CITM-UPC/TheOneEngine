@@ -69,7 +69,7 @@
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
+    <ClInclude Include="N_SceneManager.h">
       <Filter>SceneManagement</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +107,7 @@
     <ClCompile Include="Ray.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="N_SceneManager.cpp">
       <Filter>SceneManagement</Filter>
     </ClCompile>
   </ItemGroup>

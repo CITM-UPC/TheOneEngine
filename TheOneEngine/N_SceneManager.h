@@ -1,15 +1,8 @@
-#ifndef __SCENE_MANAGER_H__
-#define __SCENE_MANAGER_H__
+#ifndef __N_SCENE_MANAGER_H__
+#define __N_SCENE_MANAGER_H__
 #pragma once
 
 #include "Defs.h"
-#include "GameObject.h"
-#include "Component.h"
-#include "MeshLoader.h"
-#include "Transform.h"
-#include "Camera.h"
-#include "Mesh.h"
-#include "Texture.h"
 
 #include <string>
 #include <memory>
@@ -20,11 +13,11 @@ class Scene;
 class GameObject;
 class MeshLoader;
 
-class SceneManager
+class N_SceneManager
 {
 public:
-	SceneManager();
-	~SceneManager();
+	N_SceneManager();
+	~N_SceneManager();
 
 	bool Awake();
 	bool Start();
@@ -95,7 +88,7 @@ public:
 
 	inline uint GetIndex() const { return index; }
 	inline void SetIndex(uint _index) { index = _index; }
-	
+
 	inline bool IsDirty() const { return isDirty; }
 	inline void SetIsDirty(bool state) { isDirty = state; }
 
@@ -112,4 +105,4 @@ private:
 	std::string path;
 };
 
-#endif // !__SCENE_MANAGER_H__
+#endif // !__N_SCENE_MANAGER_H__

@@ -13,31 +13,29 @@ class SceneManager;
 class Renderer3D : public Module
 {
 public:
-    Renderer3D(App* app);
+	Renderer3D(App* app);
 
-    virtual ~Renderer3D();
+	virtual ~Renderer3D();
 
-    bool Awake();
-    bool Start();
+	bool Awake();
+	bool Start();
 
-    bool PreUpdate();
-    bool Update(double dt);
-    bool PostUpdate();
+	bool PreUpdate();
+	bool Update(double dt);
+	bool PostUpdate();
 
-    bool CleanUp();
+	bool CleanUp();
 
-    void CameraInput(double dt);
+	void CameraInput(double dt);
 
-    void CreateRay();
+	void CreateRay();
 
 public:
 
-    //hekbas test
-    double dtSum = 0;
+	//hekbas test
+	double dtSum = 0;
 
-    std::shared_ptr<GameObject> sceneCamera;
-    
-    SceneManager* engineSceneManager = nullptr;
+	std::shared_ptr<GameObject> sceneCamera;
 };
 
 #endif // !__RENDERER_3D_H__

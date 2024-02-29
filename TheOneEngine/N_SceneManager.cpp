@@ -1,45 +1,49 @@
-#include "SceneManager.h"
+#include "N_SceneManager.h"
 #include "GameObject.h"
 #include "MeshLoader.h"
+#include "Component.h"
+#include "Transform.h"
+#include "Camera.h"
+#include "Mesh.h"
+#include "Texture.h"
 
 #include <fstream>
 #include <filesystem>
 
 namespace fs = std::filesystem;
 
-SceneManager::SceneManager()
+N_SceneManager::N_SceneManager()
 {
 	meshLoader = new MeshLoader();
 }
 
-SceneManager::~SceneManager()
+N_SceneManager::~N_SceneManager()
 {
 }
 
-bool SceneManager::Awake()
+bool N_SceneManager::Awake()
 {
 	std::filesystem::create_directories("Library/");
 	return true;
 }
 
-bool SceneManager::Start()
+bool N_SceneManager::Start()
 {
 	// Create default mesh
 	CreateMeshGO("");
-
 
 	if (currentScene->IsDirty()) SaveScene();
 
 	return true;
 }
 
-bool SceneManager::PreUpdate()
+bool N_SceneManager::PreUpdate()
 {
 	// Do nothing
 	return true;
 }
 
-bool SceneManager::Update(double dt)
+bool N_SceneManager::Update(double dt)
 {
 	// Do nothing
 
@@ -49,7 +53,7 @@ bool SceneManager::Update(double dt)
 	return true;
 }
 
-bool SceneManager::PostUpdate()
+bool N_SceneManager::PostUpdate()
 {
 	// Draw
 	RecurseDrawChildren(currentScene->GetRootSceneGO());
@@ -57,32 +61,30 @@ bool SceneManager::PostUpdate()
 	return true;
 }
 
-bool SceneManager::CleanUp()
+bool N_SceneManager::CleanUp()
 {
 	delete currentScene;
-	
+
 	delete meshLoader;
 
 	return true;
 }
 
-void SceneManager::CreateNewScene(uint _index, std::string name)
+void N_SceneManager::CreateNewScene(uint _index, std::string name)
 {
 	Scene* newScene = new Scene(_index, name);
 	// Create with JSON Scene file
 }
 
-void SceneManager::LoadScene(uint index)
+void N_SceneManager::LoadScene(uint index)
 {
-
 }
 
-void SceneManager::LoadScene(std::string sceneName)
+void N_SceneManager::LoadScene(std::string sceneName)
 {
-
 }
 
-void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
+void N_SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 {
 	for (const auto gameObject : parentGO.get()->children)
 	{
@@ -91,7 +93,7 @@ void SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
 	}
 }
 
-void SceneManager::SaveScene()
+void N_SceneManager::SaveScene()
 {
 	//Change to save the Scene Class
 
@@ -120,10 +122,10 @@ void SceneManager::SaveScene()
 	LOG(LogType::LOG_OK, "SAVE SUCCESFUL");
 }
 
-void SceneManager::LoadSceneFromJSON(const std::string& filename)
+void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 {
 	//Change to load the Scene Class
-	
+
 	// Check if the scene file exists
 	if (!fs::exists(filename))
 	{
@@ -180,7 +182,7 @@ void SceneManager::LoadSceneFromJSON(const std::string& filename)
 	}
 }
 
-std::string SceneManager::GenerateUniqueName(const std::string& baseName)
+std::string N_SceneManager::GenerateUniqueName(const std::string& baseName)
 {
 	std::string uniqueName = baseName;
 	int counter = 1;
@@ -197,7 +199,7 @@ std::string SceneManager::GenerateUniqueName(const std::string& baseName)
 	return uniqueName;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateEmptyGO(std::string name)
+std::shared_ptr<GameObject> N_SceneManager::CreateEmptyGO(std::string name)
 {
 	std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>(name);
 	emptyGO.get()->AddComponent<Transform>();
@@ -209,7 +211,7 @@ std::shared_ptr<GameObject> SceneManager::CreateEmptyGO(std::string name)
 	return emptyGO;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateCameraGO(std::string name)
+std::shared_ptr<GameObject> N_SceneManager::CreateCameraGO(std::string name)
 {
 	std::shared_ptr<GameObject> cameraGO = std::make_shared<GameObject>(name);
 	cameraGO.get()->AddComponent<Transform>();
@@ -223,7 +225,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCameraGO(std::string name)
 	return cameraGO;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
+std::shared_ptr<GameObject> N_SceneManager::CreateMeshGO(std::string path)
 {
 	std::vector<MeshBufferedData> meshes = meshLoader->LoadMesh(path);
 	std::vector<std::shared_ptr<Texture>> textures = meshLoader->LoadTexture(path);
@@ -301,7 +303,7 @@ std::shared_ptr<GameObject> SceneManager::CreateMeshGO(std::string path)
 	return nullptr;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
+std::shared_ptr<GameObject> N_SceneManager::CreateExistingMeshGO(std::string path)
 {
 	std::string fbxName = path.substr(path.find_last_of("\\/") + 1, path.find_last_of('.') - path.find_last_of("\\/") - 1);
 
@@ -371,7 +373,7 @@ std::shared_ptr<GameObject> SceneManager::CreateExistingMeshGO(std::string path)
 	return nullptr;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateCube()
+std::shared_ptr<GameObject> N_SceneManager::CreateCube()
 {
 	std::shared_ptr<GameObject> cubeGO = std::make_shared<GameObject>("Cube");
 	cubeGO.get()->AddComponent<Transform>();
@@ -384,7 +386,7 @@ std::shared_ptr<GameObject> SceneManager::CreateCube()
 	return cubeGO;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateSphere()
+std::shared_ptr<GameObject> N_SceneManager::CreateSphere()
 {
 	std::shared_ptr<GameObject> sphereGO = std::make_shared<GameObject>("Sphere");
 	sphereGO.get()->AddComponent<Transform>();
@@ -397,22 +399,22 @@ std::shared_ptr<GameObject> SceneManager::CreateSphere()
 	return nullptr;
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateMF()
+std::shared_ptr<GameObject> N_SceneManager::CreateMF()
 {
 	return CreateMeshGO("Assets/Meshes/mf.fbx");
 }
 
-std::shared_ptr<GameObject> SceneManager::CreateTeapot(std::string path)
+std::shared_ptr<GameObject> N_SceneManager::CreateTeapot(std::string path)
 {
 	return CreateMeshGO("Assets/Meshes/teapot.fbx");
 }
 
-uint SceneManager::GetNumberGO() const
+uint N_SceneManager::GetNumberGO() const
 {
 	return static_cast<uint>(currentScene->GetRootSceneGO().get()->children.size());
 }
 
-std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
+std::vector<std::shared_ptr<GameObject>> N_SceneManager::GetGameObjects()
 {
 	return currentScene->GetRootSceneGO().get()->children;
 }

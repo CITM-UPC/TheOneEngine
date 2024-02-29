@@ -1,11 +1,13 @@
 #include "PanelHierarchy.h"
 #include "App.h"
+#include "Renderer3D.h"
+#include "SceneManager.h"
 #include "Gui.h"
 #include "imgui.h"
 
 #include <variant>
 
-PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name), open_selected(false), reparent(false){}
+PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name), open_selected(false), reparent(false) {}
 
 PanelHierarchy::~PanelHierarchy() {}
 
@@ -18,7 +20,7 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 		if (childGO.get()->children.size() == 0)
 			treeFlags |= ImGuiTreeNodeFlags_Leaf;
 
-		if (childGO == app->renderer3D->engineSceneManager->GetSelectedGO())
+		if (childGO == app->scenemanager->N_sceneManager->GetSelectedGO())
 			treeFlags |= ImGuiTreeNodeFlags_Selected;
 
 		bool isOpen = ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags);
@@ -28,8 +30,8 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 		if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
 		{
-			app->renderer3D->engineSceneManager->SetSelectedGO(childGO);
-			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetName().c_str());
+			app->scenemanager->N_sceneManager->SetSelectedGO(childGO);
+			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetName().c_str());
 		}
 
 		ContextMenu(childGO);
@@ -55,11 +57,11 @@ bool PanelHierarchy::Draw()
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
-		if (ImGui::TreeNodeEx(app->renderer3D->engineSceneManager->GetRootSceneGO().get()->GetName().data(), treeFlags))
+		if (ImGui::TreeNodeEx(app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO().get()->GetName().data(), treeFlags))
 		{
 			reparent = false;
-			ReparentDragDrop(app->renderer3D->engineSceneManager->GetRootSceneGO());
-			RecurseShowChildren(app->renderer3D->engineSceneManager->GetRootSceneGO());
+			ReparentDragDrop(app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO());
+			RecurseShowChildren(app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO());
 			ImGui::TreePop();
 		}
 
@@ -77,7 +79,7 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 		{
 			//Historn: Add Duplicate function
 		}
-		
+
 		if (ImGui::MenuItem("Duplicate"))
 		{
 			//Historn: Add Duplicate function
@@ -97,19 +99,18 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 
 bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 {
-
 	if (ImGui::BeginDragDropSource())
 	{
-		if (childGO != app->renderer3D->engineSceneManager->GetRootSceneGO())
+		if (childGO != app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO())
 		{
-			ImGui::SetDragDropPayload(app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+			ImGui::SetDragDropPayload(app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
 		}
 
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->renderer3D->engineSceneManager->GetSelectedGO().get()->GetName().c_str()))
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
 		{
 			GameObject* dragging = *(GameObject**)payload->Data;
 
@@ -122,7 +123,7 @@ bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 				}
 				currentParent = currentParent->parent.lock().get();
 			}
-				
+
 			GameObject* oldParent = dragging->parent.lock().get();
 
 			dragging->parent = childGO.get()->weak_from_this();
