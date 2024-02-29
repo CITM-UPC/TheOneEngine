@@ -29,10 +29,12 @@ bool N_SceneManager::Awake()
 
 bool N_SceneManager::Start()
 {
+	currentScene = new Scene(0, "Scene 1");
+
 	// Create default mesh
 	CreateMeshGO("");
 
-	if (currentScene->IsDirty()) SaveScene();
+	//if (currentScene->IsDirty()) SaveScene();
 
 	return true;
 }
@@ -417,4 +419,14 @@ uint N_SceneManager::GetNumberGO() const
 std::vector<std::shared_ptr<GameObject>> N_SceneManager::GetGameObjects()
 {
 	return currentScene->GetRootSceneGO().get()->children;
+}
+
+void N_SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
+{
+	selectedGameObject = gameObj;
+}
+
+std::shared_ptr<GameObject> N_SceneManager::GetSelectedGO() const
+{
+	return selectedGameObject;
 }

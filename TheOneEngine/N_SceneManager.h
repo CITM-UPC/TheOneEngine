@@ -77,9 +77,9 @@ private:
 class Scene
 {
 public:
-	Scene() : sceneName("Scene"), index(0), isDirty(true) {}
+	Scene() : sceneName("Scene"), index(0), isDirty(true) { rootSceneGO = std::make_shared<GameObject>(sceneName); }
 
-	inline Scene(uint _index, std::string name) : sceneName(name), index(_index), isDirty(true) {}
+	inline Scene(uint _index, std::string name) : sceneName(name), index(_index), isDirty(true) { rootSceneGO = std::make_shared<GameObject>(name); }
 
 	~Scene() {}
 
