@@ -6,7 +6,7 @@ BuilderWindow::BuilderWindow(BuilderApp* app) :
     BuilderModule(app),
     window(nullptr),
     glContext(),
-    displayMode(DisplayMode::WINDOWED),
+    displayMode(DisplayMode::FULLSCREEN),
     resolution(Resolution::R_1280x720),
     borderless(false),
     refreshRate(0)
@@ -36,7 +36,7 @@ bool BuilderWindow::Awake()
 
 bool BuilderWindow::Start()
 {
-    displayMode = DisplayMode::WINDOWED;
+    displayMode = DisplayMode::FULLSCREEN;
     resolution = Resolution::R_1280x720;
 
     SetResolution(resolution);
@@ -83,7 +83,7 @@ bool BuilderWindow::initSDLWindowWithOpenGL()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
     std::string title = std::string(TITLE) + "_" + VERSION;
-    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+    window = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN_DESKTOP);
 
     if (!window)
     {
