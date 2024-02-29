@@ -46,10 +46,12 @@ public:
 public:
 	
 	bool vsync = false;
-	AudioCore* audio = nullptr;
+	//AudioCore* audio = nullptr;
 
 private:
 
 };
+
+extern AudioCore* audio;
 
 #endif // !__ENGINE_CORE_H__

@@ -6,6 +6,8 @@
 
 #include <memory>
 
+AudioCore* audio = NULL;
+
 EngineCore::EngineCore()
 {
     audio = new AudioCore();

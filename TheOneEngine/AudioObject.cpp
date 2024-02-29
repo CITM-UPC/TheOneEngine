@@ -1,7 +1,9 @@
 #include "AudioObject.h"
+#include "EngineCore.h"
 
 AudioObject::AudioObject(std::shared_ptr<GameObject> containerGO)
 {
+	goID = audio->RegisterGameObject(containerGO->GetName());
 	SetTransform(containerGO);
 
 	//Probably should set the id here with a register object in audio core, that is why the errors (probably)

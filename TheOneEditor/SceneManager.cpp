@@ -57,11 +57,11 @@ bool SceneManager::Start()
     spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });
     spatialObject1->AddComponent<Source>();
 
-    int camera = app->engine->audio->RegisterGameObject("Camera");
-    int spatial1 = app->engine->audio->RegisterGameObject("Spatial1");
+    //int camera = audio->RegisterGameObject("Camera");
+    //int spatial1 = audio->RegisterGameObject("Spatial1");
 
 
-    app->engine->audio->SetDefaultListener(camera);
+    //audio->SetDefaultListener(camera);
 
 
 
@@ -77,32 +77,32 @@ bool SceneManager::PreUpdate()
     //testing
     if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
     {
-        app->engine->audio->PlayEvent(1730564819U, 0);
+        audio->PlayEvent(1730564819U, 0);
     }
     if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
     {
-        app->engine->audio->StopEvent(1730564819U, 0);
+        audio->StopEvent(1730564819U, 0);
     }
     if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
     {
-        app->engine->audio->PauseEvent(1730564819U, 0);
+        audio->PauseEvent(1730564819U, 0);
     }
     if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
     {
-        app->engine->audio->ResumeEvent(1730564819U, 0);
+        audio->ResumeEvent(1730564819U, 0);
     }
 
     if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_REPEAT)
     {
-        app->engine->audio->SetGlobalSound(app->engine->audio->globalVolume - 2);
+        audio->SetGlobalSound(audio->globalVolume - 2);
     }
     if (app->input->GetKey(SDL_SCANCODE_KP_PLUS) == KEY_REPEAT)
     {
-        app->engine->audio->SetGlobalSound(app->engine->audio->globalVolume + 2);
+        audio->SetGlobalSound(audio->globalVolume + 2);
     }
 
-    //spatialObject2->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
-    //spatialObject1->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject1));
+    spatialObject2->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
+    spatialObject1->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject1));
 
     return true;
 }

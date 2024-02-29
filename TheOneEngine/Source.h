@@ -12,6 +12,9 @@ public:
 	Source(std::shared_ptr<GameObject> containerGO);
 	virtual ~Source();
 
+	void SetPosition(std::shared_ptr<GameObject> containerGO);
+	void SetRotation(std::shared_ptr<GameObject> containerGO);
+
 	json SaveComponent();
 	void LoadComponent(const json& transformJSON);
 
