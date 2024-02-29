@@ -48,8 +48,11 @@ public:
 	// Create GameObjects functions
 	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
 	std::shared_ptr<GameObject> CreateCameraGO(std::string name);
+
+	// Try to mix this two (CreateExistingMeshGO should be erased and CreateMeshGO has to do)
 	std::shared_ptr<GameObject> CreateMeshGO(std::string path);
 	std::shared_ptr<GameObject> CreateExistingMeshGO(std::string fbxName);
+
 	std::shared_ptr<GameObject> CreateCube();
 	std::shared_ptr<GameObject> CreateSphere();
 	std::shared_ptr<GameObject> CreateMF();

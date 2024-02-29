@@ -61,9 +61,6 @@
     <ClCompile Include="Renderer3D.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Window.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -124,9 +121,6 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="Renderer3D.h">
-      <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
       <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>

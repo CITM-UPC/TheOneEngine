@@ -1,5 +1,4 @@
 #include "SceneManager.h"
-#include "Scene.h"
 #include "GameObject.h"
 #include "MeshLoader.h"
 
@@ -51,6 +50,12 @@ bool SceneManager::PostUpdate()
 
 bool SceneManager::CleanUp()
 {
+	delete currentScene;
+	currentScene = nullptr;
+	
+	delete meshLoader;
+	meshLoader = nullptr;
+
 	return true;
 }
 
