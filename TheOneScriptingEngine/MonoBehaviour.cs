@@ -3,12 +3,12 @@ using System.Runtime.CompilerServices;
 
 public class MonoBehaviour
 {
+    public IGameObject attachedGameObject;
+
     public MonoBehaviour()
     {
         attachedGameObject = new IGameObject();
     }
-
-    public IGameObject attachedGameObject;
 
     public virtual void Start() { }
     public virtual void Update() { }

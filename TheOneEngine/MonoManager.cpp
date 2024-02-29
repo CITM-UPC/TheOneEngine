@@ -19,7 +19,7 @@ void MonoManager::InitMono()
     MonoDomain* rootDomain = mono_jit_init("MyScriptRuntime");
 	if (rootDomain == nullptr)
 	{
-		std::cout << "MonoDomain has not been initialised correctly." << std::endl;
+        LOG(LogType::LOG_ERROR, "MonoDomain has not been initialised correctly.");
 		return;
 	}
 
@@ -57,7 +57,7 @@ MonoObject* MonoManager::InstantiateClass(const char* className, GameObject* con
 
     if (classToInstantiate == nullptr)
     {
-        std::cout << "Could not find a C# class named " << className << std::endl;
+        LOG(LogType::LOG_WARNING, "Could not find a C# class named %s", className);
         return nullptr;
     }
 
@@ -66,13 +66,13 @@ MonoObject* MonoManager::InstantiateClass(const char* className, GameObject* con
 
     if (classInstance == nullptr)
     {
-        std::cout << "Could not create instance of C# class " << className << std::endl;
+        LOG(LogType::LOG_ERROR, "Could not create instance of C# class %s", className);
         return nullptr;
     }
 
     // Call the parameterless (default) constructor
     mono_runtime_object_init(classInstance);
-    std::cout << "Instance of " << className << " created and initialized with GO adress " << containerGOptr << " and name " << containerGOptr->GetName() << std::endl;
+    LOG(LogType::LOG_MONO, "Instance of %s created and initialized with GO name %s", className, containerGOptr->GetName().c_str());
 
     monoData.currentGameObjectPtr = nullptr;
 
@@ -89,7 +89,7 @@ void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::str
 
     if (method == nullptr)
     {
-        std::cout << "Could not find method " << functionToCall << std::endl;
+        LOG(LogType::LOG_ERROR, "Could not find method %s", functionToCall);
         return;
     }
 
@@ -100,7 +100,7 @@ void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::str
     //Handle the exception
     if (exception != nullptr)
     {
-        std::cout << "Exception occurred" << std::endl;
+        LOG(LogType::LOG_ERROR, "Exception occurred");
         return;
     }
 }
@@ -115,7 +115,7 @@ void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::str
 
     if (method == nullptr)
     {
-        std::cout << "Could not find method " << functionToCall << std::endl;
+        LOG(LogType::LOG_ERROR, "Could not find method %s", functionToCall);
         return;
     }
 
@@ -126,26 +126,8 @@ void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::str
     //Handle the exception
     if (exception != nullptr)
     {
-        std::cout << "Exception occurred" << std::endl;
+        LOG(LogType::LOG_ERROR, "Exception occurred");
         return;
-    }
-}
-
-void MonoManager::PrintAssemblyClasses(const std::string& assemblyPath)
-{
-    MonoImage* image = mono_assembly_get_image(monoData.mainAssembly);
-    const MonoTableInfo* typeDefinitionsTable = mono_image_get_table_info(image, MONO_TABLE_TYPEDEF);
-    int32_t numTypes = mono_table_info_get_rows(typeDefinitionsTable);
-
-    for (int32_t i = 0; i < numTypes; i++)
-    {
-        uint32_t cols[MONO_TYPEDEF_SIZE];
-        mono_metadata_decode_row(typeDefinitionsTable, i, cols, MONO_TYPEDEF_SIZE);
-
-        const char* nameSpace = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAMESPACE]);
-        const char* name = mono_metadata_string_heap(image, cols[MONO_TYPEDEF_NAME]);
-
-        printf("%s.%s\n", nameSpace, name);
     }
 }
 
@@ -199,7 +181,7 @@ MonoAssembly* MonoManager::LoadCSharpAssembly(const std::string& assemblyPath)
     if (status != MONO_IMAGE_OK)
     {
         const char* errorMessage = mono_image_strerror(status);
-        std::cout << "Mono image had an error when loading assembly. Error: " << errorMessage << std::endl;
+        LOG(LogType::LOG_ERROR, "Mono image had an error when loading assembly. Error: %s", errorMessage);
         return nullptr;
     }
 

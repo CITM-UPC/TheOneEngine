@@ -16,8 +16,4 @@ class InternalCalls
     
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetTransformForward(IntPtr GOptr);
-
-    //Debug
-    [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static void PrintCSharpPtrInfo(IntPtr GOptr);
 }

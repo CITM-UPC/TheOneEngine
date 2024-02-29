@@ -3,8 +3,6 @@ using System.Runtime.CompilerServices;
 
 public class ITransform : IComponent
 {
-    public ITransform(IntPtr GOptr) : base(GOptr) { }
-
     public Vector3 position
     {
         get
@@ -26,6 +24,8 @@ public class ITransform : IComponent
             return InternalCalls.GetTransformForward(containerGOptr);
         }
     }
+
+    public ITransform(IntPtr GOptr) : base(GOptr) { }
 
     public void Move(Vector3 increment)
     {

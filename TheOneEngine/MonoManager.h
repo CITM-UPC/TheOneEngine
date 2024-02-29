@@ -38,9 +38,6 @@ public:
 
     static bool IsClassInMainAssembly(const char* className);
 
-    //Testing function only. Prints all the classes loaded in the given assembly onto the debug console (not LOG).
-    void PrintAssemblyClasses(const std::string& assemblyPath);
-
 private:
     char* ReadBytes(const std::string& filepath, uint32_t* outSize);
     MonoAssembly* LoadCSharpAssembly(const std::string& assemblyPath);

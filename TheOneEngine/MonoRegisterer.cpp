@@ -4,9 +4,9 @@
 
 #include "Transform.h"
 
-#include "..\mono\include\mono\jit\jit.h"
-#include "..\mono\include\mono\metadata\assembly.h"
-#include "..\mono\include\mono\metadata\attrdefs.h"
+#include "../mono/include/mono/jit/jit.h"
+#include "../mono/include/mono/metadata/assembly.h"
+#include "../mono/include/mono/metadata/attrdefs.h"
 
 #include <glm/vec3.hpp>
 
@@ -52,16 +52,11 @@ static vec3f GetTransformForward(GameObject* GOptr)
 	 return (vec3f)GOptr->GetComponent<Transform>()->getForward();
 }
 
-static void PrintCSharpPtrInfo(GameObject* GOptr) //Debug purposes only
-{
-	std::cout << "Recieved pointer to " << GOptr->GetName() << " from C# is: " << GOptr << std::endl;
-}
-
 void MonoRegisterer::RegisterFunctions()
 {
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
+
 	mono_add_internal_call("InternalCalls::GetTransform", GetTransform);
 	mono_add_internal_call("InternalCalls::SetTransform", SetTransform);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
-	mono_add_internal_call("InternalCalls::PrintCSharpPtrInfo", PrintCSharpPtrInfo);
 }
