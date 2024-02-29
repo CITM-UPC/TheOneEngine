@@ -95,6 +95,9 @@ public:
 
 	inline uint GetIndex() const { return index; }
 	inline void SetIndex(uint _index) { index = _index; }
+	
+	inline bool IsDirty() const { return isDirty; }
+	inline void SetIsDirty(bool state) { isDirty = state; }
 
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
