@@ -1,6 +1,6 @@
 ﻿using System;
 
-public class Class1 : MonoBehaviour
+public class ExampleScript : MonoBehaviour
 {
     bool goingRight = true;
     bool goingUp = true;

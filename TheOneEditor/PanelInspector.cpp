@@ -383,7 +383,7 @@ void PanelInspector::ChooseScriptNameWindow()
         }
         else
         {
-           LOG(LogType::LOG_ERROR, "Could not find introduced class");
+           LOG(LogType::LOG_WARNING, "Could not find class '%s'", nameRecipient);
         }
 
         chooseScriptNameWindow = false;

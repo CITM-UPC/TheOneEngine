@@ -41,7 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="ExampleScript.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IGameObject.cs" />
     <Compile Include="InternalCalls.cs" />
