@@ -58,7 +58,7 @@ bool N_SceneManager::Update(double dt)
 bool N_SceneManager::PostUpdate()
 {
 	// Draw
-	RecurseDrawChildren(currentScene->GetRootSceneGO());
+	currentScene->Draw();
 
 	return true;
 }
@@ -84,15 +84,6 @@ void N_SceneManager::LoadScene(uint index)
 
 void N_SceneManager::LoadScene(std::string sceneName)
 {
-}
-
-void N_SceneManager::RecurseDrawChildren(std::shared_ptr<GameObject> parentGO)
-{
-	for (const auto gameObject : parentGO.get()->children)
-	{
-		gameObject.get()->Draw();
-		RecurseDrawChildren(gameObject);
-	}
 }
 
 void N_SceneManager::SaveScene()
@@ -429,4 +420,18 @@ void N_SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 std::shared_ptr<GameObject> N_SceneManager::GetSelectedGO() const
 {
 	return selectedGameObject;
+}
+
+void Scene::RecurseSceneDraw(std::shared_ptr<GameObject> parentGO)
+{
+	for (const auto gameObject : parentGO.get()->children)
+	{
+		gameObject.get()->Draw();
+		RecurseSceneDraw(gameObject);
+	}
+}
+
+void Scene::Draw()
+{
+	RecurseSceneDraw(rootSceneGO);
 }

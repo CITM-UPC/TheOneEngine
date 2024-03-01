@@ -63,9 +63,6 @@ public:
 	void SaveScene();
 	void LoadSceneFromJSON(const std::string& filename);
 
-private:
-	void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
-
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
 
@@ -93,6 +90,11 @@ public:
 	inline void SetIsDirty(bool state) { isDirty = state; }
 
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
+
+	inline void Draw();
+
+private:
+	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);
 
 private:
 	uint index;
