@@ -5,7 +5,7 @@
 
 #define MAX_GAMEPAD 4
 
-struct SDL_GamepadController;
+struct _SDL_GameController;
 
 struct Gamepad
 {
@@ -17,9 +17,9 @@ struct Gamepad
 	float left_x, left_y, left_dz, right_x, right_y, right_dz;
 
 	//Controller Data
-	bool enabled;
+	bool enabled = false;
 	int index;
-	SDL_GamepadController* controller;
+	SDL_GameController* controller;
 };
 
 class GamepadInput : public Module
