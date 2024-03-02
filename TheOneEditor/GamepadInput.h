@@ -35,6 +35,8 @@ public:
 	bool Update(double dt);
 
 private:
+	void HandleDeviceConnection(int index);
+	void HandleDeviceRemoval(int index);
 	void UpdateGamepadInput();
 
 private: 

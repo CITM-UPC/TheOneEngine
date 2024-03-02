@@ -1,14 +1,11 @@
 #include "App.h"
-#include "Input.h"
+#include "GamepadInput.h"
 #include "Gui.h"
 #include "Window.h"
 #include "SceneManager.h"
-#include "GamepadInput.h"
 
 #include "Log.h"
-#include <string>
 #include <iostream>
-#include <filesystem>
 
 GamepadInput::GamepadInput(App* app) : Module(app)
 {
@@ -22,7 +19,7 @@ GamepadInput::~GamepadInput()
 
 bool GamepadInput::Awake()
 {
-    LOG(LogType::LOG_INFO, "Init SDL gamepad event system");
+    LOG(LogType::LOG_OK, "-Init SDL gamepad event system");
     bool ret = true;
 
     if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
@@ -38,6 +35,31 @@ bool GamepadInput::PreUpdate()
 {
     bool ret = true;
 
+	SDL_Event event;
+	while (SDL_PollEvent(&event) != 0)
+	{
+		switch (event.type)
+		{
+			case(SDL_CONTROLLERDEVICEADDED):
+			{
+				HandleDeviceConnection(event.cdevice.which);
+				LOG(LogType::LOG_INFO, "gamepad connected");
+				break;
+			}
+			case(SDL_CONTROLLERDEVICEREMOVED):
+			{
+				HandleDeviceRemoval(event.cdevice.which);
+				LOG(LogType::LOG_WARNING, "gamepad disconnected");
+				break;
+			}
+			case(SDL_QUIT):
+			{
+				return false;
+				break;
+			}
+		}
+	}
+
     UpdateGamepadInput();
 
     return ret;
@@ -51,6 +73,40 @@ bool GamepadInput::Update(double dt)
     return ret;
 }
 
+void GamepadInput::HandleDeviceConnection(int index)
+{
+	if (SDL_IsGameController(index))
+	{
+		for (int i = 0; i < MAX_GAMEPAD; ++i)
+		{
+			Gamepad& pad = pads[i];
+
+			if (pad.enabled == false)
+			{
+				if (pad.controller = SDL_GameControllerOpen(index))
+				{
+					pad.enabled = true;
+					pad.left_dz = pad.right_dz = 0.1f;
+					pad.index = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(pad.controller));
+				}
+			}
+		}
+	}
+}
+
+void GamepadInput::HandleDeviceRemoval(int index)
+{
+	for (int i = 0; i < MAX_GAMEPAD; ++i)
+	{
+		Gamepad& pad = pads[i];
+		if (pad.enabled && pad.index == index)
+		{
+			SDL_GameControllerClose(pad.controller);
+			memset(&pad, 0, sizeof(Gamepad));
+		}
+	}
+}
+
 void GamepadInput::UpdateGamepadInput()
 {
     //Placeholder
@@ -58,8 +114,6 @@ void GamepadInput::UpdateGamepadInput()
     for (int i = 0; i < MAX_GAMEPAD; ++i)
     {
         Gamepad& pad = pads[i];
-
-        pad.enabled = true;
 
         if(pad.enabled)
         {
@@ -88,13 +142,10 @@ void GamepadInput::UpdateGamepadInput()
 			pad.right_x = float(SDL_GameControllerGetAxis(pad.controller, SDL_CONTROLLER_AXIS_RIGHTX)) / 32767.0f;
 			pad.right_y = float(SDL_GameControllerGetAxis(pad.controller, SDL_CONTROLLER_AXIS_RIGHTY)) / 32767.0f;
 
-			// Apply deadzone. All values below the deadzone will be discarded
 			pad.left_x = (fabsf(pad.left_x) > pad.left_dz) ? pad.left_x : 0.0f;
 			pad.left_y = (fabsf(pad.left_y) > pad.left_dz) ? pad.left_y : 0.0f;
 			pad.right_x = (fabsf(pad.right_x) > pad.right_dz) ? pad.right_x : 0.0f;
 			pad.right_y = (fabsf(pad.right_y) > pad.right_dz) ? pad.right_y : 0.0f;
-
         }
     }
-
 }

@@ -3,6 +3,7 @@
 
 #include "Window.h"
 #include "Input.h"
+#include "GamepadInput.h"
 #include "Hardware.h"
 #include "SceneManager.h"
 #include "Gui.h"
@@ -24,6 +25,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 
 	window = new Window(this);
 	input = new Input(this);
+	gamepad = new GamepadInput(this);
 	hardware = new Hardware(this);
 	sceneManager = new SceneManager(this);
 	gui = new Gui(this);
@@ -34,6 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(window, true);
 	AddModule(input, true);
+	AddModule(gamepad, true);
 	AddModule(hardware, true);
 	AddModule(sceneManager, true);
 	AddModule(gui, true);
