@@ -57,7 +57,8 @@ public:
 
 	//volume functions
 	//percentage, from 0 (mute) to 100 (max)
-	void SetGlobalSound(float volume);
+	void SetGlobalVolume(float volume);
+	void SetAudioObjectVolume(AkGameObjectID goID, float volume); // Need to add to take in account the listener
 
 	//transform the game object that events are attached to
 	//void SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);

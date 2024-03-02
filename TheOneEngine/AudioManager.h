@@ -10,10 +10,10 @@ public:
 	bool Update();
 	bool CleanUp();
 
-	void AddAudioObject(AudioObject audioGO);
+	void AddAudioObject(std::shared_ptr<AudioObject> audioGO);
 
 
 private:
-	std::vector<std::unique_ptr<AudioObject>> audios;
+	std::vector<std::shared_ptr<AudioObject>> audioObjects;
 
 };

@@ -322,6 +322,23 @@ bool PanelInspector::Draw()
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
+
+            /*Listener Component*/
+            Listener* listener = selectedGO.get()->GetComponent<Listener>();
+
+            if (listener != nullptr && ImGui::CollapsingHeader("Listener", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen)) {
+                // No properties
+            }
+
+            /*Listener Component*/
+            Source* source = selectedGO.get()->GetComponent<Source>();
+
+            if (source != nullptr && ImGui::CollapsingHeader("Audio Source", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen)) {
+                // JULS: Volume not applied yet
+                //if (ImGui::SliderFloat("Volume", &zNear, 0.01, 10.0))
+                //{
+                //}
+            }
         }
 
         ImGui::End();

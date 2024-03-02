@@ -187,7 +187,7 @@ void AudioCore::Awake()
         audioEvents.push_back(new AudioEvent);
     }
 
-    SetGlobalSound(globalVolume);
+    SetGlobalVolume(globalVolume);
 
 }
 
@@ -334,7 +334,7 @@ void AudioCore::StopEngine()
     }
 }
 
-void AudioCore::SetGlobalSound(float volume)
+void AudioCore::SetGlobalVolume(float volume)
 {
     if (volume < 0.0f)
     {
@@ -346,6 +346,21 @@ void AudioCore::SetGlobalSound(float volume)
     }
     globalVolume = volume;
     AK::SoundEngine::SetOutputVolume(AK::SoundEngine::GetOutputID(AK_INVALID_UNIQUE_ID, 0.0f), (AkReal32)(volume * 0.01f));
+}
+
+void AudioCore::SetAudioObjectVolume(AkGameObjectID goID, float volume)
+{
+    if (volume < 0.0f)
+    {
+        volume = 0.0f;
+    }
+    else if (volume > 100.0f)
+    {
+        volume = 100.0f;
+    }
+
+    // JULS: ID of the source, ID of the listener, volume
+    //AK::SoundEngine::SetGameObjectOutputBusVolume(id, AK::SoundEngine::list (AkReal32)(volume * 0.01f));
 }
 
 

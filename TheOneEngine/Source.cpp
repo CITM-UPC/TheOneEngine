@@ -1,37 +1,36 @@
 #include "Source.h"
 #include "EngineCore.h"
+#include "AudioManager.h"
 
-Source::Source(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Source), AudioObject(containerGO), path(path), volume(volume)
+Source::Source(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Source), path(path), volume(volume)
 {
 	volume = 50;
 	path = "";
 	goID = audio->RegisterGameObject(containerGO->GetName());
+	
+	this->GO = containerGO;
 	SetTransform(containerGO);
+	//SetTransform(containerGO);
 }
 
 Source::~Source()
 {
 }
 
-void Source::SetPosition(std::shared_ptr<GameObject> containerGO)
+void Source::SetTransform(std::shared_ptr<GameObject> containerGO)
 {
 	AkSoundPosition tTransform;
-	tTransform.SetPosition({ -containerGO.get()->GetComponent<Transform>()->getPosition().x, containerGO.get()->GetComponent<Transform>()->getPosition().y, -containerGO.get()->GetComponent<Transform>()->getPosition().z });
+	AkVector pos;
+	pos.X = -containerGO.get()->GetComponent<Transform>()->getPosition().x;
+	pos.Y = containerGO.get()->GetComponent<Transform>()->getPosition().y;
+	pos.Z = -containerGO.get()->GetComponent<Transform>()->getPosition().z;
 
-	if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
-	{
-		// I should put this function and rotation in virtual to change logs in Listener and Source
-		LOG(LogType::LOG_AUDIO, "ERROR setting position to AudioSource: %s", containerGO->GetName());
-	}
-}
+	tTransform.SetPosition(pos);
 
-void Source::SetRotation(std::shared_ptr<GameObject> containerGO)
-{
-	AkSoundPosition tTransform;
 	AkVector forward;
 	forward.X = containerGO.get()->GetComponent<Transform>()->getForward().x;
 	forward.Y = containerGO.get()->GetComponent<Transform>()->getForward().y;
-	forward.X = containerGO.get()->GetComponent<Transform>()->getForward().z;
+	forward.Z = containerGO.get()->GetComponent<Transform>()->getForward().z;
 
 	AkVector up;
 	up.X = containerGO.get()->GetComponent<Transform>()->getUp().x;
@@ -42,7 +41,8 @@ void Source::SetRotation(std::shared_ptr<GameObject> containerGO)
 
 	if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
 	{
-		LOG(LogType::LOG_AUDIO, "ERROR setting rotation to AudioSource: %s", containerGO->GetName());
+		// I should put this function and rotation in virtual to change logs in Listener and Source
+		LOG(LogType::LOG_AUDIO, "ERROR setting transform to AudioSource: %s", containerGO->GetName());
 	}
 }
 

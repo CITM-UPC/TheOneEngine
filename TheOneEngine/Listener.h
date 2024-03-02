@@ -14,8 +14,7 @@ public:
     virtual ~Listener();
 
     void SetListener(AkGameObjectID goID);
-    void SetPosition(std::shared_ptr<GameObject> containerGO);
-    void SetRotation(std::shared_ptr<GameObject> containerGO);
+    void SetTransform(std::shared_ptr<GameObject> containerGO);
 
     json SaveComponent();
     void LoadComponent(const json& transformJSON);
