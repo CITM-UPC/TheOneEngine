@@ -37,6 +37,11 @@ bool Renderer3D::Start()
     sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 3, -10));
     sceneCamera.get()->GetComponent<Camera>()->lookAt = {0, 0, 0};
     sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
+
+	cameraParent = std::make_shared<GameObject>("CameraParent");
+	cameraParent.get()->AddComponent<Transform>();
+	cameraParent.get()->children.push_back(sceneCamera);
+	sceneCamera.get()->parent = cameraParent;
     
 
     /*app->engine->audio->SetListenerTransform(
@@ -135,29 +140,30 @@ void Renderer3D::CameraInput(double dt)
 
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
-        /* MOUSE CAMERA MOVEMENT */
+        // Mouse camera movement
         camera->yaw = -app->input->GetMouseXMotion() * mouseSensitivity;
         camera->pitch = app->input->GetMouseYMotion() * mouseSensitivity;
 
         transform->Rotate(vec3f(0.0f, camera->yaw, 0.0f), HandleSpace::GLOBAL);
         transform->Rotate(vec3f(camera->pitch, 0.0f, 0.0f), HandleSpace::GLOBAL);
 
+        //transform->RotateInspector(vec3f(0.0f, camera->yaw, 0.0f));
+        //transform->RotateInspector(vec3f(camera->pitch, 0.0f, 0.0f));
+
+
+        // WASD
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-        {
 			transform->Translate(transform->GetForward() * speed);
-        }
+        
         if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-        {
 			transform->Translate(-transform->GetForward() * speed);
-        }
+        
         if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-        {
 			transform->Translate(transform->GetRight() * speed);
-        }
+        
         if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-        {
 			transform->Translate(-transform->GetRight() * speed);
-        }
+        
     }
     else
     {

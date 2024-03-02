@@ -105,7 +105,6 @@ Ray Camera::ComputeCameraRay(float x, float y)
 	if (GO)
 	{
 		Transform* transform = GO->GetComponent<Transform>();
-
         return Ray(transform->GetPosition(), glm::normalize(worldDirection));
 	}
 	else
@@ -140,15 +139,8 @@ json Camera::SaveComponent()
 void Camera::LoadComponent(const json& cameraJSON)
 {
     // Load basic properties
-    if (cameraJSON.contains("UID"))
-    {
-        UID = cameraJSON["UID"];
-    }
-
-    if (cameraJSON.contains("Name"))
-    {
-        name = cameraJSON["Name"];
-    }
+    if (cameraJSON.contains("UID")) UID = cameraJSON["UID"];
+    if (cameraJSON.contains("Name")) name = cameraJSON["Name"];
 
     // Load parent UID and set parent
     /*if (cameraJSON.contains("ParentUID"))
@@ -161,38 +153,12 @@ void Camera::LoadComponent(const json& cameraJSON)
     }*/
 
     // Load camera-specific properties
-    if (cameraJSON.contains("FOV"))
-    {
-        fov = cameraJSON["FOV"];
-    }
-
-    if (cameraJSON.contains("Aspect"))
-    {
-        aspect = cameraJSON["Aspect"];
-    }
-
-    if (cameraJSON.contains("zNear"))
-    {
-        zNear = cameraJSON["zNear"];
-    }
-
-    if (cameraJSON.contains("zFar"))
-    {
-        zFar = cameraJSON["zFar"];
-    }
-
-    if (cameraJSON.contains("Yaw"))
-    {
-        yaw = cameraJSON["Yaw"];
-    }
-
-    if (cameraJSON.contains("Pitch"))
-    {
-        pitch = cameraJSON["Pitch"];
-    }
-
-    // Implement additional logic to handle other camera-specific properties as needed
-    // ...
+    if (cameraJSON.contains("FOV")) fov = cameraJSON["FOV"];
+    if (cameraJSON.contains("Aspect")) aspect = cameraJSON["Aspect"];
+    if (cameraJSON.contains("zNear")) zNear = cameraJSON["zNear"];
+    if (cameraJSON.contains("zFar")) zFar = cameraJSON["zFar"];
+    if (cameraJSON.contains("Yaw")) yaw = cameraJSON["Yaw"];
+    if (cameraJSON.contains("Pitch")) pitch = cameraJSON["Pitch"];
 
     // Optional: Recalculate view and projection matrices based on loaded data
     UpdateCamera();

@@ -36,6 +36,7 @@ public:
 
     void SetRotation(const vec3& eulerAngles);
     void Rotate(const vec3& eulerAngles, const HandleSpace& space = HandleSpace::LOCAL);
+    void RotateInspector(const vec3& eulerAngles);
 
     void Scale(const vec3& scaleFactors);
     void SetScale(const vec3& newScale); 
@@ -61,13 +62,10 @@ public:
 	vec3 GetScale() const;
 
     mat4 GetTransform() const;
+    void SetTransform(mat4 transform);
 
     vec3 GetRotationEuler() const;
     
-
-
-
-
 
 
     // Transform -----------------------------------------------------  
@@ -100,7 +98,7 @@ public:
 //    void setScale(const vec3& newScale); // Sets Scale
 //
 //    quat EulerAnglesToQuaternion(const vec3& eulerAngles);    // Converts Euler Angles to Quaternion
-//
+
 public:
 
     json SaveComponent();

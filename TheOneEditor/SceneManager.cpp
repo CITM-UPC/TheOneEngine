@@ -1,5 +1,7 @@
 #include "App.h"
 #include "SceneManager.h"
+#include "Gui.h"
+#include "PanelInspector.h"
 #include "Log.h"
 
 #include <fstream>
@@ -11,7 +13,7 @@ SceneManager::SceneManager(App* app) : Module(app), selectedGameObject(0)
 {
     meshLoader = new MeshLoader();
     rootSceneGO = std::make_shared<GameObject>("Scene");
-
+    rootSceneGO.get()->AddComponent<Transform>();
 }
 
 SceneManager::~SceneManager()
@@ -478,6 +480,9 @@ std::vector<std::shared_ptr<GameObject>> SceneManager::GetGameObjects()
 
 void SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
+    if (selectedGameObject != gameObj && app->gui->panelInspector->GetState())
+        app->gui->panelInspector->OnSelectGO(gameObj);
+
     selectedGameObject = gameObj;
 }
 

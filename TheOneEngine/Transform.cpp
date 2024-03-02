@@ -77,43 +77,44 @@ void Transform::SetPosition(const vec3& newPosition, const HandleSpace& space)
 
 void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
 {
-    // Get global or local transform
-    if (space == HandleSpace::GLOBAL)
-        transformMatrix = CalculateWorldTransform();
+	glm::mat3x3 referenceFrameMat = glm::mat3x3(vec3(transformMatrix[0][0], transformMatrix[0][1], transformMatrix[0][2]),
+		vec3(transformMatrix[1][0], transformMatrix[1][1], transformMatrix[1][2]),
+		vec3(transformMatrix[2][0], transformMatrix[2][1], transformMatrix[2][2]));
 
-    // Extract rotation from matrix
-    const glm::mat3 rotMtx(
-        vec3(transformMatrix[0]) / scale[0],
-        vec3(transformMatrix[1]) / scale[1],
-        vec3(transformMatrix[2]) / scale[2]);
+	glm::vec3 vecInRefFrame = eulerAngles;
+	if (space == HandleSpace::LOCAL)
+		vecInRefFrame = referenceFrameMat * eulerAngles;
 
-    // Convert rotation to quat
-    rotation = glm::normalize(glm::quat_cast(rotMtx));
+	//Generate the rotation matrix that corresponds to the rotation
+	glm::mat3x3 rotX = glm::mat3x3(1, 0, 0,
+		0, glm::cos(glm::radians(vecInRefFrame.x)), -glm::sin(glm::radians(vecInRefFrame.x)),
+		0, glm::sin(glm::radians(vecInRefFrame.x)), glm::cos(glm::radians(vecInRefFrame.x)));
 
-	// Set rotation AngleAxis from quat
-	vec3 rotationEuler = glm::eulerAngles(rotation);
+	glm::mat3x3 rotY = glm::mat3x3(glm::cos(glm::radians(vecInRefFrame.y)), 0, glm::sin(glm::radians(vecInRefFrame.y)),
+		0, 1, 0,
+		-glm::sin(glm::radians(vecInRefFrame.y)), 0, glm::cos(glm::radians(vecInRefFrame.y)));
 
-	quat quaternion = glm::angleAxis(glm::radians(eulerAngles.x), vec3(1, 0, 0));
-	rotation = glm::normalize(rotation * quaternion);
-	quaternion = glm::angleAxis(glm::radians(eulerAngles.y), vec3(0, 1, 0));
-	rotation = glm::normalize(rotation * quaternion);
-	quaternion = glm::angleAxis(glm::radians(eulerAngles.z), vec3(0, 0, 1));
-	rotation = glm::normalize(rotation * quaternion);
+	glm::mat3x3 rotZ = glm::mat3x3(glm::cos(glm::radians(vecInRefFrame.z)), -glm::sin(glm::radians(vecInRefFrame.z)), 0,
+		glm::sin(glm::radians(vecInRefFrame.z)), glm::cos(glm::radians(vecInRefFrame.z)), 0,
+		0, 0, 1);
 
-    mat4 newTransform = glm::translate(mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(mat4(1.0f), scale);
+	glm::mat3x3 rotMatrix = rotZ * rotY * rotX;
 
-    transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), newTransform) : newTransform;
+	//Apply the generated rotation matrix to the existing director vectors
+	transformMatrix[0] = vec4(rotMatrix[0], 0.0f) * transformMatrix[0];
+	transformMatrix[1] = vec4(rotMatrix[1], 0.0f) * transformMatrix[0];
+	transformMatrix[2] = vec4(rotMatrix[2], 0.0f) * transformMatrix[0];
 }
 
 //AQUI
 //void Transform::RotateTo(double angle, vec3 axis)
 //{
 //	vec3 normalizedVec = glm::normalize(axis);
-
+//
 //	_right = vec3(1 * _scale.x, 0, 0);
 //	_up = vec3(0, 1 * _scale.y, 0);
 //	_forward = vec3(0, 0, 1 * _scale.z);
-
+//
 //	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(angle), normalizedVec);
 //}
 
@@ -122,11 +123,11 @@ void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
 //	_right = vec3(1, 0, 0);
 //	_up = vec3(0, 1, 0);
 //	_forward = vec3(0, 0, 1);
-
+//
 //	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(rotVector.x), vec3(1, 0, 0));
 //	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(rotVector.y), vec3(0, 1, 0));
 //	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(rotVector.z), vec3(0, 0, 1));
-
+//
 //	_right *= _scale.x;
 //	_up *= _scale.y;
 //	_forward *= _scale.z;
@@ -135,11 +136,11 @@ void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
 //void Transform::Rotate(double angle, vec3 axis, Space referenceFrame)
 //{
 //	glm::mat3 referenceFrameMat = (glm::mat4)_transformationMatrix;
-
+//
 //	vec3 vecInRefFrame = glm::normalize(axis);
 //	if (referenceFrame == Space::GLOBAL)
 //		vecInRefFrame = axis * referenceFrameMat;
-
+//
 //	_transformationMatrix = glm::rotate(_transformationMatrix, glm::radians(angle), vecInRefFrame);
 //}
 
@@ -171,16 +172,71 @@ void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
 void Transform::SetRotation(const vec3& eulerAngles)
 {
 	quat quaternion = glm::angleAxis(eulerAngles.x, vec3(1, 0, 0));
-    rotation = glm::normalize(quaternion);
+    //rotation = glm::normalize(quaternion);
 
-	quaternion = glm::angleAxis(eulerAngles.y, vec3(0, 1, 0));
-	rotation = glm::normalize(quaternion * rotation);
+	quaternion *= glm::angleAxis(eulerAngles.y, vec3(0, 1, 0));
+	//rotation = glm::normalize(quaternion * rotation);
 
-	quaternion = glm::angleAxis(eulerAngles.z, vec3(0, 0, 1));
-	rotation = glm::normalize(quaternion * rotation);
+	quaternion *= glm::angleAxis(eulerAngles.z, vec3(0, 0, 1));
+	//rotation = glm::normalize(quaternion * rotation);
+
+    rotation = quaternion;
 
     transformMatrix = glm::translate(mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(mat4(1.0f), scale);
 }
+
+void Transform::RotateInspector(const vec3& eulerAngles)
+{
+    // ROTATE LOCAL
+    //// Convert Euler angles to quaternion
+    //quat quaternion = quat(eulerAngles);
+
+    //// Convert quaternion to rotation matrix
+    //mat4 rotationMatrix4 = mat4_cast(quaternion);
+
+    //// Apply rotation to the original transform matrix
+    //transformMatrix = transformMatrix * rotationMatrix4;
+
+    //// Extract the rotation part of the transformation matrix
+    //glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
+
+    //// Create quaternion from rotation matrix
+    //rotation = glm::quat_cast(rotationMatrix3);
+
+
+    // ROTATE WORLD
+    // Convert Euler angles to quaternion
+    quat quaternion = quat(eulerAngles);
+
+    // Convert quaternion to rotation matrix
+    mat4 rotationMatrix4 = glm::mat4_cast(quaternion);
+
+    // Apply rotation to the original transform matrix (global rotation)
+    transformMatrix = rotationMatrix4 * transformMatrix;
+
+    // Extract the rotation part of the transformation matrix
+    glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
+
+    // Create quaternion from rotation matrix
+    rotation = glm::quat_cast(rotationMatrix3);
+
+
+    // SET ROTATION
+    //// Convert Euler angles to quaternion
+    //quat quaternion = quat(eulerAngles);
+
+    //// Convert quaternion to rotation matrix
+    //mat4 rotationMatrix = glm::mat4_cast(quaternion);
+
+    //// Update the rotation part of the transformMatrix
+    //transformMatrix[0] = rotationMatrix[0];
+    //transformMatrix[1] = rotationMatrix[1];
+    //transformMatrix[2] = rotationMatrix[2];
+
+    //// Update the rotation member variable
+    //rotation = quaternion;
+}
+
 
 //void Transform::SetRotation()
 //{
@@ -230,7 +286,7 @@ mat4 Transform::CalculateWorldTransform()
     mat4 worldTransform = transformMatrix;
     GameObject* parent = containerGO.lock().get()->parent.lock().get();
 
-    while (parent && parent->GetComponent<Transform>())
+    while (parent)
     {
         worldTransform = parent->GetComponent<Transform>()->transformMatrix * worldTransform;
         parent = parent->parent.lock().get();
@@ -241,26 +297,7 @@ mat4 Transform::CalculateWorldTransform()
 
 mat4 Transform::WorldToLocalTransform(GameObject* GO, mat4 modifiedWorldTransform)
 {
-	GameObject* parent = GO->parent.lock().get();
-
-    mat4 localTransform;
-
-	if (parent && parent->GetComponent<Transform>())
-	{
-		localTransform = WorldToLocalTransform(parent, modifiedWorldTransform);
-
-		localTransform = glm::inverse(GO->GetComponent<Transform>()->transformMatrix) * localTransform;
-	}
-    else if(parent)
-    {
-		localTransform = glm::inverse(GO->GetComponent<Transform>()->transformMatrix) * modifiedWorldTransform;
-    }
-    else
-    {
-        localTransform = modifiedWorldTransform;
-    }
-
-	return localTransform;
+    return glm::inverse(GO->parent.lock().get()->GetComponent<Transform>()->CalculateWorldTransform()) * modifiedWorldTransform;
 }
 
 void Transform::UpdateCameraIfPresent()
@@ -307,10 +344,14 @@ mat4 Transform::GetTransform() const
 	return transformMatrix;
 }
 
+void Transform::SetTransform(mat4 transform)
+{
+    this->transformMatrix = transform;
+}
+
 vec3 Transform::GetRotationEuler() const
 {
-    vec3 eulerAngles = glm::eulerAngles(rotation);
-    return eulerAngles;
+    return glm::eulerAngles(rotation);
 }
 
 #pragma region OLD_CODE

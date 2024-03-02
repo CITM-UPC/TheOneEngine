@@ -1,6 +1,7 @@
 #include "PanelScene.h"
 #include "App.h"
 #include "Gui.h"
+#include "PanelInspector.h"
 #include "Renderer3D.h"
 #include "SceneManager.h"
 #include "Window.h"
@@ -192,9 +193,10 @@ bool PanelScene::Draw()
 
             if (ImGuizmo::IsUsing())
             {
-                tc->SetPosition(transform[3]);
-                //tc->SetRotation();
-                //tc->SetScale();
+                tc->SetTransform(tc->WorldToLocalTransform(selectedGO.get(), transform));
+                tc->DecomposeTransform();
+
+                app->gui->panelInspector->OnSelectGO(selectedGO);
             }
         }
 
