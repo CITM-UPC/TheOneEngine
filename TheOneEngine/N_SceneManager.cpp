@@ -84,6 +84,7 @@ void N_SceneManager::LoadScene(uint index)
 
 void N_SceneManager::LoadScene(std::string sceneName)
 {
+	LoadSceneFromJSON(sceneName);
 }
 
 void N_SceneManager::SaveScene()
@@ -148,8 +149,8 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 	// Close the file
 	file.close();
 
-	currentScene->SetIndex(sceneJSON["index"]);
-	currentScene->SetSceneName(sceneJSON["sceneName"]);
+	//currentScene->SetIndex(sceneJSON["index"]);
+	//currentScene->SetSceneName(sceneJSON["sceneName"]);
 
 	currentScene->GetRootSceneGO().get()->children.clear();
 
