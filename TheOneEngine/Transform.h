@@ -46,6 +46,9 @@ public:
     void DecomposeTransform();   
     mat4 CalculateWorldTransform();
     mat4 WorldToLocalTransform(GameObject* GO, mat4 modifiedWorldTransform);
+    void RotateOMEGALUL(const vec3& eulerAngles, const HandleSpace& space);
+    void ExtractBasis(const glm::mat4& transformMatrix, glm::mat3& basis);
+    glm::vec3 ChangeBasis(const glm::vec3& rotationVectorA, const glm::mat3& basisA, const glm::mat3& basisB);
 
     void UpdateCameraIfPresent();
     

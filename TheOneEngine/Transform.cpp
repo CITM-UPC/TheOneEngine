@@ -19,6 +19,7 @@ Transform::~Transform() {}
 
 
 // Transform ----------------------------------------------------
+
 // To Implement on our Function
 //void Transform::Move(vec3 displacement, Space referenceFrame)
 //{
@@ -31,13 +32,20 @@ Transform::~Transform() {}
 
 void Transform::Translate(const vec3& translation, const HandleSpace& space)
 {
-    mat4 newTransform = space == HandleSpace::GLOBAL ? CalculateWorldTransform() : transformMatrix;
-    newTransform = glm::translate(transformMatrix, translation);
+    if (space == HandleSpace::GLOBAL)
+    {
+        mat4 newTransform = CalculateWorldTransform();
+        newTransform = glm::translate(newTransform, translation);
 
-    transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), newTransform) : newTransform;
+        transformMatrix = WorldToLocalTransform(containerGO.lock().get(), newTransform);
+    }
+    else
+    {
+        mat4 newTransform = transformMatrix;
+        transformMatrix[3] += vec4(translation, 1);
+    }
 
     position = transformMatrix[3];
-
     UpdateCameraIfPresent();
 }
 
@@ -77,7 +85,8 @@ void Transform::SetPosition(const vec3& newPosition, const HandleSpace& space)
 
 void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
 {
-	glm::mat3x3 referenceFrameMat = glm::mat3x3(vec3(transformMatrix[0][0], transformMatrix[0][1], transformMatrix[0][2]),
+	glm::mat3x3 referenceFrameMat = glm::mat3x3(
+		vec3(transformMatrix[0][0], transformMatrix[0][1], transformMatrix[0][2]),
 		vec3(transformMatrix[1][0], transformMatrix[1][1], transformMatrix[1][2]),
 		vec3(transformMatrix[2][0], transformMatrix[2][1], transformMatrix[2][2]));
 
@@ -101,9 +110,12 @@ void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
 	glm::mat3x3 rotMatrix = rotZ * rotY * rotX;
 
 	//Apply the generated rotation matrix to the existing director vectors
-	transformMatrix[0] = vec4(rotMatrix[0], 0.0f) * transformMatrix[0];
-	transformMatrix[1] = vec4(rotMatrix[1], 0.0f) * transformMatrix[0];
-	transformMatrix[2] = vec4(rotMatrix[2], 0.0f) * transformMatrix[0];
+	vec3 temp = rotMatrix * vec3(transformMatrix[2][0], transformMatrix[2][1], transformMatrix[2][2]);
+	transformMatrix[2] = vec4(temp, 0.0f);
+	temp = rotMatrix * vec3(transformMatrix[0][0], transformMatrix[0][1], transformMatrix[0][2]);
+	transformMatrix[0] = vec4(temp, 0.0f);
+	temp = rotMatrix * vec3(transformMatrix[1][0], transformMatrix[1][1], transformMatrix[1][2]);
+	transformMatrix[1] = vec4(temp, 0.0f);
 }
 
 //AQUI
@@ -188,31 +200,14 @@ void Transform::SetRotation(const vec3& eulerAngles)
 void Transform::RotateInspector(const vec3& eulerAngles)
 {
     // ROTATE LOCAL
-    //// Convert Euler angles to quaternion
-    //quat quaternion = quat(eulerAngles);
-
-    //// Convert quaternion to rotation matrix
-    //mat4 rotationMatrix4 = mat4_cast(quaternion);
-
-    //// Apply rotation to the original transform matrix
-    //transformMatrix = transformMatrix * rotationMatrix4;
-
-    //// Extract the rotation part of the transformation matrix
-    //glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
-
-    //// Create quaternion from rotation matrix
-    //rotation = glm::quat_cast(rotationMatrix3);
-
-
-    // ROTATE WORLD
     // Convert Euler angles to quaternion
     quat quaternion = quat(eulerAngles);
 
     // Convert quaternion to rotation matrix
-    mat4 rotationMatrix4 = glm::mat4_cast(quaternion);
+    mat4 rotationMatrix4 = mat4_cast(quaternion);
 
-    // Apply rotation to the original transform matrix (global rotation)
-    transformMatrix = rotationMatrix4 * transformMatrix;
+    // Apply rotation to the original transform matrix
+    transformMatrix = transformMatrix * rotationMatrix4;
 
     // Extract the rotation part of the transformation matrix
     glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
@@ -221,7 +216,24 @@ void Transform::RotateInspector(const vec3& eulerAngles)
     rotation = glm::quat_cast(rotationMatrix3);
 
 
-    // SET ROTATION
+    // ROTATE WORLD
+    //// Convert Euler angles to quaternion
+    //quat quaternion = quat(eulerAngles);
+
+    //// Convert quaternion to rotation matrix
+    //mat4 rotationMatrix4 = glm::mat4_cast(quaternion);
+
+    //// Apply rotation to the original transform matrix (global rotation)
+    //transformMatrix = rotationMatrix4 * transformMatrix;
+
+    //// Extract the rotation part of the transformation matrix
+    //glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
+
+    //// Create quaternion from rotation matrix
+    //rotation = glm::quat_cast(rotationMatrix3);
+
+
+    // SET ROTATION (overwrites scale?)
     //// Convert Euler angles to quaternion
     //quat quaternion = quat(eulerAngles);
 
@@ -300,11 +312,55 @@ mat4 Transform::WorldToLocalTransform(GameObject* GO, mat4 modifiedWorldTransfor
     return glm::inverse(GO->parent.lock().get()->GetComponent<Transform>()->CalculateWorldTransform()) * modifiedWorldTransform;
 }
 
+void Transform::RotateOMEGALUL(const vec3& eulerAngles, const HandleSpace& space)
+{
+    glm::mat3 identity = glm::mat3(1);
+    glm::mat3 newBasis;
+
+    ExtractBasis(transformMatrix, newBasis);
+
+    vec3 rotVectorNewBasis = ChangeBasis(eulerAngles, newBasis, identity);
+
+    // Convert Euler angles to quaternion
+    quat quaternion = quat(rotVectorNewBasis);
+
+    // Convert quaternion to rotation matrix
+    mat4 rotationMatrix4 = mat4_cast(quaternion);
+
+    // Apply rotation to the original transform matrix
+    transformMatrix = transformMatrix * rotationMatrix4;
+
+    // Extract the rotation part of the transformation matrix
+    glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
+
+    // Create quaternion from rotation matrix
+    rotation = glm::quat_cast(rotationMatrix3);
+}
+
+void Transform::ExtractBasis(const glm::mat4& transformMatrix, glm::mat3& basis)
+{
+    basis[0] = glm::vec3(transformMatrix[0][0], transformMatrix[0][1], transformMatrix[0][2]);
+    basis[1] = glm::vec3(transformMatrix[1][0], transformMatrix[1][1], transformMatrix[1][2]);
+    basis[2] = glm::vec3(transformMatrix[2][0], transformMatrix[2][1], transformMatrix[2][2]);
+}
+
+// Function to change a rotation vector from basis A to basis B
+glm::vec3 Transform::ChangeBasis(const glm::vec3& rotationVectorA, const glm::mat3& basisA, const glm::mat3& basisB)
+{
+    // Calculate the rotation matrix from basis A to basis B
+    glm::mat3 rotationMatrix = basisA * glm::inverse(basisB);
+
+    // Apply the rotation matrix to the rotation vector from basis A
+    return rotationMatrix * rotationVectorA;
+}
+
 void Transform::UpdateCameraIfPresent()
 {
     Camera* camera = containerGO.lock().get()->GetComponent<Camera>();
     if (camera) { camera->UpdateCamera(); }
 }
+
+
 
 
 // Get/Set ------------------------------------------------------

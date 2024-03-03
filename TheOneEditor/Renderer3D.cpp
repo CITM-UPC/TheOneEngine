@@ -136,42 +136,59 @@ void Renderer3D::CameraInput(double dt)
     if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
         speed = 35 * dt;
 
-    double mouseSensitivity = 18.0 * dt;
+    double mouseSensitivity = 36.0 * dt;
 
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
-        // Mouse camera movement
-        camera->yaw = -app->input->GetMouseXMotion() * mouseSensitivity;
-        camera->pitch = app->input->GetMouseYMotion() * mouseSensitivity;
+        // Yaw and Pitch
+        camera->yaw = app->input->GetMouseXMotion() * mouseSensitivity;
+        camera->pitch = -app->input->GetMouseYMotion() * mouseSensitivity;
 
         transform->Rotate(vec3f(0.0f, camera->yaw, 0.0f), HandleSpace::GLOBAL);
-        transform->Rotate(vec3f(camera->pitch, 0.0f, 0.0f), HandleSpace::GLOBAL);
-
-        //transform->RotateInspector(vec3f(0.0f, camera->yaw, 0.0f));
-        //transform->RotateInspector(vec3f(camera->pitch, 0.0f, 0.0f));
-
+        transform->Rotate(vec3f(camera->pitch, 0.0f, 0.0f), HandleSpace::LOCAL);
 
         // WASD
         if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-			transform->Translate(transform->GetForward() * speed);
+			transform->Translate(transform->GetForward() * speed, HandleSpace::LOCAL);
         
         if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-			transform->Translate(-transform->GetForward() * speed);
+			transform->Translate(-transform->GetForward() * speed, HandleSpace::LOCAL);
         
         if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-			transform->Translate(transform->GetRight() * speed);
+			transform->Translate(transform->GetRight() * speed, HandleSpace::LOCAL);
         
         if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-			transform->Translate(-transform->GetRight() * speed);
+			transform->Translate(-transform->GetRight() * speed, HandleSpace::LOCAL);
         
     }
-    else
+    else if (app->input->GetMouseZ() != 0) 
     {
-        // Zooming Camera Input
+        // Zoom
 		transform->Translate(transform->GetForward() * (double)app->input->GetMouseZ());
     }
 
-    // Orbit Object with Alt + LMB
+    // (MMB) Panning
+    if (app->input->GetMouseButton(SDL_BUTTON_MIDDLE))
+    {
+        double deltaX = app->input->GetMouseXMotion();
+        double deltaY = app->input->GetMouseYMotion();
+
+        float panSpeed = 10 * dt;
+
+        transform->Translate(vec3(deltaX * panSpeed, 0, 0), HandleSpace::GLOBAL);
+        transform->Translate(vec3(0, deltaY * panSpeed, 0), HandleSpace::GLOBAL);
+    }
+
+    // (F) Focus Selection
+    if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->sceneManager->GetSelectedGO() != nullptr)
+    {
+        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - transform->GetForward();
+
+        transform->SetPosition(targetPos * 100.0f);
+    }
+
+    // ALT
+    // (Alt + LMB) Orbit Selection
     if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
         camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
@@ -190,13 +207,6 @@ void Renderer3D::CameraInput(double dt)
         }
 
 		transform->SetPosition(finalPos);
-    }
-
-    if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->sceneManager->GetSelectedGO() != nullptr)
-    {
-        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - transform->GetForward();
-
-		transform->SetPosition(targetPos * 100.0f);
     }
 
     camera->UpdateCamera();
