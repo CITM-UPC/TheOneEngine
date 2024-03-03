@@ -4,13 +4,15 @@ AudioManager::AudioManager()
 {
 }
 
-bool AudioManager::Start()
+bool AudioManager::Awake()
 {
+	audio->Awake();
 	return true;
 }
 
-bool AudioManager::Update()
+bool AudioManager::Update(double dt)
 {
+	audio->Update(dt);
 	for (const auto& audioObject : audioObjects) {
 		audioObject->SetTransform(audioObject->GetGameObject());
 	}
@@ -19,6 +21,7 @@ bool AudioManager::Update()
 
 bool AudioManager::CleanUp()
 {
+	audio->CleanUp();
 	return true;
 }
 

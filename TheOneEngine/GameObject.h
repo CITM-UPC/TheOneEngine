@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "Component.h"
 #include "BBox.hpp"
+#include "Script.h"
 
 #include "..\TheOneEditor\Log.h"
 
@@ -54,6 +55,27 @@ public:
         }
 
         std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());
+        newComponent->Enable(); // hekbas: Enable the component if necessary?
+        components.push_back(std::move(newComponent));
+
+        return true;
+    }
+    
+    bool AddScript(std::string name)
+    {
+        Component* component = this->GetComponent<Script>();
+
+        // Check for already existing Component
+        if (component != nullptr && this->GetComponent<Script>()->scriptName == name)
+        {
+            LOG(LogType::LOG_WARNING, "Component already applied");
+            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
+            LOG(LogType::LOG_INFO, "-Component  [Type: Script] ");
+
+            return false;
+        }
+
+        std::unique_ptr<Component> newComponent = std::make_unique<Script>(shared_from_this(), name);
         newComponent->Enable(); // hekbas: Enable the component if necessary?
         components.push_back(std::move(newComponent));
 

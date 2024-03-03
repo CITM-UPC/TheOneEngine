@@ -6,6 +6,7 @@
 #include "AudioObject.h"
 
 class GameObject;
+class EngineCore; 
 
 class Source : public Component, public AudioObject {
 public:

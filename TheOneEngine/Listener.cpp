@@ -3,12 +3,14 @@
 
 Listener::Listener(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Listener)
 {
-	goID = audio->RegisterGameObject(containerGO->GetName());
+	goID = audioManager->audio->RegisterGameObject(containerGO->GetName());
 
 	this->GO = containerGO;
 	SetTransform(containerGO);
 
 	SetListener(goID);
+
+	audioManager->AddAudioObject((std::shared_ptr<AudioObject>)this);
 }
 
 Listener::~Listener()
@@ -19,7 +21,7 @@ Listener::~Listener()
 void Listener::SetListener(AkGameObjectID goID)
 {
 	this->goID = goID;
-	audio->SetDefaultListener(this->goID);
+	audioManager->audio->SetDefaultListener(this->goID);
 }
 
 void Listener::SetTransform(std::shared_ptr<GameObject> containerGO)

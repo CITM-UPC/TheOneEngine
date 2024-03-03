@@ -17,6 +17,7 @@ enum class ComponentType
     Texture,
     Listener,
     Source,
+    Script,
 	Unknown
 };
 

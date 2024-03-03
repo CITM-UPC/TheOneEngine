@@ -6,18 +6,20 @@
 
 #include <memory>
 
-AudioCore* audio = NULL;
+AudioManager* audioManager = NULL;
 
 EngineCore::EngineCore()
 {
-    audio = new AudioCore();
+    audioManager = new AudioManager();
+    monoManager = new MonoManager();
 }
 
 void EngineCore::Awake()
 {
     LOG(LogType::LOG_OK, "Initializing DevIL");
     ilInit();
-    audio->Awake();
+    monoManager->InitMono();
+    audioManager->Awake();
 }
 
 void EngineCore::Start()
@@ -27,7 +29,7 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
-    audio->Update(dt);
+    audioManager->Update(dt);
 }
 
 void EngineCore::Render(Camera* camera)
@@ -65,7 +67,11 @@ void EngineCore::Render(Camera* camera)
 
 void EngineCore::CleanUp()
 {
-    audio->CleanUp();
+    monoManager->ShutDownMono();
+    delete monoManager;
+
+    audioManager->CleanUp();
+    delete audioManager;
 }
 
 void EngineCore::DrawAxis()

@@ -13,6 +13,7 @@
 #include "..\TheOneEngine\Texture.h"
 #include "..\TheOneEngine\Listener.h"
 #include "..\TheOneEngine\Source.h"
+#include "..\TheOneEngine\N_SceneManager.h"
 
 #include <vector>
 #include <string>
@@ -24,18 +25,18 @@
 class SceneManager : public Module
 {
 public:
-    SceneManager(App* app);
+	SceneManager(App* app);
 
-    virtual ~SceneManager();
+	virtual ~SceneManager();
 
-    bool Awake();
-    bool Start();
+	bool Awake();
+	bool Start();
 
-    bool PreUpdate();
-    bool Update(double dt);
-    bool PostUpdate();
+	bool PreUpdate();
+	bool Update(double dt);
+	bool PostUpdate();
 
-    bool CleanUp();
+	bool CleanUp();
 
     std::string GenerateUniqueName(const std::string& baseName);
 
@@ -77,21 +78,11 @@ public:
     //MeshLoader GetMeshLoader();
 
 private:
-    // Private constructor to enforce singleton pattern
-    SceneManager() {}
+	// Private constructor to enforce singleton pattern
+	SceneManager() {}
 
-    void RecurseDrawChildren(std::shared_ptr<GameObject> parentGO);
-
-private:
-    //uint selectedGameObject;
-    std::shared_ptr<GameObject> rootSceneGO;
-    std::shared_ptr<GameObject> selectedGameObject;
-    MeshLoader* meshLoader;
-
-    std::shared_ptr<GameObject> demo;
-    double rotationAngle;
-    double rotationSpeed;
-
+public:
+	N_SceneManager* N_sceneManager = nullptr;
 };
 
 #endif // !__SCENE_MANAGER_H__
