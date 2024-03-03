@@ -23,6 +23,7 @@
     <ClInclude Include="MonoManager.h" />
     <ClInclude Include="MonoRegisterer.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="N_SceneManager.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="EngineCore.h" />
@@ -40,6 +41,7 @@
     <ClCompile Include="MonoManager.cpp" />
     <ClCompile Include="MonoRegisterer.cpp" />
     <ClCompile Include="Ray.cpp" />
+    <ClCompile Include="N_SceneManager.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="EngineCore.cpp" />

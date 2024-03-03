@@ -1,8 +1,10 @@
 #include "PanelInspector.h"
+#include "SceneManager.h"
 #include "App.h"
 #include "Gui.h"
 #include "SceneManager.h"
 #include "Log.h"
+
 
 #include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Transform.h"
@@ -14,8 +16,7 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 
-
-PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) 
+PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name)
 {
     matrixDirty = false;
     chooseScriptNameWindow = false;
@@ -32,6 +33,7 @@ bool PanelInspector::Draw()
 
 	if (ImGui::Begin("Inspector", &enabled, settingsFlags))
 	{
+
         ImGuiIO& io = ImGui::GetIO();
         ImVec4 clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
         ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once);

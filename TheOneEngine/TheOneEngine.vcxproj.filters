@@ -22,6 +22,8 @@
     <Filter Include="Math">
       <UniqueIdentifier>{cb5e54cb-4331-4568-a233-96dbbf6a216a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneManagement">
+      <UniqueIdentifier>{b1c8107a-58d8-42ed-98cb-a24c466d1ee2}</UniqueIdentifier>
     <Filter Include="Scripting">
       <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
     </Filter>
@@ -69,6 +71,8 @@
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="N_SceneManager.h">
+      <Filter>SceneManagement</Filter>
     <ClInclude Include="MonoManager.h">
       <Filter>Scripting</Filter>
     </ClInclude>
@@ -113,6 +117,8 @@
     <ClCompile Include="Ray.cpp">
       <Filter>Math</Filter>
     </ClCompile>
+    <ClCompile Include="N_SceneManager.cpp">
+      <Filter>SceneManagement</Filter>
     <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
