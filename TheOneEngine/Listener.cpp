@@ -4,11 +4,9 @@
 Listener::Listener(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Listener)
 {
 	goID = audio->RegisterGameObject(containerGO->GetName());
-	//SetTransform(containerGO);
 
 	this->GO = containerGO;
 	SetTransform(containerGO);
-	//SetRotation();
 
 	SetListener(goID);
 }

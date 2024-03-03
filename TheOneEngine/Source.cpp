@@ -6,11 +6,11 @@ Source::Source(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
 {
 	volume = 50;
 	path = "";
+
 	goID = audio->RegisterGameObject(containerGO->GetName());
 	
 	this->GO = containerGO;
 	SetTransform(containerGO);
-	//SetTransform(containerGO);
 }
 
 Source::~Source()

@@ -49,11 +49,11 @@ bool SceneManager::Start()
     std::shared_ptr<GameObject> gameCam = CreateCameraGO("Game Camera");
     gameCam.get()->GetComponent<Camera>()->setPosition({ -10, 8, 0 });*/
 
-    spatialObject2 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
+    spatialObject2 = std::shared_ptr<GameObject>(CreateTeapot("Assets\\Meshes\\teapot.fbx").get());
     spatialObject2->GetComponent<Transform>()->setPosition({ -50,15,0 });
     spatialObject2->AddComponent<Source>();
 
-    spatialObject1 = CreateTeapot("Assets\\Meshes\\teapot.fbx").get();
+    spatialObject1 = std::shared_ptr<GameObject>(CreateTeapot("Assets\\Meshes\\teapot.fbx").get());
     spatialObject1->GetComponent<Transform>()->setPosition({ 50,15,0 });
     spatialObject1->AddComponent<Source>();
 
@@ -151,7 +151,7 @@ bool SceneManager::Update(double dt)
     //    0);
 
     spatialObject2->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
-    //spatialObject1->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
+    spatialObject1->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
 
     return true;
 }

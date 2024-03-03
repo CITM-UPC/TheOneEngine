@@ -50,9 +50,9 @@ public:
     std::shared_ptr<GameObject> CreateTeapot(std::string path);
 
     //static
-    GameObject* spatialObject1 = nullptr;
+    std::shared_ptr<GameObject> spatialObject1 = nullptr;
     //movable
-    GameObject* spatialObject2 = nullptr;
+    std::shared_ptr<GameObject> spatialObject2 = nullptr;
 
     // Get/Set
     uint GetNumberGO() const;
