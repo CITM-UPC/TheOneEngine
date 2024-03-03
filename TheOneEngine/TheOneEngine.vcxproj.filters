@@ -24,6 +24,7 @@
     </Filter>
     <Filter Include="SceneManagement">
       <UniqueIdentifier>{b1c8107a-58d8-42ed-98cb-a24c466d1ee2}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Scripting">
       <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
     </Filter>
@@ -73,6 +74,7 @@
     </ClInclude>
     <ClInclude Include="N_SceneManager.h">
       <Filter>SceneManagement</Filter>
+    </ClInclude>
     <ClInclude Include="MonoManager.h">
       <Filter>Scripting</Filter>
     </ClInclude>
@@ -118,7 +120,8 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="N_SceneManager.cpp">
-      <Filter>SceneManagement</Filter>
+      <Filter>SceneManagement</Filter>    
+    </ClCompile>
     <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
