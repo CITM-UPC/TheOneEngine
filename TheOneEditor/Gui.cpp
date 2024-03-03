@@ -205,8 +205,6 @@ bool Gui::PreUpdate()
     ImGui::NewFrame();
     ImGuizmo::BeginFrame();
 
-    // hekbas TODO get input here?
-
     // Dockspace
     if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
         MainWindowDockspace();
@@ -219,6 +217,8 @@ bool Gui::Update(double dt)
     bool ret = true;
 
     // Creates the Main Menu Bar
+    //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 50.0f));
+
     if (ImGui::BeginMainMenuBar())
     {
         if (ImGui::BeginMenu("File"))
@@ -265,19 +265,15 @@ bool Gui::Update(double dt)
         
 
         // Play/Pause/Stop
-        ImGui::Dummy(ImVec2(250.0f, 0.0f));
-        if (ImGui::Button("Play")) {
-            app->Play();
-        }
-        if (ImGui::Button("Pause")) {
-            app->Pause();
-        }
-        if (ImGui::Button("Stop")) {
-            app->Stop();
-        }
+        ImGui::Dummy(ImVec2(ImGui::GetContentRegionAvail().x / 2 - 265, 0.0f));
+        if (ImGui::Button("Play"))  app->Play();
+        if (ImGui::Button("Pause")) app->Pause();
+        if (ImGui::Button("Stop"))  app->Stop();
 
         ImGui::EndMainMenuBar();
     }
+
+    ImGui::PopStyleVar();
 
     return ret;
 }

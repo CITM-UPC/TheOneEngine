@@ -34,6 +34,7 @@ public:
 	bool drawNormalsFaces;
 	bool drawAABB;
 	bool drawOBB;
+	bool drawRaycasting;
 	bool drawChecker;
 
 private:

@@ -22,6 +22,7 @@ PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), is
     drawNormalsFaces = false;
     drawAABB = true;
     drawOBB = false;
+    drawRaycasting = false;
     drawChecker = false;
 
 	handleSpace = HandleSpace::LOCAL;
@@ -38,7 +39,7 @@ bool PanelScene::Draw()
     settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 
     //ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(0.f, 0.f));
-    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
+    //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
     ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once);
 
     ImGui::SetNextWindowBgAlpha(.0f);
@@ -58,10 +59,9 @@ bool PanelScene::Draw()
             isHovered = true;
 
         // Top Bar -------------------------------------------------------------------------
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
         if (ImGui::BeginMenuBar())
         {
-            ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
-
             // HandlePosition
             int position = (int)handlePosition;
             ImGui::SetNextItemWidth(80);
@@ -86,10 +86,21 @@ bool PanelScene::Draw()
             {
                 ImGui::Checkbox("Mesh", &drawMesh);
                 ImGui::Checkbox("Wireframe", &drawWireframe);
+                ImGui::Separator();
+
                 ImGui::Checkbox("Vertex normals", &drawNormalsVerts);
                 ImGui::Checkbox("Face normals", &drawNormalsFaces);
+                ImGui::Separator();
+
                 ImGui::Checkbox("AABB", &drawAABB);
                 ImGui::Checkbox("OBB", &drawOBB);
+                ImGui::Separator();
+
+                if (ImGui::Checkbox("Ray Casting", &drawRaycasting))
+                {
+                    if (!drawRaycasting) rays.clear();
+                }
+                
 
                 ImGui::EndMenu();
             }
@@ -209,15 +220,18 @@ bool PanelScene::Draw()
 
             Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCam, width, height);
 
-            rays.push_back(ray);
+            if (drawRaycasting) rays.push_back(ray);
+            
             //editor->SelectObject(ray);
         }
 
-        //Draw Rays
-        for (auto ray : rays)
-        {
-            app->engine->DrawRay(ray);
-        }
+        if (drawRaycasting)
+        {            
+            for (auto ray : rays)
+            {
+                app->engine->DrawRay(ray);
+            }
+        }      
 	}
 
     ImGui::End();
