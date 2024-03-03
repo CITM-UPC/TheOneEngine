@@ -22,6 +22,7 @@ PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), is
     drawNormalsFaces = false;
     drawAABB = true;
     drawOBB = false;
+    drawRaycasting = false;
     drawChecker = false;
 
 	handleSpace = HandleSpace::LOCAL;
@@ -86,10 +87,18 @@ bool PanelScene::Draw()
             {
                 ImGui::Checkbox("Mesh", &drawMesh);
                 ImGui::Checkbox("Wireframe", &drawWireframe);
+
                 ImGui::Checkbox("Vertex normals", &drawNormalsVerts);
                 ImGui::Checkbox("Face normals", &drawNormalsFaces);
+
                 ImGui::Checkbox("AABB", &drawAABB);
                 ImGui::Checkbox("OBB", &drawOBB);
+
+                if (ImGui::Checkbox("Ray Casting", &drawRaycasting))
+                {
+                    if (!drawRaycasting) rays.clear();
+                }
+                
 
                 ImGui::EndMenu();
             }
@@ -209,15 +218,18 @@ bool PanelScene::Draw()
 
             Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCam, width, height);
 
-            rays.push_back(ray);
+            if (drawRaycasting) rays.push_back(ray);
+            
             //editor->SelectObject(ray);
         }
 
-        //Draw Rays
-        for (auto ray : rays)
-        {
-            app->engine->DrawRay(ray);
-        }
+        if (drawRaycasting)
+        {            
+            for (auto ray : rays)
+            {
+                app->engine->DrawRay(ray);
+            }
+        }      
 	}
 
     ImGui::End();
