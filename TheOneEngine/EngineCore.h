@@ -11,10 +11,10 @@
 #include "Mesh.h"
 #include "Texture.h"
 #include "Ray.h"
+#include "Log.h"
 
 #include "MonoManager.h"
-#include "..\TheOneAudio\AudioCore.h"
-
+#include "../TheOneAudio/AudioCore.h"
 #include <chrono>
 #include <memory>
 
@@ -45,6 +45,10 @@ public:
 	bool GetVSync();
 	bool SetVSync(bool vsync);
 
+	std::vector<LogInfo> GetLogs();
+	void AddLog(LogType type, const char* entry);
+	void CleanLogs();
+
 public:
 	
 	bool vsync = false;
@@ -53,6 +57,12 @@ public:
 
 private:
 
+	// Logs
+	LogInfo logInfo;
+	std::vector<LogInfo> logs;
+
 };
+
+extern EngineCore* engine;
 
 #endif // !__ENGINE_CORE_H__

@@ -2,10 +2,9 @@
 #define __APP_H__
 #pragma once
 
-#include "Log.h"
 #include "Timer.h"
-
-#include "..\TheOneEngine\EngineCore.h"
+#include "../TheOneEngine/EngineCore.h"
+#include "../TheOneEngine/Log.h"
 
 #include <iostream>
 #include <sstream>
@@ -15,14 +14,15 @@
 #include <string>
 #include <list>
 
+
 // Forward declaration
 class Module;
 class Window;
 class Input;
 class Hardware;
+class SceneManager;
 class Gui;
 class Renderer3D;
-class SceneManager;
 
 enum class GameState {
 	NONE,
@@ -50,9 +50,7 @@ public:
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
-	std::vector<LogInfo> GetLogs();
-	void AddLog(LogType type, const char* entry);
-	void CleanLogs();
+	
 
 	int GetFrameRate() const;
 	void SetFrameRate(int refreshRate);
@@ -85,7 +83,7 @@ private:
 	float scale_time;
 public:
 
-	EngineCore* engine = nullptr;
+	//EngineCore* engine = nullptr;
 
 	// Modules
 	Window* window = nullptr;
@@ -103,10 +101,6 @@ private:
 	std::string organization;
 
 	std::list<Module*> modules;
-
-	// Logs
-	LogInfo logInfo;
-	std::vector<LogInfo> logs;
 
 	// Fps control
 	std::chrono::duration<double> targetFrameDuration;

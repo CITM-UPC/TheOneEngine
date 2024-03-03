@@ -1,7 +1,7 @@
 #include "MeshLoader.h"
 #include "Texture.h"
 #include "Mesh.h"
-#include "../TheOneEditor/Log.h"
+#include "../TheOneEngine/Log.h"
 
 #include "nlohmann/json.hpp"
 

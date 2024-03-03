@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Gui.h"
 #include "PanelInspector.h"
-#include "Log.h"
+#include "../TheOneEngine/Log.h"
 
 #include <fstream>
 #include <filesystem>

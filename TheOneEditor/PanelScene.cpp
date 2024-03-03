@@ -7,10 +7,10 @@
 #include "Window.h"
 #include "imgui.h"
 #include "imGuizmo.h"
-#include "Log.h"
 
-#include "..\TheOneEngine\EngineCore.h"
-#include "..\TheOneEngine\Ray.h"
+#include "../TheOneEngine/EngineCore.h"
+#include "../TheOneEngine/Ray.h"
+#include "../TheOneEngine/Log.h"
 
 #include <vector>
 
@@ -155,20 +155,20 @@ bool PanelScene::Draw()
 		int x = static_cast<int>(windowPos.x);
 		int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
-		app->engine->OnWindowResize(x, y, width, height);
+        engine->OnWindowResize(x, y, width, height);
 
-		// Render Scene Camera
-		Camera* sceneCam = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
-		app->engine->Render(sceneCam);
+        // Render Scene Camera 
+        Camera* sceneCam = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
+        engine->Render(sceneCam);
 
 		// Game cameras Frustum
 		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
 		{
 			Camera* gameCam = GO.get()->GetComponent<Camera>();
 
-			if (gameCam != nullptr && gameCam->drawFrustum)
-				app->engine->DrawFrustum(gameCam->frustum);
-		}
+            if (gameCam != nullptr && gameCam->drawFrustum)
+                engine->DrawFrustum(gameCam->frustum);
+        }
 
 
         // ImGuizmo ------------------------------------------------------------------------
@@ -225,13 +225,11 @@ bool PanelScene::Draw()
             //editor->SelectObject(ray);
         }
 
-        if (drawRaycasting)
-        {            
-            for (auto ray : rays)
-            {
-                app->engine->DrawRay(ray);
-            }
-        }      
+        //Draw Rays
+        for (auto ray : rays)
+        {
+            engine->DrawRay(ray);
+        }
 	}
 
 	ImGui::End();

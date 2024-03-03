@@ -1,8 +1,6 @@
 #include "EngineCore.h"
+#include "Log.h"
 #include "Defs.h"
-
-#include "..\TheOneEditor\Log.h"
-
 #include <GL\glew.h>
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
@@ -296,7 +294,7 @@ bool EngineCore::GetVSync()
 //heakbs - parameter not used?
 bool EngineCore::SetVSync(bool vsync)
 {
-    if (vsync)
+    if (this->vsync)
     {
         if (SDL_GL_SetSwapInterval(1) == -1)
         {
@@ -314,4 +312,25 @@ bool EngineCore::SetVSync(bool vsync)
     }
 
     return true;
+}
+
+std::vector<LogInfo> EngineCore::GetLogs()
+{
+    return logs;
+}
+
+void EngineCore::AddLog(LogType type, const char* entry)
+{
+    if (logs.size() > MAX_LOGS_CONSOLE)
+        logs.erase(logs.begin());
+
+    std::string toAdd = entry;
+    LogInfo info = { type, toAdd };
+
+    logs.push_back(info);
+}
+
+void EngineCore::CleanLogs()
+{
+    logs.clear();
 }

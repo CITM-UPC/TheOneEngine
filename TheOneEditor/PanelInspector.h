@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Panel.h"
-#include "..\TheOneEngine\Defs.h"
+#include "../TheOneEngine/Defs.h"
 
 class GameObject;
 

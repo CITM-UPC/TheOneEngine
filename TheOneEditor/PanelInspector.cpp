@@ -3,9 +3,8 @@
 #include "App.h"
 #include "Gui.h"
 #include "SceneManager.h"
-#include "Log.h"
 
-
+#include "..\TheOneEngine\Log.h"
 #include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"

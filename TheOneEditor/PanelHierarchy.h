@@ -4,7 +4,7 @@
 
 #include "Panel.h"
 
-#include "..\TheOneEngine\GameObject.h"
+#include "../TheOneEngine/GameObject.h"
 
 #include <string>
 #include <vector>
