@@ -72,17 +72,12 @@ bool SceneManager::Update(double dt)
     {
         SaveScene();
     }
+
     //Load Scene
     if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && app->input->GetKey(SDL_SCANCODE_O) == KEY_DOWN)
     {
         std::string filename = "Assets/Scenes/scene.toe";
         LoadScene(filename);
-    }
-
-    // CONTROL_TO_TEST
-    if (app->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-    {
-        rootSceneGO.get()->children[0].get()->children[1].get()->GetComponent<Transform>()->SetPosition(vec3(0,4,0), HandleSpace::GLOBAL);
     }
 
     //Audio moving

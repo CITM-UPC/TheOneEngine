@@ -33,8 +33,9 @@ bool Renderer3D::Start()
     // Creating Editor Camera GO (Outside hierarchy)
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
     sceneCamera.get()->AddComponent<Transform>();
-    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 20, -10));
+    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 3, -10));
     sceneCamera.get()->AddComponent<Camera>();
+    sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
 
 	cameraParent = std::make_shared<GameObject>("CameraParent");
 	cameraParent.get()->AddComponent<Transform>();

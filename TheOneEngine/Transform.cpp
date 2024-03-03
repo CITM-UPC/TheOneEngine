@@ -44,7 +44,6 @@ void Transform::SetPosition(const vec3& newPosition, const HandleSpace& space)
     newTransform[3] = glm::vec4(newPosition, 1.0f);
 
     transformMatrix = space == HandleSpace::GLOBAL ? WorldToLocalTransform(containerGO.lock().get(), newTransform) : newTransform;
-
     position = transformMatrix[3];
 
     UpdateCameraIfPresent();
@@ -83,6 +82,8 @@ void Transform::Rotate(const vec3& eulerAngles, const HandleSpace& space)
 	transformMatrix[0] = vec4(temp, 0.0f);
 	temp = rotMatrix * vec3(transformMatrix[1][0], transformMatrix[1][1], transformMatrix[1][2]);
 	transformMatrix[1] = vec4(temp, 0.0f);
+
+    UpdateCameraIfPresent();
 }
 
 void Transform::SetRotation(const vec3& eulerAngles)
@@ -99,6 +100,8 @@ void Transform::SetRotation(const vec3& eulerAngles)
     rotation = quaternion;
 
     transformMatrix = glm::translate(mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(mat4(1.0f), scale);
+
+    UpdateCameraIfPresent();
 }
 
 void Transform::RotateInspector(const vec3& eulerAngles)
