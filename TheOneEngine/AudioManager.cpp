@@ -2,6 +2,7 @@
 
 AudioManager::AudioManager()
 {
+	audio = new AudioCore();
 }
 
 bool AudioManager::Awake()
@@ -13,8 +14,8 @@ bool AudioManager::Awake()
 bool AudioManager::Update(double dt)
 {
 	audio->Update(dt);
-	for (const auto& audioObject : audioObjects) {
-		audioObject->SetTransform(audioObject->GetGameObject());
+	for (const auto& audioComponent : audioComponents) {
+		audioComponent->SetTransform(audioComponent->GetGameObject());
 	}
 	return true;
 }
@@ -22,11 +23,12 @@ bool AudioManager::Update(double dt)
 bool AudioManager::CleanUp()
 {
 	audio->CleanUp();
+	delete audio;
 	return true;
 }
 
-void AudioManager::AddAudioObject(std::shared_ptr<AudioObject> audioGO)
+void AudioManager::AddAudioObject(std::shared_ptr<AudioComponent> audioGO)
 {
-	audioObjects.push_back(audioGO);
+	audioComponents.push_back(audioGO);
 }
 

@@ -105,7 +105,6 @@ bool AudioCore::InitStreamingManager()
 
     // CAkFilePackageLowLevelIODeferred::Init() creates a streaming device
     // in the Stream Manager, and registers itself as the File Location Resolver.
-
     if (g_lowLevelIO.Init(deviceSettings) != AK_Success)
     {
         LOG(LogType::LOG_AUDIO, "Could not create the streaming device and Low-Level I/O system");
@@ -364,7 +363,7 @@ void AudioCore::SetAudioObjectVolume(AkGameObjectID goID, float volume)
 }
 
 
-// Juls: moved this to AudioObject
+// Juls: moved this to AudioComponent
 //void AudioCore::SetAudioGameObjectTransform(AkGameObjectID goID, float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz)
 //{
 //    //SINCE OPENGL AND WWISE USE DIFFERENT POSITIVE X AND Z POSITIONS HERE WILL BE CHANGED HERE

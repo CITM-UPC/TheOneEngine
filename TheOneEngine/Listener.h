@@ -4,16 +4,16 @@
 #pragma once
 
 #include "Component.h"
-#include "AudioObject.h"
+#include "AudioComponent.h"
 
 class GameObject;
 
-class Listener : public Component, public AudioObject {
+class Listener : public Component, public AudioComponent {
 public:
     Listener(std::shared_ptr<GameObject> containerGO);
     virtual ~Listener();
 
-    void SetListener(AkGameObjectID goID);
+    void SetListener(AkGameObjectID goID, std::shared_ptr<AudioManager> audioManager);
     void SetTransform(std::shared_ptr<GameObject> containerGO);
 
     json SaveComponent();

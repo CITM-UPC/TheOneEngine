@@ -49,12 +49,11 @@ public:
 	
 	bool vsync = false;
 	//AudioCore* audio = nullptr;
+	AudioManager* audioManager = nullptr;
 	MonoManager* monoManager = nullptr;
-
 private:
 
 };
 
-extern AudioManager* audioManager;
 
 #endif // !__ENGINE_CORE_H__

@@ -340,14 +340,14 @@ bool PanelInspector::Draw()
             }
 
             /*Listener Component*/
-            Listener* listener = selectedGO.get()->GetComponent<Listener>();
+            Listener* listener = selectedGO->GetComponent<Listener>();
 
             if (listener != nullptr && ImGui::CollapsingHeader("Listener", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen)) {
                 // No properties
             }
 
             /*Listener Component*/
-            Source* source = selectedGO.get()->GetComponent<Source>();
+            Source* source = selectedGO->GetComponent<Source>();
 
             if (source != nullptr && ImGui::CollapsingHeader("Audio Source", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen)) {
                 // JULS: Volume not applied yet
@@ -366,6 +366,10 @@ bool PanelInspector::Draw()
                 /*ImGuiTextFilter filter;
                 filter.Draw();*/
                 ImGui::SeparatorText("Components");
+                if (ImGui::Selectable("Listener"))
+                {
+                    //chooseScriptNameWindow = true;
+                }
                 if (ImGui::Selectable("Script"))
                 {
                     chooseScriptNameWindow = true;
@@ -374,11 +378,15 @@ bool PanelInspector::Draw()
                     if (ImGui::Selectable(names[i]))
                         selected_fish = i;
                 ImGui::EndPopup();*/
+                if (ImGui::Selectable("Source"))
+                {
+                    //chooseScriptNameWindow = true;
+                }
             }
         }
         if(chooseScriptNameWindow)ChooseScriptNameWindow();
         ImGui::End();
-	}	
+	
 
     ImGui::PopStyleVar();
 

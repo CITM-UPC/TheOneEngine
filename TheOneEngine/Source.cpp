@@ -1,19 +1,22 @@
 #include "Source.h"
 #include "EngineCore.h"
-#include "..\TheOneAudio\AudioCore.h"
 #include "AudioManager.h"
+#include "..\TheOneEditor\App.h"
 
 Source::Source(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Source), path(path), volume(volume)
-{
-	volume = 50;
+{	
+	volume = 0.5f;
 	path = "";
 
-	goID = audioManager->audio->RegisterGameObject(containerGO->GetName());
-	
+	// Creating an instance of AudioManager
+	std::shared_ptr<AudioManager> am = std::make_shared<AudioManager>();
+
+	goID = am->audio->RegisterGameObject(containerGO->GetName());
+
 	this->GO = containerGO;
 	SetTransform(containerGO);
 
-	audioManager->AddAudioObject((std::shared_ptr<AudioObject>)this);
+	am->AddAudioObject(std::shared_ptr<AudioComponent>(this));
 }
 
 Source::~Source()

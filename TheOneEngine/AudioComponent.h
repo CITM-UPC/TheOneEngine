@@ -5,11 +5,12 @@
 #include "Transform.h"
 
 class GameObject;
+class AudioManager;
 
-class AudioObject {
+class AudioComponent {
 public:
-	//AudioObject(std::shared_ptr<GameObject> containerGO);
-	//virtual ~AudioObject();
+	//AudioComponent(std::shared_ptr<GameObject> containerGO);
+	//virtual ~AudioComponent();
 
 	virtual void SetTransform(std::shared_ptr<GameObject> containerGO) = 0;
 	
@@ -22,7 +23,5 @@ public:
 	std::shared_ptr<GameObject> GO;
 	AkGameObjectID goID;
 
-
-	
-
+	AudioManager* AM;
 };

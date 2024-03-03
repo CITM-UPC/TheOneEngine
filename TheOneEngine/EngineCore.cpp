@@ -6,7 +6,7 @@
 
 #include <memory>
 
-AudioManager* audioManager = NULL;
+//AudioManager* audioManager = NULL;
 
 EngineCore::EngineCore()
 {

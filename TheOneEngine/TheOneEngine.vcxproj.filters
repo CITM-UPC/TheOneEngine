@@ -81,7 +81,7 @@
     <ClInclude Include="Source.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="AudioObject.h">
+    <ClInclude Include="AudioComponent.h">
       <Filter>GameObject\Audio</Filter>
     </ClInclude>
     <ClInclude Include="Ray.h">
@@ -143,14 +143,14 @@
     <ClCompile Include="Source.cpp">
       <Filter>GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="AudioObject.cpp">
+    <ClCompile Include="AudioComponent.cpp">
       <Filter>GameObject\Audio</Filter>
     </ClCompile>
     <ClCompile Include="AudioManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="N_SceneManager.cpp">
-      <Filter>SceneManagement</Filter>    
+      <Filter>SceneManagement</Filter>
     </ClCompile>
     <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>

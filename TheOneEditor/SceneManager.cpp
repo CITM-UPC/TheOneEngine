@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <filesystem>
+#include "../TheOneEditor/Assets/Audio/Wwise Project/GeneratedSoundBanks/Wwise_IDs.h"
 
 namespace fs = std::filesystem;
 
@@ -71,6 +72,7 @@ bool SceneManager::PreUpdate()
 	N_sceneManager->PreUpdate();
 
 	return true;
+    
     /*
     //static const AkUniqueID MUSIC1 = 1730564819U;
     //static const AkUniqueID MUSIC2 = 1730564816U;
@@ -94,6 +96,8 @@ bool SceneManager::PreUpdate()
         audio->ResumeEvent(2134552412U, 1);
     }
 
+
+    // JULS: For the UI related to Audio from teh Engine and Game
     if (app->input->GetKey(SDL_SCANCODE_KP_MINUS) == KEY_REPEAT)
     {
         audio->SetGlobalVolume(audio->globalVolume - 2);
@@ -127,8 +131,8 @@ bool SceneManager::Update(double dt)
 
     spatialObject2->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
     spatialObject1->GetComponent<Source>()->SetTransform(std::shared_ptr<GameObject>(spatialObject2));
-
-    return true;*/
+*/
+    return true;
 }
 
 bool SceneManager::PostUpdate()

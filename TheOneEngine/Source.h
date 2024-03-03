@@ -3,12 +3,12 @@
 #pragma once
 
 #include "Component.h"
-#include "AudioObject.h"
+#include "AudioComponent.h"
 
 class GameObject;
-class EngineCore; 
+class AudioManager; 
 
-class Source : public Component, public AudioObject {
+class Source : public Component, public AudioComponent {
 public:
 	Source(std::shared_ptr<GameObject> containerGO);
 	virtual ~Source();
