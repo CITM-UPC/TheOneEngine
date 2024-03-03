@@ -18,8 +18,7 @@ Transform::Transform(std::shared_ptr<GameObject> containerGO, mat4 transform) : 
 Transform::~Transform() {}
 
 
-// Transform ----------------------------------------------------
-
+// @Transform ----------------------------------------------------
 void Transform::Translate(const vec3& translation, const HandleSpace& space)
 {
     if (space == HandleSpace::GLOBAL)
@@ -154,8 +153,32 @@ void Transform::RotateInspector(const vec3& eulerAngles)
     //rotation = quaternion;
 }
 
+void Transform::RotateChangeOfBasis(const vec3& eulerAngles, const HandleSpace& space)
+{
+    glm::mat3 identity = glm::mat3(1);
+    glm::mat3 newBasis;
 
-//hekbas, kiko - Need to fix
+    ExtractBasis(transformMatrix, newBasis);
+
+    vec3 rotVectorNewBasis = ChangeBasis(eulerAngles, newBasis, identity);
+
+    // Convert Euler angles to quaternion
+    quat quaternion = quat(rotVectorNewBasis);
+
+    // Convert quaternion to rotation matrix
+    mat4 rotationMatrix4 = mat4_cast(quaternion);
+
+    // Apply rotation to the original transform matrix
+    transformMatrix = transformMatrix * rotationMatrix4;
+
+    // Extract the rotation part of the transformation matrix
+    glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
+
+    // Create quaternion from rotation matrix
+    rotation = glm::quat_cast(rotationMatrix3);
+}
+
+// hekbas, kiko - Need to fix
 void Transform::Scale(const vec3& scaleFactors)
 {
     transformMatrix = glm::scale(transformMatrix, scaleFactors);
@@ -171,8 +194,7 @@ void Transform::SetScale(const vec3& newScale)
 }
 
 
-// Utils --------------------------------------------------------
-
+// @Utils --------------------------------------------------------
 void Transform::DecomposeTransform()
 {
     position = transformMatrix[3];
@@ -207,31 +229,6 @@ mat4 Transform::WorldToLocalTransform(GameObject* GO, mat4 modifiedWorldTransfor
     return glm::inverse(GO->parent.lock().get()->GetComponent<Transform>()->CalculateWorldTransform()) * modifiedWorldTransform;
 }
 
-void Transform::RotateOMEGALUL(const vec3& eulerAngles, const HandleSpace& space)
-{
-    glm::mat3 identity = glm::mat3(1);
-    glm::mat3 newBasis;
-
-    ExtractBasis(transformMatrix, newBasis);
-
-    vec3 rotVectorNewBasis = ChangeBasis(eulerAngles, newBasis, identity);
-
-    // Convert Euler angles to quaternion
-    quat quaternion = quat(rotVectorNewBasis);
-
-    // Convert quaternion to rotation matrix
-    mat4 rotationMatrix4 = mat4_cast(quaternion);
-
-    // Apply rotation to the original transform matrix
-    transformMatrix = transformMatrix * rotationMatrix4;
-
-    // Extract the rotation part of the transformation matrix
-    glm::mat3 rotationMatrix3 = glm::mat3(transformMatrix);
-
-    // Create quaternion from rotation matrix
-    rotation = glm::quat_cast(rotationMatrix3);
-}
-
 void Transform::ExtractBasis(const glm::mat4& transformMatrix, glm::mat3& basis)
 {
     basis[0] = glm::vec3(transformMatrix[0][0], transformMatrix[0][1], transformMatrix[0][2]);
@@ -239,7 +236,6 @@ void Transform::ExtractBasis(const glm::mat4& transformMatrix, glm::mat3& basis)
     basis[2] = glm::vec3(transformMatrix[2][0], transformMatrix[2][1], transformMatrix[2][2]);
 }
 
-// Function to change a rotation vector from basis A to basis B
 glm::vec3 Transform::ChangeBasis(const glm::vec3& rotationVectorA, const glm::mat3& basisA, const glm::mat3& basisB)
 {
     // Calculate the rotation matrix from basis A to basis B
@@ -257,9 +253,7 @@ void Transform::UpdateCameraIfPresent()
 
 
 
-
-// Get/Set ------------------------------------------------------
-
+// @Get/Set ------------------------------------------------------
 vec3 Transform::GetRight() const
 {
     return glm::normalize(transformMatrix[0]);
