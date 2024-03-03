@@ -1,17 +1,17 @@
 #include "App.h"
 
 #include "Renderer3D.h"
+#include "SceneManager.h"
 #include "Window.h"
 #include "Gui.h"
 #include "PanelScene.h"
-#include "SceneManager.h"
 
 #include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Component.h"
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
-
+#include "..\TheOneEngine\EngineCore.h"
 
 Renderer3D::Renderer3D(App* app) : Module(app)
 {
@@ -21,14 +21,14 @@ Renderer3D::~Renderer3D() {}
 
 bool Renderer3D::Awake()
 {
-    app->engine->Awake();
+	app->engine->Awake();
 
-    return true;
+	return true;
 }
 
 bool Renderer3D::Start()
 {
-    app->engine->Start();
+	app->engine->Start();
 
     // Creating Editor Camera GO (Outside hierarchy)
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
@@ -43,97 +43,65 @@ bool Renderer3D::Start()
 	sceneCamera.get()->parent = cameraParent;
     
 
-    /*app->engine->audio->SetListenerTransform(
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().x, 
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().z, 
-        sceneCamera.get()->GetComponent<Transform>()->getForward().x, 
-        sceneCamera.get()->GetComponent<Transform>()->getForward().y,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().z, 
-        sceneCamera.get()->GetComponent<Transform>()->getUp().x,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().y,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().z);*/
 
+	// hekbas test adding same component
+	LOG(LogType::LOG_INFO, "# Testing Component Duplication");
+	sceneCamera.get()->AddComponent<Camera>();
 
-    // hekbas test adding same component
-    LOG(LogType::LOG_INFO, "# Testing Component Duplication");
-    sceneCamera.get()->AddComponent<Camera>();
-
-
-    return true;
+	return true;
 }
 
 bool Renderer3D::PreUpdate()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    
-    return true;
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
+	return true;
 }
 
 bool Renderer3D::Update(double dt)
 {
-    CameraInput(dt);
-    app->gui->panelScene->isHovered = false;
+	CameraInput(dt);
+	app->gui->panelScene->isHovered = false;
 
-    app->engine->Update(dt);
+	app->engine->Update(dt);
 
-    /*app->engine->audio->SetListenerTransform(
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().x,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().y,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().z,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().x,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().y,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().z);
-
-    app->engine->audio->SetSpatial1Transform(
-        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().x,
-        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().y,
-        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().z);
-    app->engine->audio->SetSpatial2Transform(
-        app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().x,
-        app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().y,
-        0);*/
-
-    return true;
+	return true;
 }
 
 bool Renderer3D::PostUpdate()
 {
-    // Scene camera
-    /*Camera* sceneCam = sceneCamera.get()->GetComponent<Camera>();
-    app->engine->Render(sceneCam);*/
+	// Scene camera
+	/*Camera* sceneCam = sceneCamera.get()->GetComponent<Camera>();
+	app->engine->Render(sceneCam);*/
 
-    // hekbas testing Mesh load/draw
-    /*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
-    for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
+	// hekbas testing Mesh load/draw
+	/*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
+	for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
 
-    app->gui->Draw();
+	app->gui->Draw();
 
-    SDL_GL_SwapWindow(app->window->window);
+	SDL_GL_SwapWindow(app->window->window);
 
-    return true;
+	return true;
 }
 
 bool Renderer3D::CleanUp()
 {
-    app->engine->CleanUp();
-    return true;
+	app->engine->CleanUp();
+	return true;
 }
 
 void Renderer3D::CameraInput(double dt)
 {
-    if (!app->gui->panelScene->isHovered)
-        return;
+	if (!app->gui->panelScene->isHovered)
+		return;
 
-    Camera* camera = sceneCamera.get()->GetComponent<Camera>();
-    Transform* transform = sceneCamera.get()->GetComponent<Transform>();
+	Camera* camera = sceneCamera.get()->GetComponent<Camera>();
+	Transform* transform = sceneCamera.get()->GetComponent<Transform>();
 
-    double speed = 20 * dt;
-    if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-        speed = 35 * dt;
+	double speed = 20 * dt;
+	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
+		speed = 35 * dt;
 
     double mouseSensitivity = 36.0 * dt;
 
@@ -214,6 +182,4 @@ void Renderer3D::CameraInput(double dt)
 
 		transform->SetPosition(finalPos);
     }
-
-    //camera->UpdateCamera();
 }

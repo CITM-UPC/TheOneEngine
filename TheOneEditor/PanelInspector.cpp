@@ -1,20 +1,25 @@
 #include "PanelInspector.h"
+#include "SceneManager.h"
 #include "App.h"
 #include "Gui.h"
 #include "SceneManager.h"
+#include "Log.h"
 
+
+#include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
+#include "..\TheOneEngine\Script.h"
+#include "..\TheOneEngine\MonoManager.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
 
-
-PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) 
+PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name)
 {
     matrixDirty = false;
-
+    chooseScriptNameWindow = false;
     view_pos = { 0, 0, 0 };
     view_rot_rad = { 0, 0, 0 };
     view_rot_deg = { 0, 0, 0 };
@@ -34,18 +39,19 @@ bool PanelInspector::Draw()
 
 	if (ImGui::Begin("Inspector", &enabled, settingsFlags))
 	{
+
         ImGuiIO& io = ImGui::GetIO();
         ImVec4 clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
         ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once);
 
-        std::shared_ptr<GameObject> selectedGO = app->sceneManager->GetSelectedGO();
+        selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO().get();
 
         if (selectedGO != nullptr)
         {
             /*Name*/
             //ImGui::Checkbox("Active", &gameObjSelected->isActive);
             ImGui::SameLine(); ImGui::Text("GameObject:");
-            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, selectedGO.get()->GetName().c_str());
+            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, selectedGO->GetName().c_str());
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Tag + Layer*/
@@ -59,7 +65,7 @@ bool PanelInspector::Draw()
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Transform Component*/
-            Transform* transform = selectedGO.get()->GetComponent<Transform>();
+            Transform* transform = selectedGO->GetComponent<Transform>();
 
             if (transform != nullptr && ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -186,7 +192,7 @@ bool PanelInspector::Draw()
 
 
                 //Check if camera needs to be updated
-                Camera* camera = selectedGO.get()->GetComponent<Camera>();
+                Camera* camera = selectedGO->GetComponent<Camera>();
                 if (camera && (matrixDirty))
                     camera->UpdateCamera();
                 
@@ -196,7 +202,7 @@ bool PanelInspector::Draw()
 
 
             /*Mesh Component*/
-            Mesh* mesh = selectedGO.get()->GetComponent<Mesh>();
+            Mesh* mesh = selectedGO->GetComponent<Mesh>();
 
             if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -230,7 +236,7 @@ bool PanelInspector::Draw()
 
 
             /*Texture Component*/
-            Texture* texture = selectedGO.get()->GetComponent<Texture>();
+            Texture* texture = selectedGO->GetComponent<Texture>();
 
             if (texture != nullptr && ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -268,7 +274,7 @@ bool PanelInspector::Draw()
             }
 
             /*Camera Component*/
-            Camera* camera = selectedGO.get()->GetComponent<Camera>();
+            Camera* camera = selectedGO->GetComponent<Camera>();
 
             if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -311,12 +317,68 @@ bool PanelInspector::Draw()
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
-        }
+            
+            /*Script Component*/
+            Script* script = selectedGO->GetComponent<Script>();
 
+            if (script != nullptr && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                
+
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+            }
+
+            if (ImGui::Button("Add New Component")) {
+                ImGui::OpenPopup("Select New Component");
+                
+            }
+            if (ImGui::BeginPopup("Select New Component"))
+            {
+                /*ImGuiTextFilter filter;
+                filter.Draw();*/
+                ImGui::SeparatorText("Components");
+                if (ImGui::Selectable("Script"))
+                {
+                    chooseScriptNameWindow = true;
+                }
+                /*for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+                    if (ImGui::Selectable(names[i]))
+                        selected_fish = i;
+                ImGui::EndPopup();*/
+            }
+        }
+        if(chooseScriptNameWindow)ChooseScriptNameWindow();
         ImGui::End();
 	}	
 
     ImGui::PopStyleVar();
 
 	return true;
+}
+
+void PanelInspector::ChooseScriptNameWindow()
+{
+    ImGui::Begin("Script name", &chooseScriptNameWindow);
+
+    static char nameRecipient[32];
+
+    ImGui::InputText("File Name", nameRecipient, IM_ARRAYSIZE(nameRecipient));
+
+    if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
+    {
+        //std::string className = "ActualScriptTest2";
+        if (MonoManager::IsClassInMainAssembly(nameRecipient))
+        {
+            selectedGO->AddScript(nameRecipient);
+            ImGui::CloseCurrentPopup();
+        }
+        else
+        {
+           LOG(LogType::LOG_WARNING, "Could not find class '%s'", nameRecipient);
+        }
+
+        chooseScriptNameWindow = false;
+    }
+
+    ImGui::End();
 }

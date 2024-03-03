@@ -11,12 +11,14 @@
 EngineCore::EngineCore()
 {
     audio = new AudioCore();
+    monoManager = new MonoManager();
 }
 
 void EngineCore::Awake()
 {
     LOG(LogType::LOG_OK, "Initializing DevIL");
     ilInit();
+    monoManager->InitMono();
     audio->Awake();
 }
 
@@ -67,7 +69,11 @@ void EngineCore::Render(Camera* camera)
 
 void EngineCore::CleanUp()
 {
+    monoManager->ShutDownMono();
+    delete monoManager;
+
     audio->CleanUp();
+    delete audio;
 }
 
 void EngineCore::DrawAxis()
