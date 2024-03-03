@@ -17,7 +17,7 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
 
     if (transform)
     {
-        lookAt = transform->GetPosition() - transform->GetForward();
+        lookAt = transform->GetPosition() + transform->GetForward();
     }
     else
     {

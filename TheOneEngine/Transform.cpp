@@ -370,14 +370,29 @@ vec3 Transform::GetRight() const
     return glm::normalize(transformMatrix[0]);
 }
 
+void Transform::SetRight(vec3 newRight)
+{
+    transformMatrix[0] = vec4(newRight, 0.0f);
+}
+
 vec3 Transform::GetUp() const
 {
 	return glm::normalize(transformMatrix[1]);
 }
 
+void Transform::SetUp(vec3 newUp)
+{
+    transformMatrix[1] = vec4(newUp, 0.0f);
+}
+
 vec3 Transform::GetForward() const
 {
 	return glm::normalize(transformMatrix[2]);
+}
+
+void Transform::SetForward(vec3 newForward)
+{
+    transformMatrix[2] = vec4(newForward, 0.0f);
 }
 
 vec3 Transform::GetPosition() const

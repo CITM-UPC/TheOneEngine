@@ -33,10 +33,8 @@ bool Renderer3D::Start()
     // Creating Editor Camera GO (Outside hierarchy)
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
     sceneCamera.get()->AddComponent<Transform>();
+    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 20, -10));
     sceneCamera.get()->AddComponent<Camera>();
-    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 3, -10));
-    sceneCamera.get()->GetComponent<Camera>()->lookAt = {0, 0, 0};
-    sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
 
 	cameraParent = std::make_shared<GameObject>("CameraParent");
 	cameraParent.get()->AddComponent<Transform>();
@@ -182,32 +180,39 @@ void Renderer3D::CameraInput(double dt)
     // (F) Focus Selection
     if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->sceneManager->GetSelectedGO() != nullptr)
     {
-        vec3f targetPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - transform->GetForward();
+        transform->SetPosition(camera->lookAt);
+        vec3f finalPos;
+        finalPos = transform->GetPosition() - transform->GetForward();
+        finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 10.0);
 
-        transform->SetPosition(targetPos * 100.0f);
+        transform->SetPosition(finalPos);
     }
 
     // ALT
     // (Alt + LMB) Orbit Selection
     if (app->input->GetKey(SDL_SCANCODE_LALT) == KEY_REPEAT && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_REPEAT)
     {
-        camera->yaw += -app->input->GetMouseXMotion() * mouseSensitivity;
-        camera->pitch += app->input->GetMouseYMotion() * mouseSensitivity;
+        camera->yaw = app->input->GetMouseXMotion() * mouseSensitivity;
+        camera->pitch = -app->input->GetMouseYMotion() * mouseSensitivity;
 
 		transform->SetPosition(camera->lookAt);
        
-        //camera->Rotate(vec3f(0.0f, 1.0f, 0.0f), camera->yaw, false);
-        //camera->Rotate(vec3f(1.0f, 0.0f, 0.0f), camera->pitch, true);
+        transform->Rotate(vec3f(0.0f, camera->yaw, 0.0f), HandleSpace::GLOBAL);
+        transform->Rotate(vec3f(camera->pitch, 0.0f, 0.0f), HandleSpace::LOCAL);
 
         vec3f finalPos;
-        finalPos = transform->GetPosition() - transform->GetForward();
+        
         if (app->sceneManager->GetSelectedGO() != nullptr)
         {
-            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 100.0);
+            finalPos = app->sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 40.0);
+        }
+        else
+        {
+            finalPos = transform->GetPosition() - transform->GetForward();
         }
 
 		transform->SetPosition(finalPos);
     }
 
-    camera->UpdateCamera();
+    //camera->UpdateCamera();
 }

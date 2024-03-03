@@ -60,6 +60,10 @@ public:
 	vec3 GetUp() const;
 	vec3 GetRight() const;
 
+    void SetRight(vec3 newRight);
+    void SetUp(vec3 newUp);
+    void SetForward(vec3 newForward);
+
 	vec3 GetPosition() const;
 	quat GetRotation() const;
 	vec3 GetScale() const;
