@@ -17,7 +17,7 @@ static GameObject* GetGameObjectPtr()
 }
 
 //Transform
-static void GetTransform(GameObject* GOptr, vec3f* position)
+static void GetTransform(GameObject* GOptr, vec3* position)
 {
 	//	WARNING
 
@@ -26,9 +26,9 @@ static void GetTransform(GameObject* GOptr, vec3f* position)
 	//currently works thanks to the new tracking system through pointers instead
 	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
 
-	*position = (vec3f)GOptr->GetComponent<Transform>()->position;
+	*position = GOptr->GetComponent<Transform>()->GetPosition();
 }
-static void SetTransform(GameObject* GOptr, vec3f* position)
+static void SetTransform(GameObject* GOptr, vec3* position)
 {
 	//	WARNING
 
@@ -37,10 +37,10 @@ static void SetTransform(GameObject* GOptr, vec3f* position)
 	//currently works thanks to the new tracking system through pointers instead
 	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
 
-	GOptr->GetComponent<Transform>()->position = vec3(*position);
+	GOptr->GetComponent<Transform>()->SetPosition(*position);
 }
 
-static vec3f GetTransformForward(GameObject* GOptr)
+static vec3 GetTransformForward(GameObject* GOptr)
 {
 	//	WARNING
 
@@ -49,7 +49,7 @@ static vec3f GetTransformForward(GameObject* GOptr)
 	//currently works thanks to the new tracking system through pointers instead
 	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
 
-	 return (vec3f)GOptr->GetComponent<Transform>()->getForward();
+	 return GOptr->GetComponent<Transform>()->GetForward();
 }
 
 void MonoRegisterer::RegisterFunctions()

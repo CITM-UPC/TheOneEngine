@@ -182,7 +182,7 @@ bool PanelScene::Draw()
         }       
 
         // Gizmo
-        shared_ptr<GameObject> selectedGO = app->sceneManager->GetSelectedGO();
+        shared_ptr<GameObject> selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO();
 
         if (selectedGO && gizmoType != -1)
         {
