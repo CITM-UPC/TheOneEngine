@@ -28,22 +28,14 @@ bool BuilderRenderer3D::Start()
     // Creating Editor Camera GO (Outside hierarchy)
     sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
     sceneCamera.get()->AddComponent<Transform>();
+    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 3, -10));
     sceneCamera.get()->AddComponent<Camera>();
-    sceneCamera.get()->GetComponent<Transform>()->setPosition(vec3f(0, 3, -10));
-    sceneCamera.get()->GetComponent<Camera>()->center = { 0, 0, 0 };
     sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
 
-    engine->audio->SetListenerTransform(
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().x,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().y,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().z,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().x,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().y,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().z);
-
+    cameraParent = std::make_shared<GameObject>("CameraParent");
+    cameraParent.get()->AddComponent<Transform>();
+    cameraParent.get()->children.push_back(sceneCamera);
+    sceneCamera.get()->parent = cameraParent;
 
     // hekbas test adding same component
     LOG(LogType::LOG_INFO, "# Testing Component Duplication");
@@ -66,25 +58,7 @@ bool BuilderRenderer3D::Update(double dt)
 
     engine->Update(dt);
 
-    /*app->engine->audio->SetListenerTransform(
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().x,
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().y,
-        sceneCamera.get()->GetComponent<Transform>()->getPosition().z,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().x,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().y,
-        sceneCamera.get()->GetComponent<Transform>()->getForward().z,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().x,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().y,
-        sceneCamera.get()->GetComponent<Transform>()->getUp().z);
-
-    app->engine->audio->SetSpatial1Transform(
-        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().x,
-        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().y,
-        app->sceneManager->spatialObject1->GetComponent<Transform>()->getPosition().z);
-    app->engine->audio->SetSpatial2Transform(
-        app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().x,
-        app->sceneManager->spatialObject2->GetComponent<Transform>()->getPosition().y,
-        0);*/
+    
 
     return true;
 }

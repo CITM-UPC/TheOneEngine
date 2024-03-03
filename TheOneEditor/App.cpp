@@ -3,8 +3,8 @@
 #include "Window.h"
 #include "Input.h"
 #include "Hardware.h"
-#include "SceneManager.h"
 #include "Gui.h"
+#include "SceneManager.h"
 #include "Renderer3D.h"
 
 #include "PanelAbout.h"
@@ -27,18 +27,18 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	window = new Window(this);
 	input = new Input(this);
 	hardware = new Hardware(this);
-	sceneManager = new SceneManager(this);
 	gui = new Gui(this);
+	scenemanager = new SceneManager(this);
 	renderer3D = new Renderer3D(this);
 
 	// Ordered for awake / Start / Update
 	// Reverse order for CleanUp
-	
+
 	AddModule(window, true);
 	AddModule(input, true);
 	AddModule(hardware, true);
-	AddModule(sceneManager, true);
 	AddModule(gui, true);
+	AddModule(scenemanager, true);
 
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
@@ -59,7 +59,7 @@ App::~App()
 
 void App::AddModule(Module* module, bool activate)
 {
-	if(activate == true)
+	if (activate == true)
 		module->Init();
 
 	modules.push_back(module);
@@ -79,9 +79,9 @@ bool App::Awake()
 	if (ret == true)
 	{
 		//title = configNode.child("app").child("title").child_value();
-		
+
 		//maxFrameDuration = configNode.child("app").child("frcap").attribute("value").as_int();
-	
+
 		for (const auto& item : modules)
 		{
 			if (item->active == false)
@@ -146,10 +146,9 @@ bool App::Update()
 	return ret;
 }
 
-
 // -------------------- LOOP ITERATION --------------------
 void App::PrepareUpdate()
-{	
+{
 	frameStart = std::chrono::steady_clock::now();
 }
 
@@ -180,7 +179,7 @@ bool App::DoUpdate()
 			continue;
 
 		if (module->Update(dt) == false)
-			return false;		
+			return false;
 	}
 
 	return true;
@@ -232,7 +231,6 @@ void App::FinishUpdate()
 	app->gui->panelSettings->AddFpsValue(fps);
 }
 
-
 // -------------------- QUIT --------------------
 bool App::CleanUp()
 {
@@ -251,7 +249,6 @@ bool App::CleanUp()
 
 	return ret;
 }
-
 
 // -------------------- Get / Set / Funtionalities --------------------
 int App::GetArgc() const
@@ -295,7 +292,6 @@ void App::Play()
 {
 	static std::string actual_scene_name;
 	if (state == GameState::NONE) {
-
 		state = GameState::PLAY;
 
 		game_time = 0.0F;
@@ -316,9 +312,7 @@ void App::Play()
 
 		LOG(LogType::LOG_INFO, "GameState changed to NONE");
 		engine->audio->PauseEngine();
-
 	}
-
 }
 
 void App::Pause()
@@ -332,7 +326,6 @@ void App::Pause()
 
 		LOG(LogType::LOG_INFO, "GameState changed to PAUSE");
 		engine->audio->PauseEngine();
-
 	}
 }
 
@@ -344,12 +337,10 @@ void App::PlayOnce()
 
 		LOG(LogType::LOG_INFO, "GameState changed to PLAY_ONCE");
 		engine->audio->PlayEngine();
-
 	}
 	else if (state == GameState::PLAY) {
 		state = GameState::PLAY_ONCE;
 		LOG(LogType::LOG_INFO, "GameState changed to PLAY_ONCE");
-
 	}
 }
 

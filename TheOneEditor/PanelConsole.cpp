@@ -50,6 +50,11 @@ bool PanelConsole::Draw()
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
 						break;
 
+					case LogType::LOG_MONO:
+						logType = "[MONO] ";
+						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
+						break;
+
 					case LogType::LOG_OK:
 						logType = "[OK] ";
 						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));

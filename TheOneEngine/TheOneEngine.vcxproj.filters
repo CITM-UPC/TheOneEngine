@@ -22,6 +22,12 @@
     <Filter Include="Math">
       <UniqueIdentifier>{cb5e54cb-4331-4568-a233-96dbbf6a216a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SceneManagement">
+      <UniqueIdentifier>{b1c8107a-58d8-42ed-98cb-a24c466d1ee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -66,6 +72,18 @@
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="N_SceneManager.h">
+      <Filter>SceneManagement</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoManager.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Script.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoRegisterer.h">
+      <Filter>Scripting</Filter>
+    </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -103,6 +121,18 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="N_SceneManager.cpp">
+      <Filter>SceneManagement</Filter>    
+    </ClCompile>
+    <ClCompile Include="MonoManager.cpp">
+      <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Script.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoRegisterer.cpp">
+      <Filter>Scripting</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>

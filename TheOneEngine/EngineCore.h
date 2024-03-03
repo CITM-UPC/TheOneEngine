@@ -7,11 +7,13 @@
 // Include in Editor when needed: #include "../TheOneEngine/EngineCore.h"
 #include "Defs.h"
 #include "Camera.h"
+#include "Transform.h"
 #include "Mesh.h"
 #include "Texture.h"
 #include "Ray.h"
 #include "Log.h"
 
+#include "MonoManager.h"
 #include "../TheOneAudio/AudioCore.h"
 #include <chrono>
 #include <memory>
@@ -51,6 +53,7 @@ public:
 	
 	bool vsync = false;
 	AudioCore* audio = nullptr;
+	MonoManager* monoManager = nullptr;
 
 private:
 

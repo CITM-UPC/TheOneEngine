@@ -58,10 +58,10 @@
     <ClCompile Include="Renderer3D.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="Window.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Window.cpp">
+    <ClCompile Include="SceneManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
   </ItemGroup>

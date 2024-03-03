@@ -1,0 +1,62 @@
+#include "MonoRegisterer.h"
+#include "MonoManager.h"
+#include "Defs.h"
+
+#include "Transform.h"
+
+#include "../mono/include/mono/jit/jit.h"
+#include "../mono/include/mono/metadata/assembly.h"
+#include "../mono/include/mono/metadata/attrdefs.h"
+
+#include <glm/vec3.hpp>
+
+//Constructors
+static GameObject* GetGameObjectPtr()
+{
+	return MonoManager::GetCurrentGameObjectPtr();
+}
+
+//Transform
+static void GetTransform(GameObject* GOptr, vec3* position)
+{
+	//	WARNING
+
+	//This function has been implemented as a PLACEHOLDER due to the Transform
+	//component being under rework at the time of this implementation. This
+	//currently works thanks to the new tracking system through pointers instead
+	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
+
+	*position = GOptr->GetComponent<Transform>()->GetPosition();
+}
+static void SetTransform(GameObject* GOptr, vec3* position)
+{
+	//	WARNING
+
+	//This function has been implemented as a PLACEHOLDER due to the Transform
+	//component being under rework at the time of this implementation. This
+	//currently works thanks to the new tracking system through pointers instead
+	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
+
+	GOptr->GetComponent<Transform>()->SetPosition(*position);
+}
+
+static vec3 GetTransformForward(GameObject* GOptr)
+{
+	//	WARNING
+
+	//This function has been implemented as a PLACEHOLDER due to the Transform
+	//component being under rework at the time of this implementation. This
+	//currently works thanks to the new tracking system through pointers instead
+	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
+
+	 return GOptr->GetComponent<Transform>()->GetForward();
+}
+
+void MonoRegisterer::RegisterFunctions()
+{
+	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
+
+	mono_add_internal_call("InternalCalls::GetTransform", GetTransform);
+	mono_add_internal_call("InternalCalls::SetTransform", SetTransform);
+	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
+}
