@@ -15,6 +15,7 @@ enum class ComponentType
 	Camera,
 	Mesh,
     Texture,
+    Script,
 	Unknown
 };
 
