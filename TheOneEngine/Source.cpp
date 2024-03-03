@@ -16,7 +16,7 @@ Source::Source(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
 	this->GO = containerGO;
 	SetTransform(containerGO);
 
-	am->AddAudioObject(std::shared_ptr<AudioComponent>(this));
+	//am->AddAudioObject(std::shared_ptr<AudioComponent>(this));
 }
 
 Source::~Source()

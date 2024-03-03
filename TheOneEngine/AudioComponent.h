@@ -3,11 +3,12 @@
 #include "..\TheOneAudio\AudioUtility.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include <memory>
 
 class GameObject;
 class AudioManager;
 
-class AudioComponent {
+class AudioComponent : public std::enable_shared_from_this<AudioComponent> {
 public:
 	//AudioComponent(std::shared_ptr<GameObject> containerGO);
 	//virtual ~AudioComponent();

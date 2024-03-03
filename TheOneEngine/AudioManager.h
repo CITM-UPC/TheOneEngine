@@ -11,12 +11,12 @@ public:
 	bool Update(double dt);
 	bool CleanUp();
 
-	void AddAudioObject(std::shared_ptr<AudioComponent> audioGO);
 	//static AudioManager* GetAudioManager() { return &this; }
 
 	AudioCore* audio = nullptr;
 
 	//AudioCore* GetAudioCore() { return audio; }
+	void AddAudioObject(std::shared_ptr<AudioComponent> audioGO); // Change parameter to shared_ptr};
 
 private:
 	std::vector<std::shared_ptr<AudioComponent>> audioComponents;

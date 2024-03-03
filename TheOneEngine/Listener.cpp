@@ -1,18 +1,19 @@
 #include "Listener.h"
 #include "EngineCore.h"
 
+#include <memory>
+
 Listener::Listener(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Listener)
 {
+	//this->Enable();
 	std::shared_ptr<AudioManager> am = std::make_shared<AudioManager>();
-	
 	goID = am->audio->RegisterGameObject(containerGO->GetName());
-
 	this->GO = containerGO;
 	SetTransform(containerGO);
-
 	SetListener(goID, am);
 
-	am->AddAudioObject((std::shared_ptr<AudioComponent>)this);
+	// Pass shared_ptr to AddAudioObject
+	//am->AddAudioObject((std::shared_ptr<AudioComponent>)shared_from_this());
 }
 
 Listener::~Listener()

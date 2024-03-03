@@ -368,7 +368,7 @@ bool PanelInspector::Draw()
                 ImGui::SeparatorText("Components");
                 if (ImGui::Selectable("Listener"))
                 {
-                    //chooseScriptNameWindow = true;
+                    selectedGO->AddComponent<Listener>();
                 }
                 if (ImGui::Selectable("Script"))
                 {
@@ -380,7 +380,7 @@ bool PanelInspector::Draw()
                 ImGui::EndPopup();*/
                 if (ImGui::Selectable("Source"))
                 {
-                    //chooseScriptNameWindow = true;
+                    selectedGO->AddComponent<Source>();
                 }
             }
         }
@@ -418,4 +418,9 @@ void PanelInspector::ChooseScriptNameWindow()
     }
 
     ImGui::End();
+}
+
+void PanelInspector::ChooseEventWindow()
+{
+
 }

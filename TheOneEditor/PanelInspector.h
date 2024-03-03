@@ -16,6 +16,7 @@ public:
 	bool Draw();
 
 	void ChooseScriptNameWindow();
+	void ChooseEventWindow();
 
 private:
 	bool matrixDirty;
@@ -26,6 +27,7 @@ private:
 	vec3f view_sca;
 
 	bool chooseScriptNameWindow;
+	bool chooseEventWindow;
 
 	GameObject* selectedGO = nullptr;
 };

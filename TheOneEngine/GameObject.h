@@ -14,8 +14,6 @@
 #include <list>
 #include <memory>
 
-class AudioManager;
-
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -56,7 +54,7 @@ public:
         }
 
         std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this());
-        newComponent->Enable(); // hekbas: Enable the component if necessary?
+        //newComponent->Enable(); // hekbas: Enable the component if necessary?
         components.push_back(std::move(newComponent));
 
         return true;
