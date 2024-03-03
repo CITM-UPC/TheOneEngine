@@ -7,6 +7,18 @@
 
 #include <memory>
 
+enum class HandleSpace
+{
+    LOCAL,
+    GLOBAL
+};
+
+enum class HandlePosition
+{
+    PIVOT,
+    CENTER
+};
+
 class GameObject;
 
 class Transform : public Component
@@ -14,56 +26,67 @@ class Transform : public Component
 public:
 
     Transform(std::shared_ptr<GameObject> containerGO);
+    Transform(std::shared_ptr<GameObject> containerGO, mat4 transform);
     virtual ~Transform();
 
-    // Transform ----------------------------------------------------
-    void translate(const vec3& translation, bool local = true);
-    void rotate(const vec3& axis, double angle, bool local = true);
-    void rotate(const vec3& eulerAngles, bool local = true);
-    void scaleBy(const vec3& scaling, bool local = true);
+
+    // @Transform -------------------------------
+    void Translate(const vec3& translation, const HandleSpace& space = HandleSpace::LOCAL);
+    void SetPosition(const vec3& newPosition, const HandleSpace& space = HandleSpace::LOCAL);
+
+    void SetRotation(const vec3& eulerAngles);
+    void Rotate(const vec3& eulerAngles, const HandleSpace& space = HandleSpace::LOCAL);
+
+    // Testing, do not use in scripting
+    void RotateInspector(const vec3& eulerAngles);
+    // Testing, do not use in scripting
+    void RotateChangeOfBasis(const vec3& eulerAngles, const HandleSpace& space);
+
+    void Scale(const vec3& scaleFactors);
+    void SetScale(const vec3& newScale); 
 
 
-    // Get / Set -----------------------------------------------------
-    vec3 getForward(); // Gets forward vector   
-    vec3 getUp();      // Gets up vector  
-    vec3 getRight();   // Gets right vector
+    // @Utils -----------------------------------
+    void DecomposeTransform();   
+    mat4 CalculateWorldTransform();
+    mat4 WorldToLocalTransform(GameObject* GO, mat4 modifiedWorldTransform);
 
-    // Gets Transformation model Matrix
-    mat4 getMatrix();
-    void updateMatrix();
-    mat4 GetWorldTransform();
+    void ExtractBasis(const glm::mat4& transformMatrix, glm::mat3& basis);
+    glm::vec3 ChangeBasis(const glm::vec3& rotationVectorA, const glm::mat3& basisA, const glm::mat3& basisB);
 
-    vec3 getPosition() const;
-    void setPosition(const vec3& newPosition); // Sets position in global space
-   
-    quat getRotation() const;      // Gets global rotation in quaternion   
-    quat getLocalRotation() const; // Gets local rotation in quaternion
-   
-    vec3 getEulerAngles() const;       // Gets global rotation of the object in Euler Angles   
-    vec3 getLocalEulerAngles() const;  // Gets local rotation of the object in Euler Angles
-    //void setRotation(const vec3f& newRotation); // Sets rotation 
-    void setRotation(const vec3& newRotation); // Sets rotation 
+    void UpdateCameraIfPresent();
+    
 
-    vec3 getScale() const;
-    void setScale(const vec3& newScale); // Sets Scale
+    // @Get / Set --------------------------------
+	vec3 GetForward() const;
+	vec3 GetUp() const;
+	vec3 GetRight() const;
 
-    quat EulerAnglesToQuaternion(const vec3& eulerAngles);    // Converts Euler Angles to Quaternion
+    void SetRight(vec3 newRight);
+    void SetUp(vec3 newUp);
+    void SetForward(vec3 newForward);
 
+	vec3 GetPosition() const;
+	quat GetRotation() const;
+	vec3 GetScale() const;
+
+    mat4 GetTransform() const;
+    void SetTransform(mat4 transform);
+
+    vec3 GetRotationEuler() const;
+    
 public:
 
     json SaveComponent();
     void LoadComponent(const json& transformJSON);
 
-public:
+private:
+
+    mat4 transformMatrix;
 
     vec3 position;
     quat rotation;
-    quat localRotation;
-    vec3 eulerAngles;
-    vec3 localEulerAngles;
     vec3 scale;
-    vec3 localScale;
-    mat4 globalMatrix; // Stores the transformations
 };
 
 #endif //__TRANSFORM_H__

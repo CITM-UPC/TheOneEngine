@@ -1,9 +1,11 @@
 #include "EngineCore.h"
+#include "Defs.h"
+
 #include "..\TheOneEditor\Log.h"
+
 #include <GL\glew.h>
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
-
 #include <memory>
 
 EngineCore::EngineCore()
@@ -51,9 +53,11 @@ void EngineCore::Render(Camera* camera)
 
     gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
 
-    gluLookAt(camera->eye.x, camera->eye.y, camera->eye.z,
-        camera->center.x, camera->center.y, camera->center.z,
-        camera->up.x, camera->up.y, camera->up.z);
+	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
+
+    gluLookAt(cameraTransform->GetPosition().x, cameraTransform->GetPosition().y, cameraTransform->GetPosition().z,
+        camera->lookAt.x, camera->lookAt.y, camera->lookAt.z,
+		cameraTransform->GetUp().x, cameraTransform->GetUp().y, cameraTransform->GetUp().z);
 
     DrawGrid(1000, 10);
     DrawAxis();
@@ -74,89 +78,203 @@ void EngineCore::CleanUp()
 
 void EngineCore::DrawAxis()
 {
-    glLineWidth(4.0);
-    glBegin(GL_LINES);
-    glColor3ub(255, 0, 0);
-    glVertex3d(0, 0, 0);
-    glVertex3d(0.8, 0, 0);
-    glColor3ub(0, 255, 0);
-    glVertex3d(0, 0, 0);
-    glVertex3d(0, 0.8, 0);
-    glColor3ub(0, 0, 255);
-    glVertex3d(0, 0, 0);
-    glVertex3d(0, 0, 0.8);
-    glEnd();
+    // Define vertex and color data
+    GLfloat axisVertices[] = {
+        0.0f, 0.0f, 0.0f, // origin
+        0.8f, 0.0f, 0.0f, // x-axis end
+        0.0f, 0.0f, 0.0f, // origin
+        0.0f, 0.8f, 0.0f, // y-axis end
+        0.0f, 0.0f, 0.0f, // origin
+        0.0f, 0.0f, 0.8f  // z-axis end
+    };
+    GLubyte axisColors[] = {
+        255, 0, 0, // red
+        0, 255, 0, // green
+        0, 0, 255  // blue
+    };
+
+    // Create and bind vertex array object (VAO)
+    GLuint axisVAO;
+    glGenVertexArrays(1, &axisVAO);
+    glBindVertexArray(axisVAO);
+
+    // Create and bind vertex buffer object (VBO) for vertices
+    GLuint vertexVBO;
+    glGenBuffers(1, &vertexVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(axisVertices), axisVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
+
+    // Create and bind vertex buffer object (VBO) for colors
+    GLuint colorVBO;
+    glGenBuffers(1, &colorVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(axisColors), axisColors, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, GL_TRUE, 0, nullptr);
+    glEnableVertexAttribArray(1);
+
+    // Draw lines
+    glDrawArrays(GL_LINES, 0, 6);
+
+    // Cleanup
+    glDeleteBuffers(1, &vertexVBO);
+    glDeleteBuffers(1, &colorVBO);
+    glDeleteVertexArrays(1, &axisVAO);
 }
 
 void EngineCore::DrawGrid(int grid_size, int grid_step)
 {
-    glLineWidth(1.0);
-    glColor3ub(128, 128, 128);
+    // Define vertex data
+    std::vector<GLfloat> gridVertices;
+    std::vector<GLfloat> gridColors;
 
-    glBegin(GL_LINES);
+    // Define maximum distance for fading
+    float maxDistance = grid_size * 2; // You may adjust this value as needed
+
     for (int i = -grid_size; i <= grid_size; i += grid_step)
     {
-        //XY plane
-        /*glVertex2i(i, -grid_size);
-        glVertex2i(i,  grid_size);
-        glVertex2i(-grid_size, i);
-        glVertex2i( grid_size, i);*/
+        // Calculate distance from camera
+        float distance = sqrt(pow(i, 2) + pow(0.0f, 2) + pow(-grid_size, 2)); // Example camera position: (0, 0, -grid_size)
 
-        //XZ plane
-        glVertex3i(i, 0, -grid_size);
-        glVertex3i(i, 0, grid_size);
-        glVertex3i(-grid_size, 0, i);
-        glVertex3i( grid_size, 0, i);
+        // Calculate alpha value based on distance
+        float alpha = 1.0f - (distance / maxDistance); // Linear fade, adjust as needed
+
+        // Clamp alpha value between 0 and 1
+        alpha = CLAMP(alpha, 1.0f, 0.0f);
+        //alpha = std::max(0.0f, std::min(alpha, 1.0f));
+
+        // Add vertices
+        gridVertices.push_back(i);
+        gridVertices.push_back(0.0f);
+        gridVertices.push_back(-grid_size);
+
+        gridVertices.push_back(i);
+        gridVertices.push_back(0.0f);
+        gridVertices.push_back(grid_size);
+
+        gridVertices.push_back(-grid_size);
+        gridVertices.push_back(0.0f);
+        gridVertices.push_back(i);
+
+        gridVertices.push_back(grid_size);
+        gridVertices.push_back(0.0f);
+        gridVertices.push_back(i);
+
+        // Add colors with adjusted alpha
+        for (int j = 0; j < 4; ++j)
+        {
+            gridColors.push_back(128); // R
+            gridColors.push_back(0); // G
+            gridColors.push_back(128); // B
+            gridColors.push_back(static_cast<GLfloat>(alpha * 255)); // Alpha
+        }
     }
-    glEnd();
+
+    // Create and bind vertex array object (VAO)
+    GLuint gridVAO;
+    glGenVertexArrays(1, &gridVAO);
+    glBindVertexArray(gridVAO);
+
+    // Create and bind vertex buffer object (VBO) for vertices
+    GLuint gridVBO;
+    glGenBuffers(1, &gridVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, gridVBO);
+    glBufferData(GL_ARRAY_BUFFER, gridVertices.size() * sizeof(GLfloat), gridVertices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
+
+    // Create and bind vertex buffer object (VBO) for colors
+    GLuint colorVBO;
+    glGenBuffers(1, &colorVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
+    glBufferData(GL_ARRAY_BUFFER, gridColors.size() * sizeof(GLfloat), gridColors.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(1);
+
+    // Draw lines
+    glDrawArrays(GL_LINES, 0, gridVertices.size() / 3);
+
+    // Cleanup
+    glDeleteBuffers(1, &gridVBO);
+    glDeleteBuffers(1, &colorVBO);
+    glDeleteVertexArrays(1, &gridVAO);
 }
 
 void EngineCore::DrawFrustum(const Frustum& frustum)
 {
-    glColor3f(1, 1, 1);
-    glLineWidth(0.5);
+    // Define vertex data
+    std::vector<GLfloat> frustumVertices;
+    for (int i = 0; i < 8; ++i) {
+        frustumVertices.push_back(frustum.vertices[i].x);
+        frustumVertices.push_back(frustum.vertices[i].y);
+        frustumVertices.push_back(frustum.vertices[i].z);
+    }
 
-    // Draw near plane
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(frustum.vertices[0].x, frustum.vertices[0].y, frustum.vertices[0].z);
-    glVertex3f(frustum.vertices[1].x, frustum.vertices[1].y, frustum.vertices[1].z);
-    glVertex3f(frustum.vertices[2].x, frustum.vertices[2].y, frustum.vertices[2].z);
-    glVertex3f(frustum.vertices[3].x, frustum.vertices[3].y, frustum.vertices[3].z);
-    glEnd();
+    // Define indices for the lines
+    GLuint frustumIndices[] = {
+        0, 1, 1, 2, 2, 3, 3, 0, // near plane
+        4, 5, 5, 6, 6, 7, 7, 4, // far plane
+        0, 4, 1, 5, 2, 6, 3, 7  // connecting lines
+    };
 
-    // Draw far plane
-    glBegin(GL_LINE_LOOP);
-    glVertex3f(frustum.vertices[4].x, frustum.vertices[4].y, frustum.vertices[4].z);
-    glVertex3f(frustum.vertices[5].x, frustum.vertices[5].y, frustum.vertices[5].z);
-    glVertex3f(frustum.vertices[6].x, frustum.vertices[6].y, frustum.vertices[6].z);
-    glVertex3f(frustum.vertices[7].x, frustum.vertices[7].y, frustum.vertices[7].z);
-    glEnd();
+    // Create and bind vertex array object (VAO)
+    GLuint frustumVAO;
+    glGenVertexArrays(1, &frustumVAO);
+    glBindVertexArray(frustumVAO);
 
-    // Draw lines connecting near and far planes
-    glBegin(GL_LINES);
-    glVertex3f(frustum.vertices[0].x, frustum.vertices[0].y, frustum.vertices[0].z);
-    glVertex3f(frustum.vertices[4].x, frustum.vertices[4].y, frustum.vertices[4].z);
+    // Create and bind vertex buffer object (VBO) for vertices
+    GLuint frustumVBO;
+    glGenBuffers(1, &frustumVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, frustumVBO);
+    glBufferData(GL_ARRAY_BUFFER, frustumVertices.size() * sizeof(GLfloat), frustumVertices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
 
-    glVertex3f(frustum.vertices[1].x, frustum.vertices[1].y, frustum.vertices[1].z);
-    glVertex3f(frustum.vertices[5].x, frustum.vertices[5].y, frustum.vertices[5].z);
+    // Create and bind element buffer object (EBO) for indices
+    GLuint frustumEBO;
+    glGenBuffers(1, &frustumEBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, frustumEBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(frustumIndices), frustumIndices, GL_STATIC_DRAW);
 
-    glVertex3f(frustum.vertices[2].x, frustum.vertices[2].y, frustum.vertices[2].z);
-    glVertex3f(frustum.vertices[6].x, frustum.vertices[6].y, frustum.vertices[6].z);
+    // Draw lines
+    glDrawElements(GL_LINES, sizeof(frustumIndices) / sizeof(GLuint), GL_UNSIGNED_INT, nullptr);
 
-    glVertex3f(frustum.vertices[3].x, frustum.vertices[3].y, frustum.vertices[3].z);
-    glVertex3f(frustum.vertices[7].x, frustum.vertices[7].y, frustum.vertices[7].z);
-    glEnd();
+    // Cleanup
+    glDeleteBuffers(1, &frustumVBO);
+    glDeleteBuffers(1, &frustumEBO);
+    glDeleteVertexArrays(1, &frustumVAO);
 }
 
 void EngineCore::DrawRay(const Ray& ray)
 {
-    uint magnitude = 1000;
-    glColor3f(1.0f, 0.0f, 0.0f);
+    // Define vertex data
+    GLfloat rayVertices[] = {
+        ray.Origin.x, ray.Origin.y, ray.Origin.z,
+        ray.Origin.x + ray.Direction.x * 1000,
+        ray.Origin.y + ray.Direction.y * 1000,
+        ray.Origin.z + ray.Direction.z * 1000
+    };
 
-    glBegin(GL_LINES);
-    glVertex3f(ray.Origin.x, ray.Origin.y, ray.Origin.z);
-    glVertex3f(ray.Direction.x * magnitude, ray.Direction.y * magnitude, ray.Direction.z * magnitude);
-    glEnd();
+    // Create and bind vertex array object (VAO)
+    GLuint rayVAO;
+    glGenVertexArrays(1, &rayVAO);
+    glBindVertexArray(rayVAO);
+
+    // Create and bind vertex buffer object (VBO) for vertices
+    GLuint rayVBO;
+    glGenBuffers(1, &rayVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, rayVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(rayVertices), rayVertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
+
+    // Draw line
+    glDrawArrays(GL_LINES, 0, 2);
+
+    // Cleanup
+    glDeleteBuffers(1, &rayVBO);
+    glDeleteVertexArrays(1, &rayVAO);
 }
 
 void EngineCore::OnWindowResize(int x, int y, int width, int height)
@@ -178,7 +296,7 @@ bool EngineCore::GetVSync()
 //heakbs - parameter not used?
 bool EngineCore::SetVSync(bool vsync)
 {
-    if (this->vsync)
+    if (vsync)
     {
         if (SDL_GL_SetSwapInterval(1) == -1)
         {

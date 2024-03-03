@@ -1,10 +1,12 @@
 #include "PanelScene.h"
 #include "App.h"
 #include "Gui.h"
+#include "PanelInspector.h"
 #include "Renderer3D.h"
 #include "SceneManager.h"
 #include "Window.h"
 #include "imgui.h"
+#include "imGuizmo.h"
 #include "Log.h"
 
 #include "..\TheOneEngine\EngineCore.h"
@@ -14,13 +16,19 @@
 
 PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), isHovered(false)
 {
-	drawMesh = true;
-	drawWireframe = false;
-	drawNormalsVerts = false;
-	drawNormalsFaces = false;
-	drawAABB = true;
-	drawOBB = false;
-	drawChecker = false;
+    drawMesh = true;
+    drawWireframe = false;
+    drawNormalsVerts = false;
+    drawNormalsFaces = false;
+    drawAABB = true;
+    drawOBB = false;
+    drawRaycasting = false;
+    drawChecker = false;
+
+	handleSpace = HandleSpace::LOCAL;
+    handlePosition = HandlePosition::PIVOT;
+    gizmoType = -1;
+    gizmoMode = ImGuizmo::MODE::LOCAL;
 }
 
 PanelScene::~PanelScene() {}
@@ -37,13 +45,65 @@ bool PanelScene::Draw()
 	ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Scene", &enabled, settingsFlags))
 	{
-		if (ImGui::IsWindowHovered())
-			isHovered = true;
+        // SDL Window
+        int SDLWindowWidth, SDLWindowHeight;
+        app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
 
-		// Top Bar --------------------------
-		if (ImGui::BeginMenuBar())
-		{
-			ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
+        // ImGui Panel
+        ImVec2 windowPos = ImGui::GetWindowPos();
+        ImVec2 windowSize = ImGui::GetWindowSize();
+        ImVec2 availWindowSize = ImGui::GetContentRegionAvail();
+
+
+        if (ImGui::IsWindowHovered())
+            isHovered = true;
+
+        // Top Bar -------------------------------------------------------------------------
+        ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
+        if (ImGui::BeginMenuBar())
+        {
+            // HandlePosition
+            int position = (int)handlePosition;
+            ImGui::SetNextItemWidth(80);
+            if (ImGui::Combo("##HandlePosition", &position, positions, 2))
+            {
+                handlePosition = (HandlePosition)position;
+                ImGui::EndCombo();
+            }
+
+            // HandleSpace
+            ImGui::SetNextItemWidth(80);
+            if (ImGui::Combo("##HandleSpace", &gizmoMode, spaces, 2))
+            {
+                //handleSpace = (HandleSpace)space;
+                LOG(LogType::LOG_INFO, "gizMode: %d", gizmoMode);
+                ImGui::EndCombo();
+            }
+
+            ImGui::Dummy(ImVec2(availWindowSize.x - 360.0f, 0.0f));
+
+            if (ImGui::BeginMenu("Render"))
+            {
+                ImGui::Checkbox("Mesh", &drawMesh);
+                ImGui::Checkbox("Wireframe", &drawWireframe);
+                ImGui::Separator();
+
+                ImGui::Checkbox("Vertex normals", &drawNormalsVerts);
+                ImGui::Checkbox("Face normals", &drawNormalsFaces);
+                ImGui::Separator();
+
+                ImGui::Checkbox("AABB", &drawAABB);
+                ImGui::Checkbox("OBB", &drawOBB);
+                ImGui::Separator();
+
+                if (ImGui::Checkbox("Ray Casting", &drawRaycasting))
+                {
+                    if (!drawRaycasting) rays.clear();
+                }
+                
+
+                ImGui::EndMenu();
+            }
 
 			if (ImGui::BeginMenu("Camera"))
 			{
@@ -68,44 +128,26 @@ bool PanelScene::Draw()
 				camera->zNear = zNear;
 				camera->zFar = zFar;
 
-				ImGui::EndMenu();
-			}
-			if (ImGui::BeginMenu("Gizmo"))
-			{
-				ImGui::Text("Gizmo Options");
-				ImGui::Text("It seems like hekbas forgot to implement ImGuizmo...");
+                ImGui::EndMenu();
+            }
 
-				ImGui::EndMenu();
-			}
-			if (ImGui::BeginMenu("Render"))
-			{
-				ImGui::Checkbox("Mesh", &drawMesh);
-				ImGui::Checkbox("Wireframe", &drawWireframe);
-				ImGui::Checkbox("Vertex normals", &drawNormalsVerts);
-				ImGui::Checkbox("Face normals", &drawNormalsFaces);
-				ImGui::Checkbox("AABB", &drawAABB);
-				ImGui::Checkbox("OBB", &drawOBB);
+            if (ImGui::BeginMenu("Gizmo"))
+            {
+                ImGui::Text("Gizmo Options");
+                ImGui::Text("It seems like hekbas forgot to implement ImGuizmo...");
 
-				ImGui::EndMenu();
-			}
+                ImGui::EndMenu();
+            }
 
-			ImGui::PopStyleVar();
-			ImGui::EndMenuBar();
-		}
+            ImGui::PopStyleVar();
+            ImGui::EndMenuBar();
+        }
 
-		// Viewport Control --------------------------
-		// SDL Window
-		int SDLWindowWidth, SDLWindowHeight;
-		app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
-		ImVec2 windowPos = ImGui::GetWindowPos();
-		ImVec2 windowSize = ImGui::GetWindowSize();
 
-		// ImGui Window
-		ImVec2 regionSize = ImGui::GetContentRegionAvail();
-
-		// Aspect Ratio Size
-		int width, height;
-		app->gui->CalculateSizeAspectRatio(regionSize.x, regionSize.y, width, height);
+        // Viewport Control ----------------------------------------------------------------
+        // Aspect Ratio Size
+        int width, height;
+        app->gui->CalculateSizeAspectRatio(availWindowSize.x, availWindowSize.y, width, height);
 
 		// Set glViewport coordinates
 		// SDL origin at top left corner (+x >, +y v)
@@ -128,23 +170,68 @@ bool PanelScene::Draw()
 				app->engine->DrawFrustum(gameCam->frustum);
 		}
 
-		// Mouse Picking ----------------------------------
-		if (isHovered && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
-		{
-			int sdlY = SDLWindowHeight - y - height;
-			auto clickPos = glm::vec2(app->input->GetMouseX() - x, app->input->GetMouseY() - sdlY);
+
+        // ImGuizmo ------------------------------------------------------------------------
+        // Handle Input
+        if (!app->input->GetMouseButton(SDL_BUTTON_RIGHT))
+        {
+            if (app->input->GetKey(SDL_SCANCODE_Q) == KEY_DOWN) gizmoType = (ImGuizmo::OPERATION)-1;
+            if (app->input->GetKey(SDL_SCANCODE_W) == KEY_DOWN) gizmoType = ImGuizmo::OPERATION::TRANSLATE;
+            if (app->input->GetKey(SDL_SCANCODE_E) == KEY_DOWN) gizmoType = ImGuizmo::OPERATION::ROTATE;
+            if (app->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN) gizmoType = ImGuizmo::OPERATION::SCALE;
+        }       
+
+        // Gizmo
+        shared_ptr<GameObject> selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO();
+
+        if (selectedGO && gizmoType != -1)
+        {
+            ImGuizmo::SetOrthographic(false);
+            ImGuizmo::SetDrawlist();
+            int viewportTopLeftY = windowPos.y + (windowSize.y - availWindowSize.y);
+            ImGuizmo::SetRect(windowPos.x, viewportTopLeftY, width, height);
+
+            //Camera
+            const glm::mat4& cameraProjection = sceneCam->projectionMatrix;
+            glm::mat4 cameraView = sceneCam->viewMatrix;
+
+            //Entity Transform
+            Transform* tc = selectedGO->GetComponent<Transform>();
+            glm::mat4 transform = tc->CalculateWorldTransform();
+
+            ImGuizmo::Manipulate(glm::value_ptr(cameraView), glm::value_ptr(cameraProjection),
+                (ImGuizmo::OPERATION)gizmoType, (ImGuizmo::MODE)gizmoMode, glm::value_ptr(transform));
+
+            if (ImGuizmo::IsUsing())
+            {
+                tc->SetTransform(tc->WorldToLocalTransform(selectedGO.get(), transform));
+                tc->DecomposeTransform();
+
+                app->gui->panelInspector->OnSelectGO(selectedGO);
+            }
+        }
+
+
+        // Mouse Picking -------------------------------------------------------------------
+        if (isHovered && app->input->GetMouseButton(SDL_BUTTON_LEFT) == KEY_DOWN)
+        {
+            int sdlY = SDLWindowHeight - y - height;
+            auto clickPos = glm::vec2(app->input->GetMouseX() - x, app->input->GetMouseY() - sdlY);
 
 			Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCam, width, height);
 
-			rays.push_back(ray);
-			//editor->SelectObject(ray);
-		}
+            if (drawRaycasting) rays.push_back(ray);
+            
+            //editor->SelectObject(ray);
+        }
 
-		//Draw Rays
-		for (auto ray : rays)
-		{
-			app->engine->DrawRay(ray);
-		}
+        if (drawRaycasting)
+        {            
+            for (auto ray : rays)
+            {
+                app->engine->DrawRay(ray);
+            }
+        }      
 	}
 
 	ImGui::End();

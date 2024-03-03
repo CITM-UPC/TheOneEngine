@@ -32,7 +32,7 @@ bool N_SceneManager::Start()
 	currentScene = new Scene(0, "Scene 1");
 
 	// Create default mesh
-	CreateMeshGO("");
+	//CreateMeshGO("");
 
 	//if (currentScene->IsDirty()) SaveScene();
 

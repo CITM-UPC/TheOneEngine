@@ -1,5 +1,7 @@
 #include "App.h"
 #include "SceneManager.h"
+#include "Gui.h"
+#include "PanelInspector.h"
 #include "Log.h"
 
 #include <fstream>
@@ -7,13 +9,9 @@
 
 namespace fs = std::filesystem;
 
-SceneManager::SceneManager(App* app) : Module(app)
-{
-}
+SceneManager::SceneManager(App* app) : Module(app) {}
 
-SceneManager::~SceneManager()
-{
-}
+SceneManager::~SceneManager() {}
 
 bool SceneManager::Awake()
 {
