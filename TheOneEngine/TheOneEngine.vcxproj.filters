@@ -22,6 +22,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{cb5e54cb-4331-4568-a233-96dbbf6a216a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{318a6ab4-0570-4ece-9443-77b727edbae4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -66,6 +69,9 @@
     <ClInclude Include="Ray.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -100,6 +106,9 @@
     </ClCompile>
     <ClCompile Include="Ray.cpp">
       <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

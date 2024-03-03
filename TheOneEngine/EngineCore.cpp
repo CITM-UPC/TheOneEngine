@@ -9,6 +9,7 @@
 EngineCore::EngineCore()
 {
     audio = new AudioCore();
+    input = new InputManager();
 }
 
 void EngineCore::Awake()
@@ -16,6 +17,7 @@ void EngineCore::Awake()
     LOG(LogType::LOG_OK, "Initializing DevIL");
     ilInit();
     audio->Awake();
+    input->Init();
 }
 
 void EngineCore::Start()
@@ -26,6 +28,7 @@ void EngineCore::Start()
 void EngineCore::Update(double dt)
 {
     audio->Update(dt);
+    input->PreUpdate(dt);
 }
 
 void EngineCore::Render(Camera* camera)
@@ -64,6 +67,9 @@ void EngineCore::Render(Camera* camera)
 void EngineCore::CleanUp()
 {
     audio->CleanUp();
+
+    input->CleanUp();
+    delete input;
 }
 
 void EngineCore::DrawAxis()
