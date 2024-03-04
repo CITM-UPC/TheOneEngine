@@ -16,8 +16,8 @@ public:
 	AudioCore* audio = nullptr;
 
 	//AudioCore* GetAudioCore() { return audio; }
-	void AddAudioObject(std::shared_ptr<AudioComponent> audioGO); // Change parameter to shared_ptr};
+	void AddAudioObject(std::unique_ptr<AudioComponent> audioGO); // Change parameter to shared_ptr};
 
 private:
-	std::vector<std::shared_ptr<AudioComponent>> audioComponents;
+	std::vector<std::unique_ptr<AudioComponent>> audioComponents;
 };

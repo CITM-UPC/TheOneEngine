@@ -47,6 +47,28 @@
 						</Action>
 					</ChildrenList>
 				</Event>
+				<Event Name="FOOTSTEPS" ID="{65B317BE-70F6-4A14-B072-31141A525A7F}">
+					<ChildrenList>
+						<Action Name="" ID="{62DE26FC-6194-4183-84A9-F05507C54312}" ShortID="928501064">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="footsteps" ID="{37360323-315E-4FE4-8B0A-BBD6CC7FED3A}" WorkUnitID="{A5DDD9EF-ABE8-46C9-A47B-71C56C6B2370}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="GUNSHOT" ID="{24D90373-C6B4-4FC6-B9A4-B7A1C7769449}">
+					<ChildrenList>
+						<Action Name="" ID="{32315137-C93D-415A-B4EF-B024558C20C2}" ShortID="254638916">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="gunshot" ID="{2A3042B5-D4E5-44C0-8121-B5306D6CDFCD}" WorkUnitID="{A5DDD9EF-ABE8-46C9-A47B-71C56C6B2370}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
 			</ChildrenList>
 		</WorkUnit>
 	</Events>

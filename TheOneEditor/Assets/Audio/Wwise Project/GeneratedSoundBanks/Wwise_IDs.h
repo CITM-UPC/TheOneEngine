@@ -13,6 +13,8 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID FOOTSTEPS = 2385628198U;
+        static const AkUniqueID GUNSHOT = 1287408361U;
         static const AkUniqueID MUSIC1 = 1730564819U;
         static const AkUniqueID MUSIC2 = 1730564816U;
         static const AkUniqueID SPATIAL1 = 2134552412U;

@@ -13,7 +13,7 @@ public:
     Listener(std::shared_ptr<GameObject> containerGO);
     virtual ~Listener();
 
-    void SetListener(AkGameObjectID goID, std::shared_ptr<AudioManager> audioManager);
+    void SetListener(AkGameObjectID goID, std::unique_ptr<AudioManager> audioManager);
     void SetTransform(std::shared_ptr<GameObject> containerGO);
 
     json SaveComponent();

@@ -6,9 +6,11 @@
 				<SoundBank Name="TheOneEngine" ID="{A333DD11-31CA-4E4C-839E-7D4006BE42FF}">
 					<ObjectInclusionList>
 						<ObjectRef Name="SPATIAL1" ID="{49C94F2E-D0B5-4710-AD58-88C460A64873}" WorkUnitID="{5120CC72-B4E5-4D25-9EBA-29892E902FD3}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="FOOTSTEPS" ID="{65B317BE-70F6-4A14-B072-31141A525A7F}" WorkUnitID="{5120CC72-B4E5-4D25-9EBA-29892E902FD3}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="SPATIAL2" ID="{5428EDC0-571B-4AF3-8E8D-E19118A5B12E}" WorkUnitID="{5120CC72-B4E5-4D25-9EBA-29892E902FD3}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="MUSIC1" ID="{E1459194-2B01-4DA1-BA66-E88C76BFAB36}" WorkUnitID="{5120CC72-B4E5-4D25-9EBA-29892E902FD3}" Origin="Manual" Filter="7"/>
 						<ObjectRef Name="MUSIC2" ID="{5E3855E1-9DB8-4F6D-AE43-664B8F5DC32C}" WorkUnitID="{5120CC72-B4E5-4D25-9EBA-29892E902FD3}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="GUNSHOT" ID="{24D90373-C6B4-4FC6-B9A4-B7A1C7769449}" WorkUnitID="{5120CC72-B4E5-4D25-9EBA-29892E902FD3}" Origin="Manual" Filter="7"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>

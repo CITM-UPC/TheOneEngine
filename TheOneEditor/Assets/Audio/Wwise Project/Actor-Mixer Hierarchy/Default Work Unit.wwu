@@ -273,6 +273,50 @@
 						<ActiveSource Name="waves" ID="{151A8030-DBDB-4585-BC43-960EB3935AEB}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
+				<Sound Name="footsteps" ID="{37360323-315E-4FE4-8B0A-BBD6CC7FED3A}" ShortID="514070183">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{70EBEA4B-CF72-4ABE-8E37-07AB298553A9}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{0FFBBA0A-3581-46CE-962E-DF7F916F85E2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="footsteps" ID="{5B2FC7D7-4A2F-4F4C-B64A-629F74606ADF}">
+							<Language>SFX</Language>
+							<AudioFile>footsteps.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="817533101"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="footsteps" ID="{5B2FC7D7-4A2F-4F4C-B64A-629F74606ADF}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="gunshot" ID="{2A3042B5-D4E5-44C0-8121-B5306D6CDFCD}" ShortID="485681513">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{70EBEA4B-CF72-4ABE-8E37-07AB298553A9}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{0FFBBA0A-3581-46CE-962E-DF7F916F85E2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="gunshot" ID="{89ACDFBD-FC65-47FD-A3FE-44FC64155083}">
+							<Language>SFX</Language>
+							<AudioFile>gunshot.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="301194895"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="gunshot" ID="{89ACDFBD-FC65-47FD-A3FE-44FC64155083}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>

@@ -28,7 +28,7 @@ bool AudioManager::CleanUp()
 }
 
 // Implementation of AddAudioObject
-void AudioManager::AddAudioObject(std::shared_ptr<AudioComponent> audioGO)
+void AudioManager::AddAudioObject(std::unique_ptr<AudioComponent> audioGO)
 {
 	audioComponents.push_back(audioGO);
 
