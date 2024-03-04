@@ -327,9 +327,11 @@ json Transform::SaveComponent()
         transformJSON["ParentUID"] = pGO.get()->GetUID();
 
     transformJSON["UID"] = UID;
-    transformJSON["Position"] = { position.x, position.y, position.z };
-    transformJSON["Rotation"] = { rotation.w, rotation.x, rotation.y, rotation.z };
-    transformJSON["Scale"] = { scale.x, scale.y, scale.z };
+
+    transformJSON["Transformation Matrix"] = { transformMatrix[0][0], transformMatrix[0][1], transformMatrix[0][2], transformMatrix[0][3],
+                                                transformMatrix[1][0], transformMatrix[1][1], transformMatrix[1][2], transformMatrix[1][3],
+                                                transformMatrix[2][0], transformMatrix[2][1], transformMatrix[2][2], transformMatrix[2][3],
+                                                transformMatrix[3][0], transformMatrix[3][1], transformMatrix[3][2], transformMatrix[3][3] };
 
     return transformJSON;
 }
@@ -360,24 +362,17 @@ void Transform::LoadComponent(const json& transformJSON)
     }*/
 
     // Load transformation properties
-    if (transformJSON.contains("Position"))
+    if (transformJSON.contains("Transformation Matrix"))
     {
-        const auto& positionArray = transformJSON["Position"];
-        position = { positionArray[0], positionArray[1], positionArray[2] };
-    }
+        mat4 temp;
+        int it = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                temp[i][j] = transformJSON["Transformation Matrix"][it];
+                it++;
+            }
+        }
 
-    if (transformJSON.contains("Rotation"))
-    {
-        const auto& rotationArray = transformJSON["Rotation"];
-        rotation = quat(rotationArray[1], rotationArray[2], rotationArray[3], rotationArray[0]);
+        SetTransform(temp);
     }
-
-    if (transformJSON.contains("Scale"))
-    {
-        const auto& scaleArray = transformJSON["Scale"];
-        scale = { scaleArray[0], scaleArray[1], scaleArray[2] };
-    }
-
-    // Update the transformation matrix
-    //UpdateMatrix();
 }
