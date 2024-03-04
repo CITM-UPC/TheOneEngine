@@ -38,6 +38,12 @@ static vec3f GetTransformForward(GameObject* GOptr)
 	return (vec3f)GOptr->GetComponent<Transform>()->GetForward();
 }
 
+//Helpers
+static float GetAppDeltaTime()
+{
+	return (float)engine->dt;
+}
+
 void MonoRegisterer::RegisterFunctions()
 {
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
@@ -46,4 +52,6 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);
 	mono_add_internal_call("InternalCalls::Translate", Translate);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
+
+	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
 }

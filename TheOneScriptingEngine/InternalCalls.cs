@@ -19,4 +19,8 @@ class InternalCalls
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetTransformForward(IntPtr GOptr);
+
+    //Helpers
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static float GetAppDeltaTime();
 }
