@@ -57,8 +57,6 @@ bool N_SceneManager::Update(double dt)
 
 bool N_SceneManager::PostUpdate()
 {
-	// Draw
-	currentScene->Draw();
 
 	return true;
 }

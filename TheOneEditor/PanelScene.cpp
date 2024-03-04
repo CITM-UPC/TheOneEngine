@@ -29,12 +29,41 @@ PanelScene::PanelScene(PanelType type, std::string name) : Panel(type, name), is
     handlePosition = HandlePosition::PIVOT;
     gizmoType = -1;
     gizmoMode = ImGuizmo::MODE::LOCAL;
+
+    frameBuffer = std::make_shared<FrameBuffer>(1280, 720, true);
 }
 
 PanelScene::~PanelScene() {}
 
+void PanelScene::Start()
+{
+
+    // Creating Editor Camera GO (Outside hierarchy)
+    sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
+    sceneCamera.get()->AddComponent<Transform>();
+    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 3, -10));
+    sceneCamera.get()->AddComponent<Camera>();
+    sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
+
+    cameraParent = std::make_shared<GameObject>("CameraParent");
+    cameraParent.get()->AddComponent<Transform>();
+    cameraParent.get()->children.push_back(sceneCamera);
+    sceneCamera.get()->parent = cameraParent;
+
+    current = app->scenemanager->N_sceneManager->currentScene;
+}
+
 bool PanelScene::Draw()
 {
+    if (viewportSize.x > 0.0f && viewportSize.y > 0.0f && // zero sized framebuffer is invalid
+        (frameBuffer->getWidth() != viewportSize.x || frameBuffer->getHeight() != viewportSize.y))
+    {
+        frameBuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+        sceneCamera.get()->GetComponent<Camera>()->aspect = viewportSize.x / viewportSize.y;
+    }
+
+    app->renderer3D->CameraInput(sceneCamera.get());
+
 	ImGuiWindowFlags settingsFlags = 0;
 	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 
@@ -54,9 +83,45 @@ bool PanelScene::Draw()
         ImVec2 windowSize = ImGui::GetWindowSize();
         ImVec2 availWindowSize = ImGui::GetContentRegionAvail();
 
+        // Viewport Control ----------------------------------------------------------------
+        // Aspect Ratio Size
+        int width, height;
+        app->gui->CalculateSizeAspectRatio(availWindowSize.x, availWindowSize.y, width, height);
 
-        if (ImGui::IsWindowHovered())
-            isHovered = true;
+        // Set glViewport coordinates
+        // SDL origin at top left corner (+x >, +y v)
+        // glViewport origin at bottom left corner  (+x >, +y ^)
+        int x = static_cast<int>(windowPos.x);
+        int y = SDLWindowHeight - windowPos.y - windowSize.y;
+
+        engine->OnWindowResize(x, y, width, height);
+       
+
+        isHovered = ImGui::IsWindowHovered();
+        isFocused = ImGui::IsWindowFocused();
+
+        //ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND
+
+        frameBuffer->Bind();
+
+
+        frameBuffer->Clear();
+        frameBuffer->ClearBuffer(-1);
+        // Draw
+        engine->Render(sceneCamera->GetComponent<Camera>());
+
+        // Game cameras Frustum
+        for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+        {
+            Camera* gameCam = GO.get()->GetComponent<Camera>();
+
+            if (gameCam != nullptr && gameCam->drawFrustum)
+                engine->DrawFrustum(gameCam->frustum);
+        }
+        current->Draw();
+
+
+        frameBuffer->Unbind();
 
         // Top Bar -------------------------------------------------------------------------
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
@@ -110,7 +175,7 @@ bool PanelScene::Draw()
 				// Camera settings
 				ImGui::TextWrapped("Scene Camera");
 
-				Camera* camera = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
+				Camera* camera = sceneCamera.get()->GetComponent<Camera>();
 
 				float fov = static_cast<float>(camera->fov);
 				float aspect = static_cast<float>(camera->aspect);
@@ -144,31 +209,10 @@ bool PanelScene::Draw()
         }
 
 
-        // Viewport Control ----------------------------------------------------------------
-        // Aspect Ratio Size
-        int width, height;
-        app->gui->CalculateSizeAspectRatio(availWindowSize.x, availWindowSize.y, width, height);
+        //Draw FrameBuffer Texture
+        viewportSize = { availWindowSize.x, availWindowSize.y };
+        ImGui::Image((ImTextureID)frameBuffer->getColorBufferTexture(), ImVec2{ viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		// Set glViewport coordinates
-		// SDL origin at top left corner (+x >, +y v)
-		// glViewport origin at bottom left corner  (+x >, +y ^)
-		int x = static_cast<int>(windowPos.x);
-		int y = SDLWindowHeight - windowPos.y - windowSize.y;
-
-        engine->OnWindowResize(x, y, width, height);
-
-        // Render Scene Camera 
-        Camera* sceneCam = app->renderer3D->sceneCamera.get()->GetComponent<Camera>();
-        engine->Render(sceneCam);
-
-		// Game cameras Frustum
-		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
-		{
-			Camera* gameCam = GO.get()->GetComponent<Camera>();
-
-            if (gameCam != nullptr && gameCam->drawFrustum)
-                engine->DrawFrustum(gameCam->frustum);
-        }
 
 
         // ImGuizmo ------------------------------------------------------------------------
@@ -192,8 +236,8 @@ bool PanelScene::Draw()
             ImGuizmo::SetRect(windowPos.x, viewportTopLeftY, width, height);
 
             //Camera
-            const glm::mat4& cameraProjection = sceneCam->projectionMatrix;
-            glm::mat4 cameraView = sceneCam->viewMatrix;
+            const glm::mat4& cameraProjection = sceneCamera->GetComponent<Camera>()->projectionMatrix;
+            glm::mat4 cameraView = sceneCamera->GetComponent<Camera>()->viewMatrix;
 
             //Entity Transform
             Transform* tc = selectedGO->GetComponent<Transform>();
@@ -218,7 +262,7 @@ bool PanelScene::Draw()
             int sdlY = SDLWindowHeight - y - height;
             auto clickPos = glm::vec2(app->input->GetMouseX() - x, app->input->GetMouseY() - sdlY);
 
-			Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCam, width, height);
+			Ray ray = GetScreenRay(int(clickPos.x), int(clickPos.y), sceneCamera->GetComponent<Camera>(), width, height);
 
             if (drawRaycasting) rays.push_back(ray);
             

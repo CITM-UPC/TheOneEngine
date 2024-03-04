@@ -192,6 +192,12 @@ bool Gui::Start()
 
 #pragma endregion IMGUI_STYLE
 
+	// Iterate Panels & Start
+	for (const auto& panel : panels)
+	{
+		panel->Start();
+	}
+
 	return true;
 }
 

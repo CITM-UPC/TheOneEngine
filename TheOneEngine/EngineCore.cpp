@@ -32,7 +32,7 @@ void EngineCore::Update(double dt)
 
 void EngineCore::Render(Camera* camera)
 {
-    //glClearColor(0.7f, 0.7f, 1.0f, 1.0f);
+    //DrawFrustum(camera->viewMatrix);
 
     // Update Camera Matrix
     glMatrixMode(GL_PROJECTION);
@@ -71,8 +71,6 @@ void EngineCore::Render(Camera* camera)
 
     //DrawGrid(1000, 10);
     DrawAxis();
-
-    //DrawFrustum(camera->viewMatrix);
 
     assert(glGetError() == GL_NONE);
 }

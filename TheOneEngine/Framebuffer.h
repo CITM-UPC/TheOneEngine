@@ -1,33 +1,33 @@
 #pragma once
+#include "glm/glm.hpp"
 
 class FrameBuffer {
 private:
-	uint32_t m_FBO = 0;
-	uint32_t m_ColorBufferTexture;
-	uint32_t m_DepthAttachment = 0;
-	uint32_t m_Width, m_Height;
+	unsigned int FBO = 0;
+	unsigned int colorAttachment = 0;
+	unsigned int depthAttachment = 0;
+	unsigned int width, height;
 
-	bool m_DepthActive;
-	bool m_Init;
+	bool depthActive = false;
+	bool initialized = false;
 
 	void Reset(bool depth);
 public:
-	FrameBuffer(int width, int height, bool depth);
+	FrameBuffer(int newWidth, int newHeight, bool depth);
 	~FrameBuffer();
 
 	void Bind(bool clear = true);
 	void Unbind();
 
-	void Resize(uint32_t width, uint32_t height);
-	virtual int ReadPixel(uint32_t attachmentIndex, int x, int y);
+	void Resize(unsigned int newWidth, unsigned int newHeight);
 
-	void Clear();
+	void Clear(glm::vec4 color = glm::vec4(0.25, 0.25, 0.25, 1));
 	void ClearBuffer(int value);
 
 
-	inline int getWidth() { return m_Width; }
-	inline int getHeight() { return m_Height; }
+	inline int getWidth() { return width; }
+	inline int getHeight() { return height; }
 
-	inline uint32_t getColorBufferTexture() { return m_ColorBufferTexture; }
-	inline uint32_t getDepthBufferTexture() { return m_DepthAttachment; }
+	inline unsigned int getColorBufferTexture() { return colorAttachment; }
+	inline unsigned int getDepthBufferTexture() { return depthAttachment; }
 };

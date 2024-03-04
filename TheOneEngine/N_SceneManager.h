@@ -99,7 +99,7 @@ public:
 
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
-	inline void Draw();
+	void Draw();
 
 private:
 	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);

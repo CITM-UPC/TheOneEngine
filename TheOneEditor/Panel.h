@@ -25,6 +25,7 @@ public:
 
 	Panel(PanelType type, std::string name);
 	virtual ~Panel();
+	virtual void Start() {}
 
 	virtual bool Draw() = 0;
 

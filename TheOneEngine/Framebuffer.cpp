@@ -1,35 +1,34 @@
 #include "Framebuffer.h"
-#include "Defs.h"
 #include "Log.h"
 
 #include "GL/glew.h"
 
-static const uint32_t s_MaxFramebufferSize = 8192;
+static const unsigned int s_MaxFramebufferSize = 8192;
 
-FrameBuffer::FrameBuffer(int width, int height, bool depth) : m_Init(true), m_DepthActive(depth)
+FrameBuffer::FrameBuffer(int newWidth, int newHeight, bool depth) : initialized(true), depthActive(depth)
 {
-	m_Width = width;
-	m_Height = height;
+	width = newWidth;
+	height = newHeight;
 
 	Reset(depth);
 }
 
 FrameBuffer::~FrameBuffer()
 {
-	if (m_Init) {
-		glDeleteTextures(1, &m_ColorBufferTexture);
-		glDeleteTextures(1, &m_DepthAttachment);
-		glDeleteFramebuffers(1, &m_FBO);
+	if (initialized) {
+		glDeleteTextures(1, &colorAttachment);
+		glDeleteTextures(1, &depthAttachment);
+		glDeleteFramebuffers(1, &FBO);
 	}
 }
 
 void FrameBuffer::Bind(bool clear)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-	glViewport(0, 0, m_Width, m_Height);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glViewport(0, 0, width, height);
 	if (clear) {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 }
 
@@ -40,46 +39,46 @@ void FrameBuffer::Unbind()
 
 void FrameBuffer::Reset(bool depth)
 {
-	if (m_FBO)
+	if (FBO)
 	{
-		glDeleteTextures(1, &m_ColorBufferTexture);
-		glDeleteTextures(1, &m_DepthAttachment);
-		glDeleteFramebuffers(1, &m_FBO);
+		glDeleteTextures(1, &colorAttachment);
+		glDeleteTextures(1, &depthAttachment);
+		glDeleteFramebuffers(1, &FBO);
 
-		m_ColorBufferTexture = 0;
-		m_DepthAttachment = 0;
+		colorAttachment = 0;
+		depthAttachment = 0;
 	}
 
 	// FRAMEBUFFER
-	glCreateFramebuffers(1, &m_FBO);
-	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
+	glCreateFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
 	// Color texture
-	glCreateTextures(GL_TEXTURE_2D, 1, &m_ColorBufferTexture);
-	glBindTexture(GL_TEXTURE_2D, m_ColorBufferTexture);
+	glCreateTextures(GL_TEXTURE_2D, 1, &colorAttachment);
+	glBindTexture(GL_TEXTURE_2D, colorAttachment);
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_Width, m_Height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_ColorBufferTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
 
 	if (depth) {
 		// Depth attachment
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_DepthAttachment);
-		glBindTexture(GL_TEXTURE_2D, m_DepthAttachment);
+		glCreateTextures(GL_TEXTURE_2D, 1, &depthAttachment);
+		glBindTexture(GL_TEXTURE_2D, depthAttachment);
 
-		glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, m_Width, m_Height);
+		glTexStorage2D(GL_TEXTURE_2D, 1, GL_DEPTH24_STENCIL8, width, height);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, m_DepthAttachment, 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthAttachment, 0);
 	}
 
 	// Check framebuffer status
@@ -93,36 +92,29 @@ void FrameBuffer::Reset(bool depth)
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
-void FrameBuffer::Resize(uint32_t width, uint32_t height)
+void FrameBuffer::Resize(unsigned int newWidth, unsigned int newHeight)
 {
-	if (width == 0 || height == 0 || width > s_MaxFramebufferSize || height > s_MaxFramebufferSize)
+	if (newWidth < 0 || newHeight < 0 || newWidth > s_MaxFramebufferSize || newHeight > s_MaxFramebufferSize)
 	{
 		LOG(LogType::LOG_INFO, "Attempted to rezize framebuffer to %d, %d", width, height);
 		return;
 	}
-	m_Width = width;
-	m_Height = height;
+	width = newWidth;
+	height = newHeight;
 
-	Reset(m_DepthActive);
+	Reset(depthActive);
 }
 
-int FrameBuffer::ReadPixel(uint32_t attachmentIndex, int x, int y)
+void FrameBuffer::Clear(glm::vec4 color)
 {
-	glReadBuffer(GL_COLOR_ATTACHMENT0 + attachmentIndex);
-	int pixelData;
-	glReadPixels(x, y, 1, 1, GL_RED_INTEGER, GL_INT, &pixelData);
-	return pixelData;
-}
-
-void FrameBuffer::Clear()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glClearColor(color.r, color.g, color.b, color.a);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 void FrameBuffer::ClearBuffer(int value)
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, m_FBO);
-	glClearTexImage(m_ColorBufferTexture, 0, GL_RGBA8, GL_INT, &value);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+	glClearTexImage(colorAttachment, 0, GL_RGBA8, GL_INT, &value);
 }
 
