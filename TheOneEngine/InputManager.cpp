@@ -1,5 +1,5 @@
 #include "InputManager.h"
-#include "..\TheOneEditor\Log.h"
+#include "Log.h"
 #include <SDL2/SDL.h>
 #include <string.h>
 
@@ -70,6 +70,18 @@ bool InputManager::PreUpdate(double dt)
 			ret = false;
 			break;
 		}
+		}
+	}
+
+	if (GetGamepadButton(0, SDL_CONTROLLER_BUTTON_X) == InputManagerNamespace::KEY_DOWN)
+	{
+		LOG(LogType::LOG_OK, "BUTTON A FUNCTIONAL");
+
+		for (int button = 0; button < SDL_CONTROLLER_BUTTON_MAX; ++button)
+		{
+			LOG(LogType::LOG_OK, "Button %d: %s", button,
+				SDL_GameControllerGetButton(pads[0].controller,
+				static_cast<SDL_GameControllerButton>(button)) == 1 ? "pressed" : "relesed");
 		}
 	}
 
@@ -165,4 +177,24 @@ void InputManager::UpdateGamepadsInput()
 			pad.right_y = (fabsf(pad.right_y) > pad.right_dz) ? pad.right_y : 0.0f;
 		}
 	}
+}
+
+InputManagerNamespace::KeyState InputManager::GetGamepadButton(int gamepadId, SDL_GameControllerButton button) const
+{
+	if (gamepadId >= 0 && gamepadId < MAX_PADS)
+	{
+		if (pads[gamepadId].controller)
+		{
+			if (SDL_GameControllerGetButton(pads[gamepadId].controller, button) == 1)
+			{
+				return InputManagerNamespace::KEY_DOWN;
+			}
+			else
+			{
+				return InputManagerNamespace::KEY_UP;
+			}
+		}
+	}
+
+	return InputManagerNamespace::KEY_IDLE;
 }

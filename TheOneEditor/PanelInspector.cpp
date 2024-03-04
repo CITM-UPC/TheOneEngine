@@ -1,26 +1,36 @@
 #include "PanelInspector.h"
+#include "SceneManager.h"
 #include "App.h"
 #include "Gui.h"
 #include "SceneManager.h"
 
+#include "..\TheOneEngine\Log.h"
+#include "..\TheOneEngine\GameObject.h"
 #include "..\TheOneEngine\Transform.h"
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
+#include "..\TheOneEngine\Script.h"
+#include "..\TheOneEngine\MonoManager.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
 
-
-PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name) 
+PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name)
 {
     matrixDirty = false;
-
+    chooseScriptNameWindow = false;
     view_pos = { 0, 0, 0 };
     view_rot_rad = { 0, 0, 0 };
+    view_rot_deg = { 0, 0, 0 };
     view_sca = { 0, 0, 0 };
 }
 
 PanelInspector::~PanelInspector() {}
+
+void PanelInspector::OnSelectGO(std::shared_ptr<GameObject> gameObj)
+{   
+    view_rot_rad = gameObj.get()->GetComponent<Transform>()->GetRotationEuler();
+}
 
 bool PanelInspector::Draw()
 {
@@ -28,18 +38,19 @@ bool PanelInspector::Draw()
 
 	if (ImGui::Begin("Inspector", &enabled, settingsFlags))
 	{
+
         ImGuiIO& io = ImGui::GetIO();
         ImVec4 clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
         ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once);
 
-        std::shared_ptr<GameObject> selectedGO = app->sceneManager->GetSelectedGO();
+        selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO().get();
 
         if (selectedGO != nullptr)
         {
             /*Name*/
             //ImGui::Checkbox("Active", &gameObjSelected->isActive);
             ImGui::SameLine(); ImGui::Text("GameObject:");
-            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, selectedGO.get()->GetName().c_str());
+            ImGui::SameLine(); ImGui::TextColored({ 0.144f, 0.422f, 0.720f, 1.0f }, selectedGO->GetName().c_str());
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Tag + Layer*/
@@ -53,7 +64,7 @@ bool PanelInspector::Draw()
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             /*Transform Component*/
-            Transform* transform = selectedGO.get()->GetComponent<Transform>();
+            Transform* transform = selectedGO->GetComponent<Transform>();
 
             if (transform != nullptr && ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -61,31 +72,15 @@ bool PanelInspector::Draw()
 
                 matrixDirty = false;
 
-                view_pos = transform->getPosition();
-                view_rot_rad = transform->getEulerAngles();
-                view_sca = transform->getScale();
+                view_pos = transform->GetPosition();
+                view_rot_deg = ToDegrees(view_rot_rad);
+                //vec3f initialRotation = view_rot_deg;
+                view_sca = transform->GetScale();
 
-                //[-pi, pi]
-                if (view_rot_rad.x >= 0)
-                    view_rot_deg.x = view_rot_rad.x * RADTODEG;
-                else
-                    view_rot_deg.x = 360 + view_rot_rad.x * RADTODEG;
 
-                //[-pi/2, pi/2]
-                if (view_rot_rad.y >= 0)
-                    view_rot_deg.y = view_rot_rad.y * RADTODEG;
-                else
-                    view_rot_deg.y = 360 + view_rot_rad.y * RADTODEG;
-
-                //[-pi, pi]
-                if (view_rot_rad.z >= 0)
-                    view_rot_deg.z = view_rot_rad.z * RADTODEG;
-                else
-                    view_rot_deg.z = 360 + view_rot_rad.z * RADTODEG;
-
-                
+                // Transform table ----------------------------------------------------------------------------------
                 ImGuiTableFlags tableFlags = ImGuiTableFlags_Resizable | ImGuiTableFlags_SizingFixedFit;
-
+                //ImGui::Indent(0.8f);
                 if (ImGui::BeginTable("", 4, tableFlags))
                 {
                     ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthStretch);
@@ -112,25 +107,13 @@ bool PanelInspector::Draw()
                     ImGui::Text("Position");
 
                     ImGui::TableSetColumnIndex(1);
-                    if (ImGui::DragFloat("##PosX", &view_pos.x, 0.5F, 0, 0, "%.3f", 1))
-                    {
-                        transform->setPosition(view_pos);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##PosX", &view_pos.x, 0.5F, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableSetColumnIndex(2);
-                    if (ImGui::DragFloat("##PosY", &view_pos.y, 0.5F, 0, 0, "%.3f", 1))
-                    {
-                        transform->setPosition(view_pos);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##PosY", &view_pos.y, 0.5F, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableSetColumnIndex(3);
-                    if (ImGui::DragFloat("##PosZ", &view_pos.z, 0.5F, 0, 0, "%.3f", 1))
-                    {
-                        transform->setPosition(view_pos);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##PosZ", &view_pos.z, 0.5F, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableNextRow();
 
@@ -139,28 +122,13 @@ bool PanelInspector::Draw()
                     ImGui::Text("Rotation");
 
                     ImGui::TableSetColumnIndex(1);
-                    if (ImGui::DragFloat("##RotX", &view_rot_deg.x, 1.0f, 0, 0, "%.3f", 1))
-                    {
-                        view_rot_rad.x = view_rot_deg.x * DEGTORAD;
-                        transform->setRotation(view_rot_rad);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##RotX", &view_rot_deg.x, 0.2f, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableSetColumnIndex(2);
-                    if (ImGui::DragFloat("##RotY", &view_rot_deg.y, 1.0f, 0, 0, "%.3f", 1))
-                    {
-                        view_rot_rad.y = view_rot_deg.y * DEGTORAD;
-                        transform->setRotation(view_rot_rad);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##RotY", &view_rot_deg.y, 0.2f, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableSetColumnIndex(3);
-                    if (ImGui::DragFloat("##RotZ", &view_rot_deg.z, 1.0f, 0, 0, "%.3f", 1))
-                    {
-                        view_rot_rad.z = view_rot_deg.z * DEGTORAD;
-                        transform->setRotation(view_rot_rad);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##RotZ", &view_rot_deg.z, 0.2f, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableNextRow();
 
@@ -169,35 +137,61 @@ bool PanelInspector::Draw()
                     ImGui::Text("Scale");
 
                     ImGui::TableSetColumnIndex(1);
-                    if (ImGui::DragFloat("##ScaleX", &view_sca.x, 0.1F, 0, 0, "%.3f", 1))
-                    {
-                        transform->setScale(view_sca);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##ScaleX", &view_sca.x, 0.1F, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableSetColumnIndex(2);
-                    if (ImGui::DragFloat("##ScaleY", &view_sca.y, 0.1F, 0, 0, "%.3f", 1))
-                    {
-                        transform->setScale(view_sca);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##ScaleY", &view_sca.y, 0.1F, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::TableSetColumnIndex(3);
-                    if (ImGui::DragFloat("##ScaleZ", &view_sca.z, 0.1F, 0, 0, "%.3f", 1))
-                    {
-                        transform->setScale(view_sca);
-                        matrixDirty = true;
-                    }
+                    if (ImGui::DragFloat("##ScaleZ", &view_sca.z, 0.1F, 0, 0, "%.3f", 1)) matrixDirty = true;
 
                     ImGui::EndTable();
                 }
 
                 if (matrixDirty)
-                    transform->updateMatrix();
+                {
+                    // translate > rotate > scale
+
+                    transform->SetPosition(view_pos, HandleSpace::LOCAL);
+                    //vec3f deltaRot = view_rot_deg - initialRotation;
+                    view_rot_rad = ToRadians(view_rot_deg);
+                    transform->SetRotation(view_rot_rad);
+
+                    transform->SetScale(view_sca);
+                }
+
+
+                // Transform DEBUG 
+                ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                ImGui::Indent(0.8f);
+                if (ImGui::TreeNodeEx("Debug", ImGuiTreeNodeFlags_DefaultOpen))
+                {
+                    // Display transformMatrix
+                    ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                    ImGui::Text("Transform Matrix:");
+                    for (int i = 0; i < 4; ++i) {
+                        ImGui::Text("%f %f %f %f", transform->GetTransform()[i][0], transform->GetTransform()[i][1], transform->GetTransform()[i][2], transform->GetTransform()[i][3]);
+                    }
+
+                    // Display position
+                    ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                    ImGui::Text("Position: %.2f, %.2f, %.2f", transform->GetPosition().x, transform->GetPosition().y, transform->GetPosition().z);
+
+                    // Display rotation (as euler angles)
+                    ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                    glm::vec3 euler = glm::degrees(glm::eulerAngles(transform->GetRotation()));
+                    ImGui::Text("Rotation: %.2f, %.2f, %.2f", view_rot_deg.x, view_rot_deg.y, view_rot_deg.z);
+
+                    // Display scale
+                    ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                    ImGui::Text("Scale: %.2f, %.2f, %.2f", transform->GetScale().x, transform->GetScale().y, transform->GetScale().z);
+
+                    ImGui::TreePop();
+                }
 
 
                 //Check if camera needs to be updated
-                Camera* camera = selectedGO.get()->GetComponent<Camera>();
+                Camera* camera = selectedGO->GetComponent<Camera>();
                 if (camera && (matrixDirty))
                     camera->UpdateCamera();
                 
@@ -207,7 +201,7 @@ bool PanelInspector::Draw()
 
 
             /*Mesh Component*/
-            Mesh* mesh = selectedGO.get()->GetComponent<Mesh>();
+            Mesh* mesh = selectedGO->GetComponent<Mesh>();
 
             if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -241,7 +235,7 @@ bool PanelInspector::Draw()
 
 
             /*Texture Component*/
-            Texture* texture = selectedGO.get()->GetComponent<Texture>();
+            Texture* texture = selectedGO->GetComponent<Texture>();
 
             if (texture != nullptr && ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -279,7 +273,7 @@ bool PanelInspector::Draw()
             }
 
             /*Camera Component*/
-            Camera* camera = selectedGO.get()->GetComponent<Camera>();
+            Camera* camera = selectedGO->GetComponent<Camera>();
 
             if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
@@ -322,12 +316,68 @@ bool PanelInspector::Draw()
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
-        }
+            
+            /*Script Component*/
+            Script* script = selectedGO->GetComponent<Script>();
 
+            if (script != nullptr && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            {
+                
+
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+            }
+
+            if (ImGui::Button("Add New Component")) {
+                ImGui::OpenPopup("Select New Component");
+                
+            }
+            if (ImGui::BeginPopup("Select New Component"))
+            {
+                /*ImGuiTextFilter filter;
+                filter.Draw();*/
+                ImGui::SeparatorText("Components");
+                if (ImGui::Selectable("Script"))
+                {
+                    chooseScriptNameWindow = true;
+                }
+                /*for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+                    if (ImGui::Selectable(names[i]))
+                        selected_fish = i;
+                ImGui::EndPopup();*/
+            }
+        }
+        if(chooseScriptNameWindow)ChooseScriptNameWindow();
         ImGui::End();
 	}	
 
     ImGui::PopStyleVar();
 
 	return true;
+}
+
+void PanelInspector::ChooseScriptNameWindow()
+{
+    ImGui::Begin("Script name", &chooseScriptNameWindow);
+
+    static char nameRecipient[32];
+
+    ImGui::InputText("File Name", nameRecipient, IM_ARRAYSIZE(nameRecipient));
+
+    if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
+    {
+        //std::string className = "ActualScriptTest2";
+        if (MonoManager::IsClassInMainAssembly(nameRecipient))
+        {
+            selectedGO->AddScript(nameRecipient);
+            ImGui::CloseCurrentPopup();
+        }
+        else
+        {
+           LOG(LogType::LOG_WARNING, "Could not find class '%s'", nameRecipient);
+        }
+
+        chooseScriptNameWindow = false;
+    }
+
+    ImGui::End();
 }

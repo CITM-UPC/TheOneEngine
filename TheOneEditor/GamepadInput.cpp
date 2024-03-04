@@ -4,7 +4,7 @@
 #include "Window.h"
 #include "SceneManager.h"
 
-#include "Log.h"
+#include "../TheOneEngine/Log.h"
 #include <iostream>
 
 GamepadInput::GamepadInput(App* app) : Module(app)

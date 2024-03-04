@@ -1,0 +1,160 @@
+{
+  "GameObjects": [
+    {
+      "Components": [
+        {
+          "LocalRotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "LocalScale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Name": "Transform",
+          "ParentUID": 3452816845,
+          "Position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 1789657448
+        }
+      ],
+      "Enabled": true,
+      "GameObjects": [
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 3042905708
+            },
+            {
+              "Active": true,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/baker_house/Untitled.001.mesh",
+              "Type": 2,
+              "UID": 521701738
+            }
+          ],
+          "Enabled": true,
+          "Name": "Untitled.001",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "LocalRotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "LocalScale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Name": "Transform",
+              "ParentUID": 3452816845,
+              "Position": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Rotation": [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              "Scale": [
+                1.0,
+                1.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1222135075
+            },
+            {
+              "Active": true,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 3452816845,
+              "Path": "Library/Meshes/baker_house/Untitled.mesh",
+              "Type": 2,
+              "UID": 3240659428
+            }
+          ],
+          "Enabled": true,
+          "Name": "Untitled",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        }
+      ],
+      "Name": "baker_house",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    }
+  ]
+}

@@ -2,9 +2,10 @@
 #define __APP_H__
 #pragma once
 
-#include "Log.h"
 #include "Timer.h"
-#include "..\TheOneEngine\EngineCore.h"
+#include "../TheOneEngine/EngineCore.h"
+#include "../TheOneEngine/Log.h"
+
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -50,9 +51,7 @@ public:
 	int GetArgc() const;
 	const char* GetArgv(int index) const;
 
-	std::vector<LogInfo> GetLogs();
-	void AddLog(LogType type, const char* entry);
-	void CleanLogs();
+	
 
 	int GetFrameRate() const;
 	void SetFrameRate(int refreshRate);
@@ -69,7 +68,7 @@ public:
 	void Stop();
 
 private:
-	
+
 	// Call order for each loop iteration
 	void PrepareUpdate();
 	bool PreUpdate();
@@ -85,16 +84,16 @@ private:
 	float scale_time;
 public:
 
-	EngineCore* engine = nullptr;
+	//EngineCore* engine = nullptr;
 
 	// Modules
 	Window* window = nullptr;
 	Input* input = nullptr;
 	GamepadInput* gamepad = nullptr;
 	Hardware* hardware = nullptr;
-	SceneManager* sceneManager = nullptr;
 	Gui* gui = nullptr;
 	Renderer3D* renderer3D = nullptr;
+	SceneManager* scenemanager = nullptr;
 
 private:
 
@@ -104,10 +103,6 @@ private:
 	std::string organization;
 
 	std::list<Module*> modules;
-
-	// Logs
-	LogInfo logInfo;
-	std::vector<LogInfo> logs;
 
 	// Fps control
 	std::chrono::duration<double> targetFrameDuration;
