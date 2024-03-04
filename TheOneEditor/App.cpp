@@ -36,7 +36,7 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	
 	AddModule(window, true);
 	AddModule(input, true);
-	AddModule(gamepad, false);
+	AddModule(gamepad, true);
 	AddModule(hardware, true);
 	AddModule(sceneManager, true);
 	AddModule(gui, true);

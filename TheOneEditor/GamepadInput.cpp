@@ -19,10 +19,12 @@ GamepadInput::~GamepadInput()
 
 bool GamepadInput::Awake()
 {
-    LOG(LogType::LOG_OK, "-Init SDL gamepad event system");
-    bool ret = true;
-
-    if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
+	bool ret = true;
+	if (SDL_InitSubSystem(SDL_INIT_EVENTS) == 0)
+	{
+		LOG(LogType::LOG_OK, "-Init SDL gamepad event system");
+	}
+	else if(SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) < 0)
     {
         LOG(LogType::LOG_ERROR, "SDL_INIT_GAMECONTROLLER could not initialize! SDL_Error: %s\n", SDL_GetError());
         ret = false;
@@ -35,32 +37,7 @@ bool GamepadInput::PreUpdate()
 {
     bool ret = true;
 
-	SDL_Event event;
-	while (SDL_PollEvent(&event) != 0)
-	{
-		switch (event.type)
-		{
-			case(SDL_CONTROLLERDEVICEADDED):
-			{
-				HandleDeviceConnection(event.cdevice.which);
-				LOG(LogType::LOG_INFO, "gamepad connected");
-				break;
-			}
-			case(SDL_CONTROLLERDEVICEREMOVED):
-			{
-				HandleDeviceRemoval(event.cdevice.which);
-				LOG(LogType::LOG_WARNING, "gamepad disconnected");
-				break;
-			}
-			case(SDL_QUIT):
-			{
-				return false;
-				break;
-			}
-		}
-	}
-
-    UpdateGamepadInput();
+	UpdateGamepadInput();
 
     return ret;
 }
@@ -70,11 +47,35 @@ bool GamepadInput::Update(double dt)
     //Placeholder
     bool ret = true;
 
+	SDL_Event event;
+	while (SDL_PollEvent(&event) != 0)
+	{
+		switch (event.type)
+		{
+		case(SDL_CONTROLLERDEVICEADDED):
+		{
+			HandleDeviceConnection(event.cdevice.which);
+			break;
+		}
+		case(SDL_CONTROLLERDEVICEREMOVED):
+		{
+			HandleDeviceRemoval(event.cdevice.which);
+			break;
+		}
+		case(SDL_QUIT):
+		{
+			return false;
+			break;
+		}
+		}
+	}
+
     return ret;
 }
 
 void GamepadInput::HandleDeviceConnection(int index)
 {
+	LOG(LogType::LOG_OK, "gamepad connected");
 	if (SDL_IsGameController(index))
 	{
 		for (int i = 0; i < MAX_GAMEPAD; ++i)
@@ -96,6 +97,7 @@ void GamepadInput::HandleDeviceConnection(int index)
 
 void GamepadInput::HandleDeviceRemoval(int index)
 {
+	LOG(LogType::LOG_WARNING, "gamepad disconnected");
 	for (int i = 0; i < MAX_GAMEPAD; ++i)
 	{
 		Gamepad& pad = pads[i];
