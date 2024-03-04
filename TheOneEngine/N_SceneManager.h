@@ -23,7 +23,7 @@ public:
 	bool Start();
 
 	bool PreUpdate();
-	bool Update(double dt);
+	bool Update(double dt, bool isPlaying);
 	bool PostUpdate();
 
 	bool CleanUp();
@@ -49,7 +49,7 @@ public:
 	std::shared_ptr<GameObject> CreateCube();
 	std::shared_ptr<GameObject> CreateSphere();
 	std::shared_ptr<GameObject> CreateMF();
-	std::shared_ptr<GameObject> CreateTeapot(std::string path);
+	std::shared_ptr<GameObject> CreateTeapot();
 
 	// Get/Set
 	uint GetNumberGO() const;
@@ -97,8 +97,13 @@ public:
 	inline bool IsDirty() const { return isDirty; }
 	inline void SetIsDirty(bool state) { isDirty = state; }
 
+	inline std::string GetPath() const { return path; }
+	inline void SetPath(std::string _path) { path = _path; }
+
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
+	inline void UpdateGOs(double dt);
+	
 	inline void Draw();
 
 private:
