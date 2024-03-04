@@ -33,6 +33,9 @@
     <ClCompile Include="BuilderInput.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="BuilderSceneManager.cpp">
+      <Filter>Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BuilderWindow.h">
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="BuilderDefs.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BuilderSceneManager.h">
+      <Filter>Modules</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

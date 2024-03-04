@@ -1,3 +1,4 @@
+#include "BuilderApp.h"
 #include "BuilderSceneManager.h"
 
 BuilderSceneManager::BuilderSceneManager(BuilderApp* app) : BuilderModule(app) {}
@@ -13,8 +14,8 @@ bool BuilderSceneManager::Awake()
 
 bool BuilderSceneManager::Start()
 {
-	/*N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
-	N_sceneManager->LoadScene("SceneNameToLoad");*/ // add the name of the starting scene here
+	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
+	N_sceneManager->LoadScene("VS1"); // add the name of the starting scene here
 	N_sceneManager->Start();
 
 	return true;
@@ -29,7 +30,7 @@ bool BuilderSceneManager::PreUpdate()
 
 bool BuilderSceneManager::Update(double dt)
 {
-	N_sceneManager->Update(dt);
+	N_sceneManager->Update(dt, app->IsPlaying());
 
 	return true;
 }
