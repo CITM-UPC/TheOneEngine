@@ -262,11 +262,36 @@ void GameObject::Disable()
 
 void GameObject::Delete()
 {
-	for (const auto& component : components)
-		component.get_deleter();
+	int counter = 0;
+	for (const auto& go : parent.lock().get()->children)
+	{
+		if (go.get() == this)
+		{
+			GameObject* deletedGO = parent.lock().get()->children.at(counter).get();
 
-	for (const auto& child : children)
-		child.~shared_ptr();
+			if (!deletedGO->children.empty())
+				parent.lock().get()->children.at(counter).get()->children.clear();
+
+			if (!deletedGO->children.empty())
+				parent.lock().get()->children.at(counter).get()->components.clear();
+
+			auto it = parent.lock().get()->children.begin() + counter;
+			parent.lock().get()->children.erase(it);
+
+			return;
+		}
+		counter++;
+	}
+}
+
+std::vector<Component*> GameObject::GetAllComponents(bool tunometecabrasalamambiche)
+{
+	std::vector<Component*> tempComponents;
+	for (const auto& item : components)
+	{
+		tempComponents.push_back(item.get());
+	}
+	return tempComponents;
 }
 
 std::string GameObject::GetName() const
