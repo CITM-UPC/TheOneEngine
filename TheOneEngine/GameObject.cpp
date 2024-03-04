@@ -289,6 +289,11 @@ void GameObject::SetStatic(bool staticFlag)
 	isStatic = staticFlag;
 }
 
+bool GameObject::HasCameraComponent()
+{
+	return this->GetComponent<Camera>();
+}
+
 void GameObject::CreateUID()
 {
 	UID = UIDGen::GenerateUID();

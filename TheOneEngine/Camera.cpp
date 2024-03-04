@@ -6,12 +6,14 @@
 #include "Ray.h"
 
 Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Camera),
-    aspect(1.777), fov(65),
+    aspect(1.777), fov(65), 
+    size(5), 
     zNear(0.1), zFar(1000),
     yaw(0), pitch(0),
     viewMatrix(1.0f),
     lookAt(0, 0, 0),
-    drawFrustum(true)
+    drawFrustum(true),
+    cameraType(CameraType::PERSPECTIVE)
 {
     Transform* transform = containerGO.get()->GetComponent<Transform>();
 
@@ -79,7 +81,18 @@ void Camera::UpdateViewMatrix()
 
 void Camera::UpdateProjectionMatrix()
 {
-    projectionMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+    switch (cameraType)
+    {
+    case CameraType::PERSPECTIVE:
+        projectionMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+        break;
+    case CameraType::ORTHOGONAL:
+        projectionMatrix = glm::ortho(-size, size, -size * 0.75, size * 0.75, zNear, zFar);
+        break;
+    default:
+        LOG(LogType::LOG_ERROR, "CameraType invalid!");
+        break;
+    }
 }
 
 void Camera::UpdateViewProjectionMatrix()
