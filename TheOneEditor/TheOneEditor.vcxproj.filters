@@ -64,7 +64,9 @@
     <ClCompile Include="SceneManager.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="PanelBuild.cpp" />
+    <ClCompile Include="PanelBuild.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Panel.h">
