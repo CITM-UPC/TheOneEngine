@@ -9,11 +9,14 @@ class InternalCalls
 
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static ITransform GetTransform(IntPtr GOptr, out Vector3 position);
+    internal extern static Vector3 GetPosition(IntPtr GOptr);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static ITransform SetTransform(IntPtr GOptr, ref Vector3 position);
-    
+    internal extern static void SetPosition(IntPtr GOptr, ref Vector3 position);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void Translate(IntPtr GOptr, ref Vector3 increment);
+
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetTransformForward(IntPtr GOptr);
 }

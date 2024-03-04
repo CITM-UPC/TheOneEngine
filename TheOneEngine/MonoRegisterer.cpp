@@ -17,46 +17,31 @@ static GameObject* GetGameObjectPtr()
 }
 
 //Transform
-static void GetTransform(GameObject* GOptr, vec3* position)
+static vec3f GetPosition(GameObject* GOptr)
 {
-	//	WARNING
-
-	//This function has been implemented as a PLACEHOLDER due to the Transform
-	//component being under rework at the time of this implementation. This
-	//currently works thanks to the new tracking system through pointers instead
-	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
-
-	*position = GOptr->GetComponent<Transform>()->GetPosition();
+	return (vec3f)GOptr->GetComponent<Transform>()->GetPosition();
 }
-static void SetTransform(GameObject* GOptr, vec3* position)
+static void SetPosition(GameObject* GOptr, vec3f* position)
 {
-	//	WARNING
-
-	//This function has been implemented as a PLACEHOLDER due to the Transform
-	//component being under rework at the time of this implementation. This
-	//currently works thanks to the new tracking system through pointers instead
-	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
-
-	GOptr->GetComponent<Transform>()->SetPosition(*position);
+	GOptr->GetComponent<Transform>()->SetPosition((vec3)*position);
 }
 
-static vec3 GetTransformForward(GameObject* GOptr)
+static void Translate(GameObject* GOptr, vec3f* increment)
 {
-	//	WARNING
+	GOptr->GetComponent<Transform>()->Translate((vec3)*increment, HandleSpace::GLOBAL);
+}
 
-	//This function has been implemented as a PLACEHOLDER due to the Transform
-	//component being under rework at the time of this implementation. This
-	//currently works thanks to the new tracking system through pointers instead
-	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
-
-	 return GOptr->GetComponent<Transform>()->GetForward();
+static vec3f GetTransformForward(GameObject* GOptr)
+{
+	return (vec3f)GOptr->GetComponent<Transform>()->GetForward();
 }
 
 void MonoRegisterer::RegisterFunctions()
 {
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
 
-	mono_add_internal_call("InternalCalls::GetTransform", GetTransform);
-	mono_add_internal_call("InternalCalls::SetTransform", SetTransform);
+	mono_add_internal_call("InternalCalls::GetPosition", GetPosition);
+	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);
+	mono_add_internal_call("InternalCalls::Translate", Translate);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
 }

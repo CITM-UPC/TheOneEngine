@@ -7,13 +7,11 @@ public class ITransform : IComponent
     {
         get
         {
-            Vector3 outPos;
-            InternalCalls.GetTransform(containerGOptr, out outPos);
-            return outPos;
+            return InternalCalls.GetPosition(containerGOptr);
         }
         set
         {
-            InternalCalls.SetTransform(containerGOptr, ref value);
+            InternalCalls.SetPosition(containerGOptr, ref value);
         }
     }
 
@@ -27,9 +25,8 @@ public class ITransform : IComponent
 
     public ITransform(IntPtr GOptr) : base(GOptr) { }
 
-    public void Move(Vector3 increment)
+    public void Translate(Vector3 increment)
     {
-        Vector3 targetPos = position + increment;
-        InternalCalls.SetTransform(containerGOptr, ref targetPos);
+        InternalCalls.Translate(containerGOptr, ref increment);
     }
 }
