@@ -10,6 +10,7 @@ EngineCore::EngineCore()
 {
     audio = new AudioCore();
     monoManager = new MonoManager();
+    input = new InputManager();
 }
 
 void EngineCore::Awake()
@@ -18,6 +19,7 @@ void EngineCore::Awake()
     ilInit();
     monoManager->InitMono();
     audio->Awake();
+    input->Init();
 }
 
 void EngineCore::Start()
@@ -28,6 +30,7 @@ void EngineCore::Start()
 void EngineCore::Update(double dt)
 {
     audio->Update(dt);
+    input->PreUpdate(dt);
 }
 
 void EngineCore::Render(Camera* camera)
@@ -72,6 +75,9 @@ void EngineCore::CleanUp()
 
     audio->CleanUp();
     delete audio;
+
+    input->CleanUp();
+    delete input;
 }
 
 void EngineCore::DrawAxis()
