@@ -15,6 +15,8 @@ public:
 
 	void SetTransform(std::shared_ptr<GameObject> containerGO);
 
+	void PlayAudio();
+
 	json SaveComponent();
 	void LoadComponent(const json& transformJSON);
 

@@ -11,7 +11,7 @@ Source::Source(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
 	// Creating an instance of AudioManager
 	std::shared_ptr<AudioManager> am = std::make_shared<AudioManager>();
 
-	goID = am->audio->RegisterGameObject(containerGO->GetName());
+	//goID = am->audio->RegisterGameObject(containerGO->GetName());
 
 	this->GO = containerGO;
 	SetTransform(containerGO);

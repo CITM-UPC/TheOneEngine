@@ -41,7 +41,9 @@ bool Renderer3D::Start()
 
     // JULS: Listener 
     sceneCamera.get()->AddComponent<Listener>();
+	sceneCamera.get()->GetComponent<Listener>()->goID = app->engine->audioManager->audio->RegisterGameObject(sceneCamera.get()->GetName());
 	app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)sceneCamera.get()->GetComponent<Listener>());
+	app->engine->audioManager->audio->SetDefaultListener(sceneCamera.get()->GetComponent<Listener>()->goID);
 
     // hekbas test adding same component
     LOG(LogType::LOG_INFO, "# Testing Component Duplication");

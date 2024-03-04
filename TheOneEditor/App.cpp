@@ -326,6 +326,8 @@ void App::Play()
 		game_timer->Resume();
 
 		LOG(LogType::LOG_INFO, "GameState changed to PLAY");
+		// JULS: This should be taken in account to resume 
+		engine->audioManager->audio->PlayEngine();
 	}
 	else if (state == GameState::PLAY) {
 		state = GameState::NONE;

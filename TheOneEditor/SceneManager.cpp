@@ -5,7 +5,6 @@
 
 #include <fstream>
 #include <filesystem>
-#include "../TheOneEditor/Assets/Audio/Wwise Project/GeneratedSoundBanks/Wwise_IDs.h"
 
 namespace fs = std::filesystem;
 

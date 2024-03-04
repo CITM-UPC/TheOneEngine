@@ -18,9 +18,7 @@ bool AudioManager::Update(double dt)
 	for (const auto& audioComponent : audioComponents) {
 		audioComponent->SetTransform(audioComponent->GetGameObject());
 		
-		if (audioComponent->GO->GetComponent<Source>()) {
-
-		}
+		
 	}
 	return true;
 }
@@ -30,6 +28,43 @@ bool AudioManager::CleanUp()
 	audio->CleanUp();
 	delete audio;
 	return true;
+}
+
+// JULS: Not sure tho if they should be added like this
+void AudioManager::PlayAudio()
+{
+	for (const auto& audioComponent : audioComponents) {
+		if (audioComponent->GO->GetComponent<Source>()) {
+
+		}
+	}
+}
+
+void AudioManager::StopAudio()
+{
+	for (const auto& audioComponent : audioComponents) {
+		if (audioComponent->GO->GetComponent<Source>()) {
+
+		}
+	}
+}
+
+void AudioManager::PauseAudio()
+{
+	for (const auto& audioComponent : audioComponents) {
+		if (audioComponent->GO->GetComponent<Source>()) {
+
+		}
+	}
+}
+
+void AudioManager::ResumeAudio()
+{
+	for (const auto& audioComponent : audioComponents) {
+		if (audioComponent->GO->GetComponent<Source>()) {
+
+		}
+	}
 }
 
 // Implementation of AddAudioObject

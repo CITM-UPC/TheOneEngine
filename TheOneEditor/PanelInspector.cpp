@@ -16,6 +16,8 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 
+#include "../TheOneEditor/Assets/Audio/Wwise Project/GeneratedSoundBanks/Wwise_IDs.h"
+
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name)
 {
     matrixDirty = false;
@@ -354,40 +356,55 @@ bool PanelInspector::Draw()
                 //if (ImGui::SliderFloat("Volume", &zNear, 0.01, 10.0))
                 //{
                 //}
-            }
-        }
+                AK::EVENTS::FOOTSTEPS;
 
-            if (ImGui::Button("Add New Component")) {
-                ImGui::OpenPopup("Select New Component");
-                
-            }
-            if (ImGui::BeginPopup("Select New Component"))
-            {
-                /*ImGuiTextFilter filter;
-                filter.Draw();*/
-                ImGui::SeparatorText("Components");
-                if (ImGui::Selectable("Listener"))
-                {
-                    selectedGO->AddComponent<Listener>();
-                    app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Listener>());
-                }
-                if (ImGui::Selectable("Script"))
-                {
-                    chooseScriptNameWindow = true;
-                }
-                /*for (int i = 0; i < IM_ARRAYSIZE(names); i++)
-                    if (ImGui::Selectable(names[i]))
-                        selected_fish = i;
-                ImGui::EndPopup();*/
-                if (ImGui::Selectable("Source"))
-                {
-                    selectedGO->AddComponent<Source>();
-                    app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Source>());
-                }
+                if (ImGui::Button("Play"))
+                    app->engine->audioManager->audio->PlayEvent(AK::EVENTS::FOOTSTEPS, source->goID);
+                if (ImGui::Button("Stop"))
+                    app->engine->audioManager->audio->StopEvent(AK::EVENTS::FOOTSTEPS, source->goID);
+                if (ImGui::Button("Pause"))
+                    app->engine->audioManager->audio->PauseEvent(AK::EVENTS::FOOTSTEPS, source->goID);
+                if (ImGui::Button("Resume"))
+                    app->engine->audioManager->audio->ResumeEvent(AK::EVENTS::FOOTSTEPS, source->goID);
             }
         }
-        if(chooseScriptNameWindow)ChooseScriptNameWindow();
-        ImGui::End();
+        ImGui::Spacing();
+        if (ImGui::Button("Add New Component")) {
+            ImGui::OpenPopup("Select New Component");
+            
+        }
+        if (ImGui::BeginPopup("Select New Component"))
+        {
+            /*ImGuiTextFilter filter;
+            filter.Draw();*/
+            ImGui::SeparatorText("Components");
+            if (ImGui::Selectable("Listener"))
+            {
+                selectedGO->AddComponent<Listener>();
+                selectedGO->GetComponent<Listener>()->goID = app->engine->audioManager->audio->RegisterGameObject(selectedGO->GetName());
+                app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Listener>());
+                app->engine->audioManager->audio->SetDefaultListener(selectedGO->GetComponent<Listener>()->goID);
+
+            }
+            if (ImGui::Selectable("Script"))
+            {
+                chooseScriptNameWindow = true;
+            }
+            /*for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+                if (ImGui::Selectable(names[i]))
+                    selected_fish = i;
+            ImGui::EndPopup();*/
+            if (ImGui::Selectable("Source"))
+            {
+                selectedGO->AddComponent<Source>();
+                selectedGO->GetComponent<Source>()->goID = app->engine->audioManager->audio->RegisterGameObject(selectedGO->GetName());
+                app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Source>());
+            }
+        }
+    }
+
+    if(chooseScriptNameWindow)ChooseScriptNameWindow();
+    ImGui::End();
 	
 
     ImGui::PopStyleVar();

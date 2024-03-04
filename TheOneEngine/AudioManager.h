@@ -11,6 +11,11 @@ public:
 	bool Update(double dt);
 	bool CleanUp();
 
+	void PlayAudio();
+	void StopAudio();
+	void PauseAudio();
+	void ResumeAudio();
+
 	//static AudioManager* GetAudioManager() { return &this; }
 
 	AudioCore* audio = nullptr;
