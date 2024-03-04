@@ -20,6 +20,9 @@ class InternalCalls
     internal extern static void SetPosition(IntPtr GOptr, ref Vector3 position);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void SetRotation(IntPtr GOptr, ref Vector3 rotation);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void Translate(IntPtr GOptr, ref Vector3 increment);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]

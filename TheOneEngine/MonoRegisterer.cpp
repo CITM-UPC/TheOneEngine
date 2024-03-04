@@ -32,6 +32,11 @@ static void SetPosition(GameObject* GOptr, vec3f* position)
 	GOptr->GetComponent<Transform>()->SetPosition((vec3)*position);
 }
 
+static void SetRotation(GameObject* GOptr, vec3f* rotation)
+{
+	GOptr->GetComponent<Transform>()->SetRotation((vec3)*rotation);
+}
+
 static void Translate(GameObject* GOptr, vec3f* finalPos)
 {
 	//This implementation is temporary, engine Transform.Translate is not working properly.
@@ -58,6 +63,7 @@ void MonoRegisterer::RegisterFunctions()
 
 	mono_add_internal_call("InternalCalls::GetPosition", GetPosition);
 	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);
+	mono_add_internal_call("InternalCalls::SetRotation", SetRotation);
 	mono_add_internal_call("InternalCalls::Translate", Translate);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
 
