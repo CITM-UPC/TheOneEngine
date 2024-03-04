@@ -323,8 +323,9 @@ json Transform::SaveComponent()
 
     transformJSON["Name"] = name;
     transformJSON["Type"] = type;
-    if (auto pGO = containerGO.lock())
-        transformJSON["ParentUID"] = pGO.get()->GetUID();
+    
+    /*if (auto pGO = containerGO.lock())
+        transformJSON["ParentUID"] = pGO.get()->GetUID();*/
 
     transformJSON["UID"] = UID;
 
