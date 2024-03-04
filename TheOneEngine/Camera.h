@@ -11,6 +11,11 @@
 
 #include <memory>
 
+enum class CameraType 
+{
+    PERSPECTIVE,
+    ORTHOGONAL
+};
 
 struct Plane
 {
@@ -118,8 +123,13 @@ public:
 
 public:
 
+    //perpective
     double fov;
     double aspect;
+
+    //orthogonal
+    double size;
+
     double zNear;
     double zFar;
 
@@ -131,6 +141,8 @@ public:
     mat4 viewMatrix;
     mat4 projectionMatrix;
     mat4 viewProjectionMatrix;
+
+    CameraType cameraType;
 
     bool drawFrustum;
 };

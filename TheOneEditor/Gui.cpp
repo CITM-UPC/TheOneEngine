@@ -479,6 +479,7 @@ void Gui::MainMenuGameObject()
 
 		ImGui::EndMenu();
 	}
+	if (ImGui::MenuItem("Camera")) { panelGame->gameCameras.push_back(app->scenemanager->N_sceneManager->CreateCameraGO("newCamera").get()); }
 }
 
 void Gui::MainMenuComponent()

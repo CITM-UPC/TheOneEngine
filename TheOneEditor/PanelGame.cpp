@@ -8,7 +8,7 @@
 
 #include "../TheOneEngine/EngineCore.h"
 
-PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name) {}
+PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name),cameraToRender() {}
 
 PanelGame::~PanelGame() {}
 
@@ -24,6 +24,9 @@ bool PanelGame::Draw()
 	ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Game", &enabled, settingsFlags))
 	{
+		//Get selected GO
+		selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO().get();
+
 		// Top Bar --------------------------
 		if (ImGui::BeginMenuBar())
 		{
@@ -71,6 +74,12 @@ bool PanelGame::Draw()
 		// Render Game cameras
 		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
 		{
+			if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); }
+
+        }
+
+		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+		{
 			Camera* gameCam = GO.get()->GetComponent<Camera>();
 
             if (gameCam == nullptr) continue;
@@ -81,5 +90,11 @@ bool PanelGame::Draw()
 	ImGui::End();
 	ImGui::PopStyleVar();
 
+	return true;
+}
+
+bool PanelGame::AddCameraToRenderList(GameObject* cameraGO)
+{
+	gameCameras.push_back(cameraGO);
 	return true;
 }

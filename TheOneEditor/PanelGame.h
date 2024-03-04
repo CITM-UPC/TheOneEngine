@@ -4,6 +4,11 @@
 
 #include "Panel.h"
 
+#include <vector>
+
+class GameObject;
+class Camera;
+
 class PanelGame : public Panel
 {
 public:
@@ -12,8 +17,13 @@ public:
 
 	bool Draw();
 
+	bool AddCameraToRenderList(GameObject* cameraGO);
+
 	// hekbas implement camera list
-	//std::vector<GameObject> gameCameras;
+	std::vector<GameObject*> gameCameras;
+
+	GameObject* selectedGO = nullptr;
+	Camera* cameraToRender = nullptr;
 };
 
 #endif // !__PANEL_SCENE_H__

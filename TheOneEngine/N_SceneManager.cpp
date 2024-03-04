@@ -33,7 +33,7 @@ bool N_SceneManager::Start()
 
 	// Create default mesh
 	//CreateMeshGO("");
-
+	CreateCameraGO("mainCamera");
 	//if (currentScene->IsDirty()) SaveScene();
 
 	return true;
