@@ -27,6 +27,9 @@ public class ITransform : IComponent
 
     public void Translate(Vector3 increment)
     {
-        InternalCalls.Translate(containerGOptr, ref increment);
+        //This implementation is temporary, engine Transform.Translate is not working properly.
+
+        Vector3 finalPos = position + increment;
+        InternalCalls.Translate(containerGOptr, ref finalPos);
     }
 }

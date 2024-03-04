@@ -26,9 +26,11 @@ static void SetPosition(GameObject* GOptr, vec3f* position)
 	GOptr->GetComponent<Transform>()->SetPosition((vec3)*position);
 }
 
-static void Translate(GameObject* GOptr, vec3f* increment)
+static void Translate(GameObject* GOptr, vec3f* finalPos)
 {
-	GOptr->GetComponent<Transform>()->Translate((vec3)*increment, HandleSpace::GLOBAL);
+	//This implementation is temporary, engine Transform.Translate is not working properly.
+
+	GOptr->GetComponent<Transform>()->SetPosition((vec3)*finalPos, HandleSpace::GLOBAL);
 }
 
 static vec3f GetTransformForward(GameObject* GOptr)
