@@ -15,14 +15,14 @@ public:
 
 	void SetTransform(std::shared_ptr<GameObject> containerGO);
 
-	void PlayAudio();
-
 	json SaveComponent();
 	void LoadComponent(const json& transformJSON);
 
-private:
 	string path;
 	int volume;
+	AkUniqueID event;
+private:
+
 };
 
 #endif // !__SOURCE_H__

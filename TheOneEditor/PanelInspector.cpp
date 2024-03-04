@@ -16,8 +16,6 @@
 #include "imgui.h"
 #include "imgui_internal.h"
 
-#include "../TheOneEditor/Assets/Audio/Wwise Project/GeneratedSoundBanks/Wwise_IDs.h"
-
 PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, name)
 {
     matrixDirty = false;
@@ -25,6 +23,7 @@ PanelInspector::PanelInspector(PanelType type, std::string name) : Panel(type, n
     view_pos = { 0, 0, 0 };
     view_rot_rad = { 0, 0, 0 };
     view_sca = { 0, 0, 0 };
+    //selectedEvent = AK::EVENTS::FOOTSTEPS;
 }
 
 PanelInspector::~PanelInspector() {}
@@ -356,16 +355,27 @@ bool PanelInspector::Draw()
                 //if (ImGui::SliderFloat("Volume", &zNear, 0.01, 10.0))
                 //{
                 //}
-                AK::EVENTS::FOOTSTEPS;
 
-                if (ImGui::Button("Play"))
-                    app->engine->audioManager->audio->PlayEvent(AK::EVENTS::FOOTSTEPS, source->goID);
-                if (ImGui::Button("Stop"))
-                    app->engine->audioManager->audio->StopEvent(AK::EVENTS::FOOTSTEPS, source->goID);
-                if (ImGui::Button("Pause"))
-                    app->engine->audioManager->audio->PauseEvent(AK::EVENTS::FOOTSTEPS, source->goID);
-                if (ImGui::Button("Resume"))
-                    app->engine->audioManager->audio->ResumeEvent(AK::EVENTS::FOOTSTEPS, source->goID);
+                ImGui::SeparatorText("Components");
+                if (ImGui::Selectable("Footsteps")) {
+                    source->event = AK::EVENTS::FOOTSTEPS;
+                }if (ImGui::Selectable("Gunshot")) {
+                    source->event = AK::EVENTS::GUNSHOT;
+                }
+                
+                if (source->event != NULL) {
+                    if (ImGui::Button("Play"))
+                        app->engine->audioManager->PlayAudio(source);
+                    if (ImGui::Button("Stop"))
+                        app->engine->audioManager->StopAudio(source);
+                    if (ImGui::Button("Pause"))
+                        app->engine->audioManager->PauseAudio(source);
+                    if (ImGui::Button("Resume"))
+                        app->engine->audioManager->ResumeAudio(source);
+                }
+                else{
+                    ImGui::Text("No audio event selected");
+                }
             }
         }
         ImGui::Spacing();

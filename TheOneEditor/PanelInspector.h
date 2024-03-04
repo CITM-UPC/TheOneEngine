@@ -5,6 +5,8 @@
 #include "Panel.h"
 #include "..\TheOneEngine\Defs.h"
 
+#include "../TheOneEditor/Assets/Audio/Wwise Project/GeneratedSoundBanks/Wwise_IDs.h"
+
 class GameObject;
 
 class PanelInspector : public Panel
@@ -30,6 +32,8 @@ private:
 	bool chooseEventWindow;
 
 	GameObject* selectedGO = nullptr;
+
+	AkUniqueID selectedEvent;
 };
 
 #endif // !__PANEL_INSPECTOR_H__

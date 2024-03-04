@@ -2,7 +2,8 @@
 #include "Defs.h"
 #include "..\TheOneAudio\AudioCore.h"
 #include "AudioComponent.h"
- 
+#include "Source.h"
+
 class AudioManager {
 public:
 	AudioManager();
@@ -11,10 +12,10 @@ public:
 	bool Update(double dt);
 	bool CleanUp();
 
-	void PlayAudio();
-	void StopAudio();
-	void PauseAudio();
-	void ResumeAudio();
+	void PlayAudio(Source* source);
+	void StopAudio(Source* source);
+	void PauseAudio(Source* source);
+	void ResumeAudio(Source* source);
 
 	//static AudioManager* GetAudioManager() { return &this; }
 

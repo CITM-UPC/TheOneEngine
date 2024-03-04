@@ -31,40 +31,24 @@ bool AudioManager::CleanUp()
 }
 
 // JULS: Not sure tho if they should be added like this
-void AudioManager::PlayAudio()
+void AudioManager::PlayAudio(Source* source)
 {
-	for (const auto& audioComponent : audioComponents) {
-		if (audioComponent->GO->GetComponent<Source>()) {
-
-		}
-	}
+	audio->PlayEvent(source->event, source->goID);
 }
 
-void AudioManager::StopAudio()
+void AudioManager::StopAudio(Source* source)
 {
-	for (const auto& audioComponent : audioComponents) {
-		if (audioComponent->GO->GetComponent<Source>()) {
-
-		}
-	}
+	audio->StopEvent(source->event, source->goID);
 }
 
-void AudioManager::PauseAudio()
+void AudioManager::PauseAudio(Source* source)
 {
-	for (const auto& audioComponent : audioComponents) {
-		if (audioComponent->GO->GetComponent<Source>()) {
-
-		}
-	}
+	audio->PauseEvent(source->event, source->goID);
 }
 
-void AudioManager::ResumeAudio()
+void AudioManager::ResumeAudio(Source* source)
 {
-	for (const auto& audioComponent : audioComponents) {
-		if (audioComponent->GO->GetComponent<Source>()) {
-
-		}
-	}
+	audio->ResumeEvent(source->event, source->goID);
 }
 
 // Implementation of AddAudioObject

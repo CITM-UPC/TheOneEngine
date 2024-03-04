@@ -286,31 +286,47 @@ void AudioCore::ResumeEvent(AkUniqueID event, AkGameObjectID goID)
     AK::SoundEngine::ExecuteActionOnEvent(event, AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, gameObjectIDs[goID]);
 }
 
+// JULS: This functions do not work, but I should check them
 void AudioCore::PlayEngine()
 {
-    if (state == EngineState::PAUSED)
+    //if (state == EngineState::PAUSED)
+    //{
+    //    //resume stuff
+    //    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    //    {
+    //        if (audioEvents[i] != NULL)
+    //        {
+    //            AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, audioEvents[i]->playing_id);
+    //        }
+    //    }
+    //}
+    //else if (state == EngineState::STOPPED)
+    //{
+    //    //resume stuff
+    //    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+    //    {
+    //        if (audioEvents[i] != NULL)
+    //        {
+    //            AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, audioEvents[i]->playing_id);
+    //        }
+    //    }
+    //}
+
+    //resume stuff
+    for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
     {
-        //resume stuff
-        for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
+        if (audioEvents[i] != NULL)
         {
-            if (audioEvents[i] != NULL)
-            {
-                AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, audioEvents[i]->playing_id);
-            }
+            AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType::AkActionOnEventType_Resume, audioEvents[i]->playing_id);
         }
     }
-    else if (state == EngineState::STOPPED)
-    {
-        //play stuff
 
-    }
-
-    state = EngineState::PLAYING;
+    //state = EngineState::PLAYING;
 }
 
 void AudioCore::PauseEngine()
 {
-    state = EngineState::PAUSED;
+    //state = EngineState::PAUSED;
 
     //will PAUSE all sounds
     for (size_t i = 0; i < MAX_AUDIO_EVENTS; i++)
@@ -324,7 +340,7 @@ void AudioCore::PauseEngine()
 
 void AudioCore::StopEngine()
 {
-    state = EngineState::STOPPED;
+    //state = EngineState::STOPPED;
 
     //will STOP all sounds (not pause)
     for (size_t i = 0; i < gameObjectIDs.size(); i++)
