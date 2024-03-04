@@ -23,19 +23,12 @@ N_SceneManager::~N_SceneManager()
 
 bool N_SceneManager::Awake()
 {
-	std::filesystem::create_directories("Library/");
+	fs::create_directories("Library/");
 	return true;
 }
 
 bool N_SceneManager::Start()
 {
-	currentScene = new Scene(0, "Scene 1");
-
-	// Create default mesh
-	//CreateMeshGO("");
-
-	//if (currentScene->IsDirty()) SaveScene();
-
 	return true;
 }
 
@@ -45,12 +38,17 @@ bool N_SceneManager::PreUpdate()
 	return true;
 }
 
-bool N_SceneManager::Update(double dt)
+bool N_SceneManager::Update(double dt, bool isPlaying)
 {
 	// Do nothing
 
 	// Save Scene by checking if isDirty and pressing CTRL+S
 	//if (currentScene->IsDirty()) SaveScene();
+	
+	if (isPlaying)
+	{
+		currentScene->UpdateGOs(dt);
+	}
 
 	return true;
 }
@@ -74,17 +72,21 @@ bool N_SceneManager::CleanUp()
 
 void N_SceneManager::CreateNewScene(uint _index, std::string name)
 {
+	// Historn: Change currentScene when creating a new one? (First need save scene correctly for not loosing scenes)
 	Scene* newScene = new Scene(_index, name);
 	// Create with JSON Scene file
 }
 
 void N_SceneManager::LoadScene(uint index)
 {
+
 }
 
 void N_SceneManager::LoadScene(std::string sceneName)
 {
-	LoadSceneFromJSON(sceneName);
+	std::string fileName = "Assets/Scenes/" + sceneName + ".toe";
+
+	LoadSceneFromJSON(fileName);
 }
 
 void N_SceneManager::SaveScene()
@@ -102,6 +104,7 @@ void N_SceneManager::SaveScene()
 
 	sceneJSON["sceneName"] = currentScene->GetSceneName();
 	sceneJSON["index"] = currentScene->GetIndex();
+	sceneJSON["path"] = filename;
 
 	json gameObjectsJSON;
 	/*Save all gameobjects*/
@@ -114,6 +117,8 @@ void N_SceneManager::SaveScene()
 
 	std::ofstream(filename) << sceneJSON.dump(2);
 	LOG(LogType::LOG_OK, "SAVE SUCCESFUL");
+
+	currentScene->SetIsDirty(false);
 }
 
 void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
@@ -149,8 +154,19 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 	// Close the file
 	file.close();
 
-	//currentScene->SetIndex(sceneJSON["index"]);
-	//currentScene->SetSceneName(sceneJSON["sceneName"]);
+	if (sceneJSON.contains("sceneName"))
+	{
+		currentScene->SetSceneName(sceneJSON["sceneName"]);
+		currentScene->GetRootSceneGO().get()->SetName(sceneJSON["sceneName"]);
+	}
+	if (sceneJSON.contains("index"))
+	{
+		currentScene->SetIndex(sceneJSON["index"]);
+	}
+	if (sceneJSON.contains("path"))
+	{
+		currentScene->SetPath(sceneJSON["path"]);
+	}
 
 	currentScene->GetRootSceneGO().get()->children.clear();
 
@@ -163,7 +179,7 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 		{
 			// Create a new game object
 			auto newGameObject = CreateEmptyGO();
-
+			newGameObject.get()->SetName(currentScene->GetSceneName());
 			// Load the game object from JSON
 			newGameObject->LoadGameObject(gameObjectJSON);
 		}
@@ -398,7 +414,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateMF()
 	return CreateMeshGO("Assets/Meshes/mf.fbx");
 }
 
-std::shared_ptr<GameObject> N_SceneManager::CreateTeapot(std::string path)
+std::shared_ptr<GameObject> N_SceneManager::CreateTeapot()
 {
 	return CreateMeshGO("Assets/Meshes/teapot.fbx");
 }
@@ -429,6 +445,14 @@ void Scene::RecurseSceneDraw(std::shared_ptr<GameObject> parentGO)
 	{
 		gameObject.get()->Draw();
 		RecurseSceneDraw(gameObject);
+	}
+}
+
+void Scene::UpdateGOs(double dt)
+{
+	for (const auto gameObject : rootSceneGO->children)
+	{
+		gameObject->Update(dt);
 	}
 }
 
