@@ -29,6 +29,7 @@ bool N_SceneManager::Awake()
 
 bool N_SceneManager::Start()
 {
+	CreateCameraGO("mainCamera");
 	return true;
 }
 
