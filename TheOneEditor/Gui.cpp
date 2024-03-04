@@ -19,6 +19,7 @@
 #include "PanelScene.h"
 #include "PanelGame.h"
 #include "PanelSettings.h"
+#include "PanelBuild.h"
 
 #include "imgui.h"
 #include "imgui_internal.h"
@@ -28,7 +29,9 @@
 #include "implot.h"
 #include "imGuizmo.h"
 
+#include <filesystem>
 
+namespace fs = std::filesystem;
 
 Gui::Gui(App* app) : Module(app) {}
 
@@ -71,6 +74,10 @@ bool Gui::Awake()
 	panelSettings = new PanelSettings(PanelType::SETTINGS, "Settings");
 	panels.push_back(panelSettings);
 	ret *= isInitialized(panelSettings);
+	
+	panelBuild = new PanelBuild(PanelType::BUILD, "Build");
+	panels.push_back(panelBuild);
+	ret *= isInitialized(panelBuild);
 
 	return ret;
 }
@@ -273,6 +280,8 @@ bool Gui::Update(double dt)
 		ImGui::EndMainMenuBar();
 	}
 
+	if (openSceneFileWindow)OpenSceneFileWindow();
+
     ImGui::PopStyleVar();
 
     return ret;
@@ -413,15 +422,13 @@ bool Gui::MainMenuFile()
 {
 	bool ret = true;
 
-	if (ImGui::MenuItem("New", 0, false, false)) {}
+	if (ImGui::MenuItem("New", "Ctrl+N", false, false))
+	{
+		//app->scenemanager->N_sceneManager->CreateNewScene(1, "NewScene");
+	}
 	if (ImGui::MenuItem("Open", "Ctrl+O", false))
 	{
-		std::string filename = "Assets/Scenes/scene.toe";
-		app->scenemanager->N_sceneManager->LoadScene(filename);
-	}
-	if (ImGui::BeginMenu("Open Recent"))
-	{
-		ImGui::EndMenu();
+		openSceneFileWindow = true;
 	}
 
 	ImGui::Separator();
@@ -431,6 +438,13 @@ bool Gui::MainMenuFile()
 		app->scenemanager->N_sceneManager->SaveScene();
 	}
 	if (ImGui::MenuItem("Save As..", 0, false, false)) {}
+
+	ImGui::Separator();
+
+	if (ImGui::MenuItem("Build", 0, false)) 
+	{
+		app->gui->panelBuild->SetState(true);
+	}
 
 	ImGui::Separator();
 
@@ -512,6 +526,51 @@ void Gui::MainMenuHelp()
 	}
 
 	ImGui::Separator();
+}
+
+void Gui::OpenSceneFileWindow()
+{
+	ImGui::Begin("Open File", &openSceneFileWindow);
+
+	static char nameSceneBuffer[50];
+
+	ImGui::InputText("File Name", nameSceneBuffer, IM_ARRAYSIZE(nameSceneBuffer));
+
+	/*std::string filename = "Assets/Scenes/Scene 1.toe";
+	app->scenemanager->N_sceneManager->LoadScene(filename);*/
+	std::string nameScene = nameSceneBuffer;
+	std::string file = "Assets/Scenes/" + nameScene + ".toe";
+
+	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameSceneBuffer != "")
+	{
+		if (app->scenemanager->N_sceneManager->currentScene->IsDirty())
+		{
+			ImGui::OpenPopup("SaveBeforeLoad");
+			
+		}
+		else
+		{
+			app->scenemanager->N_sceneManager->LoadScene(file);
+			openSceneFileWindow = false;
+		}
+		
+	}
+
+	if (ImGui::BeginPopup("SaveBeforeLoad"))
+	{
+		ImGui::Text("You have unsaved changes in this scene. Are you sure?");
+		if (ImGui::Button("Yes", { 100, 20 })) {
+			app->scenemanager->N_sceneManager->LoadSceneFromJSON(file);
+			openSceneFileWindow = false;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("No", { 100, 20 })) {
+			openSceneFileWindow = false;
+			ImGui::End();
+		}
+		
+	}
+	ImGui::End();
 }
 
 void Gui::CalculateSizeAspectRatio(int maxWidth, int maxHeight, int& width, int& height)

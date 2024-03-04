@@ -22,6 +22,8 @@ bool SceneManager::Awake()
 
 bool SceneManager::Start()
 {
+	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
+	//N_sceneManager->LoadScene("Scene_2");
 	N_sceneManager->Start();
 
 	return true;
@@ -36,7 +38,7 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-	N_sceneManager->Update(dt);
+	N_sceneManager->Update(dt, app->IsPlaying());
 
 	return true;
 }
