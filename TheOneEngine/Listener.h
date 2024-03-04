@@ -5,15 +5,17 @@
 
 #include "Component.h"
 #include "AudioComponent.h"
+#include "AudioManager.h"
 
 class GameObject;
+class AudioManager;
 
 class Listener : public Component, public AudioComponent {
 public:
     Listener(std::shared_ptr<GameObject> containerGO);
     virtual ~Listener();
 
-    void SetListener(AkGameObjectID goID, std::unique_ptr<AudioManager> audioManager);
+    void SetListener(AkGameObjectID goID);
     void SetTransform(std::shared_ptr<GameObject> containerGO);
 
     json SaveComponent();

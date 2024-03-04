@@ -6,14 +6,11 @@
 Listener::Listener(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Listener)
 {
 	//this->Enable();
-	std::unique_ptr<AudioManager> am = std::unique_ptr<AudioManager>();
+	std::shared_ptr<AudioManager> am = std::make_shared<AudioManager>();
 	goID = am->audio->RegisterGameObject(containerGO->GetName());
 	this->GO = containerGO;
 	SetTransform(containerGO);
-	am->audio->SetDefaultListener(this->goID);
-
-	// Pass shared_ptr to AddAudioObject
-	am->AddAudioObject((std::unique_ptr<AudioComponent>)this);
+	SetListener(goID);
 }
 
 Listener::~Listener()
@@ -21,10 +18,10 @@ Listener::~Listener()
 
 }
 
-void Listener::SetListener(AkGameObjectID goID, std::unique_ptr<AudioManager> audioManager)
+void Listener::SetListener(AkGameObjectID goID)
 {
-	this->goID = goID;
-	audioManager->audio->SetDefaultListener(this->goID);
+	std::shared_ptr<AudioManager> am = std::make_shared<AudioManager>();
+	am->audio->SetDefaultListener(goID);
 }
 
 void Listener::SetTransform(std::shared_ptr<GameObject> containerGO)

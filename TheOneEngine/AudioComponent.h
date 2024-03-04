@@ -8,7 +8,7 @@
 class GameObject;
 class AudioManager;
 
-class AudioComponent : public std::enable_shared_from_this<AudioComponent> {
+class AudioComponent {
 public:
 	//AudioComponent(std::shared_ptr<GameObject> containerGO);
 	//virtual ~AudioComponent();
@@ -19,6 +19,8 @@ public:
 	std::shared_ptr<GameObject> GetGameObject() {
 		return GO;
 	}
+
+	//virtual void AddAudioObjectToAudioManager() = 0;
 
 public:
 	std::shared_ptr<GameObject> GO;

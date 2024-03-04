@@ -369,6 +369,7 @@ bool PanelInspector::Draw()
                 if (ImGui::Selectable("Listener"))
                 {
                     selectedGO->AddComponent<Listener>();
+                    app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Listener>());
                 }
                 if (ImGui::Selectable("Script"))
                 {
@@ -381,6 +382,7 @@ bool PanelInspector::Draw()
                 if (ImGui::Selectable("Source"))
                 {
                     selectedGO->AddComponent<Source>();
+                    app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Source>());
                 }
             }
         }
