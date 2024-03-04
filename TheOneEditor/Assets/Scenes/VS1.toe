@@ -3,23 +3,12 @@
     {
       "Components": [
         {
-          "LocalRotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "LocalScale": [
-            1.0,
-            1.0,
-            1.0
-          ],
           "Name": "Transform",
           "ParentUID": 3452816845,
           "Position": [
             0.0,
             0.0,
-            0.0
+            110.89942932128906
           ],
           "Rotation": [
             1.0,
@@ -41,17 +30,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -60,10 +38,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,
@@ -97,17 +75,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -116,10 +83,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,
@@ -153,17 +120,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -172,10 +128,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,
@@ -209,17 +165,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -228,10 +173,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,
@@ -271,17 +216,6 @@
     {
       "Components": [
         {
-          "LocalRotation": [
-            1.0,
-            0.0,
-            0.0,
-            0.0
-          ],
-          "LocalScale": [
-            1.0,
-            1.0,
-            1.0
-          ],
           "Name": "Transform",
           "ParentUID": 3452816845,
           "Position": [
@@ -290,10 +224,10 @@
             0.0
           ],
           "Rotation": [
-            1.0,
             0.0,
             0.0,
-            0.0
+            0.0,
+            1.0
           ],
           "Scale": [
             1.0,
@@ -302,6 +236,13 @@
           ],
           "Type": 0,
           "UID": 1733554255
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "ExampleScript",
+          "Type": 4,
+          "UID": 3671927467
         }
       ],
       "Enabled": true,
@@ -309,17 +250,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -328,10 +258,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,
@@ -365,17 +295,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -384,10 +303,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,
@@ -421,17 +340,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -440,10 +348,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,
@@ -477,17 +385,6 @@
         {
           "Components": [
             {
-              "LocalRotation": [
-                1.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "LocalScale": [
-                1.0,
-                1.0,
-                1.0
-              ],
               "Name": "Transform",
               "ParentUID": 3452816845,
               "Position": [
@@ -496,10 +393,10 @@
                 0.0
               ],
               "Rotation": [
-                1.0,
                 0.0,
                 0.0,
-                0.0
+                0.0,
+                1.0
               ],
               "Scale": [
                 1.0,

@@ -142,16 +142,6 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("UID")) UID = cameraJSON["UID"];
     if (cameraJSON.contains("Name")) name = cameraJSON["Name"];
 
-    // Load parent UID and set parent
-    /*if (cameraJSON.contains("ParentUID"))
-    {
-        uint32_t parentUID = cameraJSON["ParentUID"];
-        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
-        {
-            containerGO = parentGameObject;
-        }
-    }*/
-
     // Load camera-specific properties
     if (cameraJSON.contains("FOV")) fov = cameraJSON["FOV"];
     if (cameraJSON.contains("Aspect")) aspect = cameraJSON["Aspect"];

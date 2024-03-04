@@ -382,6 +382,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 				this->AddComponent<Mesh>();
 				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
 			}
+			else if (componentJSON["Type"] == 4)
+			{
+				this->AddScript(componentJSON["ScriptName"]);
+				this->GetComponent<Script>()->LoadComponent(componentJSON);
+			}
 		}
 	}
 
