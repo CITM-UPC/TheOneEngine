@@ -44,6 +44,7 @@
     <Compile Include="ExampleScript.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IGameObject.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="InternalCalls.cs" />
     <Compile Include="ITransform.cs" />
     <Compile Include="MonoBehaviour.cs" />

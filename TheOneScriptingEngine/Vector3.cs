@@ -24,6 +24,11 @@ public struct Vector3
         return new Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
     }
 
+    public static Vector3 operator -(Vector3 a, Vector3 b)
+    {
+        return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
+    }
+
     public static Vector3 operator *(Vector3 a, float b)
     {
         return new Vector3(a.x * b, a.y * b, a.z * b);
@@ -39,8 +44,12 @@ public struct Vector3
         return (float)Math.Sqrt(x * x + y * y + z * z);
     }
 
-    Vector3 Normalize()
+    public Vector3 Normalize()
     {
+        float mag = Magnitude();
+
+        if (mag == 0) { return Vector3.zero; }
+
         return new Vector3(x, y, z) / Magnitude();
     }
 }

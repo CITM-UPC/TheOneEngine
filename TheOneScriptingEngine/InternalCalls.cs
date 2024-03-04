@@ -7,6 +7,11 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static IntPtr GetGameObjectPtr();
 
+    //Input
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static bool GetKeyboardButton(int id);
+
+
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetPosition(IntPtr GOptr);

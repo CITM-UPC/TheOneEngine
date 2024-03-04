@@ -16,6 +16,12 @@ static GameObject* GetGameObjectPtr()
 	return MonoManager::GetCurrentGameObjectPtr();
 }
 
+//Input
+static bool GetKeyboardButton(int id)
+{
+	return engine->input->GetKey(id) == KEY_REPEAT;
+}
+
 //Transform
 static vec3f GetPosition(GameObject* GOptr)
 {
@@ -47,6 +53,8 @@ static float GetAppDeltaTime()
 void MonoRegisterer::RegisterFunctions()
 {
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
+
+	mono_add_internal_call("InternalCalls::GetKeyboardButton", GetKeyboardButton);
 
 	mono_add_internal_call("InternalCalls::GetPosition", GetPosition);
 	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);
