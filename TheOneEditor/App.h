@@ -19,7 +19,6 @@
 class Module;
 class Window;
 class Input;
-class GamepadInput;
 class Hardware;
 class SceneManager;
 class Gui;
@@ -89,7 +88,6 @@ public:
 	// Modules
 	Window* window = nullptr;
 	Input* input = nullptr;
-	GamepadInput* gamepad = nullptr;
 	Hardware* hardware = nullptr;
 	Gui* gui = nullptr;
 	Renderer3D* renderer3D = nullptr;

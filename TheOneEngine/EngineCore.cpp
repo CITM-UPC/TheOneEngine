@@ -74,10 +74,10 @@ void EngineCore::CleanUp()
     delete monoManager;
 
     audio->CleanUp();
+    delete audio;
 
     input->CleanUp();
     delete input;
-    delete audio;
 }
 
 void EngineCore::DrawAxis()
