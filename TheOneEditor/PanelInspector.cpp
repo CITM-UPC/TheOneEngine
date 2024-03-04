@@ -10,6 +10,7 @@
 #include "..\TheOneEngine\Mesh.h"
 #include "..\TheOneEngine\Camera.h"
 #include "..\TheOneEngine\Script.h"
+#include "..\TheOneEngine\Collider2D.h"
 #include "..\TheOneEngine\MonoManager.h"
 
 #include "imgui.h"
@@ -327,26 +328,50 @@ bool PanelInspector::Draw()
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
 
-            if (ImGui::Button("Add New Component")) {
+            /*if (ImGui::Button("Add New Component")) {
                 ImGui::OpenPopup("Select New Component");
                 
-            }
-            if (ImGui::BeginPopup("Select New Component"))
+            }*/
+            if (ImGui::BeginMenu("Add Component"))
             {
+                if (ImGui::MenuItem("New Script"))
+                    chooseScriptNameWindow = true;
+
+                if (ImGui::MenuItem("Collider2D"))
+                    selectedGO->AddComponent<Collider2D>();
+
+
                 /*ImGuiTextFilter filter;
                 filter.Draw();*/
-                ImGui::SeparatorText("Components");
-                if (ImGui::Selectable("Script"))
+                /*if (ImGui::Selectable("Script"))
                 {
                     chooseScriptNameWindow = true;
-                }
+                }*/
                 /*for (int i = 0; i < IM_ARRAYSIZE(names); i++)
                     if (ImGui::Selectable(names[i]))
                         selected_fish = i;
                 ImGui::EndPopup();*/
+
+                ImGui::EndMenu();
             }
+
+            //if (ImGui::BeginPopup("Select New Component"))
+            //{
+            //    /*ImGuiTextFilter filter;
+            //    filter.Draw();*/
+            //    ImGui::SeparatorText("Components");
+            //    if (ImGui::Selectable("Script"))
+            //    {
+            //        chooseScriptNameWindow = true;
+            //    }
+            //    /*for (int i = 0; i < IM_ARRAYSIZE(names); i++)
+            //        if (ImGui::Selectable(names[i]))
+            //            selected_fish = i;
+            //    ImGui::EndPopup();*/
+            //}
         }
-        if(chooseScriptNameWindow)ChooseScriptNameWindow();
+        if(chooseScriptNameWindow) ChooseScriptNameWindow();
+
         ImGui::End();
 	}	
 

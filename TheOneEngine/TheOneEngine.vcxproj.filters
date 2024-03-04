@@ -87,6 +87,9 @@
     <ClInclude Include="Log.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Collider2D.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -123,7 +126,7 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="N_SceneManager.cpp">
-      <Filter>SceneManagement</Filter>    
+      <Filter>SceneManagement</Filter>
     </ClCompile>
     <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>
@@ -133,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="MonoRegisterer.cpp">
       <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Collider2D.cpp">
+      <Filter>GameObject\Components</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>
