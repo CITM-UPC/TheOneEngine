@@ -45,12 +45,17 @@ bool N_SceneManager::PreUpdate()
 	return true;
 }
 
-bool N_SceneManager::Update(double dt)
+bool N_SceneManager::Update(double dt, bool isPlaying)
 {
 	// Do nothing
 
 	// Save Scene by checking if isDirty and pressing CTRL+S
 	//if (currentScene->IsDirty()) SaveScene();
+	
+	if (isPlaying)
+	{
+		currentScene->UpdateGOs(dt);
+	}
 
 	return true;
 }
@@ -429,6 +434,14 @@ void Scene::RecurseSceneDraw(std::shared_ptr<GameObject> parentGO)
 	{
 		gameObject.get()->Draw();
 		RecurseSceneDraw(gameObject);
+	}
+}
+
+void Scene::UpdateGOs(double dt)
+{
+	for (const auto gameObject : rootSceneGO->children)
+	{
+		gameObject->Update(dt);
 	}
 }
 

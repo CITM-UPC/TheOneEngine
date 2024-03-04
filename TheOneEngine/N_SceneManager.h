@@ -23,7 +23,7 @@ public:
 	bool Start();
 
 	bool PreUpdate();
-	bool Update(double dt);
+	bool Update(double dt, bool isPlaying);
 	bool PostUpdate();
 
 	bool CleanUp();
@@ -91,6 +91,8 @@ public:
 
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
+	inline void UpdateGOs(double dt);
+	
 	inline void Draw();
 
 private:

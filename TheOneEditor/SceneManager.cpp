@@ -38,7 +38,7 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-	N_sceneManager->Update(dt);
+	N_sceneManager->Update(dt, app->IsPlaying());
 
 	return true;
 }
