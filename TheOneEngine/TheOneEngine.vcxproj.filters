@@ -84,6 +84,9 @@
     <ClInclude Include="MonoRegisterer.h">
       <Filter>Scripting</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="MonoRegisterer.cpp">
       <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

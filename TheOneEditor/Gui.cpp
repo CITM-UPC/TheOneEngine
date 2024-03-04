@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <shellapi.h>
 #include "App.h"
-#include "Log.h"
+#include "../TheOneEngine/Log.h"
 
 #include "Time.h"
 #include "Gui.h"
@@ -27,6 +27,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include "implot.h"
+#include "imGuizmo.h"
 
 #include <filesystem>
 
@@ -205,16 +206,15 @@ bool Gui::PreUpdate()
 {
 	bool ret = true;
 
-	// Clears GUI
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplSDL2_NewFrame(app->window->window);
-	ImGui::NewFrame();
+    // Clears GUI
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplSDL2_NewFrame(app->window->window);
+    ImGui::NewFrame();
+    ImGuizmo::BeginFrame();
 
-	// hekbas TODO get input here?
-
-	// Dockspace
-	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
-		MainWindowDockspace();
+    // Dockspace
+    if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
+        MainWindowDockspace();
 
 	return ret;
 }
@@ -223,14 +223,16 @@ bool Gui::Update(double dt)
 {
 	bool ret = true;
 
-	// Creates the Main Menu Bar
-	if (ImGui::BeginMainMenuBar())
-	{
-		if (ImGui::BeginMenu("File"))
-		{
-			ret = MainMenuFile();
-			ImGui::EndMenu();
-		}
+    // Creates the Main Menu Bar
+    //ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 50.0f));
+
+    if (ImGui::BeginMainMenuBar())
+    {
+        if (ImGui::BeginMenu("File"))
+        {
+            ret = MainMenuFile();
+            ImGui::EndMenu();
+        }
 
 		if (ImGui::BeginMenu("Edit"))
 		{
@@ -262,30 +264,27 @@ bool Gui::Update(double dt)
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Help"))
-		{
-			MainMenuHelp();
-			ImGui::EndMenu();
-		}
+        if (ImGui::BeginMenu("Help"))
+        {
+            MainMenuHelp();
+            ImGui::EndMenu();
+        }
+        
 
-		// Play/Pause/Stop
-		ImGui::Dummy(ImVec2(250.0f, 0.0f));
-		if (ImGui::Button("Play")) {
-			app->Play();
-		}
-		if (ImGui::Button("Pause")) {
-			app->Pause();
-		}
-		if (ImGui::Button("Stop")) {
-			app->Stop();
-		}
+        // Play/Pause/Stop
+        ImGui::Dummy(ImVec2(ImGui::GetContentRegionAvail().x / 2 - 265, 0.0f));
+        if (ImGui::Button("Play"))  app->Play();
+        if (ImGui::Button("Pause")) app->Pause();
+        if (ImGui::Button("Stop"))  app->Stop();
 
 		ImGui::EndMainMenuBar();
 	}
 
 	if (openSceneFileWindow)OpenSceneFileWindow();
 
-	return ret;
+    ImGui::PopStyleVar();
+
+    return ret;
 }
 
 bool Gui::PostUpdate()
@@ -322,10 +321,10 @@ bool Gui::CleanUp()
 
 void Gui::Draw()
 {
-	ImGui::EndFrame();
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	ImGui::EndFrame();
+    //hekbas - Automatically called by ImGui::Render()
+    //ImGui::EndFrame();
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	// hekbas look into this
 	/*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -458,7 +457,7 @@ bool Gui::MainMenuFile()
 void Gui::MainMenuEdit()
 {
 	if (ImGui::MenuItem("Undo", "Ctrl+Z", false, false)) {}
-	if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}  // Disabled item
+	if (ImGui::MenuItem("Redo", "Ctrl+Y", false, false)) {}
 
 	ImGui::Separator();
 
@@ -523,7 +522,7 @@ void Gui::MainMenuHelp()
 
 	if (ImGui::MenuItem("Documentation"))
 	{
-		OpenURL("https://github.com/CITM-UPC/TheOneEngine");
+		OpenURL("https://github.com/Shadow-Wizard-Games/TheOneEngine");
 	}
 
 	ImGui::Separator();

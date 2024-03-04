@@ -6,7 +6,7 @@
 #include "Window.h"
 #include "imgui.h"
 
-#include "..\TheOneEngine\EngineCore.h"
+#include "../TheOneEngine/EngineCore.h"
 
 PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name) {}
 
@@ -66,17 +66,17 @@ bool PanelGame::Draw()
 		int x = static_cast<int>(windowPos.x);
 		int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
-		app->engine->OnWindowResize(x, y, width, height);
+        engine->OnWindowResize(x, y, width, height);
 
 		// Render Game cameras
 		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
 		{
 			Camera* gameCam = GO.get()->GetComponent<Camera>();
 
-			if (gameCam == nullptr) continue;
-			app->engine->Render(gameCam);
-		}
-	}
+            if (gameCam == nullptr) continue;
+            engine->Render(gameCam);
+        }
+    }
 
 	ImGui::End();
 	ImGui::PopStyleVar();

@@ -16,7 +16,10 @@
 #include <glm/mat4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "glm/gtc/type_ptr.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/euler_angles.hpp>
+
 
 // NULL just in case ----------------------
 #ifdef NULL
@@ -135,6 +138,14 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 	VALUE_TYPE tmp = a;
 	a = b;
 	b = tmp;
+}
+
+/// Checks if a weak_ptr has not been initialized
+template <typename T>
+bool IsUninitialized(std::weak_ptr<T> const& weak)
+{
+	using wt = std::weak_ptr<T>;
+	return !weak.owner_before(wt{}) && !wt{}.owner_before(weak);
 }
 // -------------------------------------------------------------------------------
 

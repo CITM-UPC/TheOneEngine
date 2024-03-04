@@ -6,8 +6,7 @@
 #include "Component.h"
 #include "BBox.hpp"
 #include "Script.h"
-
-#include "..\TheOneEditor\Log.h"
+#include "Log.h"
 
 #include <string>
 #include <vector>
@@ -19,7 +18,6 @@ class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
 
-    GameObject();
     GameObject(std::string name = "gameObject");
     ~GameObject();
 

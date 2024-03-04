@@ -5,9 +5,9 @@
 #include "Defs.h"
 #include "GameObject.h"
 #include "Ray.h"
+#include "Log.h"
 
-#include "..\TheOneEditor\Log.h"
-#include "..\TheOneEditor\Input.h"
+#include "../TheOneEditor/Input.h"
 
 #include <memory>
 
@@ -38,7 +38,8 @@ struct Plane
 
 struct Frustum : public Plane
 {
-    // hekbas - don't use near and far as those are already defined in minwindef.h
+    // hekbas - don't use near and far
+    // those are already defined in minwindef.h
     Plane _near; 
     Plane _far;
     Plane left;
@@ -101,14 +102,8 @@ public:
     Camera(std::shared_ptr<GameObject> containerGO);
     ~Camera();
 
-    void translate(const vec3f& translation, bool local = true);
-    void setPosition(const vec3f& newPosition);
-    void rotate(const vec3f& axis, float angle, bool local = true);  
-    void rotate(const vec3f& eulerRotation, bool local = true);
-
     const mat4f& getViewMatrix();
 
-    //update
     void UpdateCamera();
     void UpdateCameraVectors();
     void UpdateViewMatrix();
@@ -130,11 +125,7 @@ public:
 
     float yaw, pitch;
 
-	vec3f eye;		// Position
-	vec3f center;	// LookAt
-	vec3f up;		// Orientation
-	vec3f forward;
-	vec3f right;
+	vec3f lookAt;
 
     Frustum frustum;
     mat4 viewMatrix;

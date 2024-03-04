@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Panel.h"
-#include "..\TheOneEngine\Defs.h"
+#include "../TheOneEngine/Defs.h"
 
 class GameObject;
 
@@ -13,6 +13,7 @@ public:
 	PanelInspector(PanelType type, std::string name);
 	~PanelInspector();
 
+	void OnSelectGO(std::shared_ptr<GameObject> gameObj);
 	bool Draw();
 
 	void ChooseScriptNameWindow();

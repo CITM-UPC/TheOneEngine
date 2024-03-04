@@ -1,7 +1,7 @@
 #ifndef __TIMER_H__
 #define __TIMER_H__
 
-#include "..\TheOneEngine\Defs.h"
+#include "../TheOneEngine/Defs.h"
 
 class Timer
 {

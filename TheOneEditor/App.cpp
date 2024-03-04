@@ -1,5 +1,4 @@
 #include "App.h"
-#include "Log.h"
 
 #include "Window.h"
 #include "Input.h"
@@ -16,13 +15,15 @@
 #include "PanelScene.h"
 #include "PanelSettings.h"
 #include "Timer.h"
+#include "../TheOneEngine/Transform.h"
+#include "../TheOneEngine/Log.h"
 
-#include "..\TheOneEngine\Transform.h"
+EngineCore* engine = NULL;
 
 App::App(int argc, char* args[]) : argc(argc), args(args)
 {
 	engine = new EngineCore();
-
+	
 	window = new Window(this);
 	input = new Input(this);
 	hardware = new Hardware(this);
@@ -261,28 +262,6 @@ const char* App::GetArgv(int index) const
 		return args[index];
 	else
 		return NULL;
-}
-
-// Logs
-std::vector<LogInfo> App::GetLogs()
-{
-	return logs;
-}
-
-void App::AddLog(LogType type, const char* entry)
-{
-	if (logs.size() > MAX_LOGS_CONSOLE)
-		logs.erase(logs.begin());
-
-	std::string toAdd = entry;
-	LogInfo info = { type, toAdd };
-
-	logs.push_back(info);
-}
-
-void App::CleanLogs()
-{
-	logs.clear();
 }
 
 // Fps control

@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "Graphic.h"
 
+#include <assimp/scene.h>
 #include <vector>
 #include <array>
 #include <memory>
@@ -64,6 +65,7 @@ public:
 	//MeshLoader(MeshLoader&& b) noexcept;
 	virtual ~MeshLoader();
 
+	void FixAssimpRotation(const aiScene* scene);
 	std::vector<MeshBufferedData> LoadMesh(const std::string& path);
 	std::vector<std::shared_ptr<Texture>> LoadTexture(const std::string& path, std::shared_ptr<GameObject> containerGO = nullptr);
 
