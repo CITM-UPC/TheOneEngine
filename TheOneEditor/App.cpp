@@ -37,8 +37,8 @@ App::App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(window, true);
 	AddModule(input, true);
 	AddModule(hardware, true);
-	AddModule(gui, true);
 	AddModule(scenemanager, true);
+	AddModule(gui, true);
 
 	// Render last to swap buffer
 	AddModule(renderer3D, true);

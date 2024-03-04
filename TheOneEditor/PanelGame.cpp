@@ -12,6 +12,15 @@ PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name),camer
 
 PanelGame::~PanelGame() {}
 
+bool PanelGame::Start()
+{
+ 	for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+	{
+		if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); cameraToRender = GO->GetComponent<Camera>(); }
+	}
+	return true;
+}
+
 bool PanelGame::Draw()
 {
 	ImGuiWindowFlags settingsFlags = 0;
@@ -39,6 +48,13 @@ bool PanelGame::Draw()
 
 			if (ImGui::BeginMenu("Camera"))
 			{
+				for (auto camerasGO : gameCameras)
+				{
+					if(ImGui::MenuItem(camerasGO->GetName().c_str()))
+					{
+						cameraToRender = camerasGO->GetComponent<Camera>();
+					}
+				}
 				ImGui::EndMenu();
 			}
 
@@ -72,19 +88,14 @@ bool PanelGame::Draw()
         engine->OnWindowResize(x, y, width, height);
 
 		// Render Game cameras
-		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
-		{
-			if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); }
-
-        }
-
-		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+		/*for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
 		{
 			Camera* gameCam = GO.get()->GetComponent<Camera>();
 
             if (gameCam == nullptr) continue;
             engine->Render(gameCam);
-        }
+        }*/
+		engine->Render(cameraToRender);
     }
 
 	ImGui::End();

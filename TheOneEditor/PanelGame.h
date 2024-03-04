@@ -15,6 +15,7 @@ public:
 	PanelGame(PanelType type, std::string name);
 	~PanelGame();
 
+	bool Start();
 	bool Draw();
 
 	bool AddCameraToRenderList(GameObject* cameraGO);

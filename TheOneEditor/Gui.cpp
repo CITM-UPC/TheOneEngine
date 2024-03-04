@@ -192,6 +192,8 @@ bool Gui::Start()
 
 #pragma endregion IMGUI_STYLE
 
+	panelGame->Start();
+
 	return true;
 }
 
