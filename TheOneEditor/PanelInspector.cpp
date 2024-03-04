@@ -278,22 +278,54 @@ bool PanelInspector::Draw()
             if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
             {
                 bool isDirty = false;
-
+                
                 float fov = static_cast<float>(camera->fov);
                 float aspect = static_cast<float>(camera->aspect);
+                float size = static_cast<float>(camera->size);
                 float zNear = static_cast<float>(camera->zNear);
                 float zFar = static_cast<float>(camera->zFar);
 
-                if (ImGui::SliderFloat("FOV", &fov, 20.0, 120.0))
+                if (ImGui::BeginCombo("Camera Type", camera->cameraType == CameraType::PERSPECTIVE ? "Perspective" : "Orthogonal"))
                 {
-                    camera->fov = fov;
-                    isDirty = true;
+                    if (ImGui::Selectable("Perspective", camera->cameraType == CameraType::PERSPECTIVE))
+                    {
+                        camera->cameraType = CameraType::PERSPECTIVE;
+                        LOG(LogType::LOG_INFO, "Camera projection changed to PERSPECTIVE");
+                        isDirty = true;
+                    }
+
+                    if (ImGui::Selectable("Orthogonal", camera->cameraType == CameraType::ORTHOGONAL))
+                    {
+                        camera->cameraType = CameraType::ORTHOGONAL;
+                        LOG(LogType::LOG_INFO, "Camera projection changed to ORTHOGONAL");
+                        isDirty = true;
+                    }
+
+                    ImGui::EndCombo();
                 }
 
-                if (ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0))
+                if (camera->cameraType == CameraType::PERSPECTIVE)
                 {
-                    camera->aspect = aspect;
-                    isDirty = true;
+                    if (ImGui::SliderFloat("FOV", &fov, 20.0, 120.0))
+                    {
+                        camera->fov = fov;
+                        isDirty = true;
+                    }
+
+                    if (ImGui::SliderFloat("Aspect", &aspect, 0.1, 10.0))
+                    {
+                        camera->aspect = aspect;
+                        isDirty = true;
+                    }
+                }
+                
+                if (camera->cameraType == CameraType::ORTHOGONAL)
+                {
+                    if (ImGui::SliderFloat("SIZE", &size, 0.1, 100.0))
+                    {
+                        camera->size = size;
+                        isDirty = true;
+                    }
                 }
 
                 ImGui::Text("Clipping Planes");
