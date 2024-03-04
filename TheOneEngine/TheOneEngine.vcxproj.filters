@@ -28,6 +28,9 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{954d7850-b1f2-45be-b0ff-9ffe77288d41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -87,6 +90,9 @@
     <ClInclude Include="Log.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -123,7 +129,7 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="N_SceneManager.cpp">
-      <Filter>SceneManagement</Filter>    
+      <Filter>SceneManagement</Filter>
     </ClCompile>
     <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>
@@ -136,6 +142,9 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
