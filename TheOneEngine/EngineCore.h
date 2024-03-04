@@ -14,9 +14,8 @@
 #include "Log.h"
 
 #include "MonoManager.h"
-#include "../TheOneAudio/AudioCore.h"
 #include "InputManager.h"
-#include "..\TheOneAudio\AudioCore.h"
+#include "../TheOneAudio/AudioCore.h"
 
 #include <chrono>
 #include <memory>

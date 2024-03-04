@@ -72,7 +72,7 @@ void EngineCore::Render(Camera* camera)
         camera->lookAt.x, camera->lookAt.y, camera->lookAt.z,
 		cameraTransform->GetUp().x, cameraTransform->GetUp().y, cameraTransform->GetUp().z);
 
-    //DrawGrid(1000, 10);
+    DrawGrid(1000, 10);
     DrawAxis();
 
     //DrawFrustum(camera->viewMatrix);
