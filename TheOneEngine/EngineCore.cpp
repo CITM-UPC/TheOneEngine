@@ -1,6 +1,7 @@
 #include "EngineCore.h"
 #include "Log.h"
 #include "Defs.h"
+#include "N_SceneManager.h"
 #include <GL\glew.h>
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
@@ -11,6 +12,7 @@ EngineCore::EngineCore()
     audio = new AudioCore();
     monoManager = new MonoManager();
     input = new InputManager();
+    N_sceneManager = new N_SceneManager();
 }
 
 void EngineCore::Awake()
@@ -68,6 +70,11 @@ void EngineCore::Render(Camera* camera)
     //gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
 
 	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
+
+    if (cameraTransform == nullptr)
+    {
+        LOG(LogType::LOG_ERROR, "Camera Transform not found");
+    }
 
     gluLookAt(cameraTransform->GetPosition().x, cameraTransform->GetPosition().y, cameraTransform->GetPosition().z,
         camera->lookAt.x, camera->lookAt.y, camera->lookAt.z,

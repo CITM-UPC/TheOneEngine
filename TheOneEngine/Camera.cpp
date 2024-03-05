@@ -165,7 +165,14 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("Yaw")) yaw = cameraJSON["Yaw"];
     if (cameraJSON.contains("Pitch")) pitch = cameraJSON["Pitch"];
     if (cameraJSON.contains("Size")) size = cameraJSON["Size"];
-    if (cameraJSON.contains("CameraType")) cameraType = cameraJSON["CameraType"];
+
+    if (cameraJSON.contains("CameraType")) 
+    {
+        if (cameraJSON["CameraType"] == 0)
+            cameraType = CameraType::PERSPECTIVE;
+        else if (cameraJSON["CameraType"] == 1)
+            cameraType = CameraType::ORTHOGONAL;
+    } 
     
 
     // Optional: Recalculate view and projection matrices based on loaded data

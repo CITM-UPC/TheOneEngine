@@ -20,6 +20,7 @@
 #include <chrono>
 #include <memory>
 
+class N_SceneManager;
 
 class EngineCore
 {
@@ -59,6 +60,7 @@ public:
 	AudioCore* audio = nullptr;
 	MonoManager* monoManager = nullptr;
 	InputManager* input = nullptr;
+	N_SceneManager* N_sceneManager = nullptr;
 
 private:
 

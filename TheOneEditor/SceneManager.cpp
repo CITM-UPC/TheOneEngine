@@ -15,20 +15,19 @@ SceneManager::~SceneManager() {}
 
 bool SceneManager::Awake()
 {
-	N_sceneManager = new N_SceneManager();
-
+	engine->N_sceneManager->Awake();
 	return true;
 }
 
 bool SceneManager::Start()
 {
-	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
-	N_sceneManager->CreateCameraGO("mainCamera");
+	engine->N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
+	engine->N_sceneManager->CreateCameraGO("mainCamera");
 	//N_sceneManager->LoadScene("Scene_2");
-	N_sceneManager->Start();
+	engine->N_sceneManager->Start();
 
-	N_sceneManager->CreateTeapot();
-	engine->monoManager->bulletGO = N_sceneManager->currentScene->GetRootSceneGO()->children.back().get();
+	engine->N_sceneManager->CreateTeapot();
+	engine->monoManager->bulletGO = engine->N_sceneManager->currentScene->GetRootSceneGO()->children.back().get();
 	engine->monoManager->bulletGO->AddScript("Bullet");
 	engine->monoManager->bulletGO->Disable();
 
@@ -37,28 +36,28 @@ bool SceneManager::Start()
 
 bool SceneManager::PreUpdate()
 {
-	N_sceneManager->PreUpdate();
+	engine->N_sceneManager->PreUpdate();
 
 	return true;
 }
 
 bool SceneManager::Update(double dt)
 {
-	N_sceneManager->Update(dt, app->IsPlaying());
+	engine->N_sceneManager->Update(dt, app->IsPlaying());
 
 	return true;
 }
 
 bool SceneManager::PostUpdate()
 {
-	N_sceneManager->PostUpdate();
+	engine->N_sceneManager->PostUpdate();
 
 	return true;
 }
 
 bool SceneManager::CleanUp()
 {
-	N_sceneManager->CleanUp();
+	engine->N_sceneManager->CleanUp();
 
 	return true;
 }

@@ -29,6 +29,7 @@ bool N_SceneManager::Awake()
 
 bool N_SceneManager::Start()
 {
+	FindCameraInScene();
 	return true;
 }
 
@@ -87,6 +88,9 @@ void N_SceneManager::LoadScene(std::string sceneName)
 	std::string fileName = "Assets/Scenes/" + sceneName + ".toe";
 
 	LoadSceneFromJSON(fileName);
+
+	FindCameraInScene();
+	currentScene->SetIsDirty(true);
 }
 
 void N_SceneManager::SaveScene()
@@ -432,6 +436,14 @@ std::vector<std::shared_ptr<GameObject>> N_SceneManager::GetGameObjects()
 void N_SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
 	selectedGameObject = gameObj;
+}
+
+void N_SceneManager::FindCameraInScene()
+{
+	for (const auto GO : GetGameObjects())
+	{
+		if (GO->HasCameraComponent()) { currentScene->currentCamera = GO->GetComponent<Camera>(); }
+	}
 }
 
 std::shared_ptr<GameObject> N_SceneManager::GetSelectedGO() const

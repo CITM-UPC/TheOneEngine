@@ -31,9 +31,6 @@ public:
 private:
 	// Private constructor to enforce singleton pattern
 	SceneManager() {}
-
-public:
-	N_SceneManager* N_sceneManager = nullptr;
 };
 
 #endif // !__SCENE_MANAGER_H__

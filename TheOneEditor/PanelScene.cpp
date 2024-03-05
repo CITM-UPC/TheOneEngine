@@ -162,7 +162,7 @@ bool PanelScene::Draw()
         engine->Render(sceneCam);
 
 		// Game cameras Frustum
-		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+		for (const auto GO : engine->N_sceneManager->GetGameObjects())
 		{
 			Camera* gameCam = GO.get()->GetComponent<Camera>();
 
@@ -182,7 +182,7 @@ bool PanelScene::Draw()
         }       
 
         // Gizmo
-        shared_ptr<GameObject> selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO();
+        shared_ptr<GameObject> selectedGO = engine->N_sceneManager->GetSelectedGO();
 
         if (selectedGO && gizmoType != -1)
         {

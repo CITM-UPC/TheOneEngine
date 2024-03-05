@@ -43,7 +43,7 @@ bool PanelInspector::Draw()
         ImVec4 clear_color = ImVec4(0.55f, 0.55f, 0.55f, 1.00f);
         ImGui::SetNextWindowSize(ImVec2(250, 650), ImGuiCond_Once);
 
-        selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO().get();
+        selectedGO = engine->N_sceneManager->GetSelectedGO().get();
 
         if (selectedGO != nullptr)
         {
