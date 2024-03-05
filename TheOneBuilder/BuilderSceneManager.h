@@ -5,6 +5,8 @@
 #include "BuilderModule.h"
 #include "..\TheOneEngine\N_SceneManager.h"
 
+class Camera;
+
 class BuilderSceneManager : public BuilderModule
 {
 public:
@@ -23,6 +25,7 @@ public:
 
 public:
 	N_SceneManager* N_sceneManager = nullptr;
+	Camera* cameraToRender = nullptr;
 
 };
 

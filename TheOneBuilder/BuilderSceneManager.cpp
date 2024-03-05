@@ -1,5 +1,6 @@
 #include "BuilderApp.h"
 #include "BuilderSceneManager.h"
+#include "../TheOneEngine/Camera.h"
 
 BuilderSceneManager::BuilderSceneManager(BuilderApp* app) : BuilderModule(app) {}
 
@@ -15,7 +16,11 @@ bool BuilderSceneManager::Awake()
 bool BuilderSceneManager::Start()
 {
 	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
-	N_sceneManager->LoadScene("VS1"); // add the name of the starting scene here
+	N_sceneManager->LoadScene("Scene"); // add the name of the starting scene here
+	for (const auto GO : N_sceneManager->GetGameObjects())
+	{
+		if (GO->HasCameraComponent()) { cameraToRender = GO->GetComponent<Camera>(); }
+	}
 	N_sceneManager->Start();
 
 	return true;
@@ -37,6 +42,7 @@ bool BuilderSceneManager::Update(double dt)
 
 bool BuilderSceneManager::PostUpdate()
 {
+	engine->Render(cameraToRender);
 	N_sceneManager->PostUpdate();
 
 	return true;
