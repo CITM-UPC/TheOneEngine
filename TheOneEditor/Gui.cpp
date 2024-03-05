@@ -553,7 +553,7 @@ void Gui::OpenSceneFileWindow()
 		}
 		else
 		{
-			app->scenemanager->N_sceneManager->LoadScene(file);
+			app->scenemanager->N_sceneManager->LoadSceneFromJSON(file);
 			openSceneFileWindow = false;
 		}
 		
