@@ -109,6 +109,7 @@ public:
 
     bool IsStatic() const;
     void SetStatic(bool isStatic);
+    bool HasCameraComponent();
 
     void CreateUID();
     uint32 GetUID() { return UID; }

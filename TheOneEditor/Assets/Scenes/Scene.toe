@@ -1,0 +1,53 @@
+{
+  "GameObjects": [
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.9063077861035319,
+            0.42261826374177747,
+            0.0,
+            0.0,
+            -0.42261826374177747,
+            0.9063077861035319,
+            0.0,
+            0.0,
+            5.0,
+            0.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 3303271191
+        },
+        {
+          "Aspect": 1.777,
+          "CameraType": 0,
+          "FOV": 90.30799865722656,
+          "Name": "Camera",
+          "ParentUID": 3452816845,
+          "Pitch": 0.0,
+          "Size": 5.0,
+          "Type": 1,
+          "UID": 3974076475,
+          "Yaw": 0.0,
+          "zFar": 1000.0,
+          "zNear": 0.1
+        }
+      ],
+      "Enabled": true,
+      "Name": "mainCamera",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    }
+  ],
+  "index": 0,
+  "path": "Assets\\Scenes\\Scene.toe",
+  "sceneName": "Scene"
+}

@@ -34,6 +34,9 @@
     <Filter Include="GameObject\Components\UI\Items">
       <UniqueIdentifier>{7687b297-b5a1-4afc-b2cf-ee4ea64309fe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{318a6ab4-0570-4ece-9443-77b727edbae4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -92,6 +95,9 @@
     </ClInclude>
     <ClInclude Include="Log.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="Canvas.h">
       <Filter>GameObject\Components\UI</Filter>
@@ -160,6 +166,9 @@
     </ClCompile>
     <ClCompile Include="ImageUI.cpp">
       <Filter>GameObject\Components\UI\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
