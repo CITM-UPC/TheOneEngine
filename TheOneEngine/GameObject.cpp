@@ -134,7 +134,7 @@ AABBox GameObject::CalculateAABB()
 
 	for (const auto& child : children)
 	{
-		AABBox childAABB = (child.get()->GetComponent<Transform>()->getMatrix() * child.get()->CalculateAABB()).AABB();
+		AABBox childAABB = (child.get()->GetComponent<Transform>()->GetTransform() * child.get()->CalculateAABB()).AABB();
 		aabb.minPoint = (glm::min)(aabb.minPoint, childAABB.minPoint);
 		aabb.maxPoint = (glm::max)(aabb.maxPoint, childAABB.maxPoint);
 	}

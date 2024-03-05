@@ -385,13 +385,13 @@ bool PanelInspector::Draw()
                 
                 if (source->event != NULL) {
                     if (ImGui::Button("Play"))
-                        app->engine->audioManager->PlayAudio(source);
+                        engine->audioManager->PlayAudio(source);
                     if (ImGui::Button("Stop"))
-                        app->engine->audioManager->StopAudio(source);
+                        engine->audioManager->StopAudio(source);
                     if (ImGui::Button("Pause"))
-                        app->engine->audioManager->PauseAudio(source);
+                        engine->audioManager->PauseAudio(source);
                     if (ImGui::Button("Resume"))
-                        app->engine->audioManager->ResumeAudio(source);
+                        engine->audioManager->ResumeAudio(source);
                 }
                 else{
                     ImGui::Text("No audio event selected");
@@ -411,9 +411,9 @@ bool PanelInspector::Draw()
             if (ImGui::Selectable("Listener"))
             {
                 selectedGO->AddComponent<Listener>();
-                selectedGO->GetComponent<Listener>()->goID = app->engine->audioManager->audio->RegisterGameObject(selectedGO->GetName());
-                app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Listener>());
-                app->engine->audioManager->audio->SetDefaultListener(selectedGO->GetComponent<Listener>()->goID);
+                selectedGO->GetComponent<Listener>()->goID = engine->audioManager->audio->RegisterGameObject(selectedGO->GetName());
+                engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Listener>());
+                engine->audioManager->audio->SetDefaultListener(selectedGO->GetComponent<Listener>()->goID);
 
             }
             if (ImGui::Selectable("Script"))
@@ -427,8 +427,8 @@ bool PanelInspector::Draw()
             if (ImGui::Selectable("Source"))
             {
                 selectedGO->AddComponent<Source>();
-                selectedGO->GetComponent<Source>()->goID = app->engine->audioManager->audio->RegisterGameObject(selectedGO->GetName());
-                app->engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Source>());
+                selectedGO->GetComponent<Source>()->goID = engine->audioManager->audio->RegisterGameObject(selectedGO->GetName());
+                engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)selectedGO->GetComponent<Source>());
             }
         }
     }

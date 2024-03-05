@@ -17,7 +17,7 @@ static GameObject* GetGameObjectPtr()
 }
 
 //Transform
-static void GetTransform(GameObject* GOptr, vec3* position)
+static void GetTransform(GameObject* GOptr, vec3f* position)
 {
 	//	WARNING
 
@@ -26,9 +26,9 @@ static void GetTransform(GameObject* GOptr, vec3* position)
 	//currently works thanks to the new tracking system through pointers instead
 	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
 
-	*position = GOptr->GetComponent<Transform>()->GetPosition();
+	*position = (vec3f)GOptr->GetComponent<Transform>()->GetPosition();
 }
-static void SetTransform(GameObject* GOptr, vec3* position)
+static void SetTransform(GameObject* GOptr, vec3f* position)
 {
 	//	WARNING
 
@@ -37,7 +37,7 @@ static void SetTransform(GameObject* GOptr, vec3* position)
 	//currently works thanks to the new tracking system through pointers instead
 	//of UIDs, but still MUST be updated AS SOON as the Transform rework is finished.
 
-	GOptr->GetComponent<Transform>()->SetPosition(*position);
+	GOptr->GetComponent<Transform>()->SetPosition((vec3f)*position);
 }
 
 static vec3 GetTransformForward(GameObject* GOptr)

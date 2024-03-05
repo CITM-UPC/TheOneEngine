@@ -27,21 +27,21 @@ void Source::SetTransform(std::shared_ptr<GameObject> containerGO)
 {
 	AkSoundPosition tTransform;
 	AkVector pos;
-	pos.X = -containerGO.get()->GetComponent<Transform>()->getPosition().x;
-	pos.Y = containerGO.get()->GetComponent<Transform>()->getPosition().y;
-	pos.Z = -containerGO.get()->GetComponent<Transform>()->getPosition().z;
+	pos.X = -containerGO.get()->GetComponent<Transform>()->GetPosition().x;
+	pos.Y = containerGO.get()->GetComponent<Transform>()->GetPosition().y;
+	pos.Z = -containerGO.get()->GetComponent<Transform>()->GetPosition().z;
 
 	tTransform.SetPosition(pos);
 
 	AkVector forward;
-	forward.X = containerGO.get()->GetComponent<Transform>()->getForward().x;
-	forward.Y = containerGO.get()->GetComponent<Transform>()->getForward().y;
-	forward.Z = containerGO.get()->GetComponent<Transform>()->getForward().z;
+	forward.X = containerGO.get()->GetComponent<Transform>()->GetForward().x;
+	forward.Y = containerGO.get()->GetComponent<Transform>()->GetForward().y;
+	forward.Z = containerGO.get()->GetComponent<Transform>()->GetForward().z;
 
 	AkVector up;
-	up.X = containerGO.get()->GetComponent<Transform>()->getUp().x;
-	up.Y = containerGO.get()->GetComponent<Transform>()->getUp().y;
-	up.Z = containerGO.get()->GetComponent<Transform>()->getUp().z;
+	up.X = containerGO.get()->GetComponent<Transform>()->GetUp().x;
+	up.Y = containerGO.get()->GetComponent<Transform>()->GetUp().y;
+	up.Z = containerGO.get()->GetComponent<Transform>()->GetUp().z;
 
 	tTransform.SetOrientation(forward, up);
 
