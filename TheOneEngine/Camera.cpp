@@ -146,7 +146,7 @@ json Camera::SaveComponent()
     cameraJSON["Yaw"] = yaw;
     cameraJSON["Pitch"] = pitch;
     cameraJSON["Size"] = size;
-    cameraJSON["Type"] = cameraType;
+    cameraJSON["CameraType"] = cameraType;
 
     return cameraJSON;
 }
@@ -165,7 +165,7 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("Yaw")) yaw = cameraJSON["Yaw"];
     if (cameraJSON.contains("Pitch")) pitch = cameraJSON["Pitch"];
     if (cameraJSON.contains("Size")) size = cameraJSON["Size"];
-    if (cameraJSON.contains("Type")) cameraType = cameraJSON["Type"];
+    if (cameraJSON.contains("CameraType")) cameraType = cameraJSON["CameraType"];
     
 
     // Optional: Recalculate view and projection matrices based on loaded data
