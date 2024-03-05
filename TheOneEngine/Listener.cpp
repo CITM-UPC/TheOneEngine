@@ -53,9 +53,25 @@ void Listener::SetTransform(std::shared_ptr<GameObject> containerGO)
 // JULS: TODO -> SaveComponent and LoadComponent Listener
 json Listener::SaveComponent()
 {
-	return json();
+	json listenerJSON;
+
+	listenerJSON["Name"] = name;
+	listenerJSON["Type"] = type;
+
+	listenerJSON["AudioID"] = goID;
+
+	return listenerJSON;
 }
 
-void Listener::LoadComponent(const json& transformJSON)
+void Listener::LoadComponent(const json& listenerJSON)
 {
+	if (listenerJSON.contains("Name"))
+	{
+		name = listenerJSON["Name"];
+	}
+
+	if (listenerJSON.contains("AudioID"))
+	{
+		goID = listenerJSON["AudioID"];
+	}
 }

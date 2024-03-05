@@ -38,11 +38,11 @@ bool Renderer3D::Start()
     sceneCamera.get()->AddComponent<Camera>();
     sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
 
-    // JULS: Listener 
-    sceneCamera.get()->AddComponent<Listener>();
-	sceneCamera.get()->GetComponent<Listener>()->goID = engine->audioManager->audio->RegisterGameObject(sceneCamera.get()->GetName());
-	engine->audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)sceneCamera.get()->GetComponent<Listener>());
-	engine->audioManager->audio->SetDefaultListener(sceneCamera.get()->GetComponent<Listener>()->goID);
+    //// JULS: Listener 
+    //sceneCamera.get()->AddComponent<Listener>();
+	//sceneCamera.get()->GetComponent<Listener>()->goID = audioManager->audio->RegisterGameObject(sceneCamera.get()->GetName());
+	//audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)sceneCamera.get()->GetComponent<Listener>());
+	//audioManager->audio->SetDefaultListener(sceneCamera.get()->GetComponent<Listener>()->goID);
 
     // hekbas test adding same component
     LOG(LogType::LOG_INFO, "# Testing Component Duplication");
@@ -72,7 +72,7 @@ bool Renderer3D::Update(double dt)
     engine->Update(dt);
 
     // JULS: Update should be done in the Audio Manager but for now I will leave it here
-    sceneCamera.get()->GetComponent<Listener>()->SetTransform(sceneCamera);
+    //sceneCamera.get()->GetComponent<Listener>()->SetTransform(sceneCamera);
 
     //app->engine->audio->SetAudioGameObjectTransform(
     //    //here must the gameobject compoment -> wwisegameobject   of the camera

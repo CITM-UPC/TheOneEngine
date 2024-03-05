@@ -553,6 +553,7 @@ void Gui::OpenSceneFileWindow()
 		}
 		else
 		{
+			audioManager->audio->gameObjectIDs.clear();
 			app->scenemanager->N_sceneManager->LoadScene(file);
 			openSceneFileWindow = false;
 		}

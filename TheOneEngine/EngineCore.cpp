@@ -6,7 +6,7 @@
 #include <IL\il.h>
 #include <memory>
 
-//AudioManager* audioManager = NULL;
+AudioManager* audioManager = NULL;
 
 EngineCore::EngineCore()
 {

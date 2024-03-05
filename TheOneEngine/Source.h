@@ -16,7 +16,7 @@ public:
 	void SetTransform(std::shared_ptr<GameObject> containerGO);
 
 	json SaveComponent();
-	void LoadComponent(const json& transformJSON);
+	void LoadComponent(const json& sourceJSON);
 
 	string path;
 	int volume;

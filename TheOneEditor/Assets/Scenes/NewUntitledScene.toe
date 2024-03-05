@@ -1,0 +1,96 @@
+{
+  "GameObjects": [
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "ParentUID": 0,
+          "Position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 0
+        },
+        {
+          "Aspect": 1.777,
+          "FOV": 65.0,
+          "Name": "Camera",
+          "ParentUID": 0,
+          "Pitch": 0.0,
+          "Type": 1,
+          "UID": 0,
+          "Yaw": 0.0,
+          "zFar": 1000.0,
+          "zNear": 0.1
+        }
+      ],
+      "Enabled": true,
+      "Name": "mainCamera",
+      "ParentUID": 0,
+      "Static": false,
+      "UID": 0
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "ParentUID": 6619240,
+          "Position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 0
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 6619240,
+          "Path": "Library/Meshes/Placeholder/pCube1.mesh",
+          "Type": 2,
+          "UID": 0
+        },
+        null
+      ],
+      "Enabled": true,
+      "Name": "pCube1",
+      "ParentUID": 0,
+      "Static": false,
+      "UID": 6619240
+    }
+  ],
+  "index": 0,
+  "path": "Assets\\Scenes\\NewUntitledScene.toe",
+  "sceneName": "NewUntitledScene"
+}

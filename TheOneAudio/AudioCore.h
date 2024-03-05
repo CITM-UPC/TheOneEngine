@@ -74,6 +74,13 @@ public:
 	//function called when an event finishes, to make AudioEvent know it ended
 	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
 
+	//vector of all game object ids
+	std::vector<AkGameObjectID> gameObjectIDs;
+
+	//vector of all audio events that must be used
+	//WHEN ITERATING IT USE AS MAX VALUE MAX_AUDIO_EVENTS
+	std::vector<AudioEvent*> audioEvents;
+
 private:
 	bool InitEngine();
 	bool InitMemoryManager();
@@ -82,13 +89,6 @@ private:
 	bool InitMusicEngine();
 	bool InitSpatialAudio();
 	bool InitCommunication();
-
-	//vector of all game object ids
-	std::vector<AkGameObjectID> gameObjectIDs;
-
-	//vector of all audio events that must be used
-	//WHEN ITERATING IT USE AS MAX VALUE MAX_AUDIO_EVENTS
-	std::vector<AudioEvent*> audioEvents;
 
 	//true: music1
 	//false: music2

@@ -55,7 +55,6 @@ void AudioManager::ResumeAudio(Source* source)
 void AudioManager::AddAudioObject(std::shared_ptr<AudioComponent> audioGO)
 {
 	audioComponents.push_back(audioGO);
-
 	// Ensure that the component is properly initialized before enabling it
 	//audioGO->GetGameObject()->GetComponent<;
 }

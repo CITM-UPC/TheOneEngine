@@ -55,9 +55,32 @@ void Source::SetTransform(std::shared_ptr<GameObject> containerGO)
 // JULS: TODO -> SaveComponent and LoadComponent AudioSource
 json Source::SaveComponent()
 {
+	json sourceJSON;
+
+	sourceJSON["Name"] = name;
+	sourceJSON["Type"] = type;
+
+	sourceJSON["AudioID"] = goID;
+	sourceJSON["Event"] = event;
+	
 	return json();
 }
 
-void Source::LoadComponent(const json& transformJSON)
+void Source::LoadComponent(const json& sourceJSON)
 {
+	if (sourceJSON.contains("Name"))
+	{
+		name = sourceJSON["Name"];
+	}
+
+	if (sourceJSON.contains("AudioID"))
+	{
+		goID = sourceJSON["AudioID"];
+	}
+
+	if (sourceJSON.contains("Event"))
+	{
+		event = sourceJSON["Event"];
+	}
+
 }

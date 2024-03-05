@@ -298,7 +298,7 @@ void App::Play()
 		game_timer->Start();
 
 		LOG(LogType::LOG_INFO, "GameState changed to PLAY");
-		engine->audioManager->audio->PlayEngine();
+		audioManager->audio->PlayEngine();
 	}
 	else if (state == GameState::PAUSE) {
 		state = GameState::PLAY;
@@ -306,14 +306,14 @@ void App::Play()
 
 		LOG(LogType::LOG_INFO, "GameState changed to PLAY");
 		// JULS: This should be taken in account to resume 
-		engine->audioManager->audio->PlayEngine();
+		audioManager->audio->PlayEngine();
 	}
 	else if (state == GameState::PLAY) {
 		state = GameState::NONE;
 		game_time = 0.0F;
 
 		LOG(LogType::LOG_INFO, "GameState changed to NONE");
-		engine->audioManager->audio->PauseEngine();
+		audioManager->audio->PauseEngine();
 
 	}
 }
@@ -328,7 +328,7 @@ void App::Pause()
 		game_timer->Pause();
 
 		LOG(LogType::LOG_INFO, "GameState changed to PAUSE");
-		engine->audioManager->audio->PauseEngine();
+		audioManager->audio->PauseEngine();
 
 	}
 }
@@ -340,7 +340,7 @@ void App::PlayOnce()
 		state = GameState::PLAY_ONCE;
 
 		LOG(LogType::LOG_INFO, "GameState changed to PLAY_ONCE");
-		engine->audioManager->audio->PlayEngine();
+		audioManager->audio->PlayEngine();
 
 	}
 	else if (state == GameState::PLAY) {
@@ -368,5 +368,5 @@ void App::Stop()
 	game_time = 0.0F;
 	state = GameState::NONE;
 	LOG(LogType::LOG_INFO, "GameState changed to NONE");
-	engine->audioManager->audio->PauseEngine();
+	audioManager->audio->PauseEngine();
 }

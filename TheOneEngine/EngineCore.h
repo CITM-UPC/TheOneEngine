@@ -54,7 +54,6 @@ public:
 public:
 	
 	bool vsync = false;
-	AudioManager* audioManager = nullptr;
 	MonoManager* monoManager = nullptr;
 	InputManager* input = nullptr;
 
@@ -67,5 +66,6 @@ private:
 };
 
 extern EngineCore* engine;
+extern AudioManager* audioManager;
 
 #endif // !__ENGINE_CORE_H__

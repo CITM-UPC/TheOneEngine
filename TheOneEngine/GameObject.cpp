@@ -7,7 +7,7 @@
 #include "Source.h"
 #include "UIDGen.h"
 #include "BBox.hpp"
-
+#include "EngineCore.h"
 #include "Math.h"
 
 
@@ -365,6 +365,7 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 		enabled = gameObjectJSON["Enabled"];
 	}
 
+
 	// Load components
 	if (gameObjectJSON.contains("Components"))
 	{
@@ -393,11 +394,16 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			{
 				this->AddComponent<Listener>();
 				this->GetComponent<Listener>()->LoadComponent(componentJSON);
+				this->GetComponent<Listener>()->goID = audioManager->audio->RegisterGameObject(this->GetName());
+				audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)this->GetComponent<Listener>());
+				audioManager->audio->SetDefaultListener(this->GetComponent<Listener>()->goID);
 			}
 			else if (componentJSON["Type"] == 5)
 			{
 				this->AddComponent<Source>();
 				this->GetComponent<Source>()->LoadComponent(componentJSON);
+				this->GetComponent<Source>()->goID = audioManager->audio->RegisterGameObject(this->GetName());
+				audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)this->GetComponent<Source>());
 			}
 		}
 	}
