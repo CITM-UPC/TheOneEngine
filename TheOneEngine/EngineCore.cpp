@@ -29,6 +29,7 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
+    this->dt = dt;
     audio->Update(dt);
     input->PreUpdate(dt);
 }

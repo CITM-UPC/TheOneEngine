@@ -53,6 +53,8 @@ public:
 
 public:
 	
+	double dt = 0;
+
 	bool vsync = false;
 	AudioCore* audio = nullptr;
 	MonoManager* monoManager = nullptr;
