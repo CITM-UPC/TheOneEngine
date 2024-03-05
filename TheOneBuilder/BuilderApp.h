@@ -18,6 +18,7 @@ class BuilderModule;
 class BuilderWindow;
 class BuilderInput;
 class BuilderRenderer3D;
+class BuilderSceneManager;
 
 enum class GameState {
 	NONE,
@@ -80,6 +81,7 @@ public:
 	BuilderWindow* window = nullptr;
 	BuilderInput* input = nullptr;
 	BuilderRenderer3D* renderer3D = nullptr;
+	BuilderSceneManager* sceneManager = nullptr;
 
 private:
 

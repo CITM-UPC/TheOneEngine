@@ -30,7 +30,7 @@ int main(int argc, char* args[])
 
 			bApp = new BuilderApp(argc, args);
 
-			if (engine != NULL)
+			if (bApp != NULL)
 				state = AWAKE;
 			else
 				state = FAIL;
