@@ -3,14 +3,14 @@
 #pragma once
 
 #include "Defs.h"
+#include "GameObject.h"
 
 #include <string>
 #include <memory>
 
-typedef unsigned int uint;
 
 class Scene;
-class GameObject;
+class Transform;
 class MeshLoader;
 
 class N_SceneManager
@@ -23,7 +23,7 @@ public:
 	bool Start();
 
 	bool PreUpdate();
-	bool Update(double dt);
+	bool Update(double dt, bool isPlaying);
 	bool PostUpdate();
 
 	bool CleanUp();
@@ -49,7 +49,7 @@ public:
 	std::shared_ptr<GameObject> CreateCube();
 	std::shared_ptr<GameObject> CreateSphere();
 	std::shared_ptr<GameObject> CreateMF();
-	std::shared_ptr<GameObject> CreateTeapot(std::string path);
+	std::shared_ptr<GameObject> CreateTeapot();
 
 	// Get/Set
 	uint GetNumberGO() const;
@@ -74,9 +74,17 @@ private:
 class Scene
 {
 public:
-	Scene() : sceneName("Scene"), index(0), isDirty(true) { rootSceneGO = std::make_shared<GameObject>(sceneName); }
+	Scene() : sceneName("Scene"), index(0), isDirty(true)
+	{
+		rootSceneGO = std::make_shared<GameObject>(sceneName);
+		rootSceneGO.get()->AddComponent<Transform>();
+	}
 
-	inline Scene(uint _index, std::string name) : sceneName(name), index(_index), isDirty(true) { rootSceneGO = std::make_shared<GameObject>(name); }
+	inline Scene(uint _index, std::string name) : sceneName(name), index(_index), isDirty(true)
+	{
+		rootSceneGO = std::make_shared<GameObject>(name);
+		rootSceneGO.get()->AddComponent<Transform>();
+	}
 
 	~Scene() {}
 
@@ -89,8 +97,13 @@ public:
 	inline bool IsDirty() const { return isDirty; }
 	inline void SetIsDirty(bool state) { isDirty = state; }
 
+	inline std::string GetPath() const { return path; }
+	inline void SetPath(std::string _path) { path = _path; }
+
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
+	inline void UpdateGOs(double dt);
+	
 	inline void Draw();
 
 private:

@@ -5,7 +5,7 @@
 #include "Renderer3D.h"
 #include "SceneManager.h"
 
-#include "Log.h"
+#include "../TheOneEngine/Log.h"
 #include <string>
 #include <iostream>
 #include <filesystem>

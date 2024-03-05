@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Module.h"
-#include "..\TheOneEngine\Defs.h"
+#include "../TheOneEngine/Defs.h"
 
 #include <SDL2/SDL.h>
 

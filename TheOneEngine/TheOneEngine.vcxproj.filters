@@ -34,6 +34,9 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{318a6ab4-0570-4ece-9443-77b727edbae4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -102,6 +105,12 @@
     <ClInclude Include="AudioManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -160,6 +169,12 @@
     </ClCompile>
     <ClCompile Include="MonoRegisterer.cpp">
       <Filter>Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

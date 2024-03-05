@@ -1,20 +1,18 @@
 #include "App.h"
 #include "SceneManager.h"
-#include "Log.h"
 #include "Renderer3D.h"
+#include "Gui.h"
+#include "PanelInspector.h"
+#include "../TheOneEngine/Log.h"
 
 #include <fstream>
 #include <filesystem>
 
 namespace fs = std::filesystem;
 
-SceneManager::SceneManager(App* app) : Module(app)
-{
-}
+SceneManager::SceneManager(App* app) : Module(app) {}
 
-SceneManager::~SceneManager()
-{
-}
+SceneManager::~SceneManager() {}
 
 bool SceneManager::Awake()
 {
@@ -25,6 +23,8 @@ bool SceneManager::Awake()
 
 bool SceneManager::Start()
 {
+	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
+	//N_sceneManager->LoadScene("Scene_2");
 	N_sceneManager->Start();
 
 	return true;
@@ -111,7 +111,7 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-	N_sceneManager->Update(dt);
+	N_sceneManager->Update(dt, app->IsPlaying());
 
     /*if (app->IsPlaying()) {
         demo->GetComponent<Transform>()->rotate({ 0, 1, 0 }, rotationAngle);

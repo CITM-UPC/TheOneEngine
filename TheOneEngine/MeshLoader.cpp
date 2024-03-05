@@ -1,7 +1,7 @@
 #include "MeshLoader.h"
 #include "Texture.h"
 #include "Mesh.h"
-#include "../TheOneEditor/Log.h"
+#include "../TheOneEngine/Log.h"
 
 #include "nlohmann/json.hpp"
 
@@ -96,11 +96,120 @@ void MeshLoader::BufferData(MeshData meshData)
     }
 }
 
+void MeshLoader::FixAssimpRotation(const aiScene* scene)
+{
+
+    if (scene->mMetaData)
+    {
+        int32_t upAxis = 1, upAxisSign = 1, frontAxis = 2, frontAxisSign = 1, coordAxis = 0, coordAxisSign = 1;
+        double UnitScaleFactor = 1.0;
+        for (unsigned MetadataIndex = 0; MetadataIndex < scene->mMetaData->mNumProperties; ++MetadataIndex)
+        {
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "UpAxis") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, upAxis);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "UpAxisSign") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, upAxisSign);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "FrontAxis") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, frontAxis);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "FrontAxisSign") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, frontAxisSign);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "CoordAxis") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, coordAxis);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "CoordAxisSign") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, coordAxisSign);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "UnitScaleFactor") == 0)
+                scene->mMetaData->Get<double>(MetadataIndex, UnitScaleFactor);
+        }
+
+        /*int upAxis = 0;
+        scene->mMetaData->Get<int>("UpAxis", upAxis);
+        int upAxisSign = 1;
+        scene->mMetaData->Get<int>("UpAxisSign", upAxisSign);
+
+        int frontAxis = 0;
+        scene->mMetaData->Get<int>("FrontAxis", upAxis);
+        int frontAxisSign = 1;
+        scene->mMetaData->Get<int>("FrontAxisSign", upAxisSign);
+
+        int coordAxis = 0;
+        scene->mMetaData->Get<int>("CoordAxis", upAxis);
+        int coordAxisSign = 1;
+        scene->mMetaData->Get<int>("CoordAxisSign", upAxisSign);*/
+
+        aiVector3D upVec = upAxis == 0 ? aiVector3D(upAxisSign, 0, 0) : upAxis == 1 ? aiVector3D(0, upAxisSign, 0) : aiVector3D(0, 0, upAxisSign);
+        aiVector3D forwardVec = frontAxis == 0 ? aiVector3D(frontAxisSign, 0, 0) : frontAxis == 1 ? aiVector3D(0, frontAxisSign, 0) : aiVector3D(0, 0, frontAxisSign);
+        aiVector3D rightVec = coordAxis == 0 ? aiVector3D(coordAxisSign, 0, 0) : coordAxis == 1 ? aiVector3D(0, coordAxisSign, 0) : aiVector3D(0, 0, coordAxisSign);
+
+        aiMatrix4x4 mat(
+            rightVec.x, rightVec.y, rightVec.z, 0.0f,
+            upVec.x, upVec.y, upVec.z, 0.0f,
+            forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f);
+
+        scene->mRootNode->mTransformation *= mat;
+    }
+
+
+#pragma region TEST2
+    /*if (scene->mMetaData)
+    {
+        int32_t UpAxis = 1, UpAxisSign = 1, FrontAxis = 2, FrontAxisSign = 1, CoordAxis = 0, CoordAxisSign = 1;
+        double UnitScaleFactor = 1.0;
+        for (unsigned MetadataIndex = 0; MetadataIndex < scene->mMetaData->mNumProperties; ++MetadataIndex)
+        {
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "UpAxis") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, UpAxis);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "UpAxisSign") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, UpAxisSign);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "FrontAxis") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, FrontAxis);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "FrontAxisSign") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, FrontAxisSign);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "CoordAxis") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, CoordAxis);
+
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "CoordAxisSign") == 0)
+                scene->mMetaData->Get<int32_t>(MetadataIndex, CoordAxisSign);
+          
+            if (strcmp(scene->mMetaData->mKeys[MetadataIndex].C_Str(), "UnitScaleFactor") == 0)
+                scene->mMetaData->Get<double>(MetadataIndex, UnitScaleFactor);
+        }
+
+        aiVector3D upVec, forwardVec, rightVec;
+
+        upVec[UpAxis] = UpAxisSign * (float)UnitScaleFactor;
+        forwardVec[FrontAxis] = FrontAxisSign * (float)UnitScaleFactor;
+        rightVec[CoordAxis] = CoordAxisSign * (float)UnitScaleFactor;
+
+        aiMatrix4x4 mat(
+            rightVec.x, rightVec.y, rightVec.z, 0.0f,
+            upVec.x, upVec.y, upVec.z, 0.0f,
+            forwardVec.x, forwardVec.y, forwardVec.z, 0.0f,
+            0.0f, 0.0f, 0.0f, 1.0f);
+
+        scene->mRootNode->mTransformation *= mat;
+    }*/
+#pragma endregion TEST2
+
+}
+
 std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
 {
     std::vector<MeshBufferedData> meshesBufferedData;
 
-    auto scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
+    const aiScene* scene = aiImportFile(path.c_str(), aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_ForceGenNormals);
+    //hekbas - need to fix this :(
+    //FixAssimpRotation(scene);
 
     std::string fileName = scene->GetShortFilename(path.c_str());
     std::string sceneName = fileName.substr(fileName.find_last_of("\\/") + 1, fileName.find_last_of('.') - fileName.find_last_of("\\/") - 1);

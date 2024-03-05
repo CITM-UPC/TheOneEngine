@@ -6,11 +6,20 @@
 #include "Window.h"
 #include "imgui.h"
 
-#include "..\TheOneEngine\EngineCore.h"
+#include "../TheOneEngine/EngineCore.h"
 
-PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name) {}
+PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name),cameraToRender() {}
 
 PanelGame::~PanelGame() {}
+
+bool PanelGame::Start()
+{
+ 	for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+	{
+		if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); cameraToRender = GO->GetComponent<Camera>(); }
+	}
+	return true;
+}
 
 bool PanelGame::Draw()
 {
@@ -24,6 +33,9 @@ bool PanelGame::Draw()
 	ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Game", &enabled, settingsFlags))
 	{
+		//Get selected GO
+		selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO().get();
+
 		// Top Bar --------------------------
 		if (ImGui::BeginMenuBar())
 		{
@@ -36,6 +48,13 @@ bool PanelGame::Draw()
 
 			if (ImGui::BeginMenu("Camera"))
 			{
+				for (auto camerasGO : gameCameras)
+				{
+					if(ImGui::MenuItem(camerasGO->GetName().c_str()))
+					{
+						cameraToRender = camerasGO->GetComponent<Camera>();
+					}
+				}
 				ImGui::EndMenu();
 			}
 
@@ -66,20 +85,27 @@ bool PanelGame::Draw()
 		int x = static_cast<int>(windowPos.x);
 		int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
-		app->engine->OnWindowResize(x, y, width, height);
+        engine->OnWindowResize(x, y, width, height);
 
 		// Render Game cameras
-		for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+		/*for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
 		{
 			Camera* gameCam = GO.get()->GetComponent<Camera>();
 
-			if (gameCam == nullptr) continue;
-			app->engine->Render(gameCam);
-		}
-	}
+            if (gameCam == nullptr) continue;
+            engine->Render(gameCam);
+        }*/
+		engine->Render(cameraToRender);
+    }
 
 	ImGui::End();
 	ImGui::PopStyleVar();
 
+	return true;
+}
+
+bool PanelGame::AddCameraToRenderList(GameObject* cameraGO)
+{
+	gameCameras.push_back(cameraGO);
 	return true;
 }

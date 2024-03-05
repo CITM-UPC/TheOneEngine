@@ -146,7 +146,7 @@ AABBox GameObject::CalculateAABBWithChildren()
 {
 	AABBox aabb = CalculateAABB();
 	// Transform the AABB to the coordinate system of the parent objects
-	mat4 parentTransform = GetComponent<Transform>()->GetWorldTransform();
+	mat4 parentTransform = GetComponent<Transform>()->CalculateWorldTransform();
 	OBBox obb = parentTransform * aabb;
 	return obb.AABB();
 }
@@ -289,6 +289,11 @@ bool GameObject::IsStatic() const
 void GameObject::SetStatic(bool staticFlag)
 {
 	isStatic = staticFlag;
+}
+
+bool GameObject::HasCameraComponent()
+{
+	return this->GetComponent<Camera>();
 }
 
 void GameObject::CreateUID()
