@@ -4,21 +4,22 @@
       "Components": [
         {
           "Name": "Transform",
-          "ParentUID": 0,
-          "Position": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Rotation": [
+          "Transformation Matrix": [
             1.0,
             0.0,
             0.0,
-            0.0
-          ],
-          "Scale": [
+            0.0,
+            0.0,
             1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
             1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
             1.0
           ],
           "Type": 0,
@@ -26,10 +27,12 @@
         },
         {
           "Aspect": 1.777,
+          "CameraType": 0,
           "FOV": 65.0,
           "Name": "Camera",
           "ParentUID": 0,
           "Pitch": 0.0,
+          "Size": 5.0,
           "Type": 1,
           "UID": 0,
           "Yaw": 0.0,
@@ -39,7 +42,7 @@
       ],
       "Enabled": true,
       "Name": "mainCamera",
-      "ParentUID": 0,
+      "ParentUID": 6684726,
       "Static": false,
       "UID": 0
     },
@@ -47,45 +50,125 @@
       "Components": [
         {
           "Name": "Transform",
-          "ParentUID": 6619240,
-          "Position": [
-            0.0,
-            0.0,
-            0.0
-          ],
-          "Rotation": [
+          "Transformation Matrix": [
             1.0,
             0.0,
             0.0,
-            0.0
-          ],
-          "Scale": [
+            0.0,
+            0.0,
             1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
             1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
             1.0
           ],
           "Type": 0,
           "UID": 0
-        },
-        {
-          "Active": true,
-          "DrawAABB": true,
-          "DrawChecker": false,
-          "DrawNormalsFaces": false,
-          "DrawNormalsVerts": false,
-          "DrawOBB": false,
-          "DrawWireframe": false,
-          "Name": "Mesh",
-          "ParentUID": 6619240,
-          "Path": "Library/Meshes/Placeholder/pCube1.mesh",
-          "Type": 2,
-          "UID": 0
-        },
-        null
+        }
       ],
       "Enabled": true,
-      "Name": "pCube1",
-      "ParentUID": 0,
+      "GameObjects": [
+        {
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 0
+            },
+            {
+              "Active": true,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 6619240,
+              "Path": "Library/Meshes/baker_house/Untitled.001.mesh",
+              "Type": 2,
+              "UID": 0
+            }
+          ],
+          "Enabled": true,
+          "Name": "Untitled.001",
+          "ParentUID": 6619240,
+          "Static": false,
+          "UID": 6619240
+        },
+        {
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 0
+            },
+            {
+              "Active": true,
+              "DrawAABB": true,
+              "DrawChecker": false,
+              "DrawNormalsFaces": false,
+              "DrawNormalsVerts": false,
+              "DrawOBB": false,
+              "DrawWireframe": false,
+              "Name": "Mesh",
+              "ParentUID": 6619240,
+              "Path": "Library/Meshes/baker_house/Untitled.mesh",
+              "Type": 2,
+              "UID": 0
+            }
+          ],
+          "Enabled": true,
+          "Name": "Untitled",
+          "ParentUID": 6619240,
+          "Static": false,
+          "UID": 6619240
+        }
+      ],
+      "Name": "baker_house",
+      "ParentUID": 6684726,
       "Static": false,
       "UID": 6619240
     }

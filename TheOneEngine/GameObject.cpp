@@ -392,11 +392,6 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			}
 			else if (componentJSON["Type"] == 4)
 			{
-				this->AddScript(componentJSON["ScriptName"]);
-				this->GetComponent<Script>()->LoadComponent(componentJSON);
-			}
-			else if (componentJSON["Type"] == 4)
-			{
 				this->AddComponent<Listener>();
 				this->GetComponent<Listener>()->LoadComponent(componentJSON);
 				this->GetComponent<Listener>()->goID = audioManager->audio->RegisterGameObject(this->GetName());
@@ -409,6 +404,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 				this->GetComponent<Source>()->LoadComponent(componentJSON);
 				this->GetComponent<Source>()->goID = audioManager->audio->RegisterGameObject(this->GetName());
 				audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)this->GetComponent<Source>());
+			}
+			else if (componentJSON["Type"] == 6)
+			{
+				this->AddScript(componentJSON["ScriptName"]);
+				this->GetComponent<Script>()->LoadComponent(componentJSON);
 			}
 		}
 	}
