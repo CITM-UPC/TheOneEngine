@@ -2,6 +2,7 @@
 #include "MonoManager.h"
 #include "Defs.h"
 
+#include "EngineCore.h"
 #include "Transform.h"
 
 #include "../mono/include/mono/jit/jit.h"
