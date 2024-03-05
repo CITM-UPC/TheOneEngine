@@ -24,6 +24,7 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
+	N_sceneManager->CreateCameraGO("mainCamera");
 	//N_sceneManager->LoadScene("Scene_2");
 	N_sceneManager->Start();
 

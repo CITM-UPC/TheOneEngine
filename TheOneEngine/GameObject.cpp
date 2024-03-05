@@ -392,6 +392,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			}
 			else if (componentJSON["Type"] == 4)
 			{
+				this->AddScript(componentJSON["ScriptName"]);
+				this->GetComponent<Script>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == 4)
+			{
 				this->AddComponent<Listener>();
 				this->GetComponent<Listener>()->LoadComponent(componentJSON);
 				this->GetComponent<Listener>()->goID = audioManager->audio->RegisterGameObject(this->GetName());

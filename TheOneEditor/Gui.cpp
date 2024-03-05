@@ -554,7 +554,7 @@ void Gui::OpenSceneFileWindow()
 		else
 		{
 			audioManager->audio->gameObjectIDs.clear();
-			app->scenemanager->N_sceneManager->LoadScene(file);
+			app->scenemanager->N_sceneManager->LoadSceneFromJSON(file);
 			openSceneFileWindow = false;
 		}
 		
