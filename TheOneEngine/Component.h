@@ -16,6 +16,7 @@ enum class ComponentType
 	Mesh,
     Texture,
     Script,
+    Canvas,
 	Unknown
 };
 

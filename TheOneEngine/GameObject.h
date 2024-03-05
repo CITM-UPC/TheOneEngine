@@ -13,6 +13,11 @@
 #include <list>
 #include <memory>
 
+enum class DrawMode
+{
+    GAME,
+    EDITOR
+};
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
@@ -23,6 +28,7 @@ public:
 
     void Update(double dt);
     void Draw();
+    void DrawUI(const DrawMode mode);
 
 
     // Components

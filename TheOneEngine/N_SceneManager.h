@@ -105,10 +105,11 @@ public:
 
 	inline void UpdateGOs(double dt);
 	
-	inline void Draw();
+	inline void Draw(DrawMode mode = DrawMode::GAME);
 
 private:
 	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);
+	inline void RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode = DrawMode::GAME);
 
 private:
 	uint index;
