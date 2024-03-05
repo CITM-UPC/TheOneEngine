@@ -28,6 +28,12 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Components\UI">
+      <UniqueIdentifier>{87342d4f-f585-4fe8-b03c-1d020c977d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Components\UI\Items">
+      <UniqueIdentifier>{7687b297-b5a1-4afc-b2cf-ee4ea64309fe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -87,6 +93,15 @@
     <ClInclude Include="Log.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>GameObject\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemUI.h">
+      <Filter>GameObject\Components\UI\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageUI.h">
+      <Filter>GameObject\Components\UI\Items</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -123,7 +138,7 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="N_SceneManager.cpp">
-      <Filter>SceneManagement</Filter>    
+      <Filter>SceneManagement</Filter>
     </ClCompile>
     <ClCompile Include="MonoManager.cpp">
       <Filter>Scripting</Filter>
@@ -136,6 +151,15 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>GameObject\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemUI.cpp">
+      <Filter>GameObject\Components\UI\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageUI.cpp">
+      <Filter>GameObject\Components\UI\Items</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
