@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bullet.cs" />
     <Compile Include="ExampleScript.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IGameObject.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="InternalCalls.cs" />
     <Compile Include="ITransform.cs" />
     <Compile Include="MonoBehaviour.cs" />
+    <Compile Include="PlayerScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="Vector3.cs" />

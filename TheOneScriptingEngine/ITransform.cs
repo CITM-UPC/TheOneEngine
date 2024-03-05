@@ -17,10 +17,10 @@ public class ITransform : IComponent
 
     public Vector3 rotation
     {
-        //get
-        //{
-        //    return InternalCalls.GetRotation(containerGOptr);
-        //}
+        get
+        {
+            return InternalCalls.GetRotation(containerGOptr);
+        }
         set
         {
             InternalCalls.SetRotation(containerGOptr, ref value);

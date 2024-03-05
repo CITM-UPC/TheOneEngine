@@ -20,6 +20,9 @@ class InternalCalls
     internal extern static void SetPosition(IntPtr GOptr, ref Vector3 position);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static Vector3 GetRotation(IntPtr GOptr);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void SetRotation(IntPtr GOptr, ref Vector3 rotation);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -31,4 +34,10 @@ class InternalCalls
     //Helpers
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static float GetAppDeltaTime();
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void CreateBullet(Vector3 initialPosition, Vector3 rotation);
+    
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void endBullet();
 }

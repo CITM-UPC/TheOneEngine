@@ -10,6 +10,7 @@ public class Input
 		D = 7,
 		S = 22,
 		W = 26,
+		E = 8,
 		RIGHT = 79,
 		LEFT = 80,
 		DOWN = 81,
