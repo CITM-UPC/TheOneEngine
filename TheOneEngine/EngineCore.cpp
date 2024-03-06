@@ -31,7 +31,7 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
-    audioManager->Update(dt);
+    this->dt = dt;    audioManager->Update(dt);
     input->PreUpdate(dt);
 }
 

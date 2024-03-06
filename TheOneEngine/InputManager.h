@@ -51,6 +51,7 @@ public:
 
 public:
 	InputManagerNamespace::KeyState keys[MAX_KEYS] = { InputManagerNamespace::KEY_IDLE };
+	InputManagerNamespace::KeyState GetKey(int id) const { return keys[id]; }
 	InputManagerNamespace::KeyState GetGamepadButton(int gamepadId, SDL_GameControllerButton button) const;
 
 	GamePad pads[MAX_PADS];

@@ -456,7 +456,18 @@ void Scene::UpdateGOs(double dt)
 	}
 }
 
-void Scene::Draw()
+void Scene::RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode)
+{
+
+	for (const auto gameObject : parentGO.get()->children)
+	{
+		gameObject.get()->DrawUI(mode);
+		RecurseUIDraw(gameObject, mode);
+	}
+}
+
+void Scene::Draw(DrawMode mode)
 {
 	RecurseSceneDraw(rootSceneGO);
+	RecurseUIDraw(rootSceneGO, mode);
 }

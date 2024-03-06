@@ -49,6 +49,7 @@ void Component::CreateNameFromType(ComponentType type)
 		case ComponentType::Listener: name = "Listener"; break;
 		case ComponentType::Source: name = "Source"; break;
 		case ComponentType::Script: name = "Script"; break;
+		case ComponentType::Canvas: name = "Canvas"; break;
 		case ComponentType::Unknown: name = "Unknown"; break;
 		default: name = "Specified Type was not found"; break;
 	}

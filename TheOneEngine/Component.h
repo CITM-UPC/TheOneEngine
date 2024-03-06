@@ -18,6 +18,7 @@ enum class ComponentType
     Listener,
     Source,
     Script,
+    Canvas,
 	Unknown
 };
 

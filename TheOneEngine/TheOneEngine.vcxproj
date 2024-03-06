@@ -14,6 +14,7 @@
     <ClInclude Include="AudioManager.h" />
     <ClInclude Include="AudioComponent.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Canvas.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeImmediateMode.h" />
@@ -35,11 +36,14 @@
     <ClInclude Include="EngineCore.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIDGen.h" />
+    <ClInclude Include="ImageUI.h" />
+    <ClInclude Include="ItemUI.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="AudioComponent.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeImmediateMode.cpp" />
@@ -58,6 +62,8 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="EngineCore.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="ImageUI.cpp" />
+    <ClCompile Include="ItemUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheOneAudio\TheOneAudio.vcxproj">

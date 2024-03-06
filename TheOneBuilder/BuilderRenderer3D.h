@@ -25,8 +25,6 @@ public:
 
     bool CleanUp();
 
-    void CameraInput(double dt);
-
 public:
 
     double dtSum = 0;

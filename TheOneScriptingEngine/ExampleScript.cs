@@ -13,11 +13,11 @@ public class ExampleScript : MonoBehaviour
 
         if (goingRight)
         {
-            attachedGameObject.transform.Move(new Vector3(0.1f, 0, 0));
+            attachedGameObject.transform.Translate(new Vector3(0.1f, 0, 0));
         }
         else
         {
-            attachedGameObject.transform.Move(new Vector3(-0.1f, 0, 0));
+            attachedGameObject.transform.Translate(new Vector3(-0.1f, 0, 0));
         }
 
         //Vertical
@@ -26,11 +26,11 @@ public class ExampleScript : MonoBehaviour
 
         if (goingUp)
         {
-            attachedGameObject.transform.Move(new Vector3(0, 0.1f, 0));
+            attachedGameObject.transform.Translate(new Vector3(0, 0.1f, 0));
         }
         else
         {
-            attachedGameObject.transform.Move(new Vector3(0, -0.1f, 0));
+            attachedGameObject.transform.Translate(new Vector3(0, -0.1f, 0));
         }
     }
 }
