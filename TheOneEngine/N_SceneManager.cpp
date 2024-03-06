@@ -64,6 +64,8 @@ bool N_SceneManager::PostUpdate()
 
 bool N_SceneManager::CleanUp()
 {
+	//delete currentScene->currentCamera;
+
 	delete currentScene;
 
 	delete meshLoader;

@@ -375,5 +375,6 @@ void Transform::LoadComponent(const json& transformJSON)
         }
 
         SetTransform(temp);
+        UpdateCameraIfPresent(); //Check if first creates camera component transform
     }
 }

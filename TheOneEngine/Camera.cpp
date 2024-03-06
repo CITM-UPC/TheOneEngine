@@ -172,8 +172,7 @@ void Camera::LoadComponent(const json& cameraJSON)
             cameraType = CameraType::PERSPECTIVE;
         else if (cameraJSON["CameraType"] == 1)
             cameraType = CameraType::ORTHOGONAL;
-    } 
-    
+    }
 
     // Optional: Recalculate view and projection matrices based on loaded data
     UpdateCamera();

@@ -553,7 +553,7 @@ void Gui::OpenSceneFileWindow()
 		}
 		else
 		{
-			engine->N_sceneManager->LoadSceneFromJSON(file);
+			engine->N_sceneManager->LoadScene(nameSceneBuffer);
 			openSceneFileWindow = false;
 		}
 		
@@ -563,7 +563,7 @@ void Gui::OpenSceneFileWindow()
 	{
 		ImGui::Text("You have unsaved changes in this scene. Are you sure?");
 		if (ImGui::Button("Yes", { 100, 20 })) {
-			engine->N_sceneManager->LoadSceneFromJSON(file);
+			engine->N_sceneManager->LoadScene(nameSceneBuffer);
 			openSceneFileWindow = false;
 		}
 		ImGui::SameLine();
