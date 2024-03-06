@@ -51,17 +51,6 @@ bool Renderer3D::Update(double dt)
 
 bool Renderer3D::PostUpdate()
 {
-	// Scene camera
-	/*Camera* sceneCam = sceneCamera.get()->GetComponent<Camera>();
-	app->engine->Render(sceneCam);*/
-
-	// hekbas testing Mesh load/draw
-	/*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
-	for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
-
-	app->gui->Draw();
-
-	SDL_GL_SwapWindow(app->window->window);
 
 	return true;
 }

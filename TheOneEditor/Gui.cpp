@@ -106,13 +106,13 @@ bool Gui::Start()
 
 	// Input/Output
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 
 	// Hekbas: Enableing viewports causes ImGui panels
 	// to disappear if not fully contained in main window
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
 	if (!&io)
 		LOG(LogType::LOG_ERROR, "-Enabling I/O");
@@ -293,6 +293,8 @@ bool Gui::PostUpdate()
 {
 	bool ret = true;
 
+	ImGuiIO& io = ImGui::GetIO();
+
 	// Iterate Panels & Draw
 	for (const auto& panel : panels)
 	{
@@ -302,6 +304,26 @@ bool Gui::PostUpdate()
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		ImGui::End();
+
+	io.DisplaySize = ImVec2((float)app->window->GetWidth(), (float)app->window->GetHeight());
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	// Update and Render additional Platform Windows
+	// (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
+	//  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+		SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+	}
+
+
+	SDL_GL_SwapWindow(app->window->window);
 
 	return ret;
 }
@@ -319,21 +341,6 @@ bool Gui::CleanUp()
 	// hekbas check cleanup
 
 	return ret;
-}
-
-void Gui::Draw()
-{
-    //hekbas - Automatically called by ImGui::Render()
-    //ImGui::EndFrame();
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	// hekbas look into this
-	/*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-	}*/
 }
 
 void Gui::HandleInput(SDL_Event* event)
