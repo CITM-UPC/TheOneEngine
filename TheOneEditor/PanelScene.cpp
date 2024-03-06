@@ -51,6 +51,7 @@ void PanelScene::Start()
     sceneCamera.get()->parent = cameraParent;
 
     current = app->scenemanager->N_sceneManager->currentScene;
+    engine->SetEditorCamera(sceneCamera->GetComponent<Camera>());
 }
 
 bool PanelScene::Draw()
@@ -62,13 +63,6 @@ bool PanelScene::Draw()
         sceneCamera.get()->GetComponent<Camera>()->aspect = viewportSize.x / viewportSize.y;
     }
 
-
-    isHovered = ImGui::IsWindowHovered();
-    isFocused = ImGui::IsWindowFocused();
-
-
-    app->renderer3D->CameraInput(sceneCamera.get());
-
 	ImGuiWindowFlags settingsFlags = 0;
 	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 
@@ -78,6 +72,13 @@ bool PanelScene::Draw()
 
 	if (ImGui::Begin("Scene", &enabled, settingsFlags))
 	{
+        isHovered = ImGui::IsWindowHovered();
+        isFocused = ImGui::IsWindowFocused();
+
+        if(isFocused)
+            app->renderer3D->CameraInput(sceneCamera.get());
+
+
         // SDL Window
         int SDLWindowWidth, SDLWindowHeight;
         app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
@@ -98,30 +99,29 @@ bool PanelScene::Draw()
         int x = static_cast<int>(windowPos.x);
         int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
-        engine->OnWindowResize(x, y, width, height);
-
         //ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND
-
-        frameBuffer->Bind();
-
-
-        frameBuffer->Clear();
-        frameBuffer->ClearBuffer(-1);
-        // Draw
-        engine->Render(sceneCamera->GetComponent<Camera>());
-
-        // Game cameras Frustum
-        for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
         {
-            Camera* gameCam = GO.get()->GetComponent<Camera>();
+            frameBuffer->Bind();
 
-            if (gameCam != nullptr && gameCam->drawFrustum)
-                engine->DrawFrustum(gameCam->frustum);
+
+            frameBuffer->Clear();
+            frameBuffer->ClearBuffer(-1);
+            // Draw
+            engine->Render(sceneCamera->GetComponent<Camera>());
+
+            // Game cameras Frustum
+            for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+            {
+                Camera* gameCam = GO.get()->GetComponent<Camera>();
+
+                if (gameCam != nullptr && gameCam->drawFrustum)
+                    engine->DrawFrustum(gameCam->frustum);
+            }
+            current->Draw();
+
+
+            frameBuffer->Unbind();
         }
-        current->Draw();
-
-
-        frameBuffer->Unbind();
 
         // Top Bar -------------------------------------------------------------------------
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));

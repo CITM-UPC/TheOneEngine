@@ -13,7 +13,8 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     viewMatrix(1.0f),
     lookAt(0, 0, 0),
     drawFrustum(true),
-    cameraType(CameraType::PERSPECTIVE)
+    cameraType(CameraType::PERSPECTIVE),
+    primaryCam(false)
 {
     Transform* transform = containerGO.get()->GetComponent<Transform>();
 

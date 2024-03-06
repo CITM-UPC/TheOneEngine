@@ -145,5 +145,7 @@ public:
     CameraType cameraType;
 
     bool drawFrustum;
+
+    bool primaryCam;
 };
 #endif // !__CAMERA_H__

@@ -32,7 +32,8 @@ void EngineCore::Update(double dt)
 
 void EngineCore::Render(Camera* camera)
 {
-    //DrawFrustum(camera->viewMatrix);
+    if (!camera)
+        camera = editorCamReference;
 
     // Update Camera Matrix
     glMatrixMode(GL_PROJECTION);
@@ -61,7 +62,6 @@ void EngineCore::Render(Camera* camera)
         LOG(LogType::LOG_ERROR, "EngineCore - CameraType invalid!");
         break;
     }
-    //gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
 
 	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
 
@@ -69,7 +69,7 @@ void EngineCore::Render(Camera* camera)
         camera->lookAt.x, camera->lookAt.y, camera->lookAt.z,
 		cameraTransform->GetUp().x, cameraTransform->GetUp().y, cameraTransform->GetUp().z);
 
-    //DrawGrid(1000, 10);
+    DrawGrid(1000, 10);
     DrawAxis();
 
     assert(glGetError() == GL_NONE);
@@ -285,17 +285,6 @@ void EngineCore::DrawRay(const Ray& ray)
     glDeleteVertexArrays(1, &rayVAO);
 }
 
-void EngineCore::OnWindowResize(int x, int y, int width, int height)
-{
-    glViewport(x, y, width, height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
-
 bool EngineCore::GetVSync()
 {
     return vsync;
@@ -343,4 +332,10 @@ void EngineCore::AddLog(LogType type, const char* entry)
 void EngineCore::CleanLogs()
 {
     logs.clear();
+}
+
+void EngineCore::SetEditorCamera(Camera* cam)
+{
+    if(cam)
+        editorCamReference = cam;
 }

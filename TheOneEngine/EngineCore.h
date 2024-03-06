@@ -39,15 +39,14 @@ public:
 	void DrawFrustum(const Frustum& frustum);
 	void DrawRay(const Ray& ray);
 
-	// (x, y) Indicate the bottom left corner1
-	void OnWindowResize(int x, int y, int width, int height);
-
 	bool GetVSync();
 	bool SetVSync(bool vsync);
 
 	std::vector<LogInfo> GetLogs();
 	void AddLog(LogType type, const char* entry);
 	void CleanLogs();
+
+	void SetEditorCamera(Camera* cam);
 
 public:
 	
@@ -60,6 +59,7 @@ private:
 	// Logs
 	LogInfo logInfo;
 	std::vector<LogInfo> logs;
+	Camera* editorCamReference;
 
 };
 
