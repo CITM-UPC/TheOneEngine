@@ -365,6 +365,8 @@ bool PanelInspector::Draw()
 
             if (listener != nullptr && ImGui::CollapsingHeader("Listener", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen)) {
                 // No properties
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
             }
 
             /*Listener Component*/
@@ -396,9 +398,10 @@ bool PanelInspector::Draw()
                 else{
                     ImGui::Text("No audio event selected");
                 }
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
         }
-        ImGui::Spacing();
+        //ImGui::Spacing();
         if (ImGui::Button("Add New Component")) {
             ImGui::OpenPopup("Select New Component");
             
