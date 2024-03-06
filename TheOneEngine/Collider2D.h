@@ -12,7 +12,7 @@
 enum class ColliderType
 {
     Circle,
-    Square
+    Rect
 };
 
 class Collider2D : public Component
@@ -30,5 +30,7 @@ public:
 public:
 
     ColliderType colliderType;
+    double radius;
+    double w, h;
 };
 #endif // !__COLLIDER_2D_H__

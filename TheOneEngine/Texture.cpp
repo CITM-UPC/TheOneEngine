@@ -62,6 +62,8 @@ json Texture::SaveComponent()
     textureJSON["Width"] = width;
     textureJSON["Height"] = height;*/
 
+
+
     return textureJSON;
 }
 

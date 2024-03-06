@@ -48,6 +48,8 @@ bool PanelInspector::Draw()
 
         if (selectedGO != nullptr)
         {
+            ImGuiTreeNodeFlags treeNodeFlags = ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen;
+
             /*Name*/
             //ImGui::Checkbox("Active", &gameObjSelected->isActive);
             ImGui::SameLine(); ImGui::Text("GameObject:");
@@ -67,7 +69,7 @@ bool PanelInspector::Draw()
             /*Transform Component*/
             Transform* transform = selectedGO->GetComponent<Transform>();
 
-            if (transform != nullptr && ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            if (transform != nullptr && ImGui::CollapsingHeader("Transform", treeNodeFlags))
             {
                 ImGui::SetItemTooltip("Displays and sets game object transformations");
 
@@ -165,7 +167,7 @@ bool PanelInspector::Draw()
                 // Transform DEBUG 
                 ImGui::Dummy(ImVec2(0.0f, 5.0f));
                 ImGui::Indent(0.8f);
-                if (ImGui::TreeNodeEx("Debug", ImGuiTreeNodeFlags_DefaultOpen))
+                if (ImGui::TreeNodeEx("Debug"))
                 {
                     // Display transformMatrix
                     ImGui::Dummy(ImVec2(0.0f, 5.0f));
@@ -204,7 +206,7 @@ bool PanelInspector::Draw()
             /*Mesh Component*/
             Mesh* mesh = selectedGO->GetComponent<Mesh>();
 
-            if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            if (mesh != nullptr && ImGui::CollapsingHeader("Mesh", treeNodeFlags))
             {
                 ImGui::SetItemTooltip("Displays and sets mesh data");
                 //ImGui::Checkbox("Active", &mesh->isActive);
@@ -238,7 +240,7 @@ bool PanelInspector::Draw()
             /*Texture Component*/
             Texture* texture = selectedGO->GetComponent<Texture>();
 
-            if (texture != nullptr && ImGui::CollapsingHeader("Texture", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            if (texture != nullptr && ImGui::CollapsingHeader("Texture", treeNodeFlags))
             {
                 ImGui::SetItemTooltip("Displays and sets texture data");
                 ImGui::Checkbox("Active Texture", &texture->active);
@@ -273,10 +275,11 @@ bool PanelInspector::Draw()
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
 
+
             /*Camera Component*/
             Camera* camera = selectedGO->GetComponent<Camera>();
 
-            if (camera != nullptr && ImGui::CollapsingHeader("Camera", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            if (camera != nullptr && ImGui::CollapsingHeader("Camera", treeNodeFlags))
             {
                 bool isDirty = false;
 
@@ -318,20 +321,37 @@ bool PanelInspector::Draw()
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
             
+
             /*Script Component*/
             Script* script = selectedGO->GetComponent<Script>();
 
-            if (script != nullptr && ImGui::CollapsingHeader("Script", ImGuiTreeNodeFlags_None | ImGuiTreeNodeFlags_DefaultOpen))
+            if (script != nullptr && ImGui::CollapsingHeader("Script", treeNodeFlags))
             {
                 
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+            }
+
+
+            /*Collider2D Component*/
+            Collider2D* collider2D = selectedGO->GetComponent<Collider2D>();
+
+            if (collider2D != nullptr && ImGui::CollapsingHeader("Collider 2D", treeNodeFlags))
+            {
+                // Collider type
+                int colliderType = (int)collider2D->colliderType;
+                ImGui::Text("Collider Type"); ImGui::SameLine();
+                if (ImGui::Combo("##ColliderType", &colliderType, colliders, 2))
+                {
+                    collider2D->colliderType = (ColliderType)colliderType;
+                    ImGui::EndCombo();
+                }
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
 
-            /*if (ImGui::Button("Add New Component")) {
-                ImGui::OpenPopup("Select New Component");
-                
-            }*/
+
+
+            /*Add Component*/
             if (ImGui::BeginMenu("Add Component"))
             {
                 if (ImGui::MenuItem("New Script"))

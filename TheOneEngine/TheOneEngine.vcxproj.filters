@@ -28,6 +28,9 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CollisionSolver">
+      <UniqueIdentifier>{b4bff3d6-89e0-43fe-b513-b1d9b31c27bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -90,6 +93,9 @@
     <ClInclude Include="Collider2D.h">
       <Filter>GameObject\Components</Filter>
     </ClInclude>
+    <ClInclude Include="CollisionSolver.h">
+      <Filter>CollisionSolver</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -142,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSolver.cpp">
+      <Filter>CollisionSolver</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -27,6 +27,11 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
+    // Collision solving
+    if ()
+    {
+
+    }
     audio->Update(dt);
 }
 

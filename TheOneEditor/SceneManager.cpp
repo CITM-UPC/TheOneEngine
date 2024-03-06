@@ -26,6 +26,10 @@ bool SceneManager::Start()
 	//N_sceneManager->LoadScene("Scene_2");
 	N_sceneManager->Start();
 
+	N_sceneManager->CreateEmptyGO();
+	N_sceneManager->GetGameObjects().front().get()->AddComponent<Camera>();
+	N_sceneManager->GetGameObjects().front().get()->GetComponent<Camera>()->UpdateCamera();
+
 	return true;
 }
 
