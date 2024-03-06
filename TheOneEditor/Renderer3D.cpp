@@ -74,8 +74,8 @@ bool Renderer3D::CleanUp()
 
 void Renderer3D::CameraInput(GameObject* cam)
 {
-	if (!app->gui->panelScene->isHovered)
-		return;
+	/*if (!app->gui->panelScene->isHovered)
+		return;*/
 
 	Camera* camera = cam->GetComponent<Camera>();
 	Transform* transform = cam->GetComponent<Transform>();

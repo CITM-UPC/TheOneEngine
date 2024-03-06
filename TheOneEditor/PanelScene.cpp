@@ -62,6 +62,11 @@ bool PanelScene::Draw()
         sceneCamera.get()->GetComponent<Camera>()->aspect = viewportSize.x / viewportSize.y;
     }
 
+
+    isHovered = ImGui::IsWindowHovered();
+    isFocused = ImGui::IsWindowFocused();
+
+
     app->renderer3D->CameraInput(sceneCamera.get());
 
 	ImGuiWindowFlags settingsFlags = 0;
@@ -71,7 +76,6 @@ bool PanelScene::Draw()
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once);
 
-	ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Scene", &enabled, settingsFlags))
 	{
         // SDL Window
@@ -95,10 +99,6 @@ bool PanelScene::Draw()
         int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
         engine->OnWindowResize(x, y, width, height);
-       
-
-        isHovered = ImGui::IsWindowHovered();
-        isFocused = ImGui::IsWindowFocused();
 
         //ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND
 
