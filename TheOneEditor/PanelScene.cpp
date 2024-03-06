@@ -99,29 +99,6 @@ bool PanelScene::Draw()
         int x = static_cast<int>(windowPos.x);
         int y = SDLWindowHeight - windowPos.y - windowSize.y;
 
-        //ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND
-        {
-            frameBuffer->Bind();
-
-
-            frameBuffer->Clear();
-            frameBuffer->ClearBuffer(-1);
-            // Draw
-            engine->Render(sceneCamera->GetComponent<Camera>());
-
-            // Game cameras Frustum
-            for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
-            {
-                Camera* gameCam = GO.get()->GetComponent<Camera>();
-
-                if (gameCam != nullptr && gameCam->drawFrustum)
-                    engine->DrawFrustum(gameCam->frustum);
-            }
-            current->Draw();
-
-
-            frameBuffer->Unbind();
-        }
 
         // Top Bar -------------------------------------------------------------------------
         ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.5f, 0.5f));
@@ -233,7 +210,7 @@ bool PanelScene::Draw()
             ImGuizmo::SetOrthographic(false);
             ImGuizmo::SetDrawlist();
             int viewportTopLeftY = windowPos.y + (windowSize.y - availWindowSize.y);
-            ImGuizmo::SetRect(windowPos.x, viewportTopLeftY, width, height);
+            ImGuizmo::SetRect(windowPos.x, viewportTopLeftY, viewportSize.x, viewportSize.y);
 
             //Camera
             const glm::mat4& cameraProjection = sceneCamera->GetComponent<Camera>()->projectionMatrix;
@@ -269,11 +246,38 @@ bool PanelScene::Draw()
             //editor->SelectObject(ray);
         }
 
-        //Draw Rays
-        for (auto ray : rays)
+
+        //ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND
         {
-            engine->DrawRay(ray);
+            frameBuffer->Bind();
+
+
+            frameBuffer->Clear();
+            frameBuffer->ClearBuffer(-1);
+            // Draw
+            engine->Render(sceneCamera->GetComponent<Camera>());
+
+            // Game cameras Frustum
+            for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+            {
+                Camera* gameCam = GO.get()->GetComponent<Camera>();
+
+                if (gameCam != nullptr && gameCam->drawFrustum)
+                    engine->DrawFrustum(gameCam->frustum);
+            }
+
+            //Draw Rays
+            for (const auto& ray : rays)
+            {
+                engine->DrawRay(ray);
+            }
+
+            current->Draw();
+
+
+            frameBuffer->Unbind();
         }
+
 	}
 
 	ImGui::End();
