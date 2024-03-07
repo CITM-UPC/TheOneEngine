@@ -21,7 +21,27 @@ Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, Com
 
     normalLineWidth = 1;
     normalLineLength = 0.1f;
-    meshLoader = new MeshLoader();
+    //meshLoader = new MeshLoader();
+    //GenerateAABB();
+}
+
+Mesh::Mesh(std::shared_ptr<GameObject> containerGO, Mesh* ref) : Component(containerGO, ComponentType::Mesh)
+{
+    active = ref->active;
+    drawNormalsFaces = ref->drawNormalsFaces;
+    drawNormalsVerts = ref->drawNormalsVerts;
+    drawAABB = ref->drawAABB;
+    drawChecker = ref->drawChecker;
+
+    mesh = ref->mesh;
+    mesh.texture = ref->mesh.texture;
+
+    meshData = ref->meshData;
+    meshLoader = ref->meshLoader;
+
+    normalLineWidth = ref->normalLineWidth;
+    normalLineLength = ref->normalLineLength;
+    //meshLoader = new MeshLoader();
     //GenerateAABB();
 }
 

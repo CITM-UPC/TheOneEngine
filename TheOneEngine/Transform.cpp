@@ -9,6 +9,12 @@ Transform::Transform(std::shared_ptr<GameObject> containerGO) : Component(contai
     scale(1.0f)
 {}
 
+Transform::Transform(std::shared_ptr<GameObject> containerGO, Transform* ref)
+    : Component(containerGO, ComponentType::Transform),
+    transformMatrix(ref->transformMatrix),
+    position(ref->position), rotation(ref->rotation), scale(ref->scale)
+{}
+
 Transform::Transform(std::shared_ptr<GameObject> containerGO, mat4 transform) : Component(containerGO, ComponentType::Transform),
     transformMatrix(transform)
 {

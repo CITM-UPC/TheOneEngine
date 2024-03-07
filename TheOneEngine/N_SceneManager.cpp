@@ -209,16 +209,102 @@ std::string N_SceneManager::GenerateUniqueName(const std::string& baseName)
 	return uniqueName;
 }
 
-std::shared_ptr<GameObject> N_SceneManager::CreateEmptyGO(std::string name)
+std::shared_ptr<GameObject> N_SceneManager::DuplicateGO(std::shared_ptr<GameObject> originalGO, bool recursive)
+{
+	GameObject* ref = originalGO.get();
+
+
+	std::shared_ptr<GameObject> duplicatedGO = std::make_shared<GameObject>(recursive ? originalGO.get()->GetName() : GenerateUniqueName("Copy of " + originalGO.get()->GetName()));
+	//meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+	//meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
+
+	for (auto& item : ref->GetAllComponents())
+	{
+		switch (item->GetType())
+		{
+		case ComponentType::Transform:
+			duplicatedGO.get()->AddCopiedComponent<Transform>((Transform*)item);
+			break;
+		case ComponentType::Camera:
+			duplicatedGO.get()->AddCopiedComponent<Camera>((Camera*)item);
+			break;
+		case ComponentType::Mesh:
+			duplicatedGO.get()->AddCopiedComponent<Mesh>((Mesh*)item);
+			break;
+		case ComponentType::Texture:
+			duplicatedGO.get()->AddCopiedComponent<Texture>((Texture*)item);
+			break;
+		case ComponentType::Script:
+			duplicatedGO.get()->AddCopiedComponent<Script>((Script*)item);
+			break;
+		case ComponentType::Unknown:
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (!recursive)
+	{
+		duplicatedGO.get()->parent = originalGO.get()->parent;
+
+		originalGO.get()->parent.lock().get()->children.push_back(duplicatedGO);
+		//GetRootSceneGO().get()->children.push_back(duplicatedGO);
+	}
+
+
+	for (auto& child : originalGO->children)
+	{
+		std::shared_ptr<GameObject> temp = DuplicateGO(child, true);
+		temp.get()->parent = duplicatedGO;
+		duplicatedGO.get()->children.push_back(temp);
+	}
+
+	return duplicatedGO;
+}
+
+std::shared_ptr<GameObject> N_SceneManager::CreateEmptyGO(std::string name, bool isRoot)
 {
 	std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>(name);
 	emptyGO.get()->AddComponent<Transform>();
 
-	emptyGO.get()->parent = currentScene->GetRootSceneGO().get()->weak_from_this();
-
-	currentScene->GetRootSceneGO().get()->children.emplace_back(emptyGO);
+	if (isRoot)
+	{
+		emptyGO.get()->parent = currentScene->GetRootSceneGO().get()->weak_from_this();
+		currentScene->GetRootSceneGO().get()->children.emplace_back(emptyGO);
+	}
 
 	return emptyGO;
+}
+
+void N_SceneManager::ReparentGO(std::shared_ptr<GameObject> originalGO, std::shared_ptr<GameObject> newParentGO)
+{
+	//find the go among children of his parent
+	int counter = 0;
+	for (const auto& go : originalGO.get()->parent.lock().get()->children)
+	{
+		if (go.get() == originalGO.get())
+		{
+			//we erase the element from the vector of his parent
+			auto it = originalGO.get()->parent.lock().get()->children.begin() + counter;
+			originalGO.get()->parent.lock().get()->children.erase(it);
+
+			originalGO.get()->parent.lock().get()->children.push_back(newParentGO);
+			//originalGO.get()->parent.lock().get()->children.insert(it, emptyGO);
+
+			newParentGO.get()->parent = originalGO.get()->parent.lock();
+
+			//and set the GO as his children
+			newParentGO.get()->children.push_back(originalGO);
+
+			//dont forget to set the new parent of the go
+			originalGO.get()->parent = newParentGO;
+
+			//if we find it, stop the searching loop
+			break;
+		}
+		counter++;
+	}
 }
 
 std::shared_ptr<GameObject> N_SceneManager::CreateCameraGO(std::string name)
