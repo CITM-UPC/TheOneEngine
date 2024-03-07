@@ -60,22 +60,6 @@ static float GetAppDeltaTime()
 	return (float)engine->dt;
 }
 
-static void CreateBullet(vec3f* position, vec3f* direction)
-{
-	if (engine->monoManager->bulletGO->IsEnabled() == false)
-	{
-		engine->monoManager->bulletGO->Enable();
-
-		SetPosition(engine->monoManager->bulletGO, position);
-		SetRotation(engine->monoManager->bulletGO, direction);
-	}
-}
-
-static void endBullet()
-{
-	engine->monoManager->bulletGO->Disable();
-}
-
 
 void MonoRegisterer::RegisterFunctions()
 {
@@ -91,7 +75,4 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
-
-	mono_add_internal_call("InternalCalls::CreateBullet", CreateBullet);
-	mono_add_internal_call("InternalCalls::endBullet", endBullet);
 }

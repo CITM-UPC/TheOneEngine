@@ -50,11 +50,6 @@ public class PlayerScript : MonoBehaviour
 			attachedGameObject.transform.rotation = new Vector3(0, 3.14f, 0);
 		}
 
-		if (Input.GetKeyboardButton(Input.KeyboardCode.E))
-		{
-			InternalCalls.CreateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
-		}
-
 		if (toMove)
 		{
 			attachedGameObject.transform.Translate(movement.Normalize() * speed * Time.deltaTime);

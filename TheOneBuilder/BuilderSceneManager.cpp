@@ -20,11 +20,6 @@ bool BuilderSceneManager::Start()
 	engine->N_sceneManager->LoadScene("NewUntitledScene");
 	engine->N_sceneManager->Start();
 
-	engine->N_sceneManager->CreateTeapot();
-	engine->monoManager->bulletGO = engine->N_sceneManager->currentScene->GetRootSceneGO()->children.back().get();
-	engine->monoManager->bulletGO->AddScript("Bullet");
-	engine->monoManager->bulletGO->Disable();
-
 	return true;
 }
 
