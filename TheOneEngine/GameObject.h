@@ -13,6 +13,11 @@
 #include <list>
 #include <memory>
 
+enum class DrawMode
+{
+    GAME,
+    EDITOR
+};
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
@@ -23,6 +28,7 @@ public:
 
     void Update(double dt);
     void Draw();
+    void DrawUI(const DrawMode mode);
 
 
     // Components
@@ -126,6 +132,7 @@ public:
 
     bool IsStatic() const;
     void SetStatic(bool isStatic);
+    bool HasCameraComponent();
 
     void CreateUID();
     uint32 GetUID() { return UID; }

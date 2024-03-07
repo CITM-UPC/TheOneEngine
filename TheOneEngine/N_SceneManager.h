@@ -4,6 +4,7 @@
 
 #include "Defs.h"
 #include "GameObject.h"
+#include "Camera.h"
 
 #include <string>
 #include <memory>
@@ -106,16 +107,18 @@ public:
 
 	inline void UpdateGOs(double dt);
 	
-	inline void Draw();
+	inline void Draw(DrawMode mode = DrawMode::GAME);
 
 private:
 	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);
+	inline void RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode = DrawMode::GAME);
 
 private:
 	uint index;
 	std::string sceneName;
 	std::shared_ptr<GameObject> rootSceneGO;
 
+	std::weak_ptr<Camera> currentCamera;
 	//Historn: This is to remember to save the scene if any change is made
 	bool isDirty;
 

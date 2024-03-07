@@ -14,7 +14,9 @@
 #include "Log.h"
 
 #include "MonoManager.h"
+#include "InputManager.h"
 #include "../TheOneAudio/AudioCore.h"
+
 #include <chrono>
 #include <memory>
 
@@ -51,9 +53,12 @@ public:
 
 public:
 	
+	double dt = 0;
+
 	bool vsync = false;
 	AudioCore* audio = nullptr;
 	MonoManager* monoManager = nullptr;
+	InputManager* input = nullptr;
 
 private:
 

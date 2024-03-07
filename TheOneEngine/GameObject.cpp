@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Canvas.h"
 #include "UIDGen.h"
 #include "BBox.hpp"
 
@@ -49,7 +50,7 @@ void GameObject::Draw()
 {
 	for (const auto& component : components)
 	{
-		if (component && component->IsEnabled())
+		if (component && component->IsEnabled() && component->GetType() != ComponentType::Canvas)
 			component->DrawComponent();
 	}
 
@@ -57,6 +58,14 @@ void GameObject::Draw()
 		DrawAABB();
 }
 
+void GameObject::DrawUI(const DrawMode mode)
+{
+	auto canvas = this->GetComponent<Canvas>();
+
+	if (canvas && canvas->IsEnabled())
+		if (mode == DrawMode::GAME || canvas->debugDraw)
+			canvas->DrawComponent();
+}
 
 // Component ----------------------------------------
 void GameObject::RemoveComponent(ComponentType type)
@@ -314,6 +323,11 @@ void GameObject::SetStatic(bool staticFlag)
 	isStatic = staticFlag;
 }
 
+bool GameObject::HasCameraComponent()
+{
+	return this->GetComponent<Camera>();
+}
+
 void GameObject::CreateUID()
 {
 	UID = UIDGen::GenerateUID();
@@ -406,6 +420,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			{
 				this->AddComponent<Mesh>();
 				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == 4)
+			{
+				this->AddScript(componentJSON["ScriptName"]);
+				this->GetComponent<Script>()->LoadComponent(componentJSON);
 			}
 		}
 	}

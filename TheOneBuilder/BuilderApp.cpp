@@ -3,6 +3,7 @@
 #include "BuilderWindow.h"
 #include "BuilderInput.h"
 #include "BuilderRenderer3D.h"
+#include "BuilderSceneManager.h"
 #include "Timer.h"
 #include "../TheOneEngine/Log.h"
 
@@ -15,13 +16,15 @@ BuilderApp::BuilderApp(int argc, char* args[]) : argc(argc), args(args)
 	window = new BuilderWindow(this);
 	input = new BuilderInput(this);
 	renderer3D = new BuilderRenderer3D(this);
+	sceneManager = new BuilderSceneManager(this);
 	
 	// Ordered for awake / Start / Update
 	// Reverse order for CleanUp
 
 	AddModule(window, true);
 	AddModule(input, true);
-
+	AddModule(sceneManager, true);
+	
 	// Render last to swap buffer
 	AddModule(renderer3D, true);
 	

@@ -16,6 +16,8 @@ Script::Script(std::shared_ptr<GameObject> containerGO, Script* ref) : Component
 
 Script::~Script()
 {
+	delete monoBehaviourInstance;
+	monoBehaviourInstance = nullptr;
 }
 
 void Script::Update()
@@ -29,9 +31,41 @@ void Script::DrawComponent()
 
 json Script::SaveComponent()
 {
-	return json();
+	json scriptJSON;
+
+	scriptJSON["Name"] = name;
+	scriptJSON["Type"] = type;
+	if (auto pGO = containerGO.lock())
+	{
+		scriptJSON["ParentUID"] = pGO.get()->GetUID();
+	}
+	scriptJSON["UID"] = UID;
+	scriptJSON["ScriptName"] = scriptName;
+
+
+	return scriptJSON;
 }
 
 void Script::LoadComponent(const json& scriptJSON)
 {
+
+	if (scriptJSON.contains("Name"))
+	{
+		name = scriptJSON["Name"];
+	}
+
+	if (scriptJSON.contains("Type"))
+	{
+		type = scriptJSON["Type"];
+	}
+	
+	if (scriptJSON.contains("ScriptName"))
+	{
+		scriptName = scriptJSON["ScriptName"];
+	}
+
+	if (scriptJSON.contains("UID"))
+	{
+		UID = scriptJSON["UID"];
+	}
 }

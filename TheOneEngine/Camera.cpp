@@ -6,12 +6,14 @@
 #include "Ray.h"
 
 Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Camera),
-    aspect(1.777), fov(65),
+    aspect(1.777), fov(65), 
+    size(5), 
     zNear(0.1), zFar(1000),
     yaw(0), pitch(0),
     viewMatrix(1.0f),
     lookAt(0, 0, 0),
-    drawFrustum(true)
+    drawFrustum(true),
+    cameraType(CameraType::PERSPECTIVE)
 {
     Transform* transform = containerGO.get()->GetComponent<Transform>();
 
@@ -93,7 +95,18 @@ void Camera::UpdateViewMatrix()
 
 void Camera::UpdateProjectionMatrix()
 {
-    projectionMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+    switch (cameraType)
+    {
+    case CameraType::PERSPECTIVE:
+        projectionMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+        break;
+    case CameraType::ORTHOGONAL:
+        projectionMatrix = glm::ortho(-size, size, -size * 0.75, size * 0.75, zNear, zFar);
+        break;
+    default:
+        LOG(LogType::LOG_ERROR, "CameraType invalid!");
+        break;
+    }
 }
 
 void Camera::UpdateViewProjectionMatrix()
@@ -146,6 +159,8 @@ json Camera::SaveComponent()
     cameraJSON["zFar"] = zFar;
     cameraJSON["Yaw"] = yaw;
     cameraJSON["Pitch"] = pitch;
+    cameraJSON["Size"] = size;
+    cameraJSON["CameraType"] = cameraType;
 
     return cameraJSON;
 }
@@ -156,16 +171,6 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("UID")) UID = cameraJSON["UID"];
     if (cameraJSON.contains("Name")) name = cameraJSON["Name"];
 
-    // Load parent UID and set parent
-    /*if (cameraJSON.contains("ParentUID"))
-    {
-        uint32_t parentUID = cameraJSON["ParentUID"];
-        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
-        {
-            containerGO = parentGameObject;
-        }
-    }*/
-
     // Load camera-specific properties
     if (cameraJSON.contains("FOV")) fov = cameraJSON["FOV"];
     if (cameraJSON.contains("Aspect")) aspect = cameraJSON["Aspect"];
@@ -173,6 +178,9 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("zFar")) zFar = cameraJSON["zFar"];
     if (cameraJSON.contains("Yaw")) yaw = cameraJSON["Yaw"];
     if (cameraJSON.contains("Pitch")) pitch = cameraJSON["Pitch"];
+    if (cameraJSON.contains("Size")) size = cameraJSON["Size"];
+    if (cameraJSON.contains("CameraType")) cameraType = cameraJSON["CameraType"];
+    
 
     // Optional: Recalculate view and projection matrices based on loaded data
     UpdateCamera();
