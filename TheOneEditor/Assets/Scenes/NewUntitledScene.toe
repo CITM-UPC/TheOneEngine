@@ -10,20 +10,20 @@
             0.0,
             0.0,
             0.0,
-            0.8660254997374791,
-            0.5000000722230377,
+            1.0,
             0.0,
             0.0,
-            -0.5000000722230377,
-            0.8660254997374791,
             0.0,
             0.0,
-            15.0,
-            -15.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
             1.0
           ],
           "Type": 0,
-          "UID": 3708068636
+          "UID": 3157056106
         },
         {
           "Aspect": 1.777,
@@ -34,7 +34,7 @@
           "Pitch": 0.0,
           "Size": 5.0,
           "Type": 1,
-          "UID": 4261055975,
+          "UID": 1657833000,
           "Yaw": 0.0,
           "zFar": 1000.0,
           "zNear": 0.1
@@ -44,7 +44,7 @@
           "ParentUID": 3452816845,
           "ScriptName": "CamControlTest",
           "Type": 4,
-          "UID": 1607420891
+          "UID": 1398528217
         }
       ],
       "Enabled": true,
@@ -72,11 +72,11 @@
             0.0,
             0.0,
             0.0,
-            0.0,
+            30.621849060058594,
             1.0
           ],
           "Type": 0,
-          "UID": 1584267343
+          "UID": 1362676687
         },
         {
           "Active": true,
@@ -88,238 +88,13 @@
           "DrawWireframe": false,
           "Name": "Mesh",
           "ParentUID": 3452816845,
-          "Path": "Library/Meshes/teapot/Teapot.mesh",
+          "Path": "Library/Meshes/Cadillac_CT4_V_2022/Cadillac_CT4_V_2022_LowPoly.mesh",
           "Type": 2,
-          "UID": 1597394526
-        },
-        {
-          "Name": "Script",
-          "ParentUID": 3452816845,
-          "ScriptName": "Bullet",
-          "Type": 4,
-          "UID": 921451500
-        }
-      ],
-      "Enabled": false,
-      "Name": "Teapot",
-      "ParentUID": 3452816845,
-      "Static": false,
-      "UID": 3452816845
-    },
-    {
-      "Components": [
-        {
-          "Name": "Transform",
-          "Transformation Matrix": [
-            1.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            1.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            1.0,
-            0.0,
-            0.0,
-            0.0,
-            30.0,
-            1.0
-          ],
-          "Type": 0,
-          "UID": 3173386448
+          "UID": 3829282418
         }
       ],
       "Enabled": true,
-      "GameObjects": [
-        {
-          "Components": [
-            {
-              "Name": "Transform",
-              "Transformation Matrix": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 3507634286
-            },
-            {
-              "Active": true,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "Library/Meshes/mf/Mesh_0067.mesh",
-              "Type": 2,
-              "UID": 3368511856
-            }
-          ],
-          "Enabled": true,
-          "Name": "Mesh_0067",
-          "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
-        },
-        {
-          "Components": [
-            {
-              "Name": "Transform",
-              "Transformation Matrix": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 3842813514
-            },
-            {
-              "Active": true,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "Library/Meshes/mf/Mesh_0069.mesh",
-              "Type": 2,
-              "UID": 196067988
-            }
-          ],
-          "Enabled": true,
-          "Name": "Mesh_0069",
-          "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
-        },
-        {
-          "Components": [
-            {
-              "Name": "Transform",
-              "Transformation Matrix": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 1967950732
-            },
-            {
-              "Active": true,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "Library/Meshes/mf/Mesh_0068.mesh",
-              "Type": 2,
-              "UID": 1811744938
-            }
-          ],
-          "Enabled": true,
-          "Name": "Mesh_0068",
-          "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
-        },
-        {
-          "Components": [
-            {
-              "Name": "Transform",
-              "Transformation Matrix": [
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                1.0
-              ],
-              "Type": 0,
-              "UID": 801122984
-            },
-            {
-              "Active": true,
-              "DrawAABB": true,
-              "DrawChecker": false,
-              "DrawNormalsFaces": false,
-              "DrawNormalsVerts": false,
-              "DrawOBB": false,
-              "DrawWireframe": false,
-              "Name": "Mesh",
-              "ParentUID": 3452816845,
-              "Path": "Library/Meshes/mf/Mesh_0546.mesh",
-              "Type": 2,
-              "UID": 3639822141
-            }
-          ],
-          "Enabled": true,
-          "Name": "Mesh_0546",
-          "ParentUID": 3452816845,
-          "Static": false,
-          "UID": 3452816845
-        }
-      ],
-      "Name": "mf",
+      "Name": "Cadillac_CT4_V_2022_LowPoly",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845
