@@ -145,6 +145,8 @@ bool Input::processSDLEvents()
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
 				app->window->OnResizeWindow(event.window.data1, event.window.data2);
 			}
+			if (event.window.event == SDL_WINDOWEVENT_CLOSE)
+				return false;
 			break;
 		}
 		case SDL_DROPFILE:
