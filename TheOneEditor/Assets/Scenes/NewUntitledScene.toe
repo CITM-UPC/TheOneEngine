@@ -10,20 +10,20 @@
             0.0,
             0.0,
             0.0,
-            0.9711342790217714,
-            0.23853346119331834,
+            0.8660254997374791,
+            0.5000000722230377,
             0.0,
             0.0,
-            -0.23853346119331834,
-            0.9711342790217714,
+            -0.5000000722230377,
+            0.8660254997374791,
             0.0,
             0.0,
-            39.0,
-            -80.5,
+            15.0,
+            -15.0,
             1.0
           ],
           "Type": 0,
-          "UID": 1079076758
+          "UID": 3708068636
         },
         {
           "Aspect": 1.777,
@@ -34,10 +34,17 @@
           "Pitch": 0.0,
           "Size": 5.0,
           "Type": 1,
-          "UID": 3060101606,
+          "UID": 4261055975,
           "Yaw": 0.0,
           "zFar": 1000.0,
           "zNear": 0.1
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "CamControlTest",
+          "Type": 4,
+          "UID": 1607420891
         }
       ],
       "Enabled": true,
@@ -69,7 +76,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 4252380706
+          "UID": 1584267343
         },
         {
           "Active": true,
@@ -83,14 +90,14 @@
           "ParentUID": 3452816845,
           "Path": "Library/Meshes/teapot/Teapot.mesh",
           "Type": 2,
-          "UID": 1569446728
+          "UID": 1597394526
         },
         {
           "Name": "Script",
           "ParentUID": 3452816845,
           "ScriptName": "Bullet",
           "Type": 4,
-          "UID": 3377429297
+          "UID": 921451500
         }
       ],
       "Enabled": false,
@@ -118,11 +125,11 @@
             0.0,
             0.0,
             0.0,
-            0.0,
+            30.0,
             1.0
           ],
           "Type": 0,
-          "UID": 4289756100
+          "UID": 3173386448
         }
       ],
       "Enabled": true,
@@ -150,7 +157,7 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 2625349096
+              "UID": 3507634286
             },
             {
               "Active": true,
@@ -164,7 +171,7 @@
               "ParentUID": 3452816845,
               "Path": "Library/Meshes/mf/Mesh_0067.mesh",
               "Type": 2,
-              "UID": 52394191
+              "UID": 3368511856
             }
           ],
           "Enabled": true,
@@ -196,7 +203,7 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 1274837406
+              "UID": 3842813514
             },
             {
               "Active": true,
@@ -210,7 +217,7 @@
               "ParentUID": 3452816845,
               "Path": "Library/Meshes/mf/Mesh_0069.mesh",
               "Type": 2,
-              "UID": 1757111753
+              "UID": 196067988
             }
           ],
           "Enabled": true,
@@ -242,7 +249,7 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 388497981
+              "UID": 1967950732
             },
             {
               "Active": true,
@@ -256,7 +263,7 @@
               "ParentUID": 3452816845,
               "Path": "Library/Meshes/mf/Mesh_0068.mesh",
               "Type": 2,
-              "UID": 1010916246
+              "UID": 1811744938
             }
           ],
           "Enabled": true,
@@ -288,7 +295,7 @@
                 1.0
               ],
               "Type": 0,
-              "UID": 1330380720
+              "UID": 801122984
             },
             {
               "Active": true,
@@ -302,7 +309,7 @@
               "ParentUID": 3452816845,
               "Path": "Library/Meshes/mf/Mesh_0546.mesh",
               "Type": 2,
-              "UID": 2061807468
+              "UID": 3639822141
             }
           ],
           "Enabled": true,

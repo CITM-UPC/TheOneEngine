@@ -38,7 +38,7 @@ bool BuilderRenderer3D::PreUpdate()
 bool BuilderRenderer3D::Update(double dt)
 {
     engine->Update(dt);
-
+    
     return true;
 }
 

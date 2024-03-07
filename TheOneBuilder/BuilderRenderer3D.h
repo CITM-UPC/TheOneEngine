@@ -24,6 +24,7 @@ public:
     bool PostUpdate();
 
     bool CleanUp();
+    void CameraInput();
 
 public:
 

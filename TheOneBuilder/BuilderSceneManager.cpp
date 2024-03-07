@@ -15,7 +15,8 @@ bool BuilderSceneManager::Awake()
 bool BuilderSceneManager::Start()
 {
 	engine->N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
-	engine->N_sceneManager->LoadScene("Scene"); // add the name of the starting scene here
+	engine->N_sceneManager->CreateCameraGO("mainCamera");
+	engine->N_sceneManager->LoadScene("NewUntitledScene");
 	engine->N_sceneManager->Start();
 
 	return true;

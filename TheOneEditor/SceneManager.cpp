@@ -23,7 +23,7 @@ bool SceneManager::Start()
 {
 	engine->N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
 	engine->N_sceneManager->CreateCameraGO("mainCamera");
-	//N_sceneManager->LoadScene("Scene_2");
+	engine->N_sceneManager->LoadScene("NewUntitledScene");
 	engine->N_sceneManager->Start();
 
 	engine->N_sceneManager->CreateTeapot();
