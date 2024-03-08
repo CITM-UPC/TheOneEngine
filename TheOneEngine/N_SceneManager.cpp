@@ -36,6 +36,9 @@ bool N_SceneManager::Start()
 bool N_SceneManager::PreUpdate()
 {
 	// Do nothing
+	
+
+
 	return true;
 }
 

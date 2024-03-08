@@ -54,78 +54,99 @@ void EngineCore::Update(double dt)
     }
 
     //now lets check and solve collisions
-    for (auto& item : collisionSolver->goWithCollision)
+    if (app->state == GameState::PLAY || app->state == GameState::PLAY_ONCE)
     {
-        // Collision solving
-        switch (item->GetComponent<Collider2D>()->collisionType)
+        for (auto& item : collisionSolver->goWithCollision)
         {
-        case CollisionType::Player:
-            for (auto& item2 : collisionSolver->goWithCollision)
+            // Collision solving
+            switch (item->GetComponent<Collider2D>()->collisionType)
             {
-                if (item != item2)
+            case CollisionType::Player:
+
+                //hardcoded code just in case we need to move player
+                //if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                //{
+                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z - 0.1 });
+                //}
+                //if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+                //{
+                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z + 0.1 });
+                //}
+                //if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+                //{
+                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x + 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
+                //}
+                //if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+                //{
+                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x - 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
+                //}
+
+                for (auto& item2 : collisionSolver->goWithCollision)
                 {
-                    switch (item2->GetComponent<Collider2D>()->collisionType)
+                    if (item != item2)
                     {
-                    case CollisionType::Player:
-                        //there is no player-player collision since we only have 1 player
-                        break;
-                    case CollisionType::Enemy:
-                        //implement any low life to player
-                        break;
-                    case CollisionType::Wall:
-                        //if they collide
-                        if (collisionSolver->CheckCollision(item, item2))
+                        switch (item2->GetComponent<Collider2D>()->collisionType)
                         {
-                            //we push player out of wall
-                            collisionSolver->SolveCollision(item, item2);
+                        case CollisionType::Player:
+                            //there is no player-player collision since we only have 1 player
+                            break;
+                        case CollisionType::Enemy:
+                            //implement any low life to player
+                            break;
+                        case CollisionType::Wall:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push player out of wall
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        default:
+                            break;
                         }
-                        break;
-                    default:
-                        break;
                     }
                 }
-            }
-            break;
-        case CollisionType::Enemy:
-            for (auto& item2 : collisionSolver->goWithCollision)
-            {
-                if (item != item2)
+                break;
+            case CollisionType::Enemy:
+                for (auto& item2 : collisionSolver->goWithCollision)
                 {
-                    switch (item2->GetComponent<Collider2D>()->collisionType)
+                    if (item != item2)
                     {
-                    case CollisionType::Player:
-                        //implement any low life to player
-                        break;
-                    case CollisionType::Enemy:
-                        //if they collide
-                        if (collisionSolver->CheckCollision(item, item2))
+                        switch (item2->GetComponent<Collider2D>()->collisionType)
                         {
-                            //we push player out of other enemy
-                            collisionSolver->SolveCollision(item, item2);
+                        case CollisionType::Player:
+                            //implement any low life to player
+                            break;
+                        case CollisionType::Enemy:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push player out of other enemy
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        case CollisionType::Wall:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push enemy out of wall
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        default:
+                            break;
                         }
-                        break;
-                    case CollisionType::Wall:
-                        //if they collide
-                        if (collisionSolver->CheckCollision(item, item2))
-                        {
-                            //we push enemy out of wall
-                            collisionSolver->SolveCollision(item, item2);
-                        }
-                        break;
-                    default:
-                        break;
                     }
                 }
+                break;
+            case CollisionType::Wall:
+                // do nothing at all
+                break;
+            default:
+                break;
             }
-            break;
-        case CollisionType::Wall:
-            // do nothing at all
-            break;
-        default:
-            break;
         }
     }
-
 
     this->dt = dt;
     audio->Update(dt);

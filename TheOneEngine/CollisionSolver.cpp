@@ -222,7 +222,7 @@ void CollisionSolver::CirCirCollision(GameObject* objA, GameObject* objB)
         mtv.x *= totalRadius - distance;
         mtv.y *= totalRadius - distance;
 
-        transformA->SetPosition({ mtv.x, transformA->GetPosition().y, mtv.y });
+        transformA->SetPosition({ transformA->GetPosition().x + mtv.x, transformA->GetPosition().y, transformA->GetPosition().z + mtv.y });
     }
 }
 
@@ -258,7 +258,7 @@ void CollisionSolver::CirRectCollision(GameObject* objA, GameObject* objB)
         mtv.x *= overlapDistance;
         mtv.y *= overlapDistance;
 
-        transformA->SetPosition({ mtv.x, transformA->GetPosition().y, mtv.y });
+        transformA->SetPosition({ transformA->GetPosition().x + mtv.x, transformA->GetPosition().y, transformA->GetPosition().z + mtv.y });
     }
 }
 
