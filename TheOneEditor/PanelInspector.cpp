@@ -421,6 +421,10 @@ bool PanelInspector::Draw()
                 }
 
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
+                if (ImGui::Button("Remove Collider"))
+                {
+                    selectedGO->RemoveComponent(ComponentType::Collider2D);
+                }
             }
 
 

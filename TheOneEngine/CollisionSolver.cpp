@@ -26,6 +26,24 @@ vec2 CollisionSolver::Clamp(vec2 origin, vec2 min, vec2 max)
 
 void CollisionSolver::DrawCollisions()
 {
+    //just in case lets make sure all items in the list have collision component
+    for (auto it = goWithCollision.begin(); it != goWithCollision.end(); )
+    {
+        bool remItem = true;
+        for (auto& item2 : (*it)->GetAllComponents())
+        {
+            if (item2->GetType() == ComponentType::Collider2D) remItem = false;
+        }
+        if (remItem)
+        {
+            it = goWithCollision.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
     // Iterar sobre las colisiones y dibujarlas
     for (const auto& collision : goWithCollision) {
         glPushMatrix();
