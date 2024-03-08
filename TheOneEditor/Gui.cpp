@@ -197,6 +197,7 @@ bool Gui::Start()
 	style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 	style.GrabRounding = style.FrameRounding = 2.3f;
 
+
 #pragma endregion IMGUI_STYLE
 
 	panelGame->Start();

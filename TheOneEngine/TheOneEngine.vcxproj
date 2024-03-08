@@ -12,6 +12,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider2D.h" />
+    <ClInclude Include="CollisionSolver.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
@@ -37,6 +39,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider2D.cpp" />
+    <ClCompile Include="CollisionSolver.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />

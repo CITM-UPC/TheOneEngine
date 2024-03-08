@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "Ray.h"
 #include "Log.h"
+#include "CollisionSolver.h"
 
 #include "MonoManager.h"
 #include "InputManager.h"
@@ -58,6 +59,9 @@ public:
 
 	bool vsync = false;
 	AudioCore* audio = nullptr;
+
+	CollisionSolver* collisionSolver = nullptr;
+
 	MonoManager* monoManager = nullptr;
 	InputManager* input = nullptr;
 	N_SceneManager* N_sceneManager = nullptr;

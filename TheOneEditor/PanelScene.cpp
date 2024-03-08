@@ -226,10 +226,13 @@ bool PanelScene::Draw()
         }
 
         //Draw Rays
-        for (auto ray : rays)
+        if (drawRaycasting)
         {
-            engine->DrawRay(ray);
-        }
+            for (auto ray : rays)
+            {
+                engine->DrawRay(ray);
+            }
+        }       
 	}
 
 	ImGui::End();

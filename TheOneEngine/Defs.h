@@ -153,7 +153,7 @@ bool IsUninitialized(std::weak_ptr<T> const& weak)
 // CONFIGURATION -----------------------------------------------------------------
 #define TITLE "TheOneEngine"
 #define VERSION "v0.3"
-#define ORGANIZATION "[CITM - UPC]"
+#define ORGANIZATION "[SWG]"
 
 // Folder paths
 #define ASSETS_PATH "Assets\\"

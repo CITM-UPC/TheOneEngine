@@ -6,11 +6,14 @@
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
 #include <memory>
+#include "../TheOneEditor/App.h"
+#include "../TheOneEditor/SceneManager.h"
 
 EngineCore::EngineCore()
 {
     audio = new AudioCore();
     monoManager = new MonoManager();
+    collisionSolver = new CollisionSolver();
     input = new InputManager();
     N_sceneManager = new N_SceneManager();
 }
@@ -31,6 +34,12 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
+    app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO();
+    // Collision solving
+    if (collisionSolver->CheckCollision())
+    {
+        
+    }
     this->dt = dt;
     audio->Update(dt);
     input->PreUpdate(dt);
@@ -98,6 +107,8 @@ void EngineCore::CleanUp()
 
     input->CleanUp();
     delete input;
+
+    delete collisionSolver;
 }
 
 void EngineCore::DrawAxis()
