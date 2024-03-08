@@ -14,7 +14,8 @@ public class Input
 		RIGHT = 79,
 		LEFT = 80,
 		DOWN = 81,
-		UP = 82
+		UP = 82,
+		SPACEBAR = 44,
 	}
 
 	public enum MouseButtonCode

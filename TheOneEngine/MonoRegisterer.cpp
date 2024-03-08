@@ -4,6 +4,7 @@
 
 #include "EngineCore.h"
 #include "Transform.h"
+#include "N_SceneManager.h"
 
 #include "../mono/include/mono/jit/jit.h"
 #include "../mono/include/mono/metadata/assembly.h"
@@ -54,6 +55,25 @@ static vec3f GetTransformForward(GameObject* GOptr)
 	return (vec3f)GOptr->GetComponent<Transform>()->GetForward();
 }
 
+//GameObject
+static GameObject* InstantiateBullet(vec3f* initialPosition, vec3f* direction)
+{
+	engine->N_sceneManager->CreateTeapot();
+	GameObject* go = engine->N_sceneManager->currentScene->GetRootSceneGO()->children.back().get();
+
+	SetPosition(go, initialPosition);
+	SetRotation(go, direction);
+
+	go->AddScript("Bullet");
+
+	return go;
+}
+
+static void DestroyGameObject(GameObject* objectToDestroy)
+{
+	objectToDestroy->Delete();
+}
+
 //Helpers
 static float GetAppDeltaTime()
 {
@@ -73,6 +93,9 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::SetRotation", SetRotation);
 	mono_add_internal_call("InternalCalls::Translate", Translate);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
+
+	mono_add_internal_call("InternalCalls::InstantiateBullet", InstantiateBullet);
+	mono_add_internal_call("InternalCalls::DestroyGameObject", DestroyGameObject);
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
 }

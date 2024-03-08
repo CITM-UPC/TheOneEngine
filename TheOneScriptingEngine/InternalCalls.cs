@@ -31,6 +31,13 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetTransformForward(IntPtr GOptr);
 
+    //GameObjects
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static IGameObject InstantiateBullet(Vector3 initialPosition, Vector3 direction);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void DestroyGameObject(IntPtr GOtoDestroy);
+
     //Helpers
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static float GetAppDeltaTime();

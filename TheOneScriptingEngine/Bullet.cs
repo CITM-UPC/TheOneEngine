@@ -17,6 +17,7 @@ class Bullet : MonoBehaviour
         if (currentTime > lifeTime)
         {
             currentTime = 0.0f;
+            attachedGameObject.Destroy();
             return;
         }
 

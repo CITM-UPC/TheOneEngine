@@ -15,4 +15,9 @@ public class IGameObject
 
         transform = new ITransform(containerGOptr);
     }
+
+    public void Destroy()
+    {
+        InternalCalls.DestroyGameObject(containerGOptr);
+    }
 }
