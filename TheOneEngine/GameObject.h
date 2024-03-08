@@ -88,6 +88,7 @@ public:
 
     void RemoveComponent(ComponentType type);
 
+    std::vector<Component*> GetAllComponents(bool tunometecabrasalamambiche = true);
 
     // AABB
     void GenerateAABBFromMesh();

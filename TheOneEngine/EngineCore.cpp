@@ -8,6 +8,7 @@
 #include <memory>
 #include "../TheOneEditor/App.h"
 #include "../TheOneEditor/SceneManager.h"
+#include "Collider2D.h"
 
 EngineCore::EngineCore()
 {
@@ -34,12 +35,98 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
-    app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO();
-    // Collision solving
-    if (collisionSolver->CheckCollision())
+    //first, lets see the collider component still exists
+    for (auto it = collisionSolver->goWithCollision.begin(); it != collisionSolver->goWithCollision.end(); )
     {
-        
+        bool remItem = true;
+        for (auto& item2 : (*it)->GetAllComponents())
+        {
+            if (item2->GetType() == ComponentType::Collider2D) remItem = false;
+        }
+        if (remItem)
+        {
+            it = collisionSolver->goWithCollision.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
     }
+
+    //now lets check and solve collisions
+    for (auto& item : collisionSolver->goWithCollision)
+    {
+        // Collision solving
+        switch (item->GetComponent<Collider2D>()->collisionType)
+        {
+        case CollisionType::Player:
+            for (auto& item2 : collisionSolver->goWithCollision)
+            {
+                if (item != item2)
+                {
+                    switch (item2->GetComponent<Collider2D>()->collisionType)
+                    {
+                    case CollisionType::Player:
+                        //there is no player-player collision since we only have 1 player
+                        break;
+                    case CollisionType::Enemy:
+                        //implement any low life to player
+                        break;
+                    case CollisionType::Wall:
+                        //if they collide
+                        if (collisionSolver->CheckCollision(item, item2))
+                        {
+                            //we push player out of wall
+                            collisionSolver->SolveCollision(item, item2);
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            break;
+        case CollisionType::Enemy:
+            for (auto& item2 : collisionSolver->goWithCollision)
+            {
+                if (item != item2)
+                {
+                    switch (item2->GetComponent<Collider2D>()->collisionType)
+                    {
+                    case CollisionType::Player:
+                        //implement any low life to player
+                        break;
+                    case CollisionType::Enemy:
+                        //if they collide
+                        if (collisionSolver->CheckCollision(item, item2))
+                        {
+                            //we push player out of other enemy
+                            collisionSolver->SolveCollision(item, item2);
+                        }
+                        break;
+                    case CollisionType::Wall:
+                        //if they collide
+                        if (collisionSolver->CheckCollision(item, item2))
+                        {
+                            //we push enemy out of wall
+                            collisionSolver->SolveCollision(item, item2);
+                        }
+                        break;
+                    default:
+                        break;
+                    }
+                }
+            }
+            break;
+        case CollisionType::Wall:
+            // do nothing at all
+            break;
+        default:
+            break;
+        }
+    }
+
+
     this->dt = dt;
     audio->Update(dt);
     input->PreUpdate(dt);
@@ -92,6 +179,9 @@ void EngineCore::Render(Camera* camera)
     DrawGrid(1000, 10);
     DrawAxis();
 
+    if (collisionSolver->drawCollisions) collisionSolver->DrawCollisions();
+
+    glColor3f(1.0f, 1.0f, 1.0f);
     //DrawFrustum(camera->viewMatrix);
 
     assert(glGetError() == GL_NONE);

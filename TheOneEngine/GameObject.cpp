@@ -278,6 +278,16 @@ void GameObject::Delete()
 		child.~shared_ptr();
 }
 
+std::vector<Component*> GameObject::GetAllComponents(bool tunometecabrasalamambiche)
+{
+	std::vector<Component*> tempComponents;
+	for (const auto& item : components)
+	{
+		tempComponents.push_back(item.get());
+	}
+	return tempComponents;
+}
+
 std::string GameObject::GetName() const
 {
 	return name;

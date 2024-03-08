@@ -3,8 +3,14 @@
 #include "Collider2D.h"
 #include "Transform.h"
 
+#include "SDL2/SDL.h"
+#include "GL/gl.h"
 
-CollisionSolver::CollisionSolver() {}
+
+CollisionSolver::CollisionSolver() 
+{
+    drawCollisions = true;
+}
 
 CollisionSolver::~CollisionSolver() {}
 
@@ -17,6 +23,66 @@ vec2 CollisionSolver::Clamp(vec2 origin, vec2 min, vec2 max)
     origin.y >= max.y ? origin.y = max.y : origin.y = origin.y;
     return origin;
 }
+
+void CollisionSolver::DrawCollisions()
+{
+    // Iterar sobre las colisiones y dibujarlas
+    for (const auto& collision : goWithCollision) {
+        glPushMatrix();
+
+        // Obtener la posición del objeto con colisión
+        auto transform = collision->GetComponent<Transform>();
+        if (transform == nullptr) {
+            LOG(LogType::LOG_ERROR, "Transform component not found for collision object");
+            continue;
+        }
+
+        // Translate según la posición del objeto
+        glTranslatef(transform->GetPosition().x, 1, transform->GetPosition().z);
+
+        // Dibujar la colisión según su tipo y configuración
+        switch (collision->GetComponent<Collider2D>()->collisionType) {
+        case CollisionType::Player:
+            glColor3f(0.0f, 1.0f, 0.0f); // Verde para jugador
+            break;
+        case CollisionType::Enemy:
+            glColor3f(1.0f, 0.0f, 0.0f); // Rojo para enemigo
+            break;
+        case CollisionType::Wall:
+            glColor3f(0.0f, 0.0f, 1.0f); // Azul para muro
+            break;
+        default:
+            glColor3f(1.0f, 1.0f, 1.0f); // Blanco para otros tipos
+            break;
+        }
+
+        glBegin(GL_LINE_LOOP);
+        if (collision->GetComponent<Collider2D>()->colliderType == ColliderType::Rect) {
+            // Dibujar rectángulo
+            float halfW = collision->GetComponent<Collider2D>()->w / 2.0f;
+            float halfH = collision->GetComponent<Collider2D>()->h / 2.0f;
+            glVertex3f(-halfW, 0.0f, -halfH);
+            glVertex3f(halfW, 0.0f, -halfH);
+            glVertex3f(halfW, 0.0f, halfH);
+            glVertex3f(-halfW, 0.0f, halfH);
+        }
+        else if (collision->GetComponent<Collider2D>()->colliderType == ColliderType::Circle) {
+            // Dibujar círculo
+            const int segments = 30;
+            for (int i = 0; i < segments; ++i) {
+                float angle = 2.0f * 3.14159f * float(i) / float(segments);
+                float x = collision->GetComponent<Collider2D>()->radius * cosf(angle);
+                float y = collision->GetComponent<Collider2D>()->radius * sinf(angle);
+                glVertex3f(x, 0.0f, y); // Usar y como la altura en perspectiva
+            }
+        }
+        glEnd();
+
+        glPopMatrix();
+    }
+}
+
+
 
 double DistanceXZ(const vec3 posA, const vec3 posB)
 {
@@ -86,6 +152,41 @@ bool CollisionSolver::CheckCollision(GameObject* objA, GameObject* objB)
         // Check if circle collides with corner of rectangle
         double cornerDistanceSq = pow(circleDistanceX - rectangleC->w / 2.0, 2) + pow(circleDistanceY - rectangleC->h / 2.0, 2);
         return (cornerDistanceSq <= pow(circleC->radius, 2));
+    }
+}
+
+void CollisionSolver::SolveCollision(GameObject* objA, GameObject* objB)
+{
+    switch (objA->GetComponent<Collider2D>()->colliderType)
+    {
+    case ColliderType::Circle:
+        switch (objB->GetComponent<Collider2D>()->colliderType)
+        {
+        case ColliderType::Circle:
+            CirCirCollision(objA, objB);
+            break;
+        case ColliderType::Rect:
+            CirRectCollision(objA, objB);
+            break;
+        default:
+            break;
+        }
+        break;
+    case ColliderType::Rect:
+        switch (objB->GetComponent<Collider2D>()->colliderType)
+        {
+        case ColliderType::Circle:
+            //rect circle function not implemented
+            break;
+        case ColliderType::Rect:
+            CirRectCollision(objA, objB);
+            break;
+        default:
+            break;
+        }
+        break;
+    default:
+        break;
     }
 }
 

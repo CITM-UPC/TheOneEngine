@@ -15,6 +15,13 @@ enum class ColliderType
     Rect
 };
 
+enum class CollisionType
+{
+    Player,
+    Enemy,
+    Wall
+};
+
 class Collider2D : public Component
 {
 public:
@@ -30,6 +37,7 @@ public:
 public:
 
     ColliderType colliderType;
+    CollisionType collisionType;
     double radius;
     double w, h;
 };
