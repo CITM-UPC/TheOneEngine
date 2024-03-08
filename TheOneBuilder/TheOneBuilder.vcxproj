@@ -126,7 +126,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>TheOneAudio.lib;TheOneEngine.lib;glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;imgui.lib;implot.lib;AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Debug\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Debug\;$(SolutionDir)mono\lib\Debug\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Debug\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Debug\;$(SolutionDir)mono\lib\Debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
@@ -193,6 +193,17 @@ xcopy "$(SolutionDir)TheOneEditor\Library" "$(OutDir)Library" /E /Y</Command>
     <ClInclude Include="BuilderSceneManager.h" />
     <ClInclude Include="BuilderWindow.h" />
     <ClInclude Include="Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheOneAudio\TheOneAudio.vcxproj">
+      <Project>{606662a0-b707-4c97-8361-5d46fd7fd1f3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TheOneEngine\TheOneEngine.vcxproj">
+      <Project>{0e04f5b4-d4a2-4f7b-b350-a0edcae8a446}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TheOneScriptingEngine\TheOneScriptingEngine.csproj">
+      <Project>{e3064d12-da09-4437-920e-cfeee63bdd82}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
