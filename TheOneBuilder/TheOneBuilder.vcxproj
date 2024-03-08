@@ -136,13 +136,17 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     </PreBuildEvent>
     <PostBuildEvent>
       <Command>xcopy "$(SolutionDir)mono\bin" "$(OutDir)" /E /Y
+
 mkdir "$(ProjectDir)Assets"
 mkdir "$(ProjectDir)Library"
 xcopy "$(SolutionDir)TheOneEditor\Assets" "$(ProjectDir)Assets" /E /Y
+rd /s /q "$(ProjectDir)Assets\Meshes"
 xcopy "$(SolutionDir)TheOneEditor\Library" "$(ProjectDir)Library" /E /Y
+
 mkdir "$(OutDir)Assets"
 mkdir "$(OutDir)Library"
 xcopy "$(SolutionDir)TheOneEditor\Assets" "$(OutDir)Assets" /E /Y
+rd /s /q "$(OutDir)Assets\Meshes"
 xcopy "$(SolutionDir)TheOneEditor\Library" "$(OutDir)Library" /E /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
