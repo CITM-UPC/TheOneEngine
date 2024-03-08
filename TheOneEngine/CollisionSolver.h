@@ -1,6 +1,7 @@
 #ifndef __COLLISION_SOLVER_H__
 #define __COLLISION_SOLVER_H__
 #pragma once
+#include "Defs.h"
 
 
 class GameObject;
@@ -18,6 +19,7 @@ public:
 	void CirCirCollision(GameObject* objA, GameObject* objB);
 	void CirRectCollision(GameObject* objA, GameObject* objB);
 
+	vec2 Clamp(vec2 origin, vec2 min, vec2 max);
 
 private:
 

@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "Ray.h"
 #include "Log.h"
+#include "CollisionSolver.h"
 
 #include "MonoManager.h"
 #include "../TheOneAudio/AudioCore.h"
@@ -53,6 +54,9 @@ public:
 	
 	bool vsync = false;
 	AudioCore* audio = nullptr;
+
+	CollisionSolver* collisionSolver = nullptr;
+
 	MonoManager* monoManager = nullptr;
 
 private:
