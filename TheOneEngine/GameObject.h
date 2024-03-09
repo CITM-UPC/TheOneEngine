@@ -19,6 +19,13 @@ enum class DrawMode
     EDITOR
 };
 
+enum class SoundEvent
+{
+    STEP,
+    GUNSHOT
+};
+
+
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -147,6 +154,7 @@ public:
 
     bool hasAudioObject = false;
     int audioOjectID = -1;
+    SoundEvent soundEvent;
 
 private:
     std::string name;

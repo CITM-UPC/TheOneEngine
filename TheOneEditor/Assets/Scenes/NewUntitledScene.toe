@@ -345,6 +345,8 @@
       "Enabled": true,
       "GameObjects": [
         {
+          "AudioGOID": 1,
+          "AudioSoundEvent": 0,
           "Components": [
             {
               "Name": "Transform",
@@ -377,6 +379,8 @@
           "UID": 3452816845
         },
         {
+          "AudioGOID": 2,
+          "AudioSoundEvent": 1,
           "Components": [
             {
               "Name": "Transform",

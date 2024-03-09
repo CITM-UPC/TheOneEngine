@@ -13,6 +13,8 @@
 #include "..\TheOneEngine\Collider2D.h"
 #include "..\TheOneEngine\MonoManager.h"
 
+#include "../TheOneAudio/AudioCore.h"
+
 #include "imgui.h"
 #include "imgui_internal.h"
 
@@ -437,6 +439,63 @@ bool PanelInspector::Draw()
                 }
             }
 
+            if (selectedGO->audioOjectID != -1)
+            {
+                if (ImGui::CollapsingHeader("Audio GameObject", treeNodeFlags))
+                {
+                    std::string soundEvent;
+                    switch (selectedGO->soundEvent)
+                    {
+                    case SoundEvent::STEP:
+                        soundEvent = "STEP";
+                        break;
+                    case SoundEvent::GUNSHOT:
+                        soundEvent = "GUNSHOT";
+                        break;
+                    default:
+                        break;
+                    }
+                    ImGui::Text("Audio GameObject ID: %d\nAudio ready to play: %s", selectedGO->audioOjectID, selectedGO->soundEvent == SoundEvent::STEP ? "STEP" : "GUNSHOT");
+
+                    if (ImGui::Button("Delete Audio GameObject"))
+                    {
+                        ImGui::Text("There is still no nice way to delete audio GameObject, but we can set his audioID to -1");
+                        selectedGO->audioOjectID = -1;
+
+                        for (auto it = engine->N_sceneManager->goWithSound.begin(); it != engine->N_sceneManager->goWithSound.end(); ++it)
+                        {
+                            if (*it == selectedGO)
+                            {
+                                it = engine->N_sceneManager->goWithSound.erase(it);
+                                LOG(LogType::LOG_INFO, "Correctly erased selectedGO from goWithSound vector");
+                                break;
+                            }
+                        }
+                    }
+
+                    // Menú desplegable para cambiar el evento de sonido
+                    const char* soundEvents[] = { "STEP", "GUNSHOT" }; // Lista de eventos de sonido posibles
+                    int selectedEventIndex = -1;
+                    for (int i = 0; i < sizeof(soundEvents) / sizeof(soundEvents[0]); i++) {
+                        if (soundEvent == soundEvents[i]) {
+                            selectedEventIndex = i;
+                            break;
+                        }
+                    }
+                    if (ImGui::Combo("Select Sound Event", &selectedEventIndex, soundEvents, sizeof(soundEvents) / sizeof(soundEvents[0]))) {
+                        switch (selectedEventIndex) {
+                        case 0:
+                            selectedGO->soundEvent = SoundEvent::STEP;
+                            break;
+                        case 1:
+                            selectedGO->soundEvent = SoundEvent::GUNSHOT;
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+            }
 
 
             /*Add Component*/
@@ -501,6 +560,21 @@ bool PanelInspector::Draw()
                     ImGui::TreePop();
                 }
 
+
+                if (ImGui::TreeNode("Register Audio GameObject"))
+                {
+                    if (ImGui::MenuItem("Step")) {
+                        selectedGO->soundEvent = SoundEvent::STEP;
+                        selectedGO->audioOjectID = engine->audio->RegisterGameObject(selectedGO->GetName());
+                        engine->N_sceneManager->goWithSound.push_back(selectedGO);
+                    }
+                    if (ImGui::MenuItem("GUNSHOT")) {
+                        selectedGO->soundEvent = SoundEvent::GUNSHOT;
+                        selectedGO->audioOjectID = engine->audio->RegisterGameObject(selectedGO->GetName());
+                        engine->N_sceneManager->goWithSound.push_back(selectedGO);
+                    }
+                }
+                ImGui::TreePop();
 
                 /*ImGuiTextFilter filter;
                 filter.Draw();*/

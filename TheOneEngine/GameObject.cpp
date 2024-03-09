@@ -349,6 +349,11 @@ json GameObject::SaveGameObject()
 	gameObjectJSON["Name"] = name;
 	gameObjectJSON["Static"] = isStatic;
 	gameObjectJSON["Enabled"] = enabled;
+	if (audioOjectID != -1)
+	{
+		gameObjectJSON["AudioGOID"] = audioOjectID;
+		gameObjectJSON["AudioSoundEvent"] = soundEvent;
+	}
 
 	if (!components.empty())
 	{
@@ -439,6 +444,10 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			}
 		}
 	}
+
+	//audio stuff
+	if (gameObjectJSON.contains("AudioGOID")) audioOjectID = gameObjectJSON["AudioGOID"];
+	if (gameObjectJSON.contains("AudioSoundEvent")) soundEvent = gameObjectJSON["AudioSoundEvent"];
 
 	// Load child game objects
 	if (gameObjectJSON.contains("GameObjects"))

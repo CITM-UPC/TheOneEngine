@@ -68,6 +68,9 @@ public:
 	void SaveScene();
 	void LoadSceneFromJSON(const std::string& filename);
 
+	std::vector<GameObject*> goWithSound;
+
+
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
 
@@ -129,6 +132,7 @@ private:
 
 public:
 	Camera* currentCamera = nullptr;
+	int listenerAudioGOID = -1;
 };
 
 #endif // !__N_SCENE_MANAGER_H__
