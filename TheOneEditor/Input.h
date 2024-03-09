@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Module.h"
+#include "../TheOneEngine/InputManager.h"
 
 #define MAX_MOUSE_BUTTONS 5
 
@@ -66,6 +67,7 @@ public:
 private:
 	KEY_STATE* keyboard;
 	KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
+	InputManager inputManagerInstance;
 	int mouse_x;
 	int mouse_y;
 	int mouse_z;

@@ -40,7 +40,7 @@ public:
 	~InputManager();
 
 	bool Init();
-	bool PreUpdate(double dt);
+	bool PreUpdate();
 	bool CleanUp();
 
 	void HandleDeviceConnection(int index);
