@@ -28,6 +28,11 @@ public:
 private:
 	bool open_selected;
 	bool reparent;
+
+	bool remove = false;
+	bool duplicate = false;
+	bool createEmpty = false;
+	std::vector<std::shared_ptr<GameObject>> toDeleteList;
 };
 
 #endif // !__PANEL_HIERARCHY_H__

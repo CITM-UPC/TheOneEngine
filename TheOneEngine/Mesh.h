@@ -20,6 +20,7 @@ class Mesh : public Component
 public:
 
     Mesh(std::shared_ptr<GameObject> containerGO);
+    Mesh(std::shared_ptr<GameObject> containerGO, Mesh* ref);
     virtual ~Mesh();
 
     void DrawComponent();
