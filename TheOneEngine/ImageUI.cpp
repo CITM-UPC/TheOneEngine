@@ -24,38 +24,39 @@ void ImageUI::Draw2D()
 	float width = (canvas->GetRect().w * rect.w) / 100;
 	float height = (canvas->GetRect().h * rect.h) / 100;
 
+	//glLineWidth(2.0f);
+	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
 	//glm::mat4 projectionMatrix = glm::translate(glm::mat4(1.0f), glm::fvec3(x, y, 0)) * glm::mat4(1.0f) * glm::scale(glm::mat4(1.0f), glm::fvec3(GetRect().w, GetRect().h, 1));
 	//glPushMatrix();
 	//glMultMatrixf(glm::value_ptr(projectionMatrix));
 
-	//glLineWidth(2.0f);
 
 	glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	//image.get()->bind();
-
-	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	image.get()->bind();
 
 
 	glBegin(GL_QUADS);
 
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);
-	glTexCoord2f(0.0f, 1.0f);  // Bottom-left corner
+	glTexCoord2f(1.0f, 0.0f);  // Bottom-right corner of the texture
 	glVertex2f(rect.x - width / 2, rect.y + height / 2);
 
-	glTexCoord2f(1.0f, 1.0f);  // Bottom-right corner
+	glTexCoord2f(0.0f, 0.0f);  // Bottom-left corner of the texture
 	glVertex2f(rect.x + width / 2, rect.y + height / 2);
 
-	glTexCoord2f(1.0f, 0.0f);  // Top-right corner
+	glTexCoord2f(0.0f, 1.0f);  // Top-left corner of the texture
 	glVertex2f(rect.x + width / 2, rect.y - height / 2);
 
-	glTexCoord2f(0.0f, 0.0f);  // Top-left corner
+	glTexCoord2f(1.0f, 1.0f);  // Top-right corner of the texture
 	glVertex2f(rect.x - width / 2, rect.y - height / 2);
 
 	glEnd();
 
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	//glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	/*glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);*/
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glDisable(GL_TEXTURE_2D);

@@ -20,13 +20,33 @@ Texture::Texture(const std::string& path, std::shared_ptr<GameObject> containerG
     this->width = static_cast<uint>(width);
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);
     this->height = static_cast<uint>(height);
-    auto channels = ilGetInteger(IL_IMAGE_CHANNELS);
+    ILint channels = ilGetInteger(IL_IMAGE_CHANNELS);
     auto data = ilGetData();
+
+    // Ajusta la alineación de pixel si es necesario (importante para imágenes RGB)
+    if (channels == 3) {
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    }
+
+    
+    GLenum format;
+    switch (channels)
+    {
+    case 3:
+        format = GL_RGB;
+        break;
+    case 4:
+        format = GL_RGBA;
+        break;
+    default:
+        format = GL_RGB;
+        break;
+    }
 
     //load image as a texture in VRAM
     glGenTextures(1, &_id);
     glBindTexture(GL_TEXTURE_2D, _id);
-    glTexImage2D(GL_TEXTURE_2D, 0, channels, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glTexImage2D(GL_TEXTURE_2D, 0, channels, width, height, 0, format, GL_UNSIGNED_BYTE, data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

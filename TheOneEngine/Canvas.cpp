@@ -10,40 +10,38 @@ Canvas::~Canvas() {}
 
 void Canvas::DrawComponent()
 {
-	SetTo2DRenderSettings(true);
-
 	Camera* camera = containerGO.lock().get()->GetComponent<Camera>();
 
-	if (camera)
-	{
-		if (camera->IsEnabled() && this->IsEnabled())
-		{
-			float width = 2.0f * camera->frustum._near.distance * glm::radians(camera->fov);
-			SetSize(width, width / camera->aspect);
-		}
-	}
-	else
+	if (!camera)
 		return;
 
-	glPushMatrix();
-	
-	glLineWidth(2.0f);
+	SetTo2DRenderSettings(true);
+
+	if (camera->IsEnabled() && this->IsEnabled())
+	{
+		float width = 2.0f * camera->frustum._near.distance * glm::radians(camera->fov);
+		SetSize(width, width / camera->aspect);
+	}
+
+	//glPushMatrix();
+	//
+	//glLineWidth(2.0f);
 
 
-	glBegin(GL_LINES);
+	//glBegin(GL_LINES);
 
-	glColor4f(1.0f, 0.0f, 0.0f, 1.0f);										// X Axis.
-	glVertex2f(rect.x - rect.w / 2, rect.y + rect.h / 2);			glVertex2f(rect.x + rect.w / 2, rect.y + rect.h / 2);
-	glVertex2f(rect.x + rect.w / 2, rect.y + rect.h / 2);			glVertex2f(rect.x + rect.w / 2, rect.y - rect.h / 2);
-	glVertex2f(rect.x + rect.w / 2, rect.y - rect.h / 2);			glVertex2f(rect.x - rect.w / 2, rect.y - rect.h / 2);
-	glVertex2f(rect.x - rect.w / 2, rect.y - rect.h / 2);			glVertex2f(rect.x - rect.w / 2, rect.y + rect.h / 2);
+	//glColor4f(1.0f, 0.0f, 0.0f, 1.0f);										// X Axis.
+	//glVertex2f(rect.x - rect.w / 2, rect.y + rect.h / 2);			glVertex2f(rect.x + rect.w / 2, rect.y + rect.h / 2);
+	//glVertex2f(rect.x + rect.w / 2, rect.y + rect.h / 2);			glVertex2f(rect.x + rect.w / 2, rect.y - rect.h / 2);
+	//glVertex2f(rect.x + rect.w / 2, rect.y - rect.h / 2);			glVertex2f(rect.x - rect.w / 2, rect.y - rect.h / 2);
+	//glVertex2f(rect.x - rect.w / 2, rect.y - rect.h / 2);			glVertex2f(rect.x - rect.w / 2, rect.y + rect.h / 2);
 
-	glEnd();
+	//glEnd();
 
-	glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glLineWidth(1.0f);
+	//glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+	//glLineWidth(1.0f);
 
-	glPopMatrix();
+	//glPopMatrix();
 
 	for (auto element = uiElements.rbegin(); element != uiElements.rend(); ++element)
 	{
@@ -56,6 +54,7 @@ void Canvas::DrawComponent()
 void Canvas::SetTo2DRenderSettings(const bool& setTo)
 {
 	Camera* camera = containerGO.lock().get()->GetComponent<Camera>();
+
 	float width = 2.0f * camera->frustum._near.distance * glm::radians(camera->fov);
 
 	glm::mat4 viewMatrix = glm::transpose(glm::mat4(camera->getViewMatrix()));
@@ -66,7 +65,7 @@ void Canvas::SetTo2DRenderSettings(const bool& setTo)
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		//gluOrtho2D(0.0, 1.0, 1.0, 0.0);
-		glOrtho(-width / 2, width / 2, -(width / camera->aspect) / 2, (width / camera->aspect) / 2, 100.0f, -100.0f);
+		glOrtho(-rect.w / 2, rect.w / 2, -(rect.w / camera->aspect) / 2, (rect.w / camera->aspect) / 2, 100.0f, -100.0f);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(glm::value_ptr(viewMatrix));
 		/*glPushMatrix();

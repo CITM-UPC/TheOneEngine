@@ -9,6 +9,7 @@
 
 #include <fstream>
 #include <filesystem>
+#include "ImageUI.h"
 
 namespace fs = std::filesystem;
 
@@ -319,6 +320,23 @@ std::shared_ptr<GameObject> N_SceneManager::CreateCameraGO(std::string name)
 	currentScene->GetRootSceneGO().get()->children.emplace_back(cameraGO);
 
 	return cameraGO;
+}
+
+std::shared_ptr<GameObject> N_SceneManager::CreateCanvasGO(std::string name)
+{
+	std::shared_ptr<GameObject> canvasGO = std::make_shared<GameObject>(name);
+	canvasGO.get()->AddComponent<Transform>();
+	canvasGO.get()->AddComponent<Canvas>();
+	canvasGO.get()->AddComponent<Camera>();
+	canvasGO.get()->GetComponent<Camera>()->UpdateCamera();
+	//Alex: This is just for debug
+	canvasGO.get()->GetComponent<Canvas>()->AddItemUI<ImageUI>();
+
+	canvasGO.get()->parent = currentScene->GetRootSceneGO().get()->weak_from_this();
+
+	currentScene->GetRootSceneGO().get()->children.emplace_back(canvasGO);
+
+	return canvasGO;
 }
 
 std::shared_ptr<GameObject> N_SceneManager::CreateMeshGO(std::string path)
