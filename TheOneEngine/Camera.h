@@ -11,6 +11,11 @@
 
 #include <memory>
 
+enum class CameraType 
+{
+    PERSPECTIVE,
+    ORTHOGONAL
+};
 
 struct Plane
 {
@@ -100,6 +105,7 @@ class Camera : public Component
 public:
 
     Camera(std::shared_ptr<GameObject> containerGO);
+    Camera(std::shared_ptr<GameObject> containerGO, Camera* ref);
     ~Camera();
 
     const mat4f& getViewMatrix();
@@ -118,8 +124,13 @@ public:
 
 public:
 
+    //perpective
     double fov;
     double aspect;
+
+    //orthogonal
+    double size;
+
     double zNear;
     double zFar;
 
@@ -131,6 +142,8 @@ public:
     mat4 viewMatrix;
     mat4 projectionMatrix;
     mat4 viewProjectionMatrix;
+
+    CameraType cameraType;
 
     bool drawFrustum;
 };

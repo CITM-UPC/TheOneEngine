@@ -13,6 +13,11 @@
 #include <list>
 #include <memory>
 
+enum class DrawMode
+{
+    GAME,
+    EDITOR
+};
 
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
@@ -23,6 +28,7 @@ public:
 
     void Update(double dt);
     void Draw();
+    void DrawUI(const DrawMode mode);
 
 
     // Components
@@ -58,6 +64,28 @@ public:
 
         return true;
     }
+
+    template <typename TComponent>
+    bool AddCopiedComponent(TComponent* ref)
+    {
+        Component* component = this->GetComponent<TComponent>();
+
+        // Check for already existing Component
+        if (component != nullptr)
+        {
+            LOG(LogType::LOG_WARNING, "Component already applied");
+            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
+            LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
+
+            return false;
+        }
+
+        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this(), ref);
+        newComponent->Enable(); // hekbas: Enable the component if necessary?
+        components.push_back(std::move(newComponent));
+
+        return true;
+    }
     
     bool AddScript(std::string name)
     {
@@ -82,6 +110,7 @@ public:
 
     void RemoveComponent(ComponentType type);
 
+    std::vector<Component*> GetAllComponents(bool tunometecabrasalamambiche = true);
 
     // AABB
     void GenerateAABBFromMesh();
@@ -103,6 +132,7 @@ public:
 
     bool IsStatic() const;
     void SetStatic(bool isStatic);
+    bool HasCameraComponent();
 
     void CreateUID();
     uint32 GetUID() { return UID; }

@@ -34,6 +34,7 @@ void EngineCore::PreUpdate()
 
 void EngineCore::Update(double dt)
 {
+    this->dt = dt;
     audio->Update(dt);
 }
 
@@ -56,7 +57,19 @@ void EngineCore::Render(Camera* camera)
     glEnable(GL_COLOR_MATERIAL);
     //glEnable(GL_LIGHTING);
 
-    gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
+    switch (camera->cameraType)
+    {
+    case CameraType::PERSPECTIVE:
+        gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
+        break;
+    case CameraType::ORTHOGONAL:
+        glOrtho(-camera->size, camera->size, -camera->size * 0.75, camera->size * 0.75, camera->zNear, camera->zFar);
+        break;
+    default:
+        LOG(LogType::LOG_ERROR, "EngineCore - CameraType invalid!");
+        break;
+    }
+    //gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
 
 	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
 

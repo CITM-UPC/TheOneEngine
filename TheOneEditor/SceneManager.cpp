@@ -22,7 +22,15 @@ bool SceneManager::Awake()
 
 bool SceneManager::Start()
 {
+	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
+	N_sceneManager->CreateCameraGO("mainCamera");
+	//N_sceneManager->LoadScene("Scene_2");
 	N_sceneManager->Start();
+
+	N_sceneManager->CreateTeapot();
+	engine->monoManager->bulletGO = N_sceneManager->currentScene->GetRootSceneGO()->children.back().get();
+	engine->monoManager->bulletGO->AddScript("Bullet");
+	engine->monoManager->bulletGO->Disable();
 
 	return true;
 }
@@ -36,7 +44,7 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::Update(double dt)
 {
-	N_sceneManager->Update(dt);
+	N_sceneManager->Update(dt, app->IsPlaying());
 
 	return true;
 }

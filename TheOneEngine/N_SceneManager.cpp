@@ -23,19 +23,12 @@ N_SceneManager::~N_SceneManager()
 
 bool N_SceneManager::Awake()
 {
-	std::filesystem::create_directories("Library/");
+	fs::create_directories("Library/");
 	return true;
 }
 
 bool N_SceneManager::Start()
 {
-	currentScene = new Scene(0, "Scene 1");
-
-	// Create default mesh
-	//CreateMeshGO("");
-
-	//if (currentScene->IsDirty()) SaveScene();
-
 	return true;
 }
 
@@ -45,12 +38,17 @@ bool N_SceneManager::PreUpdate()
 	return true;
 }
 
-bool N_SceneManager::Update(double dt)
+bool N_SceneManager::Update(double dt, bool isPlaying)
 {
 	// Do nothing
 
 	// Save Scene by checking if isDirty and pressing CTRL+S
 	//if (currentScene->IsDirty()) SaveScene();
+	
+	if (isPlaying)
+	{
+		currentScene->UpdateGOs(dt);
+	}
 
 	return true;
 }
@@ -74,17 +72,21 @@ bool N_SceneManager::CleanUp()
 
 void N_SceneManager::CreateNewScene(uint _index, std::string name)
 {
+	// Historn: Change currentScene when creating a new one? (First need save scene correctly for not loosing scenes)
 	Scene* newScene = new Scene(_index, name);
 	// Create with JSON Scene file
 }
 
 void N_SceneManager::LoadScene(uint index)
 {
+
 }
 
 void N_SceneManager::LoadScene(std::string sceneName)
 {
-	LoadSceneFromJSON(sceneName);
+	std::string fileName = "Assets/Scenes/" + sceneName + ".toe";
+
+	LoadSceneFromJSON(fileName);
 }
 
 void N_SceneManager::SaveScene()
@@ -102,6 +104,7 @@ void N_SceneManager::SaveScene()
 
 	sceneJSON["sceneName"] = currentScene->GetSceneName();
 	sceneJSON["index"] = currentScene->GetIndex();
+	sceneJSON["path"] = filename;
 
 	json gameObjectsJSON;
 	/*Save all gameobjects*/
@@ -114,6 +117,8 @@ void N_SceneManager::SaveScene()
 
 	std::ofstream(filename) << sceneJSON.dump(2);
 	LOG(LogType::LOG_OK, "SAVE SUCCESFUL");
+
+	currentScene->SetIsDirty(false);
 }
 
 void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
@@ -149,8 +154,19 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 	// Close the file
 	file.close();
 
-	//currentScene->SetIndex(sceneJSON["index"]);
-	//currentScene->SetSceneName(sceneJSON["sceneName"]);
+	if (sceneJSON.contains("sceneName"))
+	{
+		currentScene->SetSceneName(sceneJSON["sceneName"]);
+		currentScene->GetRootSceneGO().get()->SetName(sceneJSON["sceneName"]);
+	}
+	if (sceneJSON.contains("index"))
+	{
+		currentScene->SetIndex(sceneJSON["index"]);
+	}
+	if (sceneJSON.contains("path"))
+	{
+		currentScene->SetPath(sceneJSON["path"]);
+	}
 
 	currentScene->GetRootSceneGO().get()->children.clear();
 
@@ -163,7 +179,7 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 		{
 			// Create a new game object
 			auto newGameObject = CreateEmptyGO();
-
+			newGameObject.get()->SetName(currentScene->GetSceneName());
 			// Load the game object from JSON
 			newGameObject->LoadGameObject(gameObjectJSON);
 		}
@@ -193,16 +209,102 @@ std::string N_SceneManager::GenerateUniqueName(const std::string& baseName)
 	return uniqueName;
 }
 
-std::shared_ptr<GameObject> N_SceneManager::CreateEmptyGO(std::string name)
+std::shared_ptr<GameObject> N_SceneManager::DuplicateGO(std::shared_ptr<GameObject> originalGO, bool recursive)
+{
+	GameObject* ref = originalGO.get();
+
+
+	std::shared_ptr<GameObject> duplicatedGO = std::make_shared<GameObject>(recursive ? originalGO.get()->GetName() : GenerateUniqueName("Copy of " + originalGO.get()->GetName()));
+	//meshGO.get()->GetComponent<Mesh>()->mesh = mesh;
+	//meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex];
+
+	for (auto& item : ref->GetAllComponents())
+	{
+		switch (item->GetType())
+		{
+		case ComponentType::Transform:
+			duplicatedGO.get()->AddCopiedComponent<Transform>((Transform*)item);
+			break;
+		case ComponentType::Camera:
+			duplicatedGO.get()->AddCopiedComponent<Camera>((Camera*)item);
+			break;
+		case ComponentType::Mesh:
+			duplicatedGO.get()->AddCopiedComponent<Mesh>((Mesh*)item);
+			break;
+		case ComponentType::Texture:
+			duplicatedGO.get()->AddCopiedComponent<Texture>((Texture*)item);
+			break;
+		case ComponentType::Script:
+			duplicatedGO.get()->AddCopiedComponent<Script>((Script*)item);
+			break;
+		case ComponentType::Unknown:
+			break;
+		default:
+			break;
+		}
+	}
+
+	if (!recursive)
+	{
+		duplicatedGO.get()->parent = originalGO.get()->parent;
+
+		originalGO.get()->parent.lock().get()->children.push_back(duplicatedGO);
+		//GetRootSceneGO().get()->children.push_back(duplicatedGO);
+	}
+
+
+	for (auto& child : originalGO->children)
+	{
+		std::shared_ptr<GameObject> temp = DuplicateGO(child, true);
+		temp.get()->parent = duplicatedGO;
+		duplicatedGO.get()->children.push_back(temp);
+	}
+
+	return duplicatedGO;
+}
+
+std::shared_ptr<GameObject> N_SceneManager::CreateEmptyGO(std::string name, bool isRoot)
 {
 	std::shared_ptr<GameObject> emptyGO = std::make_shared<GameObject>(name);
 	emptyGO.get()->AddComponent<Transform>();
 
-	emptyGO.get()->parent = currentScene->GetRootSceneGO().get()->weak_from_this();
-
-	currentScene->GetRootSceneGO().get()->children.emplace_back(emptyGO);
+	if (isRoot)
+	{
+		emptyGO.get()->parent = currentScene->GetRootSceneGO().get()->weak_from_this();
+		currentScene->GetRootSceneGO().get()->children.emplace_back(emptyGO);
+	}
 
 	return emptyGO;
+}
+
+void N_SceneManager::ReparentGO(std::shared_ptr<GameObject> originalGO, std::shared_ptr<GameObject> newParentGO)
+{
+	//find the go among children of his parent
+	int counter = 0;
+	for (const auto& go : originalGO.get()->parent.lock().get()->children)
+	{
+		if (go.get() == originalGO.get())
+		{
+			//we erase the element from the vector of his parent
+			auto it = originalGO.get()->parent.lock().get()->children.begin() + counter;
+			originalGO.get()->parent.lock().get()->children.erase(it);
+
+			originalGO.get()->parent.lock().get()->children.push_back(newParentGO);
+			//originalGO.get()->parent.lock().get()->children.insert(it, emptyGO);
+
+			newParentGO.get()->parent = originalGO.get()->parent.lock();
+
+			//and set the GO as his children
+			newParentGO.get()->children.push_back(originalGO);
+
+			//dont forget to set the new parent of the go
+			originalGO.get()->parent = newParentGO;
+
+			//if we find it, stop the searching loop
+			break;
+		}
+		counter++;
+	}
 }
 
 std::shared_ptr<GameObject> N_SceneManager::CreateCameraGO(std::string name)
@@ -398,7 +500,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateMF()
 	return CreateMeshGO("Assets/Meshes/mf.fbx");
 }
 
-std::shared_ptr<GameObject> N_SceneManager::CreateTeapot(std::string path)
+std::shared_ptr<GameObject> N_SceneManager::CreateTeapot()
 {
 	return CreateMeshGO("Assets/Meshes/teapot.fbx");
 }
@@ -432,7 +534,26 @@ void Scene::RecurseSceneDraw(std::shared_ptr<GameObject> parentGO)
 	}
 }
 
-void Scene::Draw()
+void Scene::UpdateGOs(double dt)
+{
+	for (const auto gameObject : rootSceneGO->children)
+	{
+		gameObject->Update(dt);
+	}
+}
+
+void Scene::RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode)
+{
+
+	for (const auto gameObject : parentGO.get()->children)
+	{
+		gameObject.get()->DrawUI(mode);
+		RecurseUIDraw(gameObject, mode);
+	}
+}
+
+void Scene::Draw(DrawMode mode)
 {
 	RecurseSceneDraw(rootSceneGO);
+	RecurseUIDraw(rootSceneGO, mode);
 }

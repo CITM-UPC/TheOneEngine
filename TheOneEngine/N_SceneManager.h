@@ -4,6 +4,7 @@
 
 #include "Defs.h"
 #include "GameObject.h"
+#include "Camera.h"
 
 #include <string>
 #include <memory>
@@ -23,7 +24,7 @@ public:
 	bool Start();
 
 	bool PreUpdate();
-	bool Update(double dt);
+	bool Update(double dt, bool isPlaying);
 	bool PostUpdate();
 
 	bool CleanUp();
@@ -39,7 +40,9 @@ public:
 	std::string GenerateUniqueName(const std::string& baseName);
 
 	// Create GameObjects functions
-	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
+	std::shared_ptr<GameObject> DuplicateGO(std::shared_ptr<GameObject> originalGO, bool recursive = false);
+	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject", bool isRoot = true);
+	void ReparentGO(std::shared_ptr<GameObject> go, std::shared_ptr<GameObject> newParentGO);
 	std::shared_ptr<GameObject> CreateCameraGO(std::string name);
 
 	// Try to mix this two (CreateExistingMeshGO should be erased and CreateMeshGO has to do)
@@ -49,7 +52,7 @@ public:
 	std::shared_ptr<GameObject> CreateCube();
 	std::shared_ptr<GameObject> CreateSphere();
 	std::shared_ptr<GameObject> CreateMF();
-	std::shared_ptr<GameObject> CreateTeapot(std::string path);
+	std::shared_ptr<GameObject> CreateTeapot();
 
 	// Get/Set
 	uint GetNumberGO() const;
@@ -97,18 +100,25 @@ public:
 	inline bool IsDirty() const { return isDirty; }
 	inline void SetIsDirty(bool state) { isDirty = state; }
 
+	inline std::string GetPath() const { return path; }
+	inline void SetPath(std::string _path) { path = _path; }
+
 	inline std::shared_ptr<GameObject> GetRootSceneGO() const { return rootSceneGO; }
 
-	inline void Draw();
+	inline void UpdateGOs(double dt);
+	
+	inline void Draw(DrawMode mode = DrawMode::GAME);
 
 private:
 	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);
+	inline void RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode = DrawMode::GAME);
 
 private:
 	uint index;
 	std::string sceneName;
 	std::shared_ptr<GameObject> rootSceneGO;
 
+	std::weak_ptr<Camera> currentCamera;
 	//Historn: This is to remember to save the scene if any change is made
 	bool isDirty;
 

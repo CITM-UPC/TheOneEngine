@@ -20,6 +20,7 @@ public:
 	//Texture(std::shared_ptr<GameObject> containerGO);
 
 	explicit Texture(const std::string& path, std::shared_ptr<GameObject> containerGO = nullptr);
+	Texture(std::shared_ptr<GameObject> containerGO = nullptr, Texture* ref = nullptr);
 	//Texture(Texture&& tex) noexcept;
 	void bind() const;
 	~Texture();

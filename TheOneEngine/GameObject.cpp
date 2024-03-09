@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Canvas.h"
 #include "UIDGen.h"
 #include "BBox.hpp"
 
@@ -49,7 +50,7 @@ void GameObject::Draw()
 {
 	for (const auto& component : components)
 	{
-		if (component && component->IsEnabled())
+		if (component && component->IsEnabled() && component->GetType() != ComponentType::Canvas)
 			component->DrawComponent();
 	}
 
@@ -57,6 +58,14 @@ void GameObject::Draw()
 		DrawAABB();
 }
 
+void GameObject::DrawUI(const DrawMode mode)
+{
+	auto canvas = this->GetComponent<Canvas>();
+
+	if (canvas && canvas->IsEnabled())
+		if (mode == DrawMode::GAME || canvas->debugDraw)
+			canvas->DrawComponent();
+}
 
 // Component ----------------------------------------
 void GameObject::RemoveComponent(ComponentType type)
@@ -262,11 +271,36 @@ void GameObject::Disable()
 
 void GameObject::Delete()
 {
-	for (const auto& component : components)
-		component.get_deleter();
+	int counter = 0;
+	for (const auto& go : parent.lock().get()->children)
+	{
+		if (go.get() == this)
+		{
+			GameObject* deletedGO = parent.lock().get()->children.at(counter).get();
 
-	for (const auto& child : children)
-		child.~shared_ptr();
+			if (!deletedGO->children.empty())
+				parent.lock().get()->children.at(counter).get()->children.clear();
+
+			if (!deletedGO->children.empty())
+				parent.lock().get()->children.at(counter).get()->components.clear();
+
+			auto it = parent.lock().get()->children.begin() + counter;
+			parent.lock().get()->children.erase(it);
+
+			return;
+		}
+		counter++;
+	}
+}
+
+std::vector<Component*> GameObject::GetAllComponents(bool tunometecabrasalamambiche)
+{
+	std::vector<Component*> tempComponents;
+	for (const auto& item : components)
+	{
+		tempComponents.push_back(item.get());
+	}
+	return tempComponents;
 }
 
 std::string GameObject::GetName() const
@@ -287,6 +321,11 @@ bool GameObject::IsStatic() const
 void GameObject::SetStatic(bool staticFlag)
 {
 	isStatic = staticFlag;
+}
+
+bool GameObject::HasCameraComponent()
+{
+	return this->GetComponent<Camera>();
 }
 
 void GameObject::CreateUID()
@@ -381,6 +420,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			{
 				this->AddComponent<Mesh>();
 				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == 4)
+			{
+				this->AddScript(componentJSON["ScriptName"]);
+				this->GetComponent<Script>()->LoadComponent(componentJSON);
 			}
 		}
 	}
