@@ -27,10 +27,14 @@ void EngineCore::Start()
     
 }
 
+void EngineCore::PreUpdate()
+{
+    input->PreUpdate();
+}
+
 void EngineCore::Update(double dt)
 {
     audio->Update(dt);
-    input->PreUpdate(dt);
 }
 
 void EngineCore::Render(Camera* camera)
