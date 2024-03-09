@@ -66,6 +66,16 @@ bool PanelInspector::Draw()
             if (ImGui::BeginCombo("Layer", "Default", ImGuiComboFlags_HeightSmall)) { ImGui::EndCombo(); }
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
+            //add change name imgui
+            static char newNameBuffer[256]; // Buffer para el nuevo nombre
+            if (ImGui::InputText("New Name", newNameBuffer, sizeof(newNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
+                std::string newName(newNameBuffer);
+                LOG(LogType::LOG_INFO, "GameObject %s has been renamed to %s", selectedGO->GetName().c_str(), newName.c_str());
+                selectedGO->SetName(newName); // Establece el nuevo nombre del GameObject
+                // Limpiar el buffer después de cambiar el nombre
+                newNameBuffer[0] = '\0';
+            }
+
             /*Transform Component*/
             Transform* transform = selectedGO->GetComponent<Transform>();
 

@@ -145,6 +145,9 @@ public:
     std::vector<std::shared_ptr<GameObject>> children;
     bool isStatic;
 
+    bool hasAudioObject = false;
+    int audioOjectID = -1;
+
 private:
     std::string name;
     std::vector<std::unique_ptr<Component>> components;

@@ -21,6 +21,18 @@ Collider2D::Collider2D(std::shared_ptr<GameObject> containerGO) : Component(cont
     engine->collisionSolver->goWithCollision.push_back(containerGO.get());
 }
 
+Collider2D::Collider2D(std::shared_ptr<GameObject> containerGO, Collider2D* ref) : Component(containerGO, ComponentType::Collider2D)
+{
+    this->colliderType = ref->colliderType;
+    this->collisionType = ref->collisionType;
+    this->h = ref->h;
+    this->w = ref->w;
+    //TODO: CHANGE INTO REAL CALCULATED RADIUS
+    this->radius = ref->radius;
+    //push the game object that has colliders into the collidergo list
+    engine->collisionSolver->goWithCollision.push_back(containerGO.get());
+}
+
 Collider2D::Collider2D(std::shared_ptr<GameObject> containerGO, ColliderType colliderType) :
     Component(containerGO, ComponentType::Collider2D),
     colliderType(colliderType)
@@ -62,8 +74,8 @@ void Collider2D::LoadComponent(const json& colliderJSON)
     if (colliderJSON.contains("UID")) UID = colliderJSON["UID"];
     if (colliderJSON.contains("Name")) name = colliderJSON["Name"];
     if (colliderJSON.contains("Type")) type = colliderJSON["Type"];
-    if (colliderJSON.contains("CollisionType")) type = colliderJSON["CollisionType"];
-    if (colliderJSON.contains("ColliderType")) type = colliderJSON["ColliderType"];
+    if (colliderJSON.contains("CollisionType")) collisionType = colliderJSON["CollisionType"];
+    if (colliderJSON.contains("ColliderType")) colliderType = colliderJSON["ColliderType"];
     if (colliderJSON.contains("Width")) w = colliderJSON["Width"];
     if (colliderJSON.contains("Height")) h = colliderJSON["Height"];
     if (colliderJSON.contains("Radius")) radius = colliderJSON["Radius"];

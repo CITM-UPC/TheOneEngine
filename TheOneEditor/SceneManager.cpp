@@ -31,7 +31,7 @@ bool SceneManager::Start()
 	engine->monoManager->bulletGO->AddScript("Bullet");
 	engine->monoManager->bulletGO->Disable();
 
-	engine->N_sceneManager->CreateEmptyGO();
+	//engine->N_sceneManager->CreateEmptyGO();
 	engine->N_sceneManager->GetGameObjects().front().get()->AddComponent<Camera>();
 	engine->N_sceneManager->GetGameObjects().front().get()->GetComponent<Camera>()->UpdateCamera();
 

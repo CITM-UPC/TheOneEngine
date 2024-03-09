@@ -106,14 +106,14 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 		if (ImGui::MenuItem("Create Empty"))
 		{
 			createEmpty = true;
-			app->scenemanager->N_sceneManager->ReparentGO(go, app->scenemanager->N_sceneManager->CreateEmptyGO("Parent of " + go.get()->GetName(), false));
+			engine->N_sceneManager->ReparentGO(go, engine->N_sceneManager->CreateEmptyGO("Parent of " + go.get()->GetName(), false));
 			LOG(LogType::LOG_INFO, "Empty parent for %s created", go.get()->GetName().c_str());
 		}
 
 		if (ImGui::MenuItem("Duplicate"))
 		{
 			duplicate = true;
-			app->scenemanager->N_sceneManager->SetSelectedGO(app->scenemanager->N_sceneManager->DuplicateGO(go));
+			engine->N_sceneManager->SetSelectedGO(engine->N_sceneManager->DuplicateGO(go));
 			LOG(LogType::LOG_INFO, "%s has been duplicated", go.get()->GetName().c_str());
 		}
 
@@ -121,7 +121,7 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 		{
 			remove = true;
 			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
-			app->scenemanager->N_sceneManager->SetSelectedGO(nullptr);
+			engine->N_sceneManager->SetSelectedGO(nullptr);
 
 			toDeleteList.push_back(go);
 

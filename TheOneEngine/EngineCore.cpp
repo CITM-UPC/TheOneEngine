@@ -64,22 +64,22 @@ void EngineCore::Update(double dt)
             case CollisionType::Player:
 
                 //hardcoded code just in case we need to move player
-                //if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-                //{
-                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z - 0.1 });
-                //}
-                //if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-                //{
-                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z + 0.1 });
-                //}
-                //if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-                //{
-                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x + 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
-                //}
-                //if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-                //{
-                //    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x - 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
-                //}
+                if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z - 0.1 });
+                }
+                if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z + 0.1 });
+                }
+                if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x + 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
+                }
+                if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x - 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
+                }
 
                 for (auto& item2 : collisionSolver->goWithCollision)
                 {
