@@ -208,7 +208,15 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 			auto newGameObject = CreateEmptyGO();
 			newGameObject.get()->SetName(currentScene->GetSceneName());
 			// Load the game object from JSON
-			newGameObject->LoadGameObject(gameObjectJSON);
+			newGameObject->LoadGameObject(gameObjectJSON, goWithSound);
+		}
+		//register in audio the game objects
+		for (auto& item : goWithSound)
+		{
+			if (item->audioOjectID != -1)
+			{
+				item->audioOjectID = engine->audio->RegisterGameObject(item->GetName());
+			}
 		}
 
 		LOG(LogType::LOG_OK, "LOAD SUCCESSFUL");

@@ -145,14 +145,14 @@ public:
     uint32 GetUID() { return UID; }
 
     json SaveGameObject();
-    void LoadGameObject(const json& gameObjectJSON);
+    void LoadGameObject(const json& gameObjectJSON, std::vector<GameObject*>& goWithSound);
 
 public:
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;
     bool isStatic;
 
-    bool hasAudioObject = false;
+    //bool hasAudioObject = false;
     int audioOjectID = -1;
     SoundEvent soundEvent;
 

@@ -240,6 +240,7 @@ void AudioCore::CleanUp()
 void AudioCore::SetDefaultListener(AkGameObjectID goID)
 {
     AK::SoundEngine::SetDefaultListeners(&goID, 1);
+    LOG(LogType::LOG_AUDIO, "Set default listener: %d audiogameobject", goID);
 }
 
 AkGameObjectID AudioCore::RegisterGameObject(std::string name)
@@ -265,6 +266,7 @@ void AudioCore::PlayEvent(AkUniqueID event, AkGameObjectID goID)
         if (audioEvents[i]->playing_id == 0L)
         {
             AK::SoundEngine::PostEvent(event, goID, AkCallbackType::AK_EndOfEvent, audioEvents[i]->event_call_back, (void*)audioEvents[i]);
+            LOG(LogType::LOG_AUDIO, "Playing event from %d audiogameobject", goID);
             audioEvents[i]->playing_id = 1L;
             return;
         }
@@ -356,7 +358,11 @@ void AudioCore::SetAudioGameObjectTransform(AkGameObjectID goID, float posx, flo
     tTransform.SetOrientation({ ofx, ofy, ofz }, { otx, oty, otz });
     if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
+        LOG(LogType::LOG_AUDIO, "ERROR setting transform to %d audiogameobject", goID);
+    }
+    else
+    {
+        //LOG(LogType::LOG_AUDIO, "SUCCES setting transform to %d audiogameobject", goID);
     }
 }
 
@@ -368,7 +374,11 @@ void AudioCore::SetAudioGameObjectPosition(AkGameObjectID goID, float posx, floa
     tTransform.SetOrientation({ 0.0f, 0.0f, -1.0f }, { 0.0f, 1.0f, 0.0f });
     if (AK::SoundEngine::SetPosition(goID, tTransform) != AK_Success)
     {
-        LOG(LogType::LOG_AUDIO, "ERROR setting position to backgroundmusic (default listener)");
+        LOG(LogType::LOG_AUDIO, "ERROR setting position to %d audiogameobject", goID);
+    }
+    else
+    {
+        //LOG(LogType::LOG_AUDIO, "SUCCES setting position to %d audiogameobject", goID);
     }
 }
 

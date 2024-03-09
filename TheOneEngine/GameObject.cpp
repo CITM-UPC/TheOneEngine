@@ -352,7 +352,7 @@ json GameObject::SaveGameObject()
 	if (audioOjectID != -1)
 	{
 		gameObjectJSON["AudioGOID"] = audioOjectID;
-		gameObjectJSON["AudioSoundEvent"] = soundEvent;
+		gameObjectJSON["AudioSoundEvent"] = (int)soundEvent;
 	}
 
 	if (!components.empty())
@@ -380,7 +380,7 @@ json GameObject::SaveGameObject()
 	return gameObjectJSON;
 }
 
-void GameObject::LoadGameObject(const json& gameObjectJSON)
+void GameObject::LoadGameObject(const json& gameObjectJSON, std::vector<GameObject*>& goWithSound)
 {
 	// Load basic properties
 	if (gameObjectJSON.contains("UID"))
@@ -447,7 +447,12 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 
 	//audio stuff
 	if (gameObjectJSON.contains("AudioGOID")) audioOjectID = gameObjectJSON["AudioGOID"];
-	if (gameObjectJSON.contains("AudioSoundEvent")) soundEvent = gameObjectJSON["AudioSoundEvent"];
+	if (gameObjectJSON.contains("AudioSoundEvent")) soundEvent = (SoundEvent)gameObjectJSON["AudioSoundEvent"];
+	if (audioOjectID != -1)
+	{
+		goWithSound.push_back(this);
+	}
+	
 
 	// Load child game objects
 	if (gameObjectJSON.contains("GameObjects"))
@@ -457,7 +462,7 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 		for (const auto& childJSON : childrenGOJSON)
 		{
 			auto childGameObject = std::make_shared<GameObject>("Empty GO");
-			childGameObject->LoadGameObject(childJSON);
+			childGameObject->LoadGameObject(childJSON, goWithSound);
 
 			// Add the loaded child game object to the current game object
 			childGameObject.get()->parent = this->weak_from_this().lock();

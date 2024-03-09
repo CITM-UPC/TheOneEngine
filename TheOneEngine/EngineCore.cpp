@@ -80,7 +80,28 @@ void EngineCore::Update(double dt)
                 {
                     item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x - 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
                 }
-
+                //hardcoded code just to play step sound
+                if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ||
+                    app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ||
+                    app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT ||
+                    app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                {
+                    if (stepcd >= 40)
+                    {
+                        for (auto& item2 : N_sceneManager->goWithSound)
+                        {
+                            //update position of audio object
+                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->GetComponent<Transform>()->GetPosition().x, item2->GetComponent<Transform>()->GetPosition().y, item2->GetComponent<Transform>()->GetPosition().z);
+                            //play sound
+                            if (item2->soundEvent == SoundEvent::STEP)
+                            {
+                                audio->PlayEvent(AK::EVENTS::STEP, item2->audioOjectID);
+                            }
+                        }
+                        stepcd = 0;
+                    }
+                    stepcd++;
+                }
                 for (auto& item2 : collisionSolver->goWithCollision)
                 {
                     if (item != item2)
