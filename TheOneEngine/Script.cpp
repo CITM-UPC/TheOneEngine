@@ -16,8 +16,8 @@ Script::Script(std::shared_ptr<GameObject> containerGO, Script* ref) : Component
 
 Script::~Script()
 {
-	delete monoBehaviourInstance;
-	monoBehaviourInstance = nullptr;
+	//delete monoBehaviourInstance;
+	//monoBehaviourInstance = nullptr;
 }
 
 void Script::Update()

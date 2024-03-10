@@ -6,6 +6,18 @@
 Canvas::Canvas(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Canvas)
 {}
 
+Canvas::Canvas(std::shared_ptr<GameObject> containerGO, Canvas* ref) : Component(containerGO, ComponentType::Canvas)
+{
+	//this->uiElements = ref->GetUiElements();
+	for (auto& itemPtr : ref->GetUiElements())
+	{
+		std::unique_ptr<ItemUI> uniquePtr(itemPtr);
+		this->uiElements.push_back(std::move(uniquePtr));
+	}
+	this->debugDraw = ref->debugDraw;
+	this->rect = ref->rect;
+}
+
 Canvas::~Canvas() {}
 
 void Canvas::DrawComponent()
@@ -122,4 +134,14 @@ void Canvas::LoadComponent(const json& transformJSON)
     //{
     //    UID = transformJSON["UID"];
     //}
+}
+
+std::vector<ItemUI*> Canvas::GetUiElements()
+{
+	std::vector<ItemUI*> tempUiElements;
+	for (const auto& item : uiElements)
+	{
+		tempUiElements.push_back(item.get());
+	}
+	return tempUiElements;
 }

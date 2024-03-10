@@ -315,6 +315,7 @@ mat4 Transform::GetTransform() const
 
 void Transform::SetTransform(mat4 transform)
 {
+    SetPosition({ transform[3][0], transform[3][1], transform[3][2] });
     this->transformMatrix = transform;
 }
 
@@ -381,5 +382,6 @@ void Transform::LoadComponent(const json& transformJSON)
         }
 
         SetTransform(temp);
+        UpdateCameraIfPresent(); //Check if first creates camera component transform
     }
 }

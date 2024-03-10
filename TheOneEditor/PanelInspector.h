@@ -19,16 +19,21 @@ public:
 	void ChooseScriptNameWindow();
 
 private:
-	bool matrixDirty;
+	GameObject* selectedGO = nullptr;
 
 	vec3f view_pos;
 	vec3f view_rot_rad;
 	vec3f view_rot_deg;
 	vec3f view_sca;
 
+	bool matrixDirty;
 	bool chooseScriptNameWindow;
 
-	GameObject* selectedGO = nullptr;
+	const char* colliders[2] =
+	{
+		"Circle",
+		"Square",
+	};
 };
 
 #endif // !__PANEL_INSPECTOR_H__

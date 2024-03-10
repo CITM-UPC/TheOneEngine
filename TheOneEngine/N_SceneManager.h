@@ -64,9 +64,14 @@ public:
 	std::shared_ptr<GameObject> GetSelectedGO() const;
 	void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
+	void FindCameraInScene();
+
 	/*SCENE SERIALIZATION*/
 	void SaveScene();
 	void LoadSceneFromJSON(const std::string& filename);
+
+	std::vector<GameObject*> goWithSound;
+
 
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
@@ -111,6 +116,8 @@ public:
 	
 	inline void Draw(DrawMode mode = DrawMode::GAME);
 
+	void FindCameraInScene();
+
 private:
 	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);
 	inline void RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode = DrawMode::GAME);
@@ -120,11 +127,14 @@ private:
 	std::string sceneName;
 	std::shared_ptr<GameObject> rootSceneGO;
 
-	std::weak_ptr<Camera> currentCamera;
 	//Historn: This is to remember to save the scene if any change is made
 	bool isDirty;
 
 	std::string path;
+
+public:
+	Camera* currentCamera = nullptr;
+	int listenerAudioGOID = -1;
 };
 
 #endif // !__N_SCENE_MANAGER_H__

@@ -6,6 +6,10 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Collider2D.h"
+#include "Canvas.h"
+#include "../TheOneAudio/AudioCore.h"
+#include "EngineCore.h"
 
 #include <fstream>
 #include <filesystem>
@@ -30,12 +34,30 @@ bool N_SceneManager::Awake()
 
 bool N_SceneManager::Start()
 {
+	FindCameraInScene();
+	currentScene->listenerAudioGOID = engine->audio->RegisterGameObject(currentScene->currentCamera->GetName().c_str());
+	engine->audio->SetDefaultListener(currentScene->listenerAudioGOID);
+
 	return true;
 }
 
 bool N_SceneManager::PreUpdate()
 {
 	// Do nothing
+
+	//move into audio engine, the real current camera transform
+	engine->audio->SetAudioGameObjectTransform(currentScene->listenerAudioGOID, 
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().x,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().y,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().z,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().x,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().y,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().z,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().x,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().y,
+		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().z);
+
+
 	return true;
 }
 
@@ -64,6 +86,8 @@ bool N_SceneManager::PostUpdate()
 
 bool N_SceneManager::CleanUp()
 {
+	//delete currentScene->currentCamera;
+
 	delete currentScene;
 
 	delete meshLoader;
@@ -88,6 +112,9 @@ void N_SceneManager::LoadScene(std::string sceneName)
 	std::string fileName = "Assets/Scenes/" + sceneName + ".toe";
 
 	LoadSceneFromJSON(fileName);
+
+	FindCameraInScene();
+	currentScene->SetIsDirty(true);
 }
 
 void N_SceneManager::SaveScene()
@@ -182,7 +209,15 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 			auto newGameObject = CreateEmptyGO();
 			newGameObject.get()->SetName(currentScene->GetSceneName());
 			// Load the game object from JSON
-			newGameObject->LoadGameObject(gameObjectJSON);
+			newGameObject->LoadGameObject(gameObjectJSON, goWithSound);
+		}
+		//register in audio the game objects
+		for (auto& item : goWithSound)
+		{
+			if (item->audioOjectID != -1)
+			{
+				item->audioOjectID = engine->audio->RegisterGameObject(item->GetName());
+			}
 		}
 
 		LOG(LogType::LOG_OK, "LOAD SUCCESSFUL");
@@ -237,6 +272,12 @@ std::shared_ptr<GameObject> N_SceneManager::DuplicateGO(std::shared_ptr<GameObje
 			break;
 		case ComponentType::Script:
 			duplicatedGO.get()->AddCopiedComponent<Script>((Script*)item);
+			break;		
+		case ComponentType::Collider2D:
+			duplicatedGO.get()->AddCopiedComponent<Collider2D>((Collider2D*)item);
+			break;
+		case ComponentType::Canvas:
+			duplicatedGO.get()->AddCopiedComponent<Canvas>((Canvas*)item);
 			break;
 		case ComponentType::Unknown:
 			break;
@@ -536,6 +577,14 @@ std::vector<std::shared_ptr<GameObject>> N_SceneManager::GetGameObjects()
 void N_SceneManager::SetSelectedGO(std::shared_ptr<GameObject> gameObj)
 {
 	selectedGameObject = gameObj;
+}
+
+void N_SceneManager::FindCameraInScene()
+{
+	for (const auto GO : GetGameObjects())
+	{
+		if (GO->HasCameraComponent()) { currentScene->currentCamera = GO->GetComponent<Camera>(); }
+	}
 }
 
 std::shared_ptr<GameObject> N_SceneManager::GetSelectedGO() const

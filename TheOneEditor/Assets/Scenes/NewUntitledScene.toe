@@ -1,0 +1,425 @@
+{
+  "GameObjects": [
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            -4.371138828673793e-08,
+            1.945152797505479e-16,
+            1.0,
+            0.0,
+            -0.8136598467826843,
+            0.5813413858413696,
+            -3.55662024276171e-08,
+            0.0,
+            -0.5813413858413696,
+            -0.8136598467826843,
+            -2.5411257098539863e-08,
+            0.0,
+            30.46700668334961,
+            28.55263328552246,
+            -1.409620472259121e-05,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 3708068636
+        },
+        {
+          "Aspect": 1.777,
+          "CameraType": 0,
+          "FOV": 65.0,
+          "Name": "Camera",
+          "ParentUID": 3452816845,
+          "Pitch": 0.0,
+          "Size": 5.0,
+          "Type": 1,
+          "UID": 4261055975,
+          "Yaw": 0.0,
+          "zFar": 1000.0,
+          "zNear": 0.1
+        }
+      ],
+      "Enabled": true,
+      "Name": "mainCamera",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 1584267343
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/teapot/Teapot.mesh",
+          "Type": 2,
+          "UID": 1597394526
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "Bullet",
+          "Type": 4,
+          "UID": 921451500
+        }
+      ],
+      "Enabled": false,
+      "Name": "Shootable",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.37041473388671875,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 4280294212
+        }
+      ],
+      "Enabled": true,
+      "GameObjects": [
+        {
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                25.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1512653207
+            },
+            {
+              "ColliderType": 1,
+              "CollisionType": 2,
+              "Height": 2.0,
+              "Name": "Specified Type was not found",
+              "ParentUID": 3452816845,
+              "Radius": 0.5,
+              "Type": 5,
+              "UID": 2867281810,
+              "Width": 50.0
+            }
+          ],
+          "Enabled": true,
+          "Name": "Left wall",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                25.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2694183838
+            },
+            {
+              "ColliderType": 1,
+              "CollisionType": 2,
+              "Height": 50.0,
+              "Name": "Specified Type was not found",
+              "ParentUID": 3452816845,
+              "Radius": 0.5,
+              "Type": 5,
+              "UID": 1804435289,
+              "Width": 2.0
+            }
+          ],
+          "Enabled": true,
+          "Name": "Down wall",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                -25.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2001965941
+            },
+            {
+              "ColliderType": 1,
+              "CollisionType": 2,
+              "Height": 50.0,
+              "Name": "Specified Type was not found",
+              "ParentUID": 3452816845,
+              "Radius": 0.5,
+              "Type": 5,
+              "UID": 1641277957,
+              "Width": 2.0
+            }
+          ],
+          "Enabled": true,
+          "Name": "Top wall",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                -25.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1644971535
+            },
+            {
+              "ColliderType": 1,
+              "CollisionType": 2,
+              "Height": 2.0,
+              "Name": "Specified Type was not found",
+              "ParentUID": 3452816845,
+              "Radius": 0.5,
+              "Type": 5,
+              "UID": 1306703275,
+              "Width": 50.0
+            }
+          ],
+          "Enabled": true,
+          "Name": "Right wall",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        }
+      ],
+      "Name": "Walls parent",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 884000813
+        },
+        {
+          "ColliderType": 0,
+          "CollisionType": 0,
+          "Height": 0.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 3.0,
+          "Type": 5,
+          "UID": 388949170,
+          "Width": 0.0
+        }
+      ],
+      "Enabled": true,
+      "GameObjects": [
+        {
+          "AudioGOID": 1,
+          "AudioSoundEvent": 0,
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2501908122
+            }
+          ],
+          "Enabled": true,
+          "Name": "Feet Sound",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        },
+        {
+          "AudioGOID": 2,
+          "AudioSoundEvent": 1,
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                -3.011948585510254,
+                3.372596502304077,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 2701131684
+            }
+          ],
+          "Enabled": true,
+          "Name": "Gunshot sound",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        }
+      ],
+      "Name": "Player",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    }
+  ],
+  "index": 0,
+  "path": "Assets\\Scenes\\NewUntitledScene.toe",
+  "sceneName": "NewUntitledScene"
+}

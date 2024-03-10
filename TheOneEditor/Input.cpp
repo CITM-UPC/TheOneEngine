@@ -169,7 +169,7 @@ bool Input::processSDLEvents()
 					LOG(LogType::LOG_WARNING, "-%s already exists in %s", fileNameExt.data(), assetsDir.string().data());
 
 					//Find Meshes in Library
-					app->scenemanager->N_sceneManager->CreateExistingMeshGO(assetsDir.string());
+					engine->N_sceneManager->CreateExistingMeshGO(assetsDir.string());
 				}
 				else
 				{
@@ -177,7 +177,7 @@ bool Input::processSDLEvents()
 					std::filesystem::copy(fileDir, assetsDir, std::filesystem::copy_options::overwrite_existing);
 
 					//Creates GO and Serialize
-					app->scenemanager->N_sceneManager->CreateMeshGO(assetsDir.string());
+					engine->N_sceneManager->CreateMeshGO(assetsDir.string());
 					LOG(LogType::LOG_OK, "-Created GameObject: %s", assetsDir.string().data());
 				}
 			}

@@ -1,16 +1,22 @@
 #include "EngineCore.h"
 #include "Log.h"
 #include "Defs.h"
+#include "N_SceneManager.h"
 #include <GL\glew.h>
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
 #include <memory>
+#include "../TheOneEditor/App.h"
+#include "../TheOneEditor/SceneManager.h"
+#include "Collider2D.h"
 
 EngineCore::EngineCore()
 {
     audio = new AudioCore();
     monoManager = new MonoManager();
+    collisionSolver = new CollisionSolver();
     input = new InputManager();
+    N_sceneManager = new N_SceneManager();
 }
 
 void EngineCore::Awake()
@@ -29,6 +35,140 @@ void EngineCore::Start()
 
 void EngineCore::Update(double dt)
 {
+    //first, lets see the collider component still exists
+    for (auto it = collisionSolver->goWithCollision.begin(); it != collisionSolver->goWithCollision.end(); )
+    {
+        bool remItem = true;
+        for (auto& item2 : (*it)->GetAllComponents())
+        {
+            if (item2->GetType() == ComponentType::Collider2D) remItem = false;
+        }
+        if (remItem)
+        {
+            it = collisionSolver->goWithCollision.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    //now lets check and solve collisions
+    if (app->state == GameState::PLAY || app->state == GameState::PLAY_ONCE)
+    {
+        for (auto& item : collisionSolver->goWithCollision)
+        {
+            // Collision solving
+            switch (item->GetComponent<Collider2D>()->collisionType)
+            {
+            case CollisionType::Player:
+
+                //hardcoded code just in case we need to move player
+                if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z - 0.1 });
+                }
+                if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z + 0.1 });
+                }
+                if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x + 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
+                }
+                if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+                {
+                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x - 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
+                }
+                //hardcoded code just to play step sound
+                if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ||
+                    app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ||
+                    app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT ||
+                    app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                {
+                    if (stepcd >= 40)
+                    {
+                        for (auto& item2 : N_sceneManager->goWithSound)
+                        {
+                            //update position of audio object
+                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->parent.lock()->GetComponent<Transform>()->GetPosition().x, item2->parent.lock()->GetComponent<Transform>()->GetPosition().y, item2->parent.lock()->GetComponent<Transform>()->GetPosition().z);
+                            //play sound
+                            if (item2->soundEvent == SoundEvent::STEP)
+                            {
+                                audio->PlayEvent(AK::EVENTS::STEP, item2->audioOjectID);
+                            }
+                        }
+                        stepcd = 0;
+                    }
+                    stepcd++;
+                }
+                for (auto& item2 : collisionSolver->goWithCollision)
+                {
+                    if (item != item2)
+                    {
+                        switch (item2->GetComponent<Collider2D>()->collisionType)
+                        {
+                        case CollisionType::Player:
+                            //there is no player-player collision since we only have 1 player
+                            break;
+                        case CollisionType::Enemy:
+                            //implement any low life to player
+                            break;
+                        case CollisionType::Wall:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push player out of wall
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                break;
+            case CollisionType::Enemy:
+                for (auto& item2 : collisionSolver->goWithCollision)
+                {
+                    if (item != item2)
+                    {
+                        switch (item2->GetComponent<Collider2D>()->collisionType)
+                        {
+                        case CollisionType::Player:
+                            //implement any low life to player
+                            break;
+                        case CollisionType::Enemy:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push player out of other enemy
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        case CollisionType::Wall:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push enemy out of wall
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                break;
+            case CollisionType::Wall:
+                // do nothing at all
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
     this->dt = dt;
     audio->Update(dt);
     input->PreUpdate(dt);
@@ -69,6 +209,11 @@ void EngineCore::Render(Camera* camera)
 
 	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
 
+    if (cameraTransform == nullptr)
+    {
+        LOG(LogType::LOG_ERROR, "Camera Transform not found");
+    }
+
     gluLookAt(cameraTransform->GetPosition().x, cameraTransform->GetPosition().y, cameraTransform->GetPosition().z,
         camera->lookAt.x, camera->lookAt.y, camera->lookAt.z,
 		cameraTransform->GetUp().x, cameraTransform->GetUp().y, cameraTransform->GetUp().z);
@@ -76,6 +221,9 @@ void EngineCore::Render(Camera* camera)
     DrawGrid(1000, 10);
     DrawAxis();
 
+    if (collisionSolver->drawCollisions) collisionSolver->DrawCollisions();
+
+    glColor3f(1.0f, 1.0f, 1.0f);
     //DrawFrustum(camera->viewMatrix);
 
     assert(glGetError() == GL_NONE);
@@ -91,6 +239,8 @@ void EngineCore::CleanUp()
 
     input->CleanUp();
     delete input;
+
+    delete collisionSolver;
 }
 
 void EngineCore::DrawAxis()

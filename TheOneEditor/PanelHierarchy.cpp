@@ -21,7 +21,7 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 		if (childGO.get()->children.size() == 0)
 			treeFlags |= ImGuiTreeNodeFlags_Leaf;
 
-		if (childGO == app->scenemanager->N_sceneManager->GetSelectedGO())
+		if (childGO == engine->N_sceneManager->GetSelectedGO())
 			treeFlags |= ImGuiTreeNodeFlags_Selected;
 
 		//bool isOpen = false;
@@ -35,8 +35,8 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 		if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
 		{
-			app->scenemanager->N_sceneManager->SetSelectedGO(childGO);
-			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetName().c_str());
+			engine->N_sceneManager->SetSelectedGO(childGO);
+			LOG(LogType::LOG_INFO, "SelectedGO: %s", engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str());
 		}
 
 		ContextMenu(childGO);
@@ -85,11 +85,11 @@ bool PanelHierarchy::Draw()
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
-		if (ImGui::TreeNodeEx(app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO().get()->GetName().data(), treeFlags))
+		if (ImGui::TreeNodeEx(engine->N_sceneManager->currentScene->GetRootSceneGO().get()->GetName().data(), treeFlags))
 		{
 			reparent = false;
-			ReparentDragDrop(app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO());
-			RecurseShowChildren(app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO());
+			ReparentDragDrop(engine->N_sceneManager->currentScene->GetRootSceneGO());
+			RecurseShowChildren(engine->N_sceneManager->currentScene->GetRootSceneGO());
 			ImGui::TreePop();
 		}
 
@@ -106,14 +106,14 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 		if (ImGui::MenuItem("Create Empty"))
 		{
 			createEmpty = true;
-			app->scenemanager->N_sceneManager->ReparentGO(go, app->scenemanager->N_sceneManager->CreateEmptyGO("Parent of " + go.get()->GetName(), false));
+			engine->N_sceneManager->ReparentGO(go, engine->N_sceneManager->CreateEmptyGO("Parent of " + go.get()->GetName(), false));
 			LOG(LogType::LOG_INFO, "Empty parent for %s created", go.get()->GetName().c_str());
 		}
 
 		if (ImGui::MenuItem("Duplicate"))
 		{
 			duplicate = true;
-			app->scenemanager->N_sceneManager->SetSelectedGO(app->scenemanager->N_sceneManager->DuplicateGO(go));
+			engine->N_sceneManager->SetSelectedGO(engine->N_sceneManager->DuplicateGO(go));
 			LOG(LogType::LOG_INFO, "%s has been duplicated", go.get()->GetName().c_str());
 		}
 
@@ -121,7 +121,7 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 		{
 			remove = true;
 			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
-			app->scenemanager->N_sceneManager->SetSelectedGO(nullptr);
+			engine->N_sceneManager->SetSelectedGO(nullptr);
 
 			toDeleteList.push_back(go);
 
@@ -137,16 +137,16 @@ bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 {
 	if (ImGui::BeginDragDropSource())
 	{
-		if (childGO != app->scenemanager->N_sceneManager->currentScene->GetRootSceneGO())
+		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
 		{
-			ImGui::SetDragDropPayload(app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+			ImGui::SetDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
 		}
 
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
 		{
 			GameObject* dragging = *(GameObject**)payload->Data;
 

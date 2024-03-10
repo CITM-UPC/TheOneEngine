@@ -14,10 +14,6 @@ PanelGame::~PanelGame() {}
 
 bool PanelGame::Start()
 {
- 	for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
-	{
-		if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); cameraToRender = GO->GetComponent<Camera>(); }
-	}
 	return true;
 }
 
@@ -34,7 +30,7 @@ bool PanelGame::Draw()
 	if (ImGui::Begin("Game", &enabled, settingsFlags))
 	{
 		//Get selected GO
-		selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO().get();
+		selectedGO = engine->N_sceneManager->GetSelectedGO().get();
 
 		// Top Bar --------------------------
 		if (ImGui::BeginMenuBar())
@@ -87,15 +83,7 @@ bool PanelGame::Draw()
 
         engine->OnWindowResize(x, y, width, height);
 
-		// Render Game cameras
-		/*for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
-		{
-			Camera* gameCam = GO.get()->GetComponent<Camera>();
-
-            if (gameCam == nullptr) continue;
-            engine->Render(gameCam);
-        }*/
-		engine->Render(cameraToRender);
+		engine->Render(engine->N_sceneManager->currentScene->currentCamera);
     }
 
 	ImGui::End();
