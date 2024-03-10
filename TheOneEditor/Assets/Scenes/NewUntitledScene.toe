@@ -91,6 +91,13 @@
           "Path": "Library/Meshes/Cadillac_CT4_V_2022/Cadillac_CT4_V_2022_LowPoly.mesh",
           "Type": 2,
           "UID": 3829282418
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "PlayerScript",
+          "Type": 4,
+          "UID": 1200432174
         }
       ],
       "Enabled": true,

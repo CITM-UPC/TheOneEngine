@@ -1,4 +1,5 @@
 #include "N_SceneManager.h"
+#include "EngineCore.h"
 #include "GameObject.h"
 #include "MeshLoader.h"
 #include "Component.h"
@@ -46,6 +47,8 @@ bool N_SceneManager::Update(double dt, bool isPlaying)
 	// Save Scene by checking if isDirty and pressing CTRL+S
 	//if (currentScene->IsDirty()) SaveScene();
 	
+	sceneIsPlaying = isPlaying;
+
 	if (isPlaying)
 	{
 		currentScene->UpdateGOs(dt);
@@ -222,8 +225,10 @@ std::shared_ptr<GameObject> N_SceneManager::CreateEmptyGO(std::string name)
 
 	emptyGO.get()->parent = currentScene->GetRootSceneGO().get()->weak_from_this();
 
-	currentScene->GetRootSceneGO().get()->children.emplace_back(emptyGO);
+	engine->N_sceneManager->objectsToAdd.push_back(emptyGO);
 
+
+	if (!sceneIsPlaying) AddPendingGOs();
 	return emptyGO;
 }
 
@@ -306,7 +311,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateMeshGO(std::string path)
 			if (isSingleMesh)
 			{
 				meshGO.get()->parent = currentScene->GetRootSceneGO();
-				currentScene->GetRootSceneGO().get()->children.push_back(meshGO);
+				engine->N_sceneManager->objectsToAdd.push_back(meshGO);
 			}
 			else
 			{
@@ -316,6 +321,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateMeshGO(std::string path)
 		}
 	}
 
+	if (!sceneIsPlaying) AddPendingGOs();
 	return nullptr;
 }
 
@@ -425,6 +431,39 @@ std::shared_ptr<GameObject> N_SceneManager::CreateTeapot()
 	return CreateMeshGO("Assets/Meshes/teapot.fbx");
 }
 
+void N_SceneManager::AddPendingGOs()
+{
+	for (const auto objToAdd : engine->N_sceneManager->objectsToAdd)
+	{
+		engine->N_sceneManager->currentScene->GetRootSceneGO().get()->children.push_back(objToAdd);
+	}
+
+	engine->N_sceneManager->objectsToAdd.clear();
+}
+
+void N_SceneManager::DeletePendingGOs()
+{
+	/*
+	for (const auto objToRemove : objectsToDelete)
+	{
+		int counter = 0;
+		for (const auto& go : currentScene->GetRootSceneGO()->children)
+		{
+			if (go == objToRemove)
+			{
+				auto it = currentScene->GetRootSceneGO()->children.begin() + counter;
+				currentScene->GetRootSceneGO()->children.erase(it);
+
+				return;
+			}
+			counter++;
+		}
+	}
+
+	objectsToDelete.clear();
+	*/
+}
+
 uint N_SceneManager::GetNumberGO() const
 {
 	return static_cast<uint>(currentScene->GetRootSceneGO().get()->children.size());
@@ -464,10 +503,14 @@ void Scene::RecurseSceneDraw(std::shared_ptr<GameObject> parentGO)
 
 void Scene::UpdateGOs(double dt)
 {
+	engine->N_sceneManager->AddPendingGOs();
+
 	for (const auto gameObject : rootSceneGO->children)
 	{
 		gameObject->Update(dt);
 	}
+
+	engine->N_sceneManager->DeletePendingGOs();
 }
 
 void Scene::RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode)

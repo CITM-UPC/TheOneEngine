@@ -52,6 +52,9 @@ public:
 	std::shared_ptr<GameObject> CreateMF();
 	std::shared_ptr<GameObject> CreateTeapot();
 
+	void AddPendingGOs();
+	void DeletePendingGOs();
+
 	// Get/Set
 	uint GetNumberGO() const;
 	std::vector<std::shared_ptr<GameObject>>GetGameObjects();
@@ -68,10 +71,13 @@ public:
 
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
+	std::vector<std::shared_ptr<GameObject>> objectsToAdd;
+	std::vector<std::shared_ptr<GameObject>> objectsToDelete;
 
 private:
 	std::shared_ptr<GameObject> selectedGameObject = nullptr;
 	MeshLoader* meshLoader = nullptr;
+	bool sceneIsPlaying = false;
 };
 
 class Scene
