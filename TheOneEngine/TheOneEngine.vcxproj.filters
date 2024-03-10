@@ -117,6 +117,9 @@
     <ClInclude Include="CollisionSolver.h">
       <Filter>CollisionSolver</Filter>
     </ClInclude>
+    <ClInclude Include="GamepadInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="CollisionSolver.cpp">
       <Filter>CollisionSolver</Filter>
+    </ClCompile>
+    <ClCompile Include="GamepadInput.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

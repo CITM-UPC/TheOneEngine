@@ -32,6 +32,7 @@ public:
 	void Awake();
 	void Start();
 
+	void PreUpdate();
 	void Update(double dt);
 
 	void Render(Camera* camera);
