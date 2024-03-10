@@ -71,7 +71,7 @@ static GameObject* InstantiateBullet(vec3f* initialPosition, vec3f* direction)
 
 static void DestroyGameObject(GameObject* objectToDestroy)
 {
-	objectToDestroy->Delete();
+	objectToDestroy->Delete(engine->N_sceneManager->objectsToDelete);
 }
 
 //Helpers

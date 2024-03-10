@@ -271,11 +271,37 @@ void GameObject::Disable()
 
 void GameObject::Delete()
 {
-	for (const auto& component : components)
-		component.get_deleter();
+	//for (const auto& component : components)
+	//	component.get_deleter();
 
-	for (const auto& child : children)
-		child.~shared_ptr();
+	//for (const auto& child : children)
+	//	child.~shared_ptr();
+
+	int counter = 0;
+	for (const auto& go : parent.lock().get()->children)
+	{
+		if (go.get() == this)
+		{
+			GameObject* deletedGO = parent.lock().get()->children.at(counter).get();
+
+			if (!deletedGO->children.empty())
+				parent.lock().get()->children.at(counter).get()->children.clear();
+
+			if (!deletedGO->children.empty())
+				parent.lock().get()->children.at(counter).get()->components.clear();
+
+			auto it = parent.lock().get()->children.begin() + counter;
+			parent.lock().get()->children.erase(it);
+
+			return;
+		}
+		counter++;
+	}
+}
+
+void GameObject::Delete(std::vector<GameObject*>& objectsToDelete)
+{
+	objectsToDelete.push_back(this);
 }
 
 std::string GameObject::GetName() const

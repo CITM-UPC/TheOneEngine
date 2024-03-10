@@ -443,25 +443,12 @@ void N_SceneManager::AddPendingGOs()
 
 void N_SceneManager::DeletePendingGOs()
 {
-	/*
-	for (const auto objToRemove : objectsToDelete)
-	{
-		int counter = 0;
-		for (const auto& go : currentScene->GetRootSceneGO()->children)
-		{
-			if (go == objToRemove)
-			{
-				auto it = currentScene->GetRootSceneGO()->children.begin() + counter;
-				currentScene->GetRootSceneGO()->children.erase(it);
-
-				return;
-			}
-			counter++;
-		}
+	for (auto it = objectsToDelete.begin(); it != objectsToDelete.end(); ++it) {
+		(*it)->Delete();
 	}
 
 	objectsToDelete.clear();
-	*/
+	
 }
 
 uint N_SceneManager::GetNumberGO() const

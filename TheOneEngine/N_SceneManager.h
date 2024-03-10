@@ -72,7 +72,7 @@ public:
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
 	std::vector<std::shared_ptr<GameObject>> objectsToAdd;
-	std::vector<std::shared_ptr<GameObject>> objectsToDelete;
+	std::vector<GameObject*> objectsToDelete;
 
 private:
 	std::shared_ptr<GameObject> selectedGameObject = nullptr;
