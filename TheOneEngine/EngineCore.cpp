@@ -91,7 +91,7 @@ void EngineCore::Update(double dt)
                         for (auto& item2 : N_sceneManager->goWithSound)
                         {
                             //update position of audio object
-                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->GetComponent<Transform>()->GetPosition().x, item2->GetComponent<Transform>()->GetPosition().y, item2->GetComponent<Transform>()->GetPosition().z);
+                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->parent.lock()->GetComponent<Transform>()->GetPosition().x, item2->parent.lock()->GetComponent<Transform>()->GetPosition().y, item2->parent.lock()->GetComponent<Transform>()->GetPosition().z);
                             //play sound
                             if (item2->soundEvent == SoundEvent::STEP)
                             {
