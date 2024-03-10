@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "Gui.h"
 #include "imgui.h"
+#include "..\TheOneEngine\EngineCore.h"
 
 #include <variant>
 
@@ -13,7 +14,7 @@ PanelHierarchy::~PanelHierarchy() {}
 
 void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 {
-	for (const auto childGO : parent.get()->children)
+	for (const auto& childGO : parent.get()->children)
 	{
 		uint treeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
@@ -23,7 +24,11 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 		if (childGO == engine->N_sceneManager->GetSelectedGO())
 			treeFlags |= ImGuiTreeNodeFlags_Selected;
 
+		//bool isOpen = false;
+		//if (!childGO.get()->GetName().empty())
+		//{
 		bool isOpen = ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags);
+		//}
 
 		if (ReparentDragDrop(childGO))
 			break;
@@ -35,7 +40,20 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 		}
 
 		ContextMenu(childGO);
-
+		if (duplicate)
+		{
+			duplicate = false;
+			break;
+		}
+		if (createEmpty)
+		{
+			createEmpty = false;
+			break;
+		}
+		if (remove)
+		{
+			break;
+		}
 		if (isOpen && !reparent)
 		{
 			//treeFlags &= ~ImGuiTreeNodeFlags_Selected;
@@ -43,6 +61,16 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 			ImGui::TreePop();
 		}
+	}
+
+	if (remove)
+	{
+		for (auto& item : toDeleteList)
+		{
+			item.get()->Delete();
+		}
+
+		remove = false;
 	}
 }
 
@@ -77,20 +105,28 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 	{
 		if (ImGui::MenuItem("Create Empty"))
 		{
-			//Historn: Add Duplicate function
+			createEmpty = true;
+			engine->N_sceneManager->ReparentGO(go, engine->N_sceneManager->CreateEmptyGO("Parent of " + go.get()->GetName(), false));
+			LOG(LogType::LOG_INFO, "Empty parent for %s created", go.get()->GetName().c_str());
 		}
 
 		if (ImGui::MenuItem("Duplicate"))
 		{
-			//Historn: Add Duplicate function
+			duplicate = true;
+			engine->N_sceneManager->SetSelectedGO(engine->N_sceneManager->DuplicateGO(go));
+			LOG(LogType::LOG_INFO, "%s has been duplicated", go.get()->GetName().c_str());
 		}
 
 		if (ImGui::MenuItem("Remove"))
 		{
-			//Historn: Change to remove function
+			remove = true;
 			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
+			engine->N_sceneManager->SetSelectedGO(nullptr);
+
+			toDeleteList.push_back(go);
+
 			//go.get()->Delete();
-			go.get()->Disable();
+			//go.get()->Disable();
 		}
 
 		ImGui::EndPopup();

@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Collider2D.h"
 #include "Canvas.h"
 #include "UIDGen.h"
 #include "BBox.hpp"
@@ -304,6 +305,16 @@ void GameObject::Delete(std::vector<GameObject*>& objectsToDelete)
 	objectsToDelete.push_back(this);
 }
 
+std::vector<Component*> GameObject::GetAllComponents(bool tunometecabrasalamambiche)
+{
+	std::vector<Component*> tempComponents;
+	for (const auto& item : components)
+	{
+		tempComponents.push_back(item.get());
+	}
+	return tempComponents;
+}
+
 std::string GameObject::GetName() const
 {
 	return name;
@@ -349,6 +360,11 @@ json GameObject::SaveGameObject()
 	gameObjectJSON["Name"] = name;
 	gameObjectJSON["Static"] = isStatic;
 	gameObjectJSON["Enabled"] = enabled;
+	if (audioOjectID != -1)
+	{
+		gameObjectJSON["AudioGOID"] = audioOjectID;
+		gameObjectJSON["AudioSoundEvent"] = (int)soundEvent;
+	}
 
 	if (!components.empty())
 	{
@@ -375,7 +391,7 @@ json GameObject::SaveGameObject()
 	return gameObjectJSON;
 }
 
-void GameObject::LoadGameObject(const json& gameObjectJSON)
+void GameObject::LoadGameObject(const json& gameObjectJSON, std::vector<GameObject*>& goWithSound)
 {
 	// Load basic properties
 	if (gameObjectJSON.contains("UID"))
@@ -407,28 +423,47 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 		{
 
 			// Assuming each component has a LoadComponent function
-			if (componentJSON["Type"] == 0)
+			if (componentJSON["Type"] == (int)ComponentType::Transform)
 			{
 				this->AddComponent<Transform>();
 				this->GetComponent<Transform>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON["Type"] == 1)
+			else if (componentJSON["Type"] == (int)ComponentType::Camera)
 			{
 				this->AddComponent<Camera>();
 				this->GetComponent<Camera>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON["Type"] == 2)
+			else if (componentJSON["Type"] == (int)ComponentType::Mesh)
 			{
 				this->AddComponent<Mesh>();
 				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON["Type"] == 4)
+			else if (componentJSON["Type"] == (int)ComponentType::Script)
 			{
 				this->AddScript(componentJSON["ScriptName"]);
 				this->GetComponent<Script>()->LoadComponent(componentJSON);
 			}
+			else if (componentJSON["Type"] == (int)ComponentType::Collider2D)
+			{
+				this->AddComponent<Collider2D>();
+				this->GetComponent<Collider2D>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::Canvas)
+			{
+				this->AddComponent<Canvas>();
+				this->GetComponent<Canvas>()->LoadComponent(componentJSON);
+			}
 		}
 	}
+
+	//audio stuff
+	if (gameObjectJSON.contains("AudioGOID")) audioOjectID = gameObjectJSON["AudioGOID"];
+	if (gameObjectJSON.contains("AudioSoundEvent")) soundEvent = (SoundEvent)gameObjectJSON["AudioSoundEvent"];
+	if (audioOjectID != -1)
+	{
+		goWithSound.push_back(this);
+	}
+	
 
 	// Load child game objects
 	if (gameObjectJSON.contains("GameObjects"))
@@ -438,7 +473,7 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 		for (const auto& childJSON : childrenGOJSON)
 		{
 			auto childGameObject = std::make_shared<GameObject>("Empty GO");
-			childGameObject->LoadGameObject(childJSON);
+			childGameObject->LoadGameObject(childJSON, goWithSound);
 
 			// Add the loaded child game object to the current game object
 			childGameObject.get()->parent = this->weak_from_this().lock();

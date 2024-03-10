@@ -197,6 +197,7 @@ bool Gui::Start()
 	style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 	style.GrabRounding = style.FrameRounding = 2.3f;
 
+
 #pragma endregion IMGUI_STYLE
 
 	panelGame->Start();
@@ -496,6 +497,8 @@ void Gui::MainMenuGameObject()
 		ImGui::EndMenu();
 	}
 	if (ImGui::MenuItem("Camera")) { panelGame->gameCameras.push_back(engine->N_sceneManager->CreateCameraGO("newCamera").get()); }
+	//Alex: this is just for debug
+	if (ImGui::MenuItem("Canvas")) { engine->N_sceneManager->CreateCanvasGO("newCanvas"); }
 }
 
 void Gui::MainMenuComponent()

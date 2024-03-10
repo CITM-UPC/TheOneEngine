@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "GameObject.h"
 #include "Camera.h"
+#include "Canvas.h"
 
 #include <string>
 #include <memory>
@@ -40,8 +41,11 @@ public:
 	std::string GenerateUniqueName(const std::string& baseName);
 
 	// Create GameObjects functions
-	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
+	std::shared_ptr<GameObject> DuplicateGO(std::shared_ptr<GameObject> originalGO, bool recursive = false);
+	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject", bool isRoot = true);
+	void ReparentGO(std::shared_ptr<GameObject> go, std::shared_ptr<GameObject> newParentGO);
 	std::shared_ptr<GameObject> CreateCameraGO(std::string name);
+	std::shared_ptr<GameObject> CreateCanvasGO(std::string name);
 
 	// Try to mix this two (CreateExistingMeshGO should be erased and CreateMeshGO has to do)
 	std::shared_ptr<GameObject> CreateMeshGO(std::string path);
@@ -68,6 +72,9 @@ public:
 	/*SCENE SERIALIZATION*/
 	void SaveScene();
 	void LoadSceneFromJSON(const std::string& filename);
+
+	std::vector<GameObject*> goWithSound;
+
 
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
@@ -133,6 +140,7 @@ private:
 
 public:
 	Camera* currentCamera = nullptr;
+	int listenerAudioGOID = -1;
 };
 
 #endif // !__N_SCENE_MANAGER_H__

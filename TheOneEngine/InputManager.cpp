@@ -36,9 +36,12 @@ bool InputManager::Init()
 	return ret;
 }
 
-bool InputManager::PreUpdate(double dt)
+bool InputManager::PreUpdate()
 {
 	bool ret = true;
+
+	SDL_PumpEvents();
+
 	// Read all keyboard data and update our custom array
 	const Uint8* keyboard = SDL_GetKeyboardState(NULL);
 	for (int i = 0; i < MAX_KEYS; ++i)
@@ -50,7 +53,7 @@ bool InputManager::PreUpdate(double dt)
 	}
 
 	// Read new SDL events
-	SDL_Event event;
+	static SDL_Event event;
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -73,18 +76,6 @@ bool InputManager::PreUpdate(double dt)
 		}
 	}
 
-	if (GetGamepadButton(0, SDL_CONTROLLER_BUTTON_X) == InputManagerNamespace::KEY_DOWN)
-	{
-		LOG(LogType::LOG_OK, "BUTTON A FUNCTIONAL");
-
-		for (int button = 0; button < SDL_CONTROLLER_BUTTON_MAX; ++button)
-		{
-			LOG(LogType::LOG_OK, "Button %d: %s", button,
-				SDL_GameControllerGetButton(pads[0].controller,
-				static_cast<SDL_GameControllerButton>(button)) == 1 ? "pressed" : "relesed");
-		}
-	}
-
 	UpdateGamepadsInput();
 
 	return ret;
@@ -104,6 +95,7 @@ void InputManager::HandleDeviceConnection(int index)
 {
 	if (SDL_IsGameController(index))
 	{
+		LOG(LogType::LOG_OK, "Gamepad connected");
 		for (int i = 0; i < MAX_PADS; ++i)
 		{
 			GamePad& pad = pads[i];
@@ -112,12 +104,12 @@ void InputManager::HandleDeviceConnection(int index)
 			{
 				if (pad.controller = SDL_GameControllerOpen(index))
 				{
-					LOG(LogType::LOG_OK, "Gamepad connected", i, SDL_GameControllerName(pad.controller));
 					pad.enabled = true;
 					pad.left_dz = pad.right_dz = 0.1f;
 					pad.index = SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(pad.controller));
 				}
 			}
+			pads[i] = pad;
 		}
 	}
 }
@@ -125,6 +117,7 @@ void InputManager::HandleDeviceConnection(int index)
 void InputManager::HandleDeviceRemoval(int index)
 {
 	// If an existing gamepad has the given index, deactivate all SDL device functionallity
+	LOG(LogType::LOG_ERROR, "Gamepad disconnected");
 	for (int i = 0; i < MAX_PADS; ++i)
 	{
 		GamePad& pad = pads[i];

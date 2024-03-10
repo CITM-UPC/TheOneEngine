@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "Ray.h"
 #include "Log.h"
+#include "CollisionSolver.h"
 
 #include "MonoManager.h"
 #include "InputManager.h"
@@ -31,6 +32,7 @@ public:
 	void Awake();
 	void Start();
 
+	void PreUpdate();
 	void Update(double dt);
 
 	void Render(Camera* camera);
@@ -56,8 +58,13 @@ public:
 	
 	double dt = 0;
 
+	unsigned int stepcd = 0;
+
 	bool vsync = false;
 	AudioCore* audio = nullptr;
+
+	CollisionSolver* collisionSolver = nullptr;
+
 	MonoManager* monoManager = nullptr;
 	InputManager* input = nullptr;
 	N_SceneManager* N_sceneManager = nullptr;

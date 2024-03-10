@@ -31,6 +31,7 @@ public:
 private:
 	// Private constructor to enforce singleton pattern
 	SceneManager() {}
+	int listenerID = -1;
 };
 
 #endif // !__SCENE_MANAGER_H__

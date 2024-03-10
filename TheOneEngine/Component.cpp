@@ -13,6 +13,17 @@ Component::Component(std::shared_ptr<GameObject> containerGO, ComponentType type
 	CreateNameFromType(type);
 }
 
+Component::Component(std::shared_ptr<GameObject> containerGO, Component* ref, ComponentType type) :
+	type(type),
+	enabled(ref->enabled)
+{
+	std::weak_ptr<GameObject> weakPtr = containerGO;
+	this->containerGO = weakPtr;
+
+	CreateUID();
+	CreateNameFromType(type);
+}
+
 Component::~Component()
 {
 	Disable();
