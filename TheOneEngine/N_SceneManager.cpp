@@ -435,6 +435,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateMeshGO(std::string path)
 					MeshData mData = meshLoader->deserializeMeshData(file);
 
 					meshGO.get()->GetComponent<Mesh>()->meshData = mData;
+					meshGO.get()->GetComponent<Mesh>()->meshData.texturePath = textures[mesh.materialIndex]->path;
 					meshGO.get()->GetComponent<Mesh>()->path = file;
 				}
 			}
@@ -507,6 +508,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateExistingMeshGO(std::string pat
 
 			meshGO.get()->GetComponent<Mesh>()->meshData = mData;
 			meshGO.get()->GetComponent<Mesh>()->mesh = meshLoader->GetBufferData();
+			meshGO.get()->GetComponent<Mesh>()->mesh.texture = std::make_shared<Texture>(mData.texturePath);
 			meshGO.get()->GetComponent<Mesh>()->path = file;
 			//meshGO.get()->GetComponent<Mesh>()->mesh.texture = textures[mesh.materialIndex]; //Implement texture deserialization
 			// hekbas: need to set Transform?

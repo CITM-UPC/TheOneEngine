@@ -263,6 +263,8 @@ void Mesh::LoadComponent(const json& meshJSON)
         meshData = meshLoader->deserializeMeshData(path);
         meshLoader->BufferData(meshData);
         mesh = meshLoader->GetBufferData();
+        if(!meshData.texturePath.empty())
+            mesh.texture = std::make_shared<Texture>(meshData.texturePath);
     }
 
 }
