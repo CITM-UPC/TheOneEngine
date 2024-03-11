@@ -72,7 +72,7 @@ static vec3f GetTransformForward(GameObject* GOptr)
 //GameObject
 static GameObject* InstantiateBullet(vec3f* initialPosition, vec3f* direction)
 {
-	engine->N_sceneManager->CreateNewTeapot();
+	engine->N_sceneManager->CreateTeapot();
 	GameObject* go = engine->N_sceneManager->objectsToAdd.back().get();
 
 	SetPosition(go, initialPosition);
