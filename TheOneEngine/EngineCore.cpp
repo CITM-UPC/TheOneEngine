@@ -108,6 +108,24 @@ void EngineCore::Update(double dt)
                     }
                     stepcd++;
                 }
+                if (gunshotcd >= 20)
+                {
+                    if (inputManager->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+                    {
+                        for (auto& item2 : N_sceneManager->goWithSound)
+                        {
+                            //update position of audio object
+                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->parent.lock()->GetComponent<Transform>()->GetPosition().x, item2->parent.lock()->GetComponent<Transform>()->GetPosition().y, item2->parent.lock()->GetComponent<Transform>()->GetPosition().z);
+                            //play sound
+                            if (item2->soundEvent == SoundEvent::GUNSHOT)
+                            {
+                                audio->PlayEvent(AK::EVENTS::GUNSHOT, item2->audioOjectID);
+                            }
+                        }
+                        gunshotcd = 0;
+                    }
+                }
+                gunshotcd++;
                 for (auto& item2 : collisionSolver->goWithCollision)
                 {
                     if (item != item2)

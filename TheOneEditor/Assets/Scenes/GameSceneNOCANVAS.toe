@@ -111,9 +111,9 @@
             0.0,
             -1.005361859418899e-08,
             0.0,
-            17.399986267089844,
+            -0.5999561548233032,
             0.0,
-            4.200042247772217,
+            -0.20004382729530334,
             1.0
           ],
           "Type": 0,
@@ -146,6 +146,42 @@
         }
       ],
       "Enabled": true,
+      "GameObjects": [
+        {
+          "AudioGOID": 2,
+          "AudioSoundEvent": 1,
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                -9.214993194165701e-16,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                9.214993194165701e-16,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1172402855
+            }
+          ],
+          "Enabled": true,
+          "Name": "GunshotSound",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        }
+      ],
       "Name": "Player",
       "ParentUID": 3452816845,
       "Static": false,

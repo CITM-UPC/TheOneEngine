@@ -111,9 +111,9 @@
             0.0,
             -1.005361859418899e-08,
             0.0,
-            17.399986267089844,
+            4.3766201997641474e-05,
             0.0,
-            4.200042247772217,
+            -4.3825806642416865e-05,
             1.0
           ],
           "Type": 0,
@@ -146,6 +146,42 @@
         }
       ],
       "Enabled": true,
+      "GameObjects": [
+        {
+          "AudioGOID": 2,
+          "AudioSoundEvent": 1,
+          "Components": [
+            {
+              "Name": "Transform",
+              "Transformation Matrix": [
+                1.0,
+                0.0,
+                -9.214993194165701e-16,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                9.214993194165701e-16,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "Type": 0,
+              "UID": 1172402855
+            }
+          ],
+          "Enabled": true,
+          "Name": "GunshotSound",
+          "ParentUID": 3452816845,
+          "Static": false,
+          "UID": 3452816845
+        }
+      ],
       "Name": "Player",
       "ParentUID": 3452816845,
       "Static": false,
@@ -459,7 +495,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 3770188099
+          "UID": 4147630218
         },
         {
           "DebugDraw": true,
@@ -472,7 +508,7 @@
             -0.12768305838108063
           ],
           "Type": 6,
-          "UID": 2265233804,
+          "UID": 2974971303,
           "UiElements": [
             {
               "ImagePath": "Assets/Meshes/HUD.png",
@@ -496,7 +532,7 @@
           "Pitch": 0.0,
           "Size": 5.0,
           "Type": 1,
-          "UID": 2063769373,
+          "UID": 3034618824,
           "Yaw": 0.0,
           "zFar": 1000.0,
           "zNear": 0.1
