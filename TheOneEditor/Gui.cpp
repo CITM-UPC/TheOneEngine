@@ -490,9 +490,11 @@ void Gui::MainMenuGameObject()
 
 	if (ImGui::BeginMenu("3D Object", "Ctrl+Shift+N"))
 	{
-		if (ImGui::MenuItem("Square", 0, false, false)) {}
+		if (ImGui::MenuItem("Cube")) { engine->N_sceneManager->CreateMeshGO("Assets/Meshes/SM_Cube.fbx"); }
 		if (ImGui::MenuItem("Sphere", 0, false, false)) {}
 		if (ImGui::MenuItem("Less than 12?")) { engine->N_sceneManager->CreateMF(); }
+		if (ImGui::MenuItem("Main Character")) { engine->N_sceneManager->CreateMeshGO("Assets/Meshes/SK_MainCharacter.fbx"); }
+		if (ImGui::MenuItem("Box Low Poly")) { engine->N_sceneManager->CreateMeshGO("Assets/Meshes/SM_Box_LowPoly.fbx"); }
 
 		ImGui::EndMenu();
 	}

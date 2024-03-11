@@ -457,22 +457,6 @@ bool PanelInspector::Draw()
                     }
                     ImGui::Text("Audio GameObject ID: %d\nAudio ready to play: %s", selectedGO->audioOjectID, selectedGO->soundEvent == SoundEvent::STEP ? "STEP" : "GUNSHOT");
 
-                    if (ImGui::Button("Delete Audio GameObject"))
-                    {
-                        ImGui::Text("There is still no nice way to delete audio GameObject, but we can set his audioID to -1");
-                        selectedGO->audioOjectID = -1;
-
-                        for (auto it = engine->N_sceneManager->goWithSound.begin(); it != engine->N_sceneManager->goWithSound.end(); ++it)
-                        {
-                            if (*it == selectedGO)
-                            {
-                                it = engine->N_sceneManager->goWithSound.erase(it);
-                                LOG(LogType::LOG_INFO, "Correctly erased selectedGO from goWithSound vector");
-                                break;
-                            }
-                        }
-                    }
-
                     // Menú desplegable para cambiar el evento de sonido
                     const char* soundEvents[] = { "STEP", "GUNSHOT" }; // Lista de eventos de sonido posibles
                     int selectedEventIndex = -1;
@@ -492,6 +476,23 @@ bool PanelInspector::Draw()
                             break;
                         default:
                             break;
+                        }
+                    }
+                    ImGui::Dummy(ImVec2(0.0f, 10.0f));
+
+                    if (ImGui::Button("Delete Audio GameObject"))
+                    {
+                        ImGui::Text("There is still no nice way to delete audio GameObject, but we can set his audioID to -1");
+                        selectedGO->audioOjectID = -1;
+
+                        for (auto it = engine->N_sceneManager->goWithSound.begin(); it != engine->N_sceneManager->goWithSound.end(); ++it)
+                        {
+                            if (*it == selectedGO)
+                            {
+                                it = engine->N_sceneManager->goWithSound.erase(it);
+                                LOG(LogType::LOG_INFO, "Correctly erased selectedGO from goWithSound vector");
+                                break;
+                            }
                         }
                     }
                 }
