@@ -14,10 +14,13 @@ Texture::Texture(const std::string& newPath, std::shared_ptr<GameObject> contain
 {
     //load image data using devil
     auto img = ilGenImage();
-
     std::string fixedPath(newPath.c_str());
     size_t index = fixedPath.find("\\");
-    fixedPath.replace(index, 1, "/");
+    while (index != std::string::npos)
+    {
+        fixedPath.replace(index, 1, "/");
+        index = fixedPath.find("\\", index + 1); 
+    }
 
     ilBindImage(img);
     if (ilLoadImage((const wchar_t*)fixedPath.c_str()) == IL_FALSE)
