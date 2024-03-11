@@ -14,15 +14,24 @@ Texture::Texture(const std::string& newPath, std::shared_ptr<GameObject> contain
 {
     //load image data using devil
     auto img = ilGenImage();
+
+    std::string fixedPath(newPath.c_str());
+    size_t index = fixedPath.find("\\");
+    fixedPath.replace(index, 1, "/");
+
     ilBindImage(img);
-    ilLoadImage((const wchar_t*)newPath.c_str());
+    if (ilLoadImage((const wchar_t*)fixedPath.c_str()) == IL_FALSE)
+    {
+        ilDeleteImage(img);
+        return;
+    }
     path = newPath;
     auto width = ilGetInteger(IL_IMAGE_WIDTH);
     this->width = static_cast<uint>(width);
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);
     this->height = static_cast<uint>(height);
     ILint channels = ilGetInteger(IL_IMAGE_CHANNELS);
-    auto data = ilGetData();
+    ILubyte* data = ilGetData();
 
     // Ajusta la alineación de pixel si es necesario (importante para imágenes RGB)
     if (channels == 3) {
