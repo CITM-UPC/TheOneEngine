@@ -24,6 +24,20 @@ static bool GetKeyboardButton(int id)
 	return engine->inputManager->GetKey(id) == KEY_REPEAT;
 }
 
+static bool GetControllerButton(int controllerButton, int gamePad)
+{
+	auto inputToPass = (SDL_GameControllerButton)controllerButton;
+
+	auto result = engine->inputManager->GetGamepadButton(gamePad, inputToPass);
+
+	if (result == InputManagerNamespace::KEY_IDLE)
+	{
+		LOG(LogType::LOG_WARNING, "Button %i is idle", controllerButton);
+	}
+
+	return result == InputManagerNamespace::KEY_DOWN;
+}
+
 //Transform
 static vec3f GetPosition(GameObject* GOptr)
 {
@@ -58,7 +72,7 @@ static vec3f GetTransformForward(GameObject* GOptr)
 //GameObject
 static GameObject* InstantiateBullet(vec3f* initialPosition, vec3f* direction)
 {
-	engine->N_sceneManager->CreateTeapot();
+	engine->N_sceneManager->CreateNewTeapot();
 	GameObject* go = engine->N_sceneManager->objectsToAdd.back().get();
 
 	SetPosition(go, initialPosition);
@@ -86,6 +100,7 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
 
 	mono_add_internal_call("InternalCalls::GetKeyboardButton", GetKeyboardButton);
+	mono_add_internal_call("InternalCalls::GetControllerButton", GetControllerButton);
 
 	mono_add_internal_call("InternalCalls::GetPosition", GetPosition);
 	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);

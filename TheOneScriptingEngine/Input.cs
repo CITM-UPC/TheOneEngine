@@ -27,23 +27,24 @@ public class Input
 
 	public enum ControllerButtonCode
 	{
-		START,
-		BACK,
-		GUIDE,
-		X,
-		Y,
 		A,
 		B,
-		L1,
-		R1,
-		L2,
-		R2,
+		X,
+		Y,
+		BACK,
+		GUIDE,
+		START,
 		L3,
 		R3,
+		L1,
+		R1,
 		UP,
 		DOWN,
 		LEFT,
 		RIGHT
+
+		//L2,
+		//R2,
 	}
 
 	public enum ControllerJoystickCode
@@ -54,6 +55,11 @@ public class Input
 	public static bool GetKeyboardButton(KeyboardCode key)
 	{
 		return InternalCalls.GetKeyboardButton((int) key);
+	}
+
+	public static bool GetControllerButton(ControllerButtonCode button, int controller = 0)
+	{
+		return InternalCalls.GetControllerButton((int)button, controller);
 	}
 }
 

@@ -9,6 +9,7 @@ public class PlayerScript : MonoBehaviour
 		bool toMove = false;
 		Vector3 movement = Vector3.zero;
 
+		//Keyboard
 		if (Input.GetKeyboardButton(Input.KeyboardCode.W))
 		{
 			movement = movement + Vector3.forward;
@@ -54,6 +55,32 @@ public class PlayerScript : MonoBehaviour
 		{
 			InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
 		}
+
+		//Controller
+		if (Input.GetControllerButton(Input.ControllerButtonCode.UP))
+		{
+			movement = movement + Vector3.forward;
+			toMove = true;
+		}
+
+		if (Input.GetControllerButton(Input.ControllerButtonCode.RIGHT))
+		{
+			movement = movement - Vector3.right;
+			toMove = true;
+		}
+
+		if (Input.GetControllerButton(Input.ControllerButtonCode.DOWN))
+		{
+			movement = movement - Vector3.forward;
+			toMove = true;
+		}
+
+		if (Input.GetControllerButton(Input.ControllerButtonCode.LEFT))
+		{
+			movement = movement + Vector3.right;
+			toMove = true;
+		}
+
 
 		if (toMove)
 		{
