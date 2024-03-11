@@ -66,7 +66,7 @@ public:
 	CollisionSolver* collisionSolver = nullptr;
 
 	MonoManager* monoManager = nullptr;
-	InputManager* input = nullptr;
+	InputManager* inputManager = nullptr;
 	N_SceneManager* N_sceneManager = nullptr;
 
 private:

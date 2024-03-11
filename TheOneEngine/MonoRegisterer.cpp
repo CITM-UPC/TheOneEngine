@@ -21,7 +21,7 @@ static GameObject* GetGameObjectPtr()
 //Input
 static bool GetKeyboardButton(int id)
 {
-	return engine->input->GetKey(id) == KEY_REPEAT;
+	return engine->inputManager->GetKey(id) == KEY_REPEAT;
 }
 
 //Transform

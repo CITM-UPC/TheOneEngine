@@ -2,20 +2,20 @@
 #include "Log.h"
 #include "Defs.h"
 #include "N_SceneManager.h"
+#include "Collider2D.h"
 #include <GL\glew.h>
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
 #include <memory>
-#include "../TheOneEditor/App.h"
-#include "../TheOneEditor/SceneManager.h"
-#include "Collider2D.h"
+//#include "../TheOneEditor/App.h"
+//#include "../TheOneEditor/SceneManager.h"
 
 EngineCore::EngineCore()
 {
     audio = new AudioCore();
     monoManager = new MonoManager();
     collisionSolver = new CollisionSolver();
-    input = new InputManager();
+    inputManager = new InputManager();
     N_sceneManager = new N_SceneManager();
 }
 
@@ -25,7 +25,7 @@ void EngineCore::Awake()
     ilInit();
     monoManager->InitMono();
     audio->Awake();
-    input->Init();
+    inputManager->Init();
 }
 
 void EngineCore::Start()
@@ -35,7 +35,7 @@ void EngineCore::Start()
 
 void EngineCore::PreUpdate()
 {
-    input->PreUpdate();
+    inputManager->PreUpdate();
 }
 
 void EngineCore::Update(double dt)
@@ -59,7 +59,7 @@ void EngineCore::Update(double dt)
     }
 
     //now lets check and solve collisions
-    if (app->state == GameState::PLAY || app->state == GameState::PLAY_ONCE)
+    if (/*app->state == GameState::PLAY || app->state == GameState::PLAY_ONCE*/true)
     {
         for (auto& item : collisionSolver->goWithCollision)
         {
@@ -69,27 +69,28 @@ void EngineCore::Update(double dt)
             case CollisionType::Player:
 
                 //hardcoded code just in case we need to move player
-                if (app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                if (inputManager->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                //if (input->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
                 {
                     item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z - 0.1 });
                 }
-                if (app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
+                if (inputManager->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
                 {
                     item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z + 0.1 });
                 }
-                if (app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
+                if (inputManager->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
                 {
                     item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x + 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
                 }
-                if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
+                if (inputManager->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
                 {
                     item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x - 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
                 }
                 //hardcoded code just to play step sound
-                if (app->input->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ||
-                    app->input->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ||
-                    app->input->GetKey(SDL_SCANCODE_A) == KEY_REPEAT ||
-                    app->input->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                if (inputManager->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ||
+                    inputManager->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ||
+                    inputManager->GetKey(SDL_SCANCODE_A) == KEY_REPEAT ||
+                    inputManager->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
                 {
                     if (stepcd >= 40)
                     {
@@ -241,8 +242,8 @@ void EngineCore::CleanUp()
     audio->CleanUp();
     delete audio;
 
-    input->CleanUp();
-    delete input;
+    inputManager->CleanUp();
+    delete inputManager;
 
     delete collisionSolver;
 }

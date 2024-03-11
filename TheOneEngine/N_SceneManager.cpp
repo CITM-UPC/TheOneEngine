@@ -611,7 +611,11 @@ void N_SceneManager::FindCameraInScene()
 {
 	for (const auto GO : GetGameObjects())
 	{
-		if (GO->HasCameraComponent()) { currentScene->currentCamera = GO->GetComponent<Camera>(); }
+		if (GO->HasCameraComponent())
+		{ 
+			currentScene->currentCamera = GO->GetComponent<Camera>();
+			break;
+		}
 	}
 }
 

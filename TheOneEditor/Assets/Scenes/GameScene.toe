@@ -111,9 +111,9 @@
             0.0,
             -1.005361859418899e-08,
             0.0,
-            -21.0,
+            17.399986267089844,
             0.0,
-            -21.0,
+            4.200042247772217,
             1.0
           ],
           "Type": 0,
@@ -432,6 +432,78 @@
       ],
       "Enabled": true,
       "Name": "Wall4",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 3770188099
+        },
+        {
+          "DebugDraw": true,
+          "Name": "Canvas",
+          "ParentUID": 3452816845,
+          "Rect": [
+            0.0,
+            0.0,
+            -0.22689279913902283,
+            -0.12768305838108063
+          ],
+          "Type": 6,
+          "UID": 2265233804,
+          "UiElements": [
+            {
+              "ImagePath": "Assets/Meshes/HUD.png",
+              "Interactuable": false,
+              "Rect": [
+                0.0,
+                0.0,
+                150.0,
+                100.0
+              ],
+              "Type": 0
+            }
+          ]
+        },
+        {
+          "Aspect": 1.777,
+          "CameraType": 0,
+          "FOV": 65.0,
+          "Name": "Camera",
+          "ParentUID": 3452816845,
+          "Pitch": 0.0,
+          "Size": 5.0,
+          "Type": 1,
+          "UID": 2063769373,
+          "Yaw": 0.0,
+          "zFar": 1000.0,
+          "zNear": 0.1
+        }
+      ],
+      "Enabled": true,
+      "Name": "newCanvas",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845

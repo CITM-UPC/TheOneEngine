@@ -64,3 +64,32 @@ void ImageUI::Draw2D()
 
 	//glPopMatrix();
 }
+
+json ImageUI::SaveUIElement()
+{
+	json uiElementJSON;
+
+	uiElementJSON["Rect"] = { rect.x, rect.y, rect.w, rect.h };
+	uiElementJSON["Type"] = (int)type;
+	uiElementJSON["Interactuable"] = interactuable;
+
+	uiElementJSON["ImagePath"] = imagePath;
+
+	return uiElementJSON;
+}
+
+void ImageUI::LoadUIElement(const json& UIElementJSON)
+{
+	if (UIElementJSON.contains("Rect"))
+	{
+		rect.x = UIElementJSON["Rect"][0];
+		rect.y = UIElementJSON["Rect"][1];
+		rect.w = UIElementJSON["Rect"][2];
+		rect.h = UIElementJSON["Rect"][3];
+	}
+	if (UIElementJSON.contains("Type")) type = (UiType)UIElementJSON["Type"];
+	if (UIElementJSON.contains("Interactuable")) interactuable = UIElementJSON["Interactuable"];
+
+	if (UIElementJSON.contains("ImagePath")) imagePath = UIElementJSON["ImagePath"];
+	image = std::make_unique<Texture>(imagePath);
+}

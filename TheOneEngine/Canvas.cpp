@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "ItemUI.h"
+#include "ImageUI.h"
 
 Canvas::Canvas(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Canvas)
 {}
@@ -111,29 +113,61 @@ void Canvas::SetSize(float width, float height)
 
 json Canvas::SaveComponent()
 {
-    json transformJSON;
+	json canvasJSON;
 
-    /*transformJSON["Name"] = name;
-    transformJSON["Type"] = type;
-    if (auto pGO = containerGO.lock())
-        transformJSON["ParentUID"] = pGO.get()->GetUID();
+	canvasJSON["UID"] = UID;
+	canvasJSON["Name"] = name;
+	canvasJSON["Type"] = type;
+	canvasJSON["Rect"] = { rect.x, rect.y, rect.w, rect.h };
+	canvasJSON["DebugDraw"] = debugDraw;
 
-    transformJSON["UID"] = UID;
-    transformJSON["Position"] = { position.x, position.y, position.z };
-    transformJSON["Rotation"] = { rotation.w, rotation.x, rotation.y, rotation.z };
-    transformJSON["Scale"] = { scale.x, scale.y, scale.z };*/
+	if (auto pGO = containerGO.lock())
+		canvasJSON["ParentUID"] = pGO.get()->GetUID();
 
-    return transformJSON;
+	if (!uiElements.empty())
+	{
+		json uiElementsJSON;
+		for (auto& item : uiElements)
+		{
+			uiElementsJSON.push_back(item.get()->SaveUIElement());
+		}
+		canvasJSON["UiElements"] = uiElementsJSON;
+	}
+
+	return canvasJSON;
 }
 
-// hekbas - Fix this
-void Canvas::LoadComponent(const json& transformJSON)
+void Canvas::LoadComponent(const json& canvasJSON)
 {
-    //// Load basic properties
-    //if (transformJSON.contains("UID"))
-    //{
-    //    UID = transformJSON["UID"];
-    //}
+	if (canvasJSON.contains("UID")) UID = canvasJSON["UID"];
+	if (canvasJSON.contains("Name")) name = canvasJSON["Name"];
+	if (canvasJSON.contains("Type")) type = canvasJSON["Type"];
+	if (canvasJSON.contains("Rect"))
+	{
+		rect.x = canvasJSON["Rect"][0];
+		rect.y = canvasJSON["Rect"][1];
+		rect.w = canvasJSON["Rect"][2];
+		rect.h = canvasJSON["Rect"][3];
+	}
+	if (canvasJSON.contains("DebugDraw")) debugDraw = canvasJSON["DebugDraw"];
+
+	if (canvasJSON.contains("UiElements"))
+	{
+		const json& uiElementsJSON = canvasJSON["UiElements"];
+
+		for (auto& item : uiElementsJSON)
+		{
+			if (item["Type"] == (int)UiType::IMAGE)
+			{
+				this->AddItemUI<ImageUI>();
+				this->GetItemUI<ImageUI>()->LoadUIElement(item);
+			}
+			if (item["Type"] == (int)UiType::UNKNOWN)
+			{
+				//default
+			}
+		}
+	}
 }
 
 std::vector<ItemUI*> Canvas::GetUiElements()

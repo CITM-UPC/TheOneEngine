@@ -10,12 +10,13 @@
 
 using namespace std;
 
-Texture::Texture(const std::string& path, std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Texture)
+Texture::Texture(const std::string& newPath, std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Texture)
 {
     //load image data using devil
     auto img = ilGenImage();
     ilBindImage(img);
-    ilLoadImage((const wchar_t*)path.c_str());
+    ilLoadImage((const wchar_t*)newPath.c_str());
+    path = newPath;
     auto width = ilGetInteger(IL_IMAGE_WIDTH);
     this->width = static_cast<uint>(width);
     auto height = ilGetInteger(IL_IMAGE_HEIGHT);

@@ -14,6 +14,9 @@ public:
 
 	void Draw2D();
 
+	json SaveUIElement() override;
+	void LoadUIElement(const json& UIElementJSON) override;
+
 private:
 	std::string imagePath;
 	std::unique_ptr<Texture> image;
