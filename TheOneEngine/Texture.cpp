@@ -16,9 +16,10 @@ Texture::Texture(const std::string& newPath, std::shared_ptr<GameObject> contain
     auto img = ilGenImage();
     std::string fixedPath(newPath.c_str());
     size_t index = fixedPath.find("\\");
-    if (index > 0 && index < 150)
+    while (index != std::string::npos)
     {
         fixedPath.replace(index, 1, "/");
+        index = fixedPath.find("\\", index + 1); 
     }
 
     ilBindImage(img);
