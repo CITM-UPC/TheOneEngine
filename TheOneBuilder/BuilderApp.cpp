@@ -97,7 +97,7 @@ bool BuilderApp::Start()
 			return false;
 	}
 
-	//LOG("----------------- Time Start(): %f", timer.ReadMSec());
+	state = GameState::PLAY;
 
 	return true;
 }

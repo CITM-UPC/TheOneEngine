@@ -4,6 +4,7 @@
 
 #include "EngineCore.h"
 #include "Transform.h"
+#include "N_SceneManager.h"
 
 #include "../mono/include/mono/jit/jit.h"
 #include "../mono/include/mono/metadata/assembly.h"
@@ -20,7 +21,34 @@ static GameObject* GetGameObjectPtr()
 //Input
 static bool GetKeyboardButton(int id)
 {
-	return engine->input->GetKey(id) == KEY_REPEAT;
+	return engine->inputManager->GetKey(id) == KEY_REPEAT;
+}
+
+static bool GetControllerButton(int controllerButton, int gamePad)
+{
+	auto inputToPass = (SDL_GameControllerButton)controllerButton;
+
+	auto result = engine->inputManager->GetGamepadButton(gamePad, inputToPass);
+
+	if (result == InputManagerNamespace::KEY_IDLE)
+	{
+		LOG(LogType::LOG_WARNING, "Button %i is idle", controllerButton);
+	}
+
+	return result == InputManagerNamespace::KEY_DOWN;
+}
+static void GetControllerJoystick(int joystick, vec2f* joyResult, int gamePad)
+{
+	if (joystick) //value is 1, so it means right
+	{
+		joyResult->x = engine->inputManager->pads[gamePad].right_x;
+		joyResult->y = engine->inputManager->pads[gamePad].right_y;
+	}
+	else
+	{
+		joyResult->x = engine->inputManager->pads[gamePad].left_x;
+		joyResult->y = engine->inputManager->pads[gamePad].left_y;
+	}
 }
 
 //Transform
@@ -54,26 +82,29 @@ static vec3f GetTransformForward(GameObject* GOptr)
 	return (vec3f)GOptr->GetComponent<Transform>()->GetForward();
 }
 
+//GameObject
+static GameObject* InstantiateBullet(vec3f* initialPosition, vec3f* direction)
+{
+	engine->N_sceneManager->CreateTeapot();
+	GameObject* go = engine->N_sceneManager->objectsToAdd.back().get();
+
+	SetPosition(go, initialPosition);
+	SetRotation(go, direction);
+
+	go->AddScript("Bullet");
+
+	return go;
+}
+
+static void DestroyGameObject(GameObject* objectToDestroy)
+{
+	objectToDestroy->Delete(engine->N_sceneManager->objectsToDelete);
+}
+
 //Helpers
 static float GetAppDeltaTime()
 {
 	return (float)engine->dt;
-}
-
-static void CreateBullet(vec3f* position, vec3f* direction)
-{
-	if (engine->monoManager->bulletGO->IsEnabled() == false)
-	{
-		engine->monoManager->bulletGO->Enable();
-
-		SetPosition(engine->monoManager->bulletGO, position);
-		SetRotation(engine->monoManager->bulletGO, direction);
-	}
-}
-
-static void endBullet()
-{
-	engine->monoManager->bulletGO->Disable();
 }
 
 
@@ -82,6 +113,8 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
 
 	mono_add_internal_call("InternalCalls::GetKeyboardButton", GetKeyboardButton);
+	mono_add_internal_call("InternalCalls::GetControllerButton", GetControllerButton);
+	mono_add_internal_call("InternalCalls::GetControllerJoystick", GetControllerJoystick);
 
 	mono_add_internal_call("InternalCalls::GetPosition", GetPosition);
 	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);
@@ -90,8 +123,8 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::Translate", Translate);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
 
-	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
+	mono_add_internal_call("InternalCalls::InstantiateBullet", InstantiateBullet);
+	mono_add_internal_call("InternalCalls::DestroyGameObject", DestroyGameObject);
 
-	mono_add_internal_call("InternalCalls::CreateBullet", CreateBullet);
-	mono_add_internal_call("InternalCalls::endBullet", endBullet);
+	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
 }

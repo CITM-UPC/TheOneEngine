@@ -11,6 +11,7 @@ class Canvas : public Component
 public:
 
     Canvas(std::shared_ptr<GameObject> containerGO);
+    Canvas(std::shared_ptr<GameObject> containerGO, Canvas* ref);
     virtual ~Canvas();
 
     template <typename TUI>
@@ -20,6 +21,16 @@ public:
         uiElements.push_back(std::move(newItemUI));
 
         return true;
+    }
+    template <typename TUI>
+    TUI* GetItemUI()
+    {
+        for (const auto& component : uiElements)
+        {
+            if (dynamic_cast<TUI*>(component.get()))
+                return static_cast<TUI*>(component.get());
+        }
+        return nullptr;
     }
 
     void DrawComponent();
@@ -34,7 +45,9 @@ public:
 public:
 
     json SaveComponent();
-    void LoadComponent(const json& transformJSON);
+    void LoadComponent(const json& canvasJSON);
+
+    std::vector<ItemUI*> GetUiElements();
 
     bool debugDraw = true;
 

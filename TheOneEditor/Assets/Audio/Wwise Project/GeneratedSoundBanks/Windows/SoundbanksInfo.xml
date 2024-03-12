@@ -162,10 +162,14 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="3491347560" Type="User" Language="SFX" Hash="{F27560AD-1CBB-1156-F404-551823AC3C92}">
+		<SoundBank Id="3491347560" Type="User" Language="SFX" Hash="{D19C02E8-37B5-074D-8172-873296FC6241}">
 			<ShortName>TheOneEngine</ShortName>
 			<Path>TheOneEngine.bnk</Path>
 			<Media>
+				<File Id="67773700" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>gunshot.wav</ShortName>
+					<CachePath>SFX/gunshot_818F3B66.wem</CachePath>
+				</File>
 				<File Id="102266085" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Bass160Fight.wav</ShortName>
 					<CachePath>SFX/Bass160Fight_818F3B66.wem</CachePath>
@@ -182,8 +186,17 @@
 					<ShortName>seagull1.wav</ShortName>
 					<CachePath>SFX/seagull1_818F3B66.wem</CachePath>
 				</File>
+				<File Id="1066871374" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>steps.wav</ShortName>
+					<CachePath>SFX/steps_818F3B66.wem</CachePath>
+				</File>
 			</Media>
 			<Events>
+				<Event Id="1287408361" Name="GUNSHOT">
+					<MediaRefs>
+						<MediaRef Id="67773700"/>
+					</MediaRefs>
+				</Event>
 				<Event Id="1730564819" Name="MUSIC1">
 					<MediaRefs>
 						<MediaRef Id="657823762"/>
@@ -204,8 +217,13 @@
 						<MediaRef Id="102266085"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="621108255" Name="STEP">
+					<MediaRefs>
+						<MediaRef Id="1066871374"/>
+					</MediaRefs>
+				</Event>
 			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{650462AE-8ABF-6401-1F40-778E69410506}</FileHash>
+	<FileHash>{DDFD7409-A034-80E8-BFB7-6AE18E547836}</FileHash>
 </SoundBanksInfo>

@@ -7,7 +7,7 @@ BuilderWindow::BuilderWindow(BuilderApp* app) :
     window(nullptr),
     glContext(),
     displayMode(DisplayMode::FULLSCREEN),
-    resolution(Resolution::R_1280x720),
+    resolution(Resolution::R_1920x1080),
     borderless(false),
     refreshRate(0)
 {}
@@ -37,7 +37,7 @@ bool BuilderWindow::Awake()
 bool BuilderWindow::Start()
 {
     displayMode = DisplayMode::FULLSCREEN;
-    resolution = Resolution::R_1280x720;
+    resolution = Resolution::R_1920x1080;
 
     SetResolution(resolution);
 

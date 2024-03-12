@@ -21,7 +21,7 @@ Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, Com
 
     normalLineWidth = 1;
     normalLineLength = 0.1f;
-    //meshLoader = new MeshLoader();
+    meshLoader = new MeshLoader();
     //GenerateAABB();
 }
 
@@ -41,12 +41,13 @@ Mesh::Mesh(std::shared_ptr<GameObject> containerGO, Mesh* ref) : Component(conta
 
     normalLineWidth = ref->normalLineWidth;
     normalLineLength = ref->normalLineLength;
-    //meshLoader = new MeshLoader();
+    meshLoader = new MeshLoader();
     //GenerateAABB();
 }
 
 Mesh::~Mesh()
 {
+    RELEASE(meshLoader);
     /*if (_vertex_buffer_id) glDeleteBuffers(1, &_vertex_buffer_id);
     if (_indexs_buffer_id) glDeleteBuffers(1, &_indexs_buffer_id);*/
 }
@@ -262,6 +263,8 @@ void Mesh::LoadComponent(const json& meshJSON)
         meshData = meshLoader->deserializeMeshData(path);
         meshLoader->BufferData(meshData);
         mesh = meshLoader->GetBufferData();
+        if(!meshData.texturePath.empty())
+            mesh.texture = std::make_shared<Texture>(meshData.texturePath);
     }
 
 }

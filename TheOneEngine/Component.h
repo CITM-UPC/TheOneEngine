@@ -16,6 +16,7 @@ enum class ComponentType
 	Mesh,
     Texture,
     Script,
+    Collider2D,
     Canvas,
 	Unknown
 };

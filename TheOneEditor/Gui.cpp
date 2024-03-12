@@ -197,6 +197,7 @@ bool Gui::Start()
 	style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 	style.GrabRounding = style.FrameRounding = 2.3f;
 
+
 #pragma endregion IMGUI_STYLE
 
 	panelGame->Start();
@@ -437,7 +438,7 @@ bool Gui::MainMenuFile()
 
 	if (ImGui::MenuItem("Save", "Ctrl+S", false))
 	{
-		app->scenemanager->N_sceneManager->SaveScene();
+		engine->N_sceneManager->SaveScene();
 	}
 	if (ImGui::MenuItem("Save As..", 0, false, false)) {}
 
@@ -485,17 +486,21 @@ void Gui::MainMenuAssets()
 
 void Gui::MainMenuGameObject()
 {
-	if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) { app->scenemanager->N_sceneManager->CreateEmptyGO(); }
+	if (ImGui::MenuItem("Create Empty", "Ctrl+Shift+N")) { engine->N_sceneManager->CreateEmptyGO(); }
 
 	if (ImGui::BeginMenu("3D Object", "Ctrl+Shift+N"))
 	{
-		if (ImGui::MenuItem("Square", 0, false, false)) {}
+		if (ImGui::MenuItem("Cube")) { engine->N_sceneManager->CreateMeshGO("Assets/Meshes/SM_Cube.fbx"); }
 		if (ImGui::MenuItem("Sphere", 0, false, false)) {}
-		if (ImGui::MenuItem("Less than 12?")) { app->scenemanager->N_sceneManager->CreateMF(); }
+		if (ImGui::MenuItem("Less than 12?")) { engine->N_sceneManager->CreateMF(); }
+		if (ImGui::MenuItem("Main Character")) { engine->N_sceneManager->CreateMeshGO("Assets/Meshes/SK_MainCharacter.fbx"); }
+		if (ImGui::MenuItem("Box Low Poly")) { engine->N_sceneManager->CreateMeshGO("Assets/Meshes/SM_Box_LowPoly.fbx"); }
 
 		ImGui::EndMenu();
 	}
-	if (ImGui::MenuItem("Camera")) { panelGame->gameCameras.push_back(app->scenemanager->N_sceneManager->CreateCameraGO("newCamera").get()); }
+	if (ImGui::MenuItem("Camera")) { panelGame->gameCameras.push_back(engine->N_sceneManager->CreateCameraGO("newCamera").get()); }
+	//Alex: this is just for debug
+	if (ImGui::MenuItem("Canvas")) { engine->N_sceneManager->CreateCanvasGO("newCanvas"); }
 }
 
 void Gui::MainMenuComponent()
@@ -546,14 +551,14 @@ void Gui::OpenSceneFileWindow()
 
 	if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameSceneBuffer != "")
 	{
-		if (app->scenemanager->N_sceneManager->currentScene->IsDirty())
+		if (engine->N_sceneManager->currentScene->IsDirty())
 		{
 			ImGui::OpenPopup("SaveBeforeLoad");
 			
 		}
 		else
 		{
-			app->scenemanager->N_sceneManager->LoadSceneFromJSON(file);
+			engine->N_sceneManager->LoadScene(nameSceneBuffer);
 			openSceneFileWindow = false;
 		}
 		
@@ -563,7 +568,7 @@ void Gui::OpenSceneFileWindow()
 	{
 		ImGui::Text("You have unsaved changes in this scene. Are you sure?");
 		if (ImGui::Button("Yes", { 100, 20 })) {
-			app->scenemanager->N_sceneManager->LoadSceneFromJSON(file);
+			engine->N_sceneManager->LoadScene(nameSceneBuffer);
 			openSceneFileWindow = false;
 		}
 		ImGui::SameLine();

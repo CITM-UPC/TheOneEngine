@@ -37,6 +37,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{318a6ab4-0570-4ece-9443-77b727edbae4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CollisionSolver">
+      <UniqueIdentifier>{b4bff3d6-89e0-43fe-b513-b1d9b31c27bd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -108,6 +111,15 @@
     <ClInclude Include="ImageUI.h">
       <Filter>GameObject\Components\UI\Items</Filter>
     </ClInclude>
+    <ClInclude Include="Collider2D.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSolver.h">
+      <Filter>CollisionSolver</Filter>
+    </ClInclude>
+    <ClInclude Include="GamepadInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -155,6 +167,9 @@
     <ClCompile Include="MonoRegisterer.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Collider2D.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -168,6 +183,12 @@
       <Filter>GameObject\Components\UI\Items</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSolver.cpp">
+      <Filter>CollisionSolver</Filter>
+    </ClCompile>
+    <ClCompile Include="GamepadInput.cpp">
       <Filter>Input</Filter>
     </ClCompile>
   </ItemGroup>

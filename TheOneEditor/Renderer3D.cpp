@@ -54,6 +54,7 @@ bool Renderer3D::Start()
 bool Renderer3D::PreUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    engine->PreUpdate();
 
 	return true;
 }
@@ -147,12 +148,12 @@ void Renderer3D::CameraInput(double dt)
     }
 
     // (F) Focus Selection
-    if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && app->scenemanager->N_sceneManager->GetSelectedGO() != nullptr)
+    if (app->input->GetKey(SDL_SCANCODE_F) == KEY_DOWN && engine->N_sceneManager->GetSelectedGO() != nullptr)
     {
         transform->SetPosition(camera->lookAt);
         vec3f finalPos;
         finalPos = transform->GetPosition() - transform->GetForward();
-        finalPos = app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 10.0);
+        finalPos = engine->N_sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 10.0);
 
         transform->SetPosition(finalPos);
     }
@@ -171,9 +172,9 @@ void Renderer3D::CameraInput(double dt)
 
         vec3f finalPos;
         
-        if (app->scenemanager->N_sceneManager->GetSelectedGO() != nullptr)
+        if (engine->N_sceneManager->GetSelectedGO() != nullptr)
         {
-            finalPos = app->scenemanager->N_sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 40.0);
+            finalPos = engine->N_sceneManager->GetSelectedGO().get()->GetComponent<Transform>()->GetPosition() - (transform->GetForward() * 40.0);
         }
         else
         {

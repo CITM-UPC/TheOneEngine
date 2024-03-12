@@ -12,12 +12,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="Collider2D.h" />
+    <ClInclude Include="CollisionSolver.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeImmediateMode.h" />
     <ClInclude Include="Defs.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GamepadInput.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Log.h" />
@@ -37,11 +40,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="Collider2D.cpp" />
+    <ClCompile Include="CollisionSolver.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeImmediateMode.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GamepadInput.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Mesh.cpp" />

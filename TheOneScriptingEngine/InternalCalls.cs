@@ -11,6 +11,12 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static bool GetKeyboardButton(int id);
 
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static bool GetControllerButton(int controllerButton, int gamePad);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void GetControllerJoystick(int joystick, ref Vector2 joyResult, int gamePad);
+
 
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -31,13 +37,14 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetTransformForward(IntPtr GOptr);
 
+    //GameObjects
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static IGameObject InstantiateBullet(Vector3 initialPosition, Vector3 direction);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void DestroyGameObject(IntPtr GOtoDestroy);
+
     //Helpers
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static float GetAppDeltaTime();
-
-    [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static void CreateBullet(Vector3 initialPosition, Vector3 rotation);
-    
-    [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static void endBullet();
 }

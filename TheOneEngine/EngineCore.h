@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "Ray.h"
 #include "Log.h"
+#include "CollisionSolver.h"
 
 #include "MonoManager.h"
 #include "InputManager.h"
@@ -20,6 +21,7 @@
 #include <chrono>
 #include <memory>
 
+class N_SceneManager;
 
 class EngineCore
 {
@@ -30,6 +32,7 @@ public:
 	void Awake();
 	void Start();
 
+	void PreUpdate();
 	void Update(double dt);
 
 	void Render(Camera* camera);
@@ -57,8 +60,12 @@ public:
 
 	bool vsync = false;
 	AudioCore* audio = nullptr;
+
+	CollisionSolver* collisionSolver = nullptr;
+
 	MonoManager* monoManager = nullptr;
-	InputManager* input = nullptr;
+	InputManager* inputManager = nullptr;
+	N_SceneManager* N_sceneManager = nullptr;
 
 private:
 

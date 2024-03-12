@@ -126,6 +126,7 @@ public:
     void Disable();
 
     void Delete();
+    void Delete(std::vector<GameObject*>& objectsToDelete);
 
     std::string GetName() const;
     void SetName(const std::string& name);
