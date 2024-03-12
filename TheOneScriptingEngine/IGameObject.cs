@@ -20,4 +20,23 @@ public class IGameObject
     {
         InternalCalls.DestroyGameObject(containerGOptr);
     }
+
+    public static IGameObject Find(string name)
+    {
+        IntPtr foundGOptr = InternalCalls.FindGameObject(name);
+
+        if(foundGOptr == null)
+        {
+            //Insert error or something
+
+            return new IGameObject();
+        }
+
+        IGameObject goToReturn = new IGameObject();
+
+        goToReturn.containerGOptr = foundGOptr;
+        goToReturn.transform = new ITransform(foundGOptr);
+
+        return goToReturn;
+    }
 }

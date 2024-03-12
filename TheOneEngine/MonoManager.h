@@ -6,6 +6,7 @@
 #include "mono\metadata\attrdefs.h"
 
 #include <string>
+#include <vector>
 
 class MonoManager
 {
@@ -22,6 +23,8 @@ class MonoManager
 private:
 
     static MonoManagerData monoData;
+
+    static inline std::vector<std::string> functionsToIgnore = { "Start", "Update" };
 
 public:
     MonoManager() {}

@@ -6,10 +6,6 @@
 #include "Transform.h"
 #include "N_SceneManager.h"
 
-#include "../mono/include/mono/jit/jit.h"
-#include "../mono/include/mono/metadata/assembly.h"
-#include "../mono/include/mono/metadata/attrdefs.h"
-
 #include <glm/vec3.hpp>
 
 //Constructors
@@ -101,6 +97,20 @@ static void DestroyGameObject(GameObject* objectToDestroy)
 	objectToDestroy->Delete(engine->N_sceneManager->objectsToDelete);
 }
 
+static GameObject* FindGameObject(MonoString* monoString)
+{
+	std::string name = MonoRegisterer::MonoStringToUTF8(monoString);
+
+	for (auto go : engine->N_sceneManager->currentScene->GetRootSceneGO()->children)
+	{
+		if (go->GetName() == name)
+		{
+			return go.get();
+		}
+	}
+	return nullptr;
+}
+
 //Helpers
 static float GetAppDeltaTime()
 {
@@ -125,6 +135,36 @@ void MonoRegisterer::RegisterFunctions()
 
 	mono_add_internal_call("InternalCalls::InstantiateBullet", InstantiateBullet);
 	mono_add_internal_call("InternalCalls::DestroyGameObject", DestroyGameObject);
+	mono_add_internal_call("InternalCalls::FindGameObject", FindGameObject);
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
+}
+
+bool MonoRegisterer::CheckMonoError(MonoError& error)
+{
+	bool hasError = !mono_error_ok(&error);
+	if (hasError)
+	{
+		unsigned short errorCode = mono_error_get_error_code(&error);
+		const char* errorMessage = mono_error_get_message(&error);
+		std::cout << "Mono Error!" << std::endl;
+		std::cout << "Error Code: " << errorCode << std::endl;
+		std::cout << "Error Message: " << errorMessage << std::endl;
+		mono_error_cleanup(&error);
+	}
+	return hasError;
+}
+
+std::string MonoRegisterer::MonoStringToUTF8(MonoString* monoString)
+{
+	if (monoString == nullptr || mono_string_length(monoString) == 0)
+		return "";
+
+	MonoError error;
+	char* utf8 = mono_string_to_utf8_checked(monoString, &error);
+	if (CheckMonoError(error))
+		return "";
+	std::string result(utf8);
+	mono_free(utf8);
+	return result;
 }
