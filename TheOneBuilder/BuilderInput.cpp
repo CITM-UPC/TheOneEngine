@@ -38,6 +38,8 @@ bool BuilderInput::Awake()
 		ret = false;
 	}
 
+	inputManagerInstance = engine->inputManager;
+
 	return ret;
 }
 
@@ -131,6 +133,14 @@ bool BuilderInput::processSDLEvents()
 			switch (event.key.keysym.sym) {
 			case SDLK_ESCAPE: return false;
 			}
+			break;
+
+		case SDL_CONTROLLERDEVICEADDED:
+			inputManagerInstance->HandleDeviceConnection(event.cdevice.which);
+			break;
+
+		case SDL_CONTROLLERDEVICEREMOVED:
+			inputManagerInstance->HandleDeviceRemoval(event.cdevice.which);
 			break;
 
 		case SDL_WINDOWEVENT:

@@ -68,29 +68,13 @@ void EngineCore::Update(double dt)
             {
             case CollisionType::Player:
 
-                //hardcoded code just in case we need to move player
-                if (inputManager->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
-                //if (input->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == KEY_REPEAT)
-                {
-                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z - 0.1 });
-                }
-                if (inputManager->GetKey(SDL_SCANCODE_A) == KEY_REPEAT)
-                {
-                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z + 0.1 });
-                }
-                if (inputManager->GetKey(SDL_SCANCODE_S) == KEY_REPEAT)
-                {
-                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x + 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
-                }
-                if (inputManager->GetKey(SDL_SCANCODE_W) == KEY_REPEAT)
-                {
-                    item->GetComponent<Transform>()->SetPosition({ item->GetComponent<Transform>()->GetPosition().x - 0.1, item->GetComponent<Transform>()->GetPosition().y,item->GetComponent<Transform>()->GetPosition().z });
-                }
                 //hardcoded code just to play step sound
                 if (inputManager->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ||
                     inputManager->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ||
                     inputManager->GetKey(SDL_SCANCODE_A) == KEY_REPEAT ||
-                    inputManager->GetKey(SDL_SCANCODE_D) == KEY_REPEAT)
+                    inputManager->GetKey(SDL_SCANCODE_D) == KEY_REPEAT ||
+                    inputManager->pads[0].left_x > 0.2f || inputManager->pads[0].left_x < -0.2f ||
+                    inputManager->pads[0].left_y > 0.2f || inputManager->pads[0].left_y < -0.2f)
                 {
                     if (stepcd >= 40)
                     {
@@ -108,6 +92,25 @@ void EngineCore::Update(double dt)
                     }
                     stepcd++;
                 }
+                if (gunshotcd >= 5)
+                {
+                    if (inputManager->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN ||
+                        inputManager->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN)
+                    {
+                        for (auto& item2 : N_sceneManager->goWithSound)
+                        {
+                            //update position of audio object
+                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->parent.lock()->GetComponent<Transform>()->GetPosition().x, item2->parent.lock()->GetComponent<Transform>()->GetPosition().y, item2->parent.lock()->GetComponent<Transform>()->GetPosition().z);
+                            //play sound
+                            if (item2->soundEvent == SoundEvent::GUNSHOT)
+                            {
+                                audio->PlayEvent(AK::EVENTS::GUNSHOT, item2->audioOjectID);
+                            }
+                        }
+                        gunshotcd = 0;
+                    }
+                }
+                gunshotcd++;
                 for (auto& item2 : collisionSolver->goWithCollision)
                 {
                     if (item != item2)

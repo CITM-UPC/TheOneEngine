@@ -59,6 +59,7 @@ public:
 	double dt = 0;
 
 	unsigned int stepcd = 0;
+	unsigned int gunshotcd = 0;
 
 	bool vsync = false;
 	AudioCore* audio = nullptr;

@@ -45,6 +45,8 @@ bool Input::Awake()
 
 	LOG(LogType::LOG_OK, "-File System current path: %s", std::filesystem::current_path().string().c_str());
 
+	inputManagerInstance = engine->inputManager;
+
 	return ret;
 }
 
@@ -56,7 +58,7 @@ bool Input::PreUpdate()
 
 #pragma region GamepadInput_debugging
 
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_X) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_X) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON X FUNCTIONAL");
 
@@ -67,31 +69,31 @@ bool Input::PreUpdate()
 		//			static_cast<SDL_GameControllerButton>(button)) == 1 ? "pressed" : "relesed");
 		//}
 	}
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_A) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_A) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON A FUNCTIONAL");
 	}
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_B) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_B) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON B FUNCTIONAL");
 	}
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_Y) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_Y) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON Y FUNCTIONAL");
 	}
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_UP) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON DPAD_UP FUNCTIONAL");
 	}
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_DOWN) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON DPAD_DOWN FUNCTIONAL");
 	}
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_LEFT) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON DPAD_LEFT FUNCTIONAL");
 	}
-	if (inputManagerInstance.GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == InputManagerNamespace::KEY_DOWN)
+	if (inputManagerInstance->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == InputManagerNamespace::KEY_DOWN)
 	{
 		LOG(LogType::LOG_OK, "BUTTON DPAD_RIGHT FUNCTIONAL");
 	}
@@ -184,11 +186,11 @@ bool Input::processSDLEvents()
 			break;
 
 		case SDL_CONTROLLERDEVICEADDED:
-			inputManagerInstance.HandleDeviceConnection(event.cdevice.which);
+			inputManagerInstance->HandleDeviceConnection(event.cdevice.which);
 			break;
 
 		case SDL_CONTROLLERDEVICEREMOVED:
-			inputManagerInstance.HandleDeviceRemoval(event.cdevice.which);
+			inputManagerInstance->HandleDeviceRemoval(event.cdevice.which);
 			break;
 
 		case SDL_WINDOWEVENT:

@@ -24,6 +24,33 @@ static bool GetKeyboardButton(int id)
 	return engine->inputManager->GetKey(id) == KEY_REPEAT;
 }
 
+static bool GetControllerButton(int controllerButton, int gamePad)
+{
+	auto inputToPass = (SDL_GameControllerButton)controllerButton;
+
+	auto result = engine->inputManager->GetGamepadButton(gamePad, inputToPass);
+
+	if (result == InputManagerNamespace::KEY_IDLE)
+	{
+		LOG(LogType::LOG_WARNING, "Button %i is idle", controllerButton);
+	}
+
+	return result == InputManagerNamespace::KEY_DOWN;
+}
+static void GetControllerJoystick(int joystick, vec2f* joyResult, int gamePad)
+{
+	if (joystick) //value is 1, so it means right
+	{
+		joyResult->x = engine->inputManager->pads[gamePad].right_x;
+		joyResult->y = engine->inputManager->pads[gamePad].right_y;
+	}
+	else
+	{
+		joyResult->x = engine->inputManager->pads[gamePad].left_x;
+		joyResult->y = engine->inputManager->pads[gamePad].left_y;
+	}
+}
+
 //Transform
 static vec3f GetPosition(GameObject* GOptr)
 {
@@ -86,6 +113,8 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
 
 	mono_add_internal_call("InternalCalls::GetKeyboardButton", GetKeyboardButton);
+	mono_add_internal_call("InternalCalls::GetControllerButton", GetControllerButton);
+	mono_add_internal_call("InternalCalls::GetControllerJoystick", GetControllerJoystick);
 
 	mono_add_internal_call("InternalCalls::GetPosition", GetPosition);
 	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);

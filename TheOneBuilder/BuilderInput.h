@@ -66,6 +66,7 @@ public:
 private:
 	B_KEY_STATE* keyboard;
 	B_KEY_STATE mouse_buttons[MAX_MOUSE_BUTTONS];
+	InputManager* inputManagerInstance;
 	int mouse_x;
 	int mouse_y;
 	int mouse_z;

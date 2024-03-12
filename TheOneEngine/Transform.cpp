@@ -317,6 +317,7 @@ void Transform::SetTransform(mat4 transform)
 {
     SetPosition({ transform[3][0], transform[3][1], transform[3][2] });
     this->transformMatrix = transform;
+    DecomposeTransform();
 }
 
 vec3 Transform::GetRotationEuler() const
