@@ -371,6 +371,13 @@
           "Type": 5,
           "UID": 3885624118,
           "Width": 0.0
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "PlayerScript",
+          "Type": 4,
+          "UID": 2318333276
         }
       ],
       "Enabled": true,
