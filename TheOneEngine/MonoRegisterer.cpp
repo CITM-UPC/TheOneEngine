@@ -37,6 +37,19 @@ static bool GetControllerButton(int controllerButton, int gamePad)
 
 	return result == InputManagerNamespace::KEY_DOWN;
 }
+static void GetControllerJoystick(int joystick, vec2f* joyResult, int gamePad)
+{
+	if (joystick) //value is 1, so it means right
+	{
+		joyResult->x = engine->inputManager->pads[gamePad].right_x;
+		joyResult->y = engine->inputManager->pads[gamePad].right_y;
+	}
+	else
+	{
+		joyResult->x = engine->inputManager->pads[gamePad].left_x;
+		joyResult->y = engine->inputManager->pads[gamePad].left_y;
+	}
+}
 
 //Transform
 static vec3f GetPosition(GameObject* GOptr)
@@ -101,6 +114,7 @@ void MonoRegisterer::RegisterFunctions()
 
 	mono_add_internal_call("InternalCalls::GetKeyboardButton", GetKeyboardButton);
 	mono_add_internal_call("InternalCalls::GetControllerButton", GetControllerButton);
+	mono_add_internal_call("InternalCalls::GetControllerJoystick", GetControllerJoystick);
 
 	mono_add_internal_call("InternalCalls::GetPosition", GetPosition);
 	mono_add_internal_call("InternalCalls::SetPosition", SetPosition);

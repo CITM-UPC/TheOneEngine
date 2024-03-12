@@ -49,7 +49,7 @@ public class Input
 
 	public enum ControllerJoystickCode
 	{
-		LEFT, RIGHT
+		JOY_LEFT, JOY_RIGHT
 	}
 
 	public static bool GetKeyboardButton(KeyboardCode key)
@@ -60,6 +60,13 @@ public class Input
 	public static bool GetControllerButton(ControllerButtonCode button, int controller = 0)
 	{
 		return InternalCalls.GetControllerButton((int)button, controller);
+	}
+
+	public static Vector2 GetControllerJoystick(ControllerJoystickCode joystick, int controller = 0)
+	{
+		Vector2 joyResult = Vector2.zero;
+		InternalCalls.GetControllerJoystick((int)joystick, ref joyResult, controller);
+		return joyResult;
 	}
 }
 

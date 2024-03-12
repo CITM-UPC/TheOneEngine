@@ -14,6 +14,9 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static bool GetControllerButton(int controllerButton, int gamePad);
 
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void GetControllerJoystick(int joystick, ref Vector2 joyResult, int gamePad);
+
 
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]

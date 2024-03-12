@@ -56,35 +56,32 @@ public class PlayerScript : MonoBehaviour
 			InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
 		}
 
-		//Controller
-		if (Input.GetControllerButton(Input.ControllerButtonCode.UP))
-		{
-			movement = movement + Vector3.forward;
-			toMove = true;
-		}
-
-		if (Input.GetControllerButton(Input.ControllerButtonCode.RIGHT))
-		{
-			movement = movement - Vector3.right;
-			toMove = true;
-		}
-
-		if (Input.GetControllerButton(Input.ControllerButtonCode.DOWN))
-		{
-			movement = movement - Vector3.forward;
-			toMove = true;
-		}
-
-		if (Input.GetControllerButton(Input.ControllerButtonCode.LEFT))
-		{
-			movement = movement + Vector3.right;
-			toMove = true;
-		}
-
-
 		if (toMove)
 		{
 			attachedGameObject.transform.Translate(movement.Normalize() * speed * Time.deltaTime);
+		}
+
+		//Controller
+		Vector2 movementVector = Input.GetControllerJoystick(Input.ControllerJoystickCode.JOY_LEFT);
+
+		if (movementVector.x != 0.0f || movementVector.y != 0.0f)
+		{
+			movement = new Vector3(-movementVector.x, 0.0f, -movementVector.y);
+
+			attachedGameObject.transform.Translate(movement * speed * Time.deltaTime);
+		}
+
+		Vector2 lookVector = Input.GetControllerJoystick(Input.ControllerJoystickCode.JOY_RIGHT);
+
+		if (lookVector.x != 0.0f || lookVector.y != 0.0f)
+		{
+			float characterRotation = (float)Math.Atan2(-lookVector.x, -lookVector.y);
+			attachedGameObject.transform.rotation = new Vector3(0.0f, characterRotation, 0.0f);
+		}
+
+		if (Input.GetControllerButton(Input.ControllerButtonCode.R1))
+        {
+			InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
 		}
 	}
 }
