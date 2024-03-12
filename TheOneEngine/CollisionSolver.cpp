@@ -197,7 +197,7 @@ void CollisionSolver::SolveCollision(GameObject* objA, GameObject* objB)
             //rect circle function not implemented
             break;
         case ColliderType::Rect:
-            CirRectCollision(objA, objB);
+            RectRectCollision(objA, objB);
             break;
         default:
             break;
