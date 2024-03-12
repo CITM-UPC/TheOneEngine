@@ -165,17 +165,37 @@ xcopy "$(SolutionDir)TheOneEditor\Library" "$(OutDir)Library" /E /Y</Command>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>TheOneAudio.lib;TheOneEngine.lib;glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;imgui.lib;implot.lib;AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Release\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Release\;$(SolutionDir)mono\lib\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Release\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Release\;$(SolutionDir)mono\lib\Release\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>
-      </Command>
+      <Command>xcopy "$(SolutionDir)mono\bin" "$(OutDir)" /E /Y
+
+mkdir "$(OutDir)mono"
+xcopy "$(SolutionDir)mono" "$(OutDir)mono" /E /Y
+
+mkdir "$(ProjectDir)Assets"
+mkdir "$(ProjectDir)Library"
+xcopy "$(SolutionDir)TheOneEditor\Assets" "$(ProjectDir)Assets" /E /Y
+rd /s /q "$(ProjectDir)Assets\Meshes"
+xcopy "$(SolutionDir)TheOneEditor\Library" "$(ProjectDir)Library" /E /Y
+
+mkdir "$(OutDir)Assets"
+mkdir "$(OutDir)Library"
+xcopy "$(SolutionDir)TheOneEditor\Assets" "$(OutDir)Assets" /E /Y
+xcopy "$(SolutionDir)TheOneEditor\Library" "$(OutDir)Library" /E /Y
+
+del "$(OutDir)*.pdb"</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] imgui[opengl3-binding,sdl2-binding,docking-experimental] implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets
+copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BuilderApp.cpp" />
