@@ -19,6 +19,7 @@ public:
 	~PanelGame();
 	void Start();
 
+	bool Start();
 	bool Draw();
 
 	bool AddCameraToRenderList(GameObject* cameraGO);

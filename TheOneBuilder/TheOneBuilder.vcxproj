@@ -126,7 +126,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>TheOneAudio.lib;TheOneEngine.lib;glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;imgui.lib;implot.lib;AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Debug\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Debug\;$(SolutionDir)mono\lib\Debug\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Debug\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Debug\;$(SolutionDir)mono\lib\Debug\</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib</IgnoreSpecificDefaultLibraries>
     </Link>
     <PreBuildEvent>
@@ -134,6 +134,23 @@
 $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] imgui[opengl3-binding,sdl2-binding,docking-experimental] implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets
 copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     </PreBuildEvent>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)mono\bin" "$(OutDir)" /E /Y
+
+mkdir "$(OutDir)mono"
+xcopy "$(SolutionDir)mono" "$(OutDir)mono" /E /Y
+
+mkdir "$(ProjectDir)Assets"
+mkdir "$(ProjectDir)Library"
+xcopy "$(SolutionDir)TheOneEditor\Assets" "$(ProjectDir)Assets" /E /Y
+rd /s /q "$(ProjectDir)Assets\Meshes"
+xcopy "$(SolutionDir)TheOneEditor\Library" "$(ProjectDir)Library" /E /Y
+
+mkdir "$(OutDir)Assets"
+mkdir "$(OutDir)Library"
+xcopy "$(SolutionDir)TheOneEditor\Assets" "$(OutDir)Assets" /E /Y
+xcopy "$(SolutionDir)TheOneEditor\Library" "$(OutDir)Library" /E /Y</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -143,23 +160,48 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>AK_OPTIMIZED;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)Wwise\SDK\include\Win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)mono\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>TheOneAudio.lib;TheOneEngine.lib;glew32.lib;OpenGL32.lib;SDL2.lib;SDL2main.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;imgui.lib;implot.lib;AkSoundEngine.lib;AkMemoryMgr.lib;AkStreamMgr.lib;AkMusicEngine.lib;AkSpatialAudio.lib;AkAudioInputSource.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Release\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)\vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Release\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Wwise\SDK\Release\lib;$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)vcpkg\installed\x64-windows\lib\manual-link\;$(SolutionDir)x64\Release\;$(SolutionDir)mono\lib\Release\</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(SolutionDir)mono\bin" "$(OutDir)" /E /Y
+
+mkdir "$(OutDir)mono"
+xcopy "$(SolutionDir)mono" "$(OutDir)mono" /E /Y
+
+mkdir "$(ProjectDir)Assets"
+mkdir "$(ProjectDir)Library"
+xcopy "$(SolutionDir)TheOneEditor\Assets" "$(ProjectDir)Assets" /E /Y
+rd /s /q "$(ProjectDir)Assets\Meshes"
+xcopy "$(SolutionDir)TheOneEditor\Library" "$(ProjectDir)Library" /E /Y
+
+mkdir "$(OutDir)Assets"
+mkdir "$(OutDir)Library"
+xcopy "$(SolutionDir)TheOneEditor\Assets" "$(OutDir)Assets" /E /Y
+xcopy "$(SolutionDir)TheOneEditor\Library" "$(OutDir)Library" /E /Y
+
+del "$(OutDir)*.pdb"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew sdl2 glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] imgui[opengl3-binding,sdl2-binding,docking-experimental] implot --recurse --overlay-triplets=$(SolutionDir)custom-triplets
+copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BuilderApp.cpp" />
     <ClCompile Include="BuilderInput.cpp" />
     <ClCompile Include="BuilderRenderer3D.cpp" />
+    <ClCompile Include="BuilderSceneManager.cpp" />
     <ClCompile Include="BuilderWindow.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Timer.cpp" />
@@ -170,8 +212,20 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
     <ClInclude Include="BuilderInput.h" />
     <ClInclude Include="BuilderModule.h" />
     <ClInclude Include="BuilderRenderer3D.h" />
+    <ClInclude Include="BuilderSceneManager.h" />
     <ClInclude Include="BuilderWindow.h" />
     <ClInclude Include="Timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheOneAudio\TheOneAudio.vcxproj">
+      <Project>{606662a0-b707-4c97-8361-5d46fd7fd1f3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TheOneEngine\TheOneEngine.vcxproj">
+      <Project>{0e04f5b4-d4a2-4f7b-b350-a0edcae8a446}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TheOneScriptingEngine\TheOneScriptingEngine.csproj">
+      <Project>{e3064d12-da09-4437-920e-cfeee63bdd82}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

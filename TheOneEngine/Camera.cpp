@@ -28,6 +28,20 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     }  
 }
 
+Camera::Camera(std::shared_ptr<GameObject> containerGO, Camera* ref) : Component(containerGO, ComponentType::Camera),
+aspect(ref->aspect), fov(ref->fov),
+zNear(ref->zNear), zFar(ref->zFar),
+yaw(ref->yaw), pitch(ref->pitch),
+viewMatrix(ref->viewMatrix),
+lookAt(ref->lookAt),
+drawFrustum(ref->drawFrustum)
+{
+    frustum = ref->frustum;
+    projectionMatrix = ref->projectionMatrix;
+    viewProjectionMatrix = ref->viewProjectionMatrix;
+    //eeeeldeeen riiiiiiing
+}
+
 Camera::~Camera() {}
 
 
@@ -146,6 +160,8 @@ json Camera::SaveComponent()
     cameraJSON["zFar"] = zFar;
     cameraJSON["Yaw"] = yaw;
     cameraJSON["Pitch"] = pitch;
+    cameraJSON["Size"] = size;
+    cameraJSON["CameraType"] = cameraType;
 
     return cameraJSON;
 }
@@ -156,16 +172,6 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("UID")) UID = cameraJSON["UID"];
     if (cameraJSON.contains("Name")) name = cameraJSON["Name"];
 
-    // Load parent UID and set parent
-    /*if (cameraJSON.contains("ParentUID"))
-    {
-        uint32_t parentUID = cameraJSON["ParentUID"];
-        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
-        {
-            containerGO = parentGameObject;
-        }
-    }*/
-
     // Load camera-specific properties
     if (cameraJSON.contains("FOV")) fov = cameraJSON["FOV"];
     if (cameraJSON.contains("Aspect")) aspect = cameraJSON["Aspect"];
@@ -173,6 +179,15 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("zFar")) zFar = cameraJSON["zFar"];
     if (cameraJSON.contains("Yaw")) yaw = cameraJSON["Yaw"];
     if (cameraJSON.contains("Pitch")) pitch = cameraJSON["Pitch"];
+    if (cameraJSON.contains("Size")) size = cameraJSON["Size"];
+
+    if (cameraJSON.contains("CameraType")) 
+    {
+        if (cameraJSON["CameraType"] == 0)
+            cameraType = CameraType::PERSPECTIVE;
+        else if (cameraJSON["CameraType"] == 1)
+            cameraType = CameraType::ORTHOGONAL;
+    }
 
     // Optional: Recalculate view and projection matrices based on loaded data
     UpdateCamera();

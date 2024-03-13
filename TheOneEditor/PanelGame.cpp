@@ -48,6 +48,8 @@ bool PanelGame::Draw()
 	{
 		isHovered = ImGui::IsWindowHovered();
 		isFocused = ImGui::IsWindowFocused();
+		//Get selected GO
+		selectedGO = engine->N_sceneManager->GetSelectedGO().get();
 
 		ImVec2 availWindowSize = ImGui::GetContentRegionAvail();
 
@@ -56,6 +58,13 @@ bool PanelGame::Draw()
 		{
 			if (ImGui::BeginMenu("Camera"))
 			{
+				for (auto camerasGO : gameCameras)
+				{
+					if(ImGui::MenuItem(camerasGO->GetName().c_str()))
+					{
+						cameraToRender = camerasGO->GetComponent<Camera>();
+					}
+				}
 				ImGui::EndMenu();
 			}
 

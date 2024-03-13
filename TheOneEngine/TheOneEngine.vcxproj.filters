@@ -28,6 +28,18 @@
     <Filter Include="Scripting">
       <UniqueIdentifier>{a8075659-49bf-4b54-8265-8bcd515fb64f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameObject\Components\UI">
+      <UniqueIdentifier>{87342d4f-f585-4fe8-b03c-1d020c977d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject\Components\UI\Items">
+      <UniqueIdentifier>{7687b297-b5a1-4afc-b2cf-ee4ea64309fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{318a6ab4-0570-4ece-9443-77b727edbae4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CollisionSolver">
+      <UniqueIdentifier>{b4bff3d6-89e0-43fe-b513-b1d9b31c27bd}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Render">
       <UniqueIdentifier>{954d7850-b1f2-45be-b0ff-9ffe77288d41}</UniqueIdentifier>
     </Filter>
@@ -90,6 +102,27 @@
     <ClInclude Include="Log.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Canvas.h">
+      <Filter>GameObject\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemUI.h">
+      <Filter>GameObject\Components\UI\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageUI.h">
+      <Filter>GameObject\Components\UI\Items</Filter>
+    </ClInclude>
+    <ClInclude Include="Collider2D.h">
+      <Filter>GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionSolver.h">
+      <Filter>CollisionSolver</Filter>
+    </ClInclude>
+    <ClInclude Include="GamepadInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
     <ClInclude Include="Framebuffer.h">
       <Filter>Render</Filter>
     </ClInclude>
@@ -140,8 +173,29 @@
     <ClCompile Include="MonoRegisterer.cpp">
       <Filter>Scripting</Filter>
     </ClCompile>
+    <ClCompile Include="Collider2D.cpp">
+      <Filter>GameObject\Components</Filter>
+    </ClCompile>
     <ClCompile Include="Log.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Canvas.cpp">
+      <Filter>GameObject\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemUI.cpp">
+      <Filter>GameObject\Components\UI\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageUI.cpp">
+      <Filter>GameObject\Components\UI\Items</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="CollisionSolver.cpp">
+      <Filter>CollisionSolver</Filter>
+    </ClCompile>
+    <ClCompile Include="GamepadInput.cpp">
+      <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="Framebuffer.cpp">
       <Filter>Render</Filter>

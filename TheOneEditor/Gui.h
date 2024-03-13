@@ -20,6 +20,7 @@ class PanelProject;
 class PanelScene;
 class PanelGame;
 class PanelSettings;
+class PanelBuild;
 
 
 class Gui : public Module
@@ -55,6 +56,8 @@ private:
 	void MainMenuWindow();
 	void MainMenuHelp();
 
+	void OpenSceneFileWindow();
+
 public:
 
 	// Panels
@@ -66,6 +69,7 @@ public:
 	PanelScene* panelScene = nullptr;
 	PanelGame* panelGame = nullptr;
 	PanelSettings* panelSettings = nullptr;
+	PanelBuild* panelBuild = nullptr;
 
 private:
 
@@ -80,6 +84,7 @@ private:
 	bool full_desktop = false;
 	bool minimize_window = false;
 
+	bool openSceneFileWindow = false;
 	//ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 };
 

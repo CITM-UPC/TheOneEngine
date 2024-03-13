@@ -16,6 +16,7 @@ class Script : public Component
 public:
 
     Script(std::shared_ptr<GameObject> containerGO, std::string name);
+    Script(std::shared_ptr<GameObject> containerGO, Script* ref);
     virtual ~Script();
 
     void Update() override;

@@ -34,6 +34,8 @@ struct MeshData
 	std::vector<vec3f> meshFaceCenters;
 	std::vector<vec3f> meshFaceNorms;
 
+	std::string texturePath;
+
 };
 
 struct MeshBufferedData
@@ -50,8 +52,6 @@ struct MeshBufferedData
 	uint numIndexs;
 
 	uint numFaces;
-
-	std::string texturePath;
 	std::shared_ptr<Texture> texture;
 	uint materialIndex;
 	//Texture::Ptr checkers = std::shared_ptr<Texture>(new Texture);

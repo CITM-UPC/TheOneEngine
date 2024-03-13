@@ -1,15 +1,22 @@
 #include "EngineCore.h"
 #include "Log.h"
 #include "Defs.h"
+#include "N_SceneManager.h"
+#include "Collider2D.h"
 #include <GL\glew.h>
 #include <glm\ext\matrix_transform.hpp>
 #include <IL\il.h>
 #include <memory>
+//#include "../TheOneEditor/App.h"
+//#include "../TheOneEditor/SceneManager.h"
 
 EngineCore::EngineCore()
 {
     audio = new AudioCore();
     monoManager = new MonoManager();
+    collisionSolver = new CollisionSolver();
+    inputManager = new InputManager();
+    N_sceneManager = new N_SceneManager();
 }
 
 void EngineCore::Awake()
@@ -18,6 +25,7 @@ void EngineCore::Awake()
     ilInit();
     monoManager->InitMono();
     audio->Awake();
+    inputManager->Init();
 }
 
 void EngineCore::Start()
@@ -25,8 +33,108 @@ void EngineCore::Start()
     
 }
 
+void EngineCore::PreUpdate()
+{
+    inputManager->PreUpdate();
+}
+
 void EngineCore::Update(double dt)
 {
+    //first, lets see the collider component still exists
+    for (auto it = collisionSolver->goWithCollision.begin(); it != collisionSolver->goWithCollision.end(); )
+    {
+        bool remItem = true;
+        for (auto& item2 : (*it)->GetAllComponents())
+        {
+            if (item2->GetType() == ComponentType::Collider2D) remItem = false;
+        }
+        if (remItem)
+        {
+            it = collisionSolver->goWithCollision.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
+
+    //now lets check and solve collisions
+    if (/*app->state == GameState::PLAY || app->state == GameState::PLAY_ONCE*/true)
+    {
+        for (auto& item : collisionSolver->goWithCollision)
+        {
+            // Collision solving
+            switch (item->GetComponent<Collider2D>()->collisionType)
+            {
+            case CollisionType::Player:
+                for (auto& item2 : collisionSolver->goWithCollision)
+                {
+                    if (item != item2)
+                    {
+                        switch (item2->GetComponent<Collider2D>()->collisionType)
+                        {
+                        case CollisionType::Player:
+                            //there is no player-player collision since we only have 1 player
+                            break;
+                        case CollisionType::Enemy:
+                            //implement any low life to player
+                            break;
+                        case CollisionType::Wall:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push player out of wall
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                break;
+            case CollisionType::Enemy:
+                for (auto& item2 : collisionSolver->goWithCollision)
+                {
+                    if (item != item2)
+                    {
+                        switch (item2->GetComponent<Collider2D>()->collisionType)
+                        {
+                        case CollisionType::Player:
+                            //implement any low life to player
+                            break;
+                        case CollisionType::Enemy:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push player out of other enemy
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        case CollisionType::Wall:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                //we push enemy out of wall
+                                collisionSolver->SolveCollision(item, item2);
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                break;
+            case CollisionType::Wall:
+                // do nothing at all
+                break;
+            default:
+                break;
+            }
+        }
+    }
+
+    this->dt = dt;
     audio->Update(dt);
 }
 
@@ -65,12 +173,22 @@ void EngineCore::Render(Camera* camera)
 
 	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
 
+    if (cameraTransform == nullptr)
+    {
+        LOG(LogType::LOG_ERROR, "Camera Transform not found");
+    }
+
     gluLookAt(cameraTransform->GetPosition().x, cameraTransform->GetPosition().y, cameraTransform->GetPosition().z,
         camera->lookAt.x, camera->lookAt.y, camera->lookAt.z,
 		cameraTransform->GetUp().x, cameraTransform->GetUp().y, cameraTransform->GetUp().z);
 
     DrawGrid(1000, 10);
     DrawAxis();
+
+    if (collisionSolver->drawCollisions) collisionSolver->DrawCollisions();
+
+    glColor3f(1.0f, 1.0f, 1.0f);
+    //DrawFrustum(camera->viewMatrix);
 
     assert(glGetError() == GL_NONE);
 }
@@ -82,6 +200,11 @@ void EngineCore::CleanUp()
 
     audio->CleanUp();
     delete audio;
+
+    inputManager->CleanUp();
+    delete inputManager;
+
+    delete collisionSolver;
 }
 
 void EngineCore::DrawAxis()

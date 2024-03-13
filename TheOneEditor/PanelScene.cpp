@@ -203,7 +203,7 @@ bool PanelScene::Draw()
         }       
 
         // Gizmo
-        shared_ptr<GameObject> selectedGO = app->scenemanager->N_sceneManager->GetSelectedGO();
+        shared_ptr<GameObject> selectedGO = engine->N_sceneManager->GetSelectedGO();
 
         if (selectedGO && gizmoType != -1)
         {
@@ -267,9 +267,12 @@ bool PanelScene::Draw()
             }
 
             //Draw Rays
-            for (const auto& ray : rays)
+            if (drawRaycasting)
             {
-                engine->DrawRay(ray);
+                for (auto ray : rays)
+                {
+                    engine->DrawRay(ray);
+                }
             }
 
             current->Draw();

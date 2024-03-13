@@ -8,6 +8,7 @@
 
 class EngineCore;
 class GameObject;
+class BuilderSceneManager;
 
 class BuilderRenderer3D : public BuilderModule
 {
@@ -24,9 +25,7 @@ public:
     bool PostUpdate();
 
     bool CleanUp();
-
-    void CameraInput(double dt);
-
+    
 public:
 
     double dtSum = 0;

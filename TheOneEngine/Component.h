@@ -16,6 +16,8 @@ enum class ComponentType
 	Mesh,
     Texture,
     Script,
+    Collider2D,
+    Canvas,
 	Unknown
 };
 
@@ -24,6 +26,7 @@ class Component
 public:
 
     Component(std::shared_ptr<GameObject> containerGO, ComponentType type);
+    Component(std::shared_ptr<GameObject> containerGO, Component* ref, ComponentType type);
     virtual ~Component();
 
     virtual void Enable();

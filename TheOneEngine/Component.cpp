@@ -13,6 +13,17 @@ Component::Component(std::shared_ptr<GameObject> containerGO, ComponentType type
 	CreateNameFromType(type);
 }
 
+Component::Component(std::shared_ptr<GameObject> containerGO, Component* ref, ComponentType type) :
+	type(type),
+	enabled(ref->enabled)
+{
+	std::weak_ptr<GameObject> weakPtr = containerGO;
+	this->containerGO = weakPtr;
+
+	CreateUID();
+	CreateNameFromType(type);
+}
+
 Component::~Component()
 {
 	Disable();
@@ -47,6 +58,7 @@ void Component::CreateNameFromType(ComponentType type)
 		case ComponentType::Mesh: name = "Mesh"; break;
 		case ComponentType::Texture: name = "Texture"; break;
 		case ComponentType::Script: name = "Script"; break;
+		case ComponentType::Canvas: name = "Canvas"; break;
 		case ComponentType::Unknown: name = "Unknown"; break;
 		default: name = "Specified Type was not found"; break;
 	}
