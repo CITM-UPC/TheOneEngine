@@ -17,11 +17,28 @@ PanelGame::~PanelGame() {}
 
 void PanelGame::Start()
 {
-	current = app->scenemanager->N_sceneManager->currentScene;
+	current = engine->N_sceneManager->currentScene;
 }
 
 bool PanelGame::Draw()
 {
+	// Set primary and Game cameras vector
+	std::vector<GameObject*> gameCameras;
+	for (const auto GO : engine->N_sceneManager->GetGameObjects())
+	{
+		if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); }
+
+	}
+
+	for (const auto& cam : gameCameras)
+	{
+		Camera* gameCam = cam->GetComponent<Camera>();
+
+		if (gameCam && !gameCam->primaryCam) continue;
+		primaryCamera = gameCam;
+	}
+
+	// Viewport resize check
 	if (viewportSize.x > 0.0f && viewportSize.y > 0.0f && // zero sized framebuffer is invalid
 		(frameBuffer->getWidth() != viewportSize.x || frameBuffer->getHeight() != viewportSize.y))
 	{
@@ -31,12 +48,6 @@ bool PanelGame::Draw()
 	}
 
 
-	// Render Game cameras
-	for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
-	{
-		if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); }
-
-	}
 
 	ImGuiWindowFlags settingsFlags = 0;
 	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
@@ -53,37 +64,29 @@ bool PanelGame::Draw()
 
 		ImVec2 availWindowSize = ImGui::GetContentRegionAvail();
 
-		// Top Bar --------------------------
-		if (ImGui::BeginMenuBar())
-		{
-			if (ImGui::BeginMenu("Camera"))
-			{
-				for (auto camerasGO : gameCameras)
-				{
-					if(ImGui::MenuItem(camerasGO->GetName().c_str()))
-					{
-						cameraToRender = camerasGO->GetComponent<Camera>();
-					}
-				}
-				ImGui::EndMenu();
-			}
+		//// Top Bar --------------------------
+		//if (ImGui::BeginMenuBar())
+		//{
+		//	if (ImGui::BeginMenu("Camera"))
+		//	{
+		//		for (auto camerasGO : gameCameras)
+		//		{
+		//			if(ImGui::MenuItem(camerasGO->GetName().c_str()))
+		//			{
+		//				cameraToRender = camerasGO->GetComponent<Camera>();
+		//			}
+		//		}
+		//		ImGui::EndMenu();
+		//	}
 
-			if (ImGui::BeginMenu("Aspect"))
-			{
-				ImGui::EndMenu();
-			}
+		//	if (ImGui::BeginMenu("Aspect"))
+		//	{
+		//		ImGui::EndMenu();
+		//	}
 
-			ImGui::PopStyleVar();
-			ImGui::EndMenuBar();
-		}
-
-		for (const auto& cam : gameCameras)
-		{
-			Camera* gameCam = cam->GetComponent<Camera>();
-
-            if (gameCam && !gameCam->primaryCam) continue;
-			primaryCamera = gameCam;
-        }
+		//	ImGui::PopStyleVar();
+		//	ImGui::EndMenuBar();
+		//}
 
 		//ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND-------------------------------------------------
 		{
@@ -96,14 +99,14 @@ bool PanelGame::Draw()
 			engine->Render(primaryCamera);
 
 			// Game cameras Frustum
-			for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+			for (const auto& cam : gameCameras)
 			{
-				Camera* gameCam = GO.get()->GetComponent<Camera>();
+				Camera* gameCam = cam->GetComponent<Camera>();
 
 				if (gameCam != nullptr && gameCam->drawFrustum)
 					engine->DrawFrustum(gameCam->frustum);
 			}
-			current->Draw();
+			current->Draw(DrawMode::EDITOR);
 
 
 			frameBuffer->Unbind();
@@ -118,11 +121,5 @@ bool PanelGame::Draw()
 	ImGui::End();
 	ImGui::PopStyleVar();
 
-	return true;
-}
-
-bool PanelGame::AddCameraToRenderList(GameObject* cameraGO)
-{
-	gameCameras.push_back(cameraGO);
 	return true;
 }

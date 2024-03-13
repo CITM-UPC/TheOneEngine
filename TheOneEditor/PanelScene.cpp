@@ -50,7 +50,7 @@ void PanelScene::Start()
     cameraParent.get()->children.push_back(sceneCamera);
     sceneCamera.get()->parent = cameraParent;
 
-    current = app->scenemanager->N_sceneManager->currentScene;
+    current = engine->N_sceneManager->currentScene;
     engine->SetEditorCamera(sceneCamera->GetComponent<Camera>());
 }
 
@@ -258,7 +258,7 @@ bool PanelScene::Draw()
             engine->Render(sceneCamera->GetComponent<Camera>());
 
             // Game cameras Frustum
-            for (const auto GO : app->scenemanager->N_sceneManager->GetGameObjects())
+            for (const auto GO : engine->N_sceneManager->GetGameObjects())
             {
                 Camera* gameCam = GO.get()->GetComponent<Camera>();
 
@@ -275,7 +275,7 @@ bool PanelScene::Draw()
                 }
             }
 
-            current->Draw();
+            current->Draw(DrawMode::EDITOR);
 
 
             frameBuffer->Unbind();

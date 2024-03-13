@@ -362,6 +362,11 @@ bool PanelInspector::Draw()
 
                 ImGui::Checkbox("Draw Frustrum", &camera->drawFrustum);
 
+                if (ImGui::Checkbox("Draw Frustrum", &camera->primaryCam))
+                {
+                    //TODO: set all other camera components to not primary
+                }
+
                 ImGui::Dummy(ImVec2(0.0f, 10.0f));
             }
             

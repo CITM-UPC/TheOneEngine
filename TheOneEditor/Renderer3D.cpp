@@ -35,7 +35,6 @@ bool Renderer3D::Start()
 
 bool Renderer3D::PreUpdate()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     engine->PreUpdate();
 
 	return true;
@@ -65,8 +64,6 @@ bool Renderer3D::CleanUp()
 
 void Renderer3D::CameraInput(GameObject* cam)
 {
-	/*if (!app->gui->panelScene->isHovered)
-		return;*/
 
 	Camera* camera = cam->GetComponent<Camera>();
 	Transform* transform = cam->GetComponent<Transform>();

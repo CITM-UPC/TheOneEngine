@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Panel.h"
+#include "../TheOneEngine/Defs.h"
 #include "../TheOneEngine/Framebuffer.h"
 
 #include <vector>
@@ -19,20 +20,16 @@ public:
 	~PanelGame();
 	void Start();
 
-	bool Start();
 	bool Draw();
 
-	bool AddCameraToRenderList(GameObject* cameraGO);
-
-	// hekbas implement camera list
-	std::vector<GameObject*> gameCameras;
 	Camera* primaryCamera = nullptr;
 
 	Scene* current;
 	std::shared_ptr<FrameBuffer> frameBuffer;
 
-	glm::vec2 viewportSize = { 0.0f, 0.0f };
+	vec2f viewportSize = { 0.0f, 0.0f };
 
+	GameObject* selectedGO = nullptr;
 private:
 
 	bool isHovered;

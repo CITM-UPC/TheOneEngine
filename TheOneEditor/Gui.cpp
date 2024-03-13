@@ -525,7 +525,7 @@ void Gui::MainMenuGameObject()
 
 		ImGui::EndMenu();
 	}
-	if (ImGui::MenuItem("Camera")) { panelGame->gameCameras.push_back(engine->N_sceneManager->CreateCameraGO("newCamera").get()); }
+	if (ImGui::MenuItem("Camera")) { engine->N_sceneManager->CreateCameraGO("newCamera"); }
 	//Alex: this is just for debug
 	if (ImGui::MenuItem("Canvas")) { engine->N_sceneManager->CreateCanvasGO("newCanvas"); }
 }
