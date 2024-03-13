@@ -67,50 +67,6 @@ void EngineCore::Update(double dt)
             switch (item->GetComponent<Collider2D>()->collisionType)
             {
             case CollisionType::Player:
-
-                //hardcoded code just to play step sound
-                if (inputManager->GetKey(SDL_SCANCODE_W) == KEY_REPEAT ||
-                    inputManager->GetKey(SDL_SCANCODE_S) == KEY_REPEAT ||
-                    inputManager->GetKey(SDL_SCANCODE_A) == KEY_REPEAT ||
-                    inputManager->GetKey(SDL_SCANCODE_D) == KEY_REPEAT ||
-                    inputManager->pads[0].left_x > 0.2f || inputManager->pads[0].left_x < -0.2f ||
-                    inputManager->pads[0].left_y > 0.2f || inputManager->pads[0].left_y < -0.2f)
-                {
-                    if (stepcd >= 40)
-                    {
-                        for (auto& item2 : N_sceneManager->goWithSound)
-                        {
-                            //update position of audio object
-                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->GetComponent<Transform>()->GetPosition().x, item2->GetComponent<Transform>()->GetPosition().y, item2->GetComponent<Transform>()->GetPosition().z);
-                            //play sound
-                            if (item2->soundEvent == SoundEvent::STEP)
-                            {
-                                audio->PlayEvent(AK::EVENTS::STEP, item2->audioOjectID);
-                            }
-                        }
-                        stepcd = 0;
-                    }
-                    stepcd++;
-                }
-                if (gunshotcd >= 5)
-                {
-                    if (inputManager->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN ||
-                        inputManager->GetGamepadButton(0, SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == KEY_DOWN)
-                    {
-                        for (auto& item2 : N_sceneManager->goWithSound)
-                        {
-                            //update position of audio object
-                            audio->SetAudioGameObjectPosition(item2->audioOjectID, item2->parent.lock()->GetComponent<Transform>()->GetPosition().x, item2->parent.lock()->GetComponent<Transform>()->GetPosition().y, item2->parent.lock()->GetComponent<Transform>()->GetPosition().z);
-                            //play sound
-                            if (item2->soundEvent == SoundEvent::GUNSHOT)
-                            {
-                                audio->PlayEvent(AK::EVENTS::GUNSHOT, item2->audioOjectID);
-                            }
-                        }
-                        gunshotcd = 0;
-                    }
-                }
-                gunshotcd++;
                 for (auto& item2 : collisionSolver->goWithCollision)
                 {
                     if (item != item2)

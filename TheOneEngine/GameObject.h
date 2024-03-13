@@ -19,13 +19,6 @@ enum class DrawMode
     EDITOR
 };
 
-enum class SoundEvent
-{
-    STEP,
-    GUNSHOT
-};
-
-
 class GameObject : public std::enable_shared_from_this<GameObject>
 {
 public:
@@ -146,16 +139,12 @@ public:
     uint32 GetUID() { return UID; }
 
     json SaveGameObject();
-    void LoadGameObject(const json& gameObjectJSON, std::vector<GameObject*>& goWithSound);
+    void LoadGameObject(const json& gameObjectJSON);
 
 public:
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;
     bool isStatic;
-
-    //bool hasAudioObject = false;
-    int audioOjectID = -1;
-    SoundEvent soundEvent;
 
 private:
     std::string name;
