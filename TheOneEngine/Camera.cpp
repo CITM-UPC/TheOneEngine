@@ -34,7 +34,9 @@ zNear(ref->zNear), zFar(ref->zFar),
 yaw(ref->yaw), pitch(ref->pitch),
 viewMatrix(ref->viewMatrix),
 lookAt(ref->lookAt),
-drawFrustum(ref->drawFrustum)
+drawFrustum(ref->drawFrustum),
+cameraType(ref->cameraType),
+primaryCam(ref->primaryCam)
 {
     frustum = ref->frustum;
     projectionMatrix = ref->projectionMatrix;

@@ -614,6 +614,16 @@ std::shared_ptr<GameObject> N_SceneManager::GetSelectedGO() const
 	return selectedGameObject;
 }
 
+void Scene::ChangePrimaryCamera(GameObject* newPrimaryCam)
+{
+	for (const auto& gameCam : rootSceneGO->children)
+	{
+		if (gameCam.get() != newPrimaryCam && gameCam->GetComponent<Camera>()->primaryCam)
+			gameCam->GetComponent<Camera>()->primaryCam = false;
+	}
+	newPrimaryCam->GetComponent<Camera>()->primaryCam = true;
+}
+
 void Scene::RecurseSceneDraw(std::shared_ptr<GameObject> parentGO)
 {
 	for (const auto gameObject : parentGO.get()->children)

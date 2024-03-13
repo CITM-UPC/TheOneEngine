@@ -121,6 +121,8 @@ public:
 
 	void FindCameraInScene();
 
+	void ChangePrimaryCamera(GameObject* newPrimaryCam);
+
 private:
 	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);
 	inline void RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode = DrawMode::GAME);
