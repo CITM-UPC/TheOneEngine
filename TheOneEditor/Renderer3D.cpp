@@ -30,30 +30,11 @@ bool Renderer3D::Start()
 {
     engine->Start();
 
-    // Creating Editor Camera GO (Outside hierarchy)
-    sceneCamera = std::make_shared<GameObject>("EDITOR CAMERA");
-    sceneCamera.get()->AddComponent<Transform>();
-    sceneCamera.get()->GetComponent<Transform>()->SetPosition(vec3f(0, 3, -10));
-    sceneCamera.get()->AddComponent<Camera>();
-    sceneCamera.get()->GetComponent<Camera>()->UpdateCamera();
-
-	cameraParent = std::make_shared<GameObject>("CameraParent");
-	cameraParent.get()->AddComponent<Transform>();
-	cameraParent.get()->children.push_back(sceneCamera);
-	sceneCamera.get()->parent = cameraParent;
-    
-
-
-	// hekbas test adding same component
-	LOG(LogType::LOG_INFO, "# Testing Component Duplication");
-	sceneCamera.get()->AddComponent<Camera>();
-
 	return true;
 }
 
 bool Renderer3D::PreUpdate()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     engine->PreUpdate();
 
 	return true;
@@ -61,7 +42,7 @@ bool Renderer3D::PreUpdate()
 
 bool Renderer3D::Update(double dt)
 {
-	CameraInput(dt);
+    dtTemp = dt;
 	app->gui->panelScene->isHovered = false;
 
     engine->Update(dt);
@@ -71,17 +52,6 @@ bool Renderer3D::Update(double dt)
 
 bool Renderer3D::PostUpdate()
 {
-	// Scene camera
-	/*Camera* sceneCam = sceneCamera.get()->GetComponent<Camera>();
-	app->engine->Render(sceneCam);*/
-
-	// hekbas testing Mesh load/draw
-	/*static auto mesh_ptrs = MeshLoader::LoadMesh("Assets/mf.fbx");
-	for (auto& mesh_ptr : mesh_ptrs) mesh_ptr->draw();*/
-
-	app->gui->Draw();
-
-	SDL_GL_SwapWindow(app->window->window);
 
 	return true;
 }
@@ -92,19 +62,17 @@ bool Renderer3D::CleanUp()
     return true;
 }
 
-void Renderer3D::CameraInput(double dt)
+void Renderer3D::CameraInput(GameObject* cam)
 {
-	if (!app->gui->panelScene->isHovered)
-		return;
 
-	Camera* camera = sceneCamera.get()->GetComponent<Camera>();
-	Transform* transform = sceneCamera.get()->GetComponent<Transform>();
+	Camera* camera = cam->GetComponent<Camera>();
+	Transform* transform = cam->GetComponent<Transform>();
 
-	double speed = 20 * dt;
+	double speed = 20 * dtTemp;
 	if (app->input->GetKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
-		speed = 35 * dt;
+		speed = 35 * dtTemp;
 
-    double mouseSensitivity = 36.0 * dt;
+    double mouseSensitivity = 36.0 * dtTemp;
 
     if (app->input->GetMouseButton(SDL_BUTTON_RIGHT) == KEY_REPEAT)
     {
@@ -141,7 +109,7 @@ void Renderer3D::CameraInput(double dt)
         double deltaX = app->input->GetMouseXMotion();
         double deltaY = app->input->GetMouseYMotion();
 
-        float panSpeed = 10 * dt;
+        float panSpeed = 10 * dtTemp;
 
         transform->Translate(vec3(deltaX * panSpeed, 0, 0), HandleSpace::GLOBAL);
         transform->Translate(vec3(0, deltaY * panSpeed, 0), HandleSpace::GLOBAL);

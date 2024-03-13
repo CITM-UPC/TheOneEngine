@@ -58,6 +58,9 @@ public:
 
     void OnResizeWindow(int width, int height);
 
+    uint GetWidth() { return width; }
+    uint GetHeight() { return height; }
+
 public:
     SDL_Window* window;
     SDL_GLContext glContext;

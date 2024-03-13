@@ -40,6 +40,9 @@
     <Filter Include="CollisionSolver">
       <UniqueIdentifier>{b4bff3d6-89e0-43fe-b513-b1d9b31c27bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{954d7850-b1f2-45be-b0ff-9ffe77288d41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EngineCore.h">
@@ -120,6 +123,9 @@
     <ClInclude Include="GamepadInput.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">
@@ -190,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="GamepadInput.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
