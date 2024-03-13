@@ -1,0 +1,163 @@
+#include "ParticleSystem.h"
+#include "GameObject.h"
+#include "SingleOrRandom.h"
+#include <ostream>
+#include <istream>
+#include <fstream>
+
+ParticleSystem::ParticleSystem(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::ParticleSystem)
+{
+	this->transform = containerGO.get()->GetComponent<Transform>();
+
+	if (transform == nullptr)
+	{
+		LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+	}
+
+	isON = true;
+	AddEmmiter();
+}
+
+ParticleSystem::ParticleSystem(std::shared_ptr<GameObject> containerGO, ParticleSystem* ref) : Component(containerGO, ComponentType::ParticleSystem),
+isON(ref->isON)
+{
+	this->transform = containerGO.get()->GetComponent<Transform>();
+
+	if (transform == nullptr)
+	{
+		LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+	}
+
+	for (const auto& emmiter : ref->emmiters) {
+
+	}
+
+	isON = true;
+	AddEmmiter();
+}
+
+ParticleSystem::~ParticleSystem()
+{
+}
+
+void ParticleSystem::Update()
+{
+	if (isON) {
+		for (auto i = emmiters.begin(); i != emmiters.end(); ++i) {
+			(*i)->Update(dt);
+		}
+	}
+}
+
+void ParticleSystem::DrawComponent()
+{
+	for (auto i = emmiters.begin(); i != emmiters.end(); ++i) {
+		(*i)->Render(cameraPosition);
+	}
+}
+
+void ParticleSystem::Play()
+{
+	isON = true;
+}
+
+void ParticleSystem::Stop()
+{
+	isON = false;
+}
+
+void ParticleSystem::Replay()
+{
+	Play();
+	for (auto i = emmiters.begin(); i != emmiters.end(); ++i) {
+		(*i)->Start();
+	}
+}
+
+void ParticleSystem::ClearEmmiters()
+{
+	emmiters.clear();
+}
+
+Emmiter* ParticleSystem::AddEmmiter()
+{
+	auto e = std::make_unique<Emmiter>(this);
+	emmiters.push_back(std::move(e));
+	return emmiters[emmiters.size() - 1].get();
+}
+
+Emmiter* ParticleSystem::AddEmmiter(Emmiter* ref)
+{
+	auto e = std::make_unique<Emmiter>(this, ref);
+	emmiters.push_back(std::move(e));
+	return emmiters[emmiters.size() - 1].get();
+}
+
+json ParticleSystem::SaveComponent()
+{
+	json particleSystemJSON;
+
+	if (!emmiters.empty())
+	{
+		json emmitersJSON;
+
+		for (const auto& emmiter : emmiters)
+		{
+			emmitersJSON.push_back(emmiter.get()->SaveEmmiter());
+		}
+		particleSystemJSON["Emmiters"] = emmitersJSON;
+	}
+
+	particleSystemJSON["UID"] = UID;
+	particleSystemJSON["Name"] = name;
+	particleSystemJSON["Type"] = type;
+	particleSystemJSON["IsON"] = isON;
+
+	return particleSystemJSON;
+}
+
+void ParticleSystem::LoadComponent(const json& transformJSON)
+{
+	// Load basic properties
+	if (transformJSON.contains("UID"))
+	{
+		UID = transformJSON["UID"];
+	}
+
+	if (transformJSON.contains("Name"))
+	{
+		name = transformJSON["Name"];
+	}
+
+	if (transformJSON.contains("Type"))
+	{
+		type = transformJSON["Type"];
+	}
+
+	if (transformJSON.contains("IsON"))
+	{
+		isON = transformJSON["IsON"];
+	}
+
+	// load emmiters
+	if (transformJSON.contains("Emmiters"))
+	{
+		const json& emmitersJSON = transformJSON["Emmiters"];
+
+		for (const auto& emmiterJSON : emmitersJSON)
+		{
+
+		}
+	}
+
+}
+
+bool ParticleSystem::IsON()
+{
+	return isON;
+}
+
+Transform* ParticleSystem::GetTransform()
+{
+	return transform;
+}
