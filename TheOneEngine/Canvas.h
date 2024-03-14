@@ -15,20 +15,70 @@ public:
     virtual ~Canvas();
 
     template <typename TUI>
-    bool AddItemUI()
+    unsigned int AddItemUI()
     {
-        std::unique_ptr<ItemUI> newItemUI = std::make_unique<TUI>(containerGO.lock());
-        uiElements.push_back(std::move(newItemUI));
-
-        return true;
-    }
-    template <typename TUI>
-    TUI* GetItemUI()
-    {
+        int counter = 0;
         for (const auto& component : uiElements)
         {
             if (dynamic_cast<TUI*>(component.get()))
-                return static_cast<TUI*>(component.get());
+            {
+                counter++;
+            }
+        }
+        std::unique_ptr<ItemUI> newItemUI = std::make_unique<TUI>(containerGO.lock());
+        uiElements.push_back(std::move(newItemUI));
+
+        return counter;
+    }
+
+    template <typename TUI>
+    unsigned int AddItemUI(std::string path)
+    {
+        int counter = 0;
+        for (const auto& component : uiElements)
+        {
+            if (dynamic_cast<TUI*>(component.get()))
+            {
+                counter++;
+            }
+        }
+        std::unique_ptr<ItemUI> newItemUI = std::make_unique<TUI>(containerGO.lock(), path);
+        uiElements.push_back(std::move(newItemUI));
+
+        return counter;
+    }
+
+    template <typename TUI>
+    unsigned int AddCopiedItemUI(TUI* ref)
+    {
+        int counter = 0;
+        for (const auto& component : uiElements)
+        {
+            if (dynamic_cast<TUI*>(component.get()))
+            {
+                counter++;
+            }
+        }
+        std::unique_ptr<ItemUI> newItemUI = std::make_unique<TUI>(containerGO.lock(), ref);
+        uiElements.push_back(std::move(newItemUI));
+
+        return counter;
+    }
+
+    template <typename TUI>
+    TUI* GetItemUI(unsigned int id)
+    {
+        int counter = 0;
+        for (const auto& component : uiElements)
+        {
+            if (dynamic_cast<TUI*>(component.get()))
+            {
+                if (counter == id)
+                {
+                    return static_cast<TUI*>(component.get());
+                }
+                counter++;
+            }
         }
         return nullptr;
     }
