@@ -1,6 +1,7 @@
 #include "Script.h"
 #include "MonoManager.h"
 #include "GameObject.h"
+#include "Camera.h"
 
 Script::Script(std::shared_ptr<GameObject> containerGO, std::string name) : Component(containerGO, ComponentType::Script), scriptName(name)
 {
@@ -25,7 +26,7 @@ void Script::Update()
 	MonoManager::CallScriptFunction(monoBehaviourInstance, "Update");
 }
 
-void Script::DrawComponent()
+void Script::DrawComponent(Camera* camera)
 {
 }
 

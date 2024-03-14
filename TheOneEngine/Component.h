@@ -8,6 +8,7 @@
 #include <memory>
 
 class GameObject;
+class Camera;
 
 enum class ComponentType
 {
@@ -44,7 +45,7 @@ public:
 
     //virtual void CreateInspectorNode() = 0;
     //virtual void CreateInspectorNode();
-    virtual void DrawComponent() {};
+    virtual void DrawComponent(Camera* camera) {};
 
     void CreateUID() { UID = UIDGen::GenerateUID(); }
     uint32 GetUID() { return UID; }
