@@ -20,6 +20,42 @@ void SetSpeed::Initialize(Particle* particle)
 	}
 }
 
+json SetSpeed::SaveModule()
+{
+	json moduleJSON;
+
+	moduleJSON["Type"] = type;
+
+	moduleJSON["UsingSingleValueSpeed"] = speed.usingSingleValue;
+	moduleJSON["MinSpeed"] = { speed.rangeValue.lowerLimit.x, speed.rangeValue.lowerLimit.y, speed.rangeValue.lowerLimit.z };
+	moduleJSON["MaxSpeed"] = { speed.rangeValue.upperLimit.x, speed.rangeValue.upperLimit.y, speed.rangeValue.upperLimit.z };
+
+	return moduleJSON;
+}
+
+void SetSpeed::LoadModule(const json& moduleJSON)
+{
+	if (moduleJSON.contains("Type"))
+	{
+		type = moduleJSON["Type"];
+	}
+
+	if (moduleJSON.contains("UsingSingleValueSpeed"))
+	{
+		speed.usingSingleValue = moduleJSON["UsingSingleValueSpeed"];
+	}
+
+	if (moduleJSON.contains("MinSpeed"))
+	{
+		{ speed.rangeValue.lowerLimit.x, speed.rangeValue.lowerLimit.y, speed.rangeValue.lowerLimit.z } = moduleJSON["MinSpeed"];
+	}
+
+	if (moduleJSON.contains("MaxSpeed"))
+	{
+		{ speed.rangeValue.upperLimit.x, speed.rangeValue.upperLimit.y, speed.rangeValue.upperLimit.z } = moduleJSON["MaxSpeed"];
+	}
+}
+
 SetColor::SetColor()
 {
 	type = SET_COLOR;
@@ -38,4 +74,17 @@ void SetColor::Initialize(Particle* particle)
 
 		particle->color = randomVec;
 	}
+}
+
+json SetColor::SaveModule()
+{
+	json moduleJSON;
+
+	moduleJSON["Type"] = type;
+
+	moduleJSON["UsingSingleValueColor"] = color.usingSingleValue;
+	moduleJSON["MinColor"] = { color.rangeValue.lowerLimit.x, color.rangeValue.lowerLimit.y, color.rangeValue.lowerLimit.z };
+	moduleJSON["MaxColor"] = { color.rangeValue.upperLimit.x, color.rangeValue.upperLimit.y, color.rangeValue.upperLimit.z };
+
+	return moduleJSON;
 }

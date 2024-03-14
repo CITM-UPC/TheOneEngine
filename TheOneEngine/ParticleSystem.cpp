@@ -113,6 +113,9 @@ json ParticleSystem::SaveComponent()
 	particleSystemJSON["Type"] = type;
 	particleSystemJSON["IsON"] = isON;
 
+	// save copy of the json as the ps individually
+
+
 	return particleSystemJSON;
 }
 
@@ -139,6 +142,8 @@ void ParticleSystem::LoadComponent(const json& transformJSON)
 		isON = transformJSON["IsON"];
 	}
 
+	ClearEmmiters();
+
 	// load emmiters
 	if (transformJSON.contains("Emmiters"))
 	{
@@ -146,7 +151,8 @@ void ParticleSystem::LoadComponent(const json& transformJSON)
 
 		for (const auto& emmiterJSON : emmitersJSON)
 		{
-
+			auto e = AddEmmiter();
+			e->LoadEmmiter(emmiterJSON);
 		}
 	}
 

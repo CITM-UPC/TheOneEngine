@@ -1,11 +1,8 @@
 #include "Emmiter.h"
 #include <map>
 #include <GL/glew.h>
-#include "SpawnModules.h"
-#include "BillboardingEM.h"
-#include "InitializeModules.h"
 
-#include "ParticleSystemComponent.h"
+#include "ParticleSystem.h"
 
 Emmiter::Emmiter(ParticleSystem* owner)
 {
@@ -235,4 +232,129 @@ RenderEmmiterModule* Emmiter::AddModule(RenderEmmiterModule::RenderEmmiterModule
 		break;
 	}
 	return newModule;
+}
+
+json Emmiter::SaveEmmiter()
+{
+	json emmiterJSON;
+
+	if (spawnModule != nullptr)
+	{
+		json spawnJSON;
+
+		spawnJSON.push_back(spawnModule->SaveModule());
+
+		emmiterJSON["SpawnModule"] = spawnJSON;
+	}
+
+	if (!initializeModules.empty())
+	{
+		json initializeJSON;
+
+		for (const auto& initModule : initializeModules)
+		{
+			initializeJSON.push_back(initModule->SaveModule());
+		}
+
+		emmiterJSON["InitializeModules"] = initializeJSON;
+	}
+
+	if (!updateModules.empty())
+	{
+		json updateJSON;
+
+		for (const auto& updateModule : updateModules)
+		{
+			updateJSON.push_back(updateModule->SaveModule());
+		}
+
+		emmiterJSON["UpdateModules"] = updateJSON;
+	}
+
+	if (renderModule != nullptr)
+	{
+		json renderJSON;
+
+		renderJSON.push_back(renderModule->SaveModule());
+
+		emmiterJSON["RenderModule"] = renderJSON;
+	}
+
+	emmiterJSON["IsON"] = isON;
+	emmiterJSON["MaxParticles"] = maxParticles;
+	emmiterJSON["Duration"] = duration;
+	emmiterJSON["Lifetime"] = lifetime;
+	emmiterJSON["Delay"] = delay;
+	emmiterJSON["IsLooping"] = isLooping;
+
+	return emmiterJSON;
+}
+
+void Emmiter::LoadEmmiter(const json& emmiterJSON)
+{
+	// Load basic properties
+	if (emmiterJSON.contains("IsON"))
+	{
+		isON = emmiterJSON["IsON"];
+	}
+
+	if (emmiterJSON.contains("MaxParticles"))
+	{
+		maxParticles = emmiterJSON["MaxParticles"];
+	}
+
+	if (emmiterJSON.contains("Duration"))
+	{
+		duration = emmiterJSON["Duration"];
+	}
+
+	if (emmiterJSON.contains("Lifetime"))
+	{
+		lifetime = emmiterJSON["Lifetime"];
+	}
+
+	if (emmiterJSON.contains("Delay"))
+	{
+		delay = emmiterJSON["Delay"];
+	}
+
+	if (emmiterJSON.contains("IsLooping"))
+	{
+		isLooping = emmiterJSON["IsLooping"];
+	}
+
+	if (emmiterJSON.contains("SpawnModule"))
+	{
+		auto spawnM = AddModule((SpawnEmmiterModule::SpawnEmmiterModuleType)emmiterJSON["SpawnModule"]["Type"]);
+		spawnM->LoadModule(emmiterJSON["SpawnModule"]);
+	}
+
+	if (emmiterJSON.contains("InitializeModules"))
+	{
+		const json& initializeJSON = emmiterJSON["InitializeModules"];
+
+		for (const auto& initJSON : initializeJSON)
+		{
+			auto initM = AddModule((InitializeEmmiterModule::InitializeEmmiterModuleType)initJSON["Type"]);
+			initM->LoadModule(initJSON);
+		}
+		
+	}
+
+	if (emmiterJSON.contains("UpdateModules"))
+	{
+		const json& updateJSON = emmiterJSON["UpdateModules"];
+
+		for (const auto& uJSON : updateJSON)
+		{
+			auto updateM = AddModule((UpdateEmmiterModule::UpdateEmmiterModuleType)uJSON["Type"]);
+			updateM->LoadModule(uJSON);
+		}
+	}
+
+	if (emmiterJSON.contains("RenderModule"))
+	{
+		auto spawnM = AddModule((RenderEmmiterModule::RenderEmmiterModuleType)emmiterJSON["RenderModule"]["Type"]);
+		spawnM->LoadModule(emmiterJSON["RenderModule"]);
+	}
 }

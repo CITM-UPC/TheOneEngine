@@ -41,3 +41,12 @@ void BillboardRender::Update(Particle* particle, vec3 cameraPosition)
     //glPopMatrix();
 
 }
+
+json BillboardRender::SaveModule()
+{
+    json moduleJSON;
+
+    moduleJSON["Type"] = type;
+
+    return moduleJSON;
+}

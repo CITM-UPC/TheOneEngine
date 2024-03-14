@@ -28,6 +28,17 @@ void ConstantSpawnRate::Update(double dt)
 	}
 }
 
+json ConstantSpawnRate::SaveModule()
+{
+	json moduleJSON;
+
+	moduleJSON["Type"] = type;
+
+	moduleJSON["SpawnRate"] = spawnRate;
+
+	return moduleJSON;
+}
+
 SingleBurstSpawn::SingleBurstSpawn(Emmiter* owner)
 {
 	type = SINGLE_BURST;
@@ -48,6 +59,17 @@ void SingleBurstSpawn::Update(double dt)
 	owner->SpawnParticles(amount);
 
 	activated = true;
+}
+
+json SingleBurstSpawn::SaveModule()
+{
+	json moduleJSON;
+
+	moduleJSON["Type"] = type;
+
+	moduleJSON["Amount"] = amount;
+
+	return moduleJSON;
 }
 
 ConstantBurstSpawn::ConstantBurstSpawn(Emmiter* owner)
@@ -76,4 +98,16 @@ void ConstantBurstSpawn::Update(double dt)
 
 		owner->SpawnParticles(ticks * amount);
 	}
+}
+
+json ConstantBurstSpawn::SaveModule()
+{
+	json moduleJSON;
+
+	moduleJSON["Type"] = type;
+
+	moduleJSON["SpawnRate"] = spawnRate;
+	moduleJSON["Amount"] = amount;
+
+	return moduleJSON;
 }

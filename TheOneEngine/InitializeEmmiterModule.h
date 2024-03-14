@@ -1,6 +1,7 @@
 #pragma once
 #include "Particle.h"
 #include "SingleOrRandom.h"
+#include "Defs.h"
 #include <vector>
 
 class Emmiter;
@@ -12,6 +13,10 @@ public:
 	virtual void Initialize(Particle* particle) {};
 
 	virtual const SingleOrRandom<vec3> getVector() { return SingleOrRandom<vec3>(); };
+
+	virtual json SaveModule() { return json(); };
+
+	virtual void LoadModule(const json& moduleJSON) { };
 
 	enum InitializeEmmiterModuleType {
 		SET_SPEED,
@@ -35,6 +40,10 @@ public:
 
 	void Initialize(Particle* particle);
 
+	json SaveModule();
+
+	void LoadModule(const json& moduleJSON);
+
 	SingleOrRandom<vec3> speed;
 };
 
@@ -47,6 +56,10 @@ public:
 	};
 
 	void Initialize(Particle* particle);
+
+	json SaveModule();
+
+	void LoadModule(const json& moduleJSON);
 
 	SingleOrRandom<vec3> color;
 };

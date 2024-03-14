@@ -1,7 +1,9 @@
 #pragma once
 #include "Particle.h"
 #include "SingleOrRandom.h"
+#include "Defs.h"
 #include <vector>
+
 
 class Emmiter;
 
@@ -15,6 +17,10 @@ public:
 	virtual const float getSpawnRate() { return 0; };
 	//SingleBurstSpawn & ConstantBurstSpawn
 	virtual const float getAmount() { return 0; };
+
+	virtual json SaveModule() { return json(); };
+
+	virtual void LoadModule(const json& moduleJSON) { };
 
 	enum SpawnEmmiterModuleType {
 		CONSTANT,
@@ -43,6 +49,11 @@ public:
 	};
 
 	void Update(double dt) override;
+
+	json SaveModule();
+
+	void LoadModule(const json& moduleJSON);
+
 };
 
 class SingleBurstSpawn : public SpawnEmmiterModule {
@@ -60,6 +71,11 @@ public:
 	void Reset() override;
 
 	void Update(double dt) override;
+
+	json SaveModule();
+
+	void LoadModule(const json& moduleJSON);
+
 };
 
 class ConstantBurstSpawn : public SpawnEmmiterModule {
@@ -79,4 +95,9 @@ public:
 	};
 
 	void Update(double dt) override;
+
+	json SaveModule();
+
+	void LoadModule(const json& moduleJSON);
+
 };

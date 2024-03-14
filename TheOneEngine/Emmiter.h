@@ -39,6 +39,7 @@ public:
 	RenderEmmiterModule* AddModule(RenderEmmiterModule::RenderEmmiterModuleType type);
 
 	json SaveEmmiter();
+	void LoadEmmiter(const json& emmiterJSON);
 
 public:
 	bool isON;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Particle.h"
 #include "SingleOrRandom.h"
+#include "Defs.h"
 #include <vector>
 
 class Emmiter;
@@ -10,6 +11,10 @@ public:
 	virtual void Reset() {};
 
 	virtual void Update(double dt, Particle* particle) {};
+
+	virtual json SaveModule() { return json(); };
+
+	virtual void LoadModule(const json& moduleJSON) { };
 
 	enum UpdateEmmiterModuleType {
 		CHANGE_COLOR
