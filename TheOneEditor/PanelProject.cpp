@@ -157,6 +157,14 @@ bool PanelProject::DragAndDrop()
 
 			//CreatePrefab(dragging);
 		}
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(fileSelected)
+		{
+			//Create a FileNode class
+
+			GameObject* dragging = *(GameObject**)payload->Data;
+
+			//CreatePrefab(dragging);
+		}
 		ImGui::EndDragDropTarget();
 	}
 
