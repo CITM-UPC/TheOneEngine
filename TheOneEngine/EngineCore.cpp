@@ -33,9 +33,9 @@ void EngineCore::Start()
     
 }
 
-void EngineCore::PreUpdate()
+bool EngineCore::PreUpdate()
 {
-    inputManager->PreUpdate();
+    return inputManager->PreUpdate();
 }
 
 void EngineCore::Update(double dt)

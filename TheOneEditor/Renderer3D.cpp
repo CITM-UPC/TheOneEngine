@@ -54,9 +54,8 @@ bool Renderer3D::Start()
 bool Renderer3D::PreUpdate()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-    engine->PreUpdate();
 
-	return true;
+    return engine->PreUpdate();
 }
 
 bool Renderer3D::Update(double dt)

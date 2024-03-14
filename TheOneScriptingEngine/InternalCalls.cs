@@ -47,4 +47,7 @@ class InternalCalls
     //Helpers
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static float GetAppDeltaTime();
+    
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void ExitApplication();
 }
