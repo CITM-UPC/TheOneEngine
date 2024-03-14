@@ -9,6 +9,12 @@ Transform::Transform(std::shared_ptr<GameObject> containerGO) : Component(contai
     scale(1.0f)
 {}
 
+Transform::Transform(std::shared_ptr<GameObject> containerGO, Transform* ref)
+    : Component(containerGO, ComponentType::Transform),
+    transformMatrix(ref->transformMatrix),
+    position(ref->position), rotation(ref->rotation), scale(ref->scale)
+{}
+
 Transform::Transform(std::shared_ptr<GameObject> containerGO, mat4 transform) : Component(containerGO, ComponentType::Transform),
     transformMatrix(transform)
 {
@@ -309,7 +315,9 @@ mat4 Transform::GetTransform() const
 
 void Transform::SetTransform(mat4 transform)
 {
+    SetPosition({ transform[3][0], transform[3][1], transform[3][2] });
     this->transformMatrix = transform;
+    DecomposeTransform();
 }
 
 vec3 Transform::GetRotationEuler() const
@@ -375,5 +383,6 @@ void Transform::LoadComponent(const json& transformJSON)
         }
 
         SetTransform(temp);
+        UpdateCameraIfPresent(); //Check if first creates camera component transform
     }
 }

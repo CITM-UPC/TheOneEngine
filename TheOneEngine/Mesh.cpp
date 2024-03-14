@@ -1,6 +1,7 @@
 #include "Mesh.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "Camera.h"
 
 #include "Log.h"
 
@@ -25,15 +26,36 @@ Mesh::Mesh(std::shared_ptr<GameObject> containerGO) : Component(containerGO, Com
     //GenerateAABB();
 }
 
+Mesh::Mesh(std::shared_ptr<GameObject> containerGO, Mesh* ref) : Component(containerGO, ComponentType::Mesh)
+{
+    active = ref->active;
+    drawNormalsFaces = ref->drawNormalsFaces;
+    drawNormalsVerts = ref->drawNormalsVerts;
+    drawAABB = ref->drawAABB;
+    drawChecker = ref->drawChecker;
+
+    mesh = ref->mesh;
+    mesh.texture = ref->mesh.texture;
+
+    meshData = ref->meshData;
+    meshLoader = ref->meshLoader;
+
+    normalLineWidth = ref->normalLineWidth;
+    normalLineLength = ref->normalLineLength;
+    meshLoader = new MeshLoader();
+    //GenerateAABB();
+}
+
 Mesh::~Mesh()
 {
+    RELEASE(meshLoader);
     /*if (_vertex_buffer_id) glDeleteBuffers(1, &_vertex_buffer_id);
     if (_indexs_buffer_id) glDeleteBuffers(1, &_indexs_buffer_id);*/
 }
 
 
 // Draw
-void Mesh::DrawComponent()
+void Mesh::DrawComponent(Camera* camera)
 {
     glLineWidth(1);
     glColor4ub(255, 255, 255, 255); 
@@ -242,6 +264,8 @@ void Mesh::LoadComponent(const json& meshJSON)
         meshData = meshLoader->deserializeMeshData(path);
         meshLoader->BufferData(meshData);
         mesh = meshLoader->GetBufferData();
+        if(!meshData.texturePath.empty())
+            mesh.texture = std::make_shared<Texture>(meshData.texturePath);
     }
 
 }

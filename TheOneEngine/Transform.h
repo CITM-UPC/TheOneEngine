@@ -27,6 +27,7 @@ public:
 
     Transform(std::shared_ptr<GameObject> containerGO);
     Transform(std::shared_ptr<GameObject> containerGO, mat4 transform);
+    Transform(std::shared_ptr<GameObject> containerGO, Transform* ref);
     virtual ~Transform();
 
 

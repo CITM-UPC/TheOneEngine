@@ -19,9 +19,6 @@ class MonoManager
         GameObject* currentGameObjectPtr = nullptr;
     };
 
-public:
-    GameObject* bulletGO;
-
 private:
 
     static MonoManagerData monoData;

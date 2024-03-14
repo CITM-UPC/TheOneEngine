@@ -105,6 +105,7 @@ class Camera : public Component
 public:
 
     Camera(std::shared_ptr<GameObject> containerGO);
+    Camera(std::shared_ptr<GameObject> containerGO, Camera* ref);
     ~Camera();
 
     const mat4f& getViewMatrix();
@@ -145,5 +146,7 @@ public:
     CameraType cameraType;
 
     bool drawFrustum;
+
+    bool primaryCam;
 };
 #endif // !__CAMERA_H__

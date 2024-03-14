@@ -13,6 +13,8 @@
 #include <list>
 #include <memory>
 
+class Camera;
+
 enum class DrawMode
 {
     GAME,
@@ -27,8 +29,8 @@ public:
     ~GameObject();
 
     void Update(double dt);
-    void Draw();
-    void DrawUI(const DrawMode mode);
+    void Draw(Camera* camera);
+    void DrawUI(Camera* camera, const DrawMode mode);
 
 
     // Components
@@ -64,6 +66,28 @@ public:
 
         return true;
     }
+
+    template <typename TComponent>
+    bool AddCopiedComponent(TComponent* ref)
+    {
+        Component* component = this->GetComponent<TComponent>();
+
+        // Check for already existing Component
+        if (component != nullptr)
+        {
+            LOG(LogType::LOG_WARNING, "Component already applied");
+            LOG(LogType::LOG_INFO, "-GameObject [Name: %s] ", name.data());
+            LOG(LogType::LOG_INFO, "-Component  [Type: %s] ", component->GetName().data());
+
+            return false;
+        }
+
+        std::unique_ptr<Component> newComponent = std::make_unique<TComponent>(shared_from_this(), ref);
+        newComponent->Enable(); // hekbas: Enable the component if necessary?
+        components.push_back(std::move(newComponent));
+
+        return true;
+    }
     
     bool AddScript(std::string name)
     {
@@ -88,6 +112,7 @@ public:
 
     void RemoveComponent(ComponentType type);
 
+    std::vector<Component*> GetAllComponents(bool tunometecabrasalamambiche = true);
 
     // AABB
     void GenerateAABBFromMesh();
@@ -103,6 +128,7 @@ public:
     void Disable();
 
     void Delete();
+    void Delete(std::vector<GameObject*>& objectsToDelete);
 
     std::string GetName() const;
     void SetName(const std::string& name);

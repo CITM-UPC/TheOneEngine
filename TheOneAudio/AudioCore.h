@@ -90,6 +90,13 @@ private:
 	bool InitSpatialAudio();
 	bool InitCommunication();
 
+	//vector of all game object ids
+	std::vector<AkGameObjectID> gameObjectIDs;
+
+	//vector of all audio events that must be used
+	//WHEN ITERATING IT USE AS MAX VALUE MAX_AUDIO_EVENTS
+	std::vector<AudioEvent*> audioEvents;
+
 	//true: music1
 	//false: music2
 	bool nextSong;

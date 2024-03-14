@@ -5,6 +5,7 @@
 #include "Defs.h"
 #include "GameObject.h"
 #include "Camera.h"
+#include "Canvas.h"
 
 #include <string>
 #include <memory>
@@ -40,8 +41,11 @@ public:
 	std::string GenerateUniqueName(const std::string& baseName);
 
 	// Create GameObjects functions
-	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject");
+	std::shared_ptr<GameObject> DuplicateGO(std::shared_ptr<GameObject> originalGO, bool recursive = false);
+	std::shared_ptr<GameObject> CreateEmptyGO(std::string name = "Empty GameObject", bool isRoot = true);
+	void ReparentGO(std::shared_ptr<GameObject> go, std::shared_ptr<GameObject> newParentGO);
 	std::shared_ptr<GameObject> CreateCameraGO(std::string name);
+	std::shared_ptr<GameObject> CreateCanvasGO(std::string name);
 
 	// Try to mix this two (CreateExistingMeshGO should be erased and CreateMeshGO has to do)
 	std::shared_ptr<GameObject> CreateMeshGO(std::string path);
@@ -52,6 +56,9 @@ public:
 	std::shared_ptr<GameObject> CreateMF();
 	std::shared_ptr<GameObject> CreateTeapot();
 
+	void AddPendingGOs();
+	void DeletePendingGOs();
+
 	// Get/Set
 	uint GetNumberGO() const;
 	std::vector<std::shared_ptr<GameObject>>GetGameObjects();
@@ -60,16 +67,21 @@ public:
 	std::shared_ptr<GameObject> GetSelectedGO() const;
 	void SetSelectedGO(std::shared_ptr<GameObject> gameObj);
 
+	void FindCameraInScene();
+
 	/*SCENE SERIALIZATION*/
 	void SaveScene();
 	void LoadSceneFromJSON(const std::string& filename);
 
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
+	std::vector<std::shared_ptr<GameObject>> objectsToAdd;
+	std::vector<GameObject*> objectsToDelete;
 
 private:
 	std::shared_ptr<GameObject> selectedGameObject = nullptr;
 	MeshLoader* meshLoader = nullptr;
+	bool sceneIsPlaying = false;
 };
 
 class Scene
@@ -105,7 +117,11 @@ public:
 
 	inline void UpdateGOs(double dt);
 	
-	inline void Draw(DrawMode mode = DrawMode::GAME);
+	void Draw(DrawMode mode = DrawMode::GAME);
+
+	void FindCameraInScene();
+
+	void ChangePrimaryCamera(GameObject* newPrimaryCam);
 
 private:
 	inline void RecurseSceneDraw(std::shared_ptr<GameObject> parentGO);
@@ -116,11 +132,14 @@ private:
 	std::string sceneName;
 	std::shared_ptr<GameObject> rootSceneGO;
 
-	std::weak_ptr<Camera> currentCamera;
 	//Historn: This is to remember to save the scene if any change is made
 	bool isDirty;
 
 	std::string path;
+
+public:
+	Camera* currentCamera = nullptr;
+	int listenerAudioGOID = -1;
 };
 
 #endif // !__N_SCENE_MANAGER_H__

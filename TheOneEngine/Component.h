@@ -8,6 +8,7 @@
 #include <memory>
 
 class GameObject;
+class Camera;
 
 enum class ComponentType
 {
@@ -18,6 +19,7 @@ enum class ComponentType
     Listener,
     Source,
     Script,
+    Collider2D,
     Canvas,
 	Unknown
 };
@@ -27,6 +29,7 @@ class Component
 public:
 
     Component(std::shared_ptr<GameObject> containerGO, ComponentType type);
+    Component(std::shared_ptr<GameObject> containerGO, Component* ref, ComponentType type);
     virtual ~Component();
 
     virtual void Enable();
@@ -43,7 +46,7 @@ public:
 
     //virtual void CreateInspectorNode() = 0;
     //virtual void CreateInspectorNode();
-    virtual void DrawComponent() {};
+    virtual void DrawComponent(Camera* camera) {};
 
     //void CreateUID() { UID = UIDGen::GenerateUID(); }
     uint32 GetUID() { return UID; }

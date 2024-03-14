@@ -13,7 +13,8 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     viewMatrix(1.0f),
     lookAt(0, 0, 0),
     drawFrustum(true),
-    cameraType(CameraType::PERSPECTIVE)
+    cameraType(CameraType::PERSPECTIVE),
+    primaryCam(false)
 {
     Transform* transform = containerGO.get()->GetComponent<Transform>();
 
@@ -25,6 +26,22 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     {
         LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
     }  
+}
+
+Camera::Camera(std::shared_ptr<GameObject> containerGO, Camera* ref) : Component(containerGO, ComponentType::Camera),
+aspect(ref->aspect), fov(ref->fov),
+zNear(ref->zNear), zFar(ref->zFar),
+yaw(ref->yaw), pitch(ref->pitch),
+viewMatrix(ref->viewMatrix),
+lookAt(ref->lookAt),
+drawFrustum(ref->drawFrustum),
+cameraType(ref->cameraType),
+primaryCam(ref->primaryCam)
+{
+    frustum = ref->frustum;
+    projectionMatrix = ref->projectionMatrix;
+    viewProjectionMatrix = ref->viewProjectionMatrix;
+    //eeeeldeeen riiiiiiing
 }
 
 Camera::~Camera() {}
@@ -165,8 +182,14 @@ void Camera::LoadComponent(const json& cameraJSON)
     if (cameraJSON.contains("Yaw")) yaw = cameraJSON["Yaw"];
     if (cameraJSON.contains("Pitch")) pitch = cameraJSON["Pitch"];
     if (cameraJSON.contains("Size")) size = cameraJSON["Size"];
-    if (cameraJSON.contains("CameraType")) cameraType = cameraJSON["CameraType"];
-    
+
+    if (cameraJSON.contains("CameraType")) 
+    {
+        if (cameraJSON["CameraType"] == 0)
+            cameraType = CameraType::PERSPECTIVE;
+        else if (cameraJSON["CameraType"] == 1)
+            cameraType = CameraType::ORTHOGONAL;
+    }
 
     // Optional: Recalculate view and projection matrices based on loaded data
     UpdateCamera();

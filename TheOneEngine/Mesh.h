@@ -20,9 +20,10 @@ class Mesh : public Component
 public:
 
     Mesh(std::shared_ptr<GameObject> containerGO);
+    Mesh(std::shared_ptr<GameObject> containerGO, Mesh* ref);
     virtual ~Mesh();
 
-    void DrawComponent();
+    void DrawComponent(Camera* camera);
 
     json SaveComponent();
     void LoadComponent(const json& meshJSON);

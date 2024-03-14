@@ -12,6 +12,7 @@
 #include "Texture.h"
 #include "Ray.h"
 #include "Log.h"
+#include "CollisionSolver.h"
 
 #include "MonoManager.h"
 #include "AudioManager.h"
@@ -19,7 +20,9 @@
 
 #include <chrono>
 #include <memory>
+#include <string>
 
+class N_SceneManager;
 
 class EngineCore
 {
@@ -30,9 +33,12 @@ public:
 	void Awake();
 	void Start();
 
+	bool PreUpdate();
 	void Update(double dt);
 
 	void Render(Camera* camera);
+
+	void LogGL(string id);
 
 	void CleanUp();
 
@@ -41,9 +47,6 @@ public:
 	void DrawFrustum(const Frustum& frustum);
 	void DrawRay(const Ray& ray);
 
-	// (x, y) Indicate the bottom left corner1
-	void OnWindowResize(int x, int y, int width, int height);
-
 	bool GetVSync();
 	bool SetVSync(bool vsync);
 
@@ -51,19 +54,27 @@ public:
 	void AddLog(LogType type, const char* entry);
 	void CleanLogs();
 
+	void SetEditorCamera(Camera* cam);
+
 public:
 	
 	double dt = 0;
 
 	bool vsync = false;
+	//AudioCore* audio = nullptr;
+
+	CollisionSolver* collisionSolver = nullptr;
+
 	MonoManager* monoManager = nullptr;
-	InputManager* input = nullptr;
+	InputManager* inputManager = nullptr;
+	N_SceneManager* N_sceneManager = nullptr;
 
 private:
 
 	// Logs
 	LogInfo logInfo;
 	std::vector<LogInfo> logs;
+	Camera* editorCamReference;
 
 };
 

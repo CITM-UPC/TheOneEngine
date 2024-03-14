@@ -8,49 +8,46 @@ BuilderSceneManager::~BuilderSceneManager() {}
 
 bool BuilderSceneManager::Awake()
 {
-	N_sceneManager = new N_SceneManager();
+	engine->N_sceneManager->Awake();
 
 	return true;
 }
 
 bool BuilderSceneManager::Start()
 {
-	N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
-	N_sceneManager->LoadScene("Scene"); // add the name of the starting scene here
-	for (const auto GO : N_sceneManager->GetGameObjects())
-	{
-		if (GO->HasCameraComponent()) { cameraToRender = GO->GetComponent<Camera>(); }
-	}
-	N_sceneManager->Start();
+	engine->N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
+	engine->N_sceneManager->CreateCameraGO("mainCamera");
+	engine->N_sceneManager->LoadScene("NewUntitledScene");
+	engine->N_sceneManager->Start();
 
 	return true;
 }
 
 bool BuilderSceneManager::PreUpdate()
 {
-	N_sceneManager->PreUpdate();
+	engine->N_sceneManager->PreUpdate();
 
 	return true;
 }
 
 bool BuilderSceneManager::Update(double dt)
 {
-	N_sceneManager->Update(dt, app->IsPlaying());
+	engine->N_sceneManager->Update(dt, app->IsPlaying());
 
 	return true;
 }
 
 bool BuilderSceneManager::PostUpdate()
 {
-	engine->Render(cameraToRender);
-	N_sceneManager->PostUpdate();
+	engine->Render(engine->N_sceneManager->currentScene->currentCamera);
+	engine->N_sceneManager->currentScene->Draw();
 
 	return true;
 }
 
 bool BuilderSceneManager::CleanUp()
 {
-	N_sceneManager->CleanUp();
+	engine->N_sceneManager->CleanUp();
 
 	return true;
 }

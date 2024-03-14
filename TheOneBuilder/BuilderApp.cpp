@@ -1,7 +1,6 @@
 #include "BuilderApp.h"
 
 #include "BuilderWindow.h"
-#include "BuilderInput.h"
 #include "BuilderRenderer3D.h"
 #include "BuilderSceneManager.h"
 #include "Timer.h"
@@ -14,15 +13,12 @@ BuilderApp::BuilderApp(int argc, char* args[]) : argc(argc), args(args)
 	engine = new EngineCore();
 
 	window = new BuilderWindow(this);
-	input = new BuilderInput(this);
 	renderer3D = new BuilderRenderer3D(this);
 	sceneManager = new BuilderSceneManager(this);
 	
 	// Ordered for awake / Start / Update
 	// Reverse order for CleanUp
-
 	AddModule(window, true);
-	AddModule(input, true);
 	AddModule(sceneManager, true);
 	
 	// Render last to swap buffer
@@ -97,7 +93,7 @@ bool BuilderApp::Start()
 			return false;
 	}
 
-	//LOG("----------------- Time Start(): %f", timer.ReadMSec());
+	state = GameState::PLAY;
 
 	return true;
 }
@@ -140,7 +136,6 @@ void BuilderApp::PrepareUpdate()
 
 bool BuilderApp::PreUpdate()
 {
-	//OPTICK_CATEGORY("PreUpdate", Optick::Category::GameLogic);
 	bool ret = true;
 
 	for (const auto& module : modules)
@@ -157,8 +152,6 @@ bool BuilderApp::PreUpdate()
 
 bool BuilderApp::DoUpdate()
 {
-	//OPTICK_CATEGORY("DoUpdate", Optick::Category::GameLogic);
-
 	for (const auto& module : modules)
 	{
 		if (module->active == false)
@@ -173,8 +166,6 @@ bool BuilderApp::DoUpdate()
 
 bool BuilderApp::PostUpdate()
 {
-	//OPTICK_CATEGORY("PostUpdate", Optick::Category::GameLogic);
-
 	for (const auto& module : modules)
 	{
 		if (module->active == false)

@@ -11,10 +11,13 @@ public class Input
 		S = 22,
 		W = 26,
 		E = 8,
+		K = 14,
 		RIGHT = 79,
 		LEFT = 80,
 		DOWN = 81,
-		UP = 82
+		UP = 82,
+		SPACEBAR = 44,
+		ESCAPE = 41,
 	}
 
 	public enum MouseButtonCode
@@ -26,33 +29,46 @@ public class Input
 
 	public enum ControllerButtonCode
 	{
-		START,
-		BACK,
-		GUIDE,
-		X,
-		Y,
 		A,
 		B,
-		L1,
-		R1,
-		L2,
-		R2,
+		X,
+		Y,
+		BACK,
+		GUIDE,
+		START,
 		L3,
 		R3,
+		L1,
+		R1,
 		UP,
 		DOWN,
 		LEFT,
 		RIGHT
+
+		//L2,
+		//R2,
 	}
 
 	public enum ControllerJoystickCode
 	{
-		LEFT, RIGHT
+		JOY_LEFT, JOY_RIGHT
 	}
 
 	public static bool GetKeyboardButton(KeyboardCode key)
 	{
 		return InternalCalls.GetKeyboardButton((int) key);
+	}
+
+	public static bool GetControllerButton(ControllerButtonCode button, int controller = 0)
+	{
+		return InternalCalls.GetControllerButton((int)button, controller);
+	}
+
+	public static Vector2 GetControllerJoystick(ControllerJoystickCode joystick, int controller = 0)
+	{
+		Vector2 joyResult = Vector2.zero;
+		InternalCalls.GetControllerJoystick((int)joystick, ref joyResult, controller);
+		return joyResult;
 	}
 }
 

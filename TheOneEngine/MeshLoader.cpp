@@ -269,6 +269,10 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
                 vertex_data,
                 index_data
             };
+            aiString aiPath;
+            scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
+            fs::path texPath = fs::path(path).parent_path() / fs::path(aiPath.C_Str()).filename();
+            meshData.texturePath = texPath.string();
 
             BufferData(meshData);
             meshBuffData.meshName = mesh->mName.C_Str();
@@ -386,6 +390,14 @@ void MeshLoader::serializeMeshData(const MeshData& data, const std::string& file
     outFile.write(reinterpret_cast<const char*>(&numMeshFaceNorms), sizeof(uint));
     outFile.write(reinterpret_cast<const char*>(&data.meshFaceNorms[0]), numMeshFaceNorms * sizeof(vec3f));
 
+    if (!data.texturePath.empty())
+    {
+        // Write texture path
+        size_t texPathSize = data.texturePath.size();
+        outFile.write(reinterpret_cast<const char*>(&texPathSize), sizeof(size_t));
+        outFile.write(data.texturePath.c_str(), texPathSize);
+    }
+
     LOG(LogType::LOG_OK, "-%s created", filename.data());
 
     outFile.close();
@@ -454,6 +466,15 @@ MeshData MeshLoader::deserializeMeshData(const std::string& filename)
 
     // Read meshFaceNorms
     inFile.read(reinterpret_cast<char*>(&data.meshFaceNorms[0]), numMeshFaceNorms * sizeof(vec3f));
+
+    // Read texture path
+    size_t texPathSize = 0;
+    inFile.read(reinterpret_cast<char*>(&texPathSize), sizeof(size_t));
+    if (texPathSize)
+    {
+        data.texturePath.resize(texPathSize);
+        inFile.read(&data.texturePath[0], texPathSize);
+    }
 
     LOG(LogType::LOG_INFO, "-%s loaded", filename.data());
     inFile.close();

@@ -273,9 +273,9 @@
 						<ActiveSource Name="waves" ID="{151A8030-DBDB-4585-BC43-960EB3935AEB}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
-				<Sound Name="footsteps" ID="{37360323-315E-4FE4-8B0A-BBD6CC7FED3A}" ShortID="514070183">
+				<Sound Name="steps" ID="{28A5EA78-4BAE-41BE-B610-75A3EFCD74AB}" ShortID="795578084">
 					<PropertyList>
-						<Property Name="3DSpatialization" Type="int16" Value="2"/>
+						<Property Name="3DSpatialization" Type="int16" Value="1"/>
 						<Property Name="CenterPercentage" Type="int32">
 							<ValueList>
 								<Value>40</Value>
@@ -285,11 +285,11 @@
 					<ReferenceList>
 						<Reference Name="Attenuation">
 							<Custom>
-								<Attenuation Name="Attenuation (Custom)" ID="{BF81B53D-3FC6-4952-AECF-37FF5DC9DF37}" ShortID="1068854362">
+								<Attenuation Name="Attenuation (Custom)" ID="{F2925C92-D569-4631-B58B-0E6A367A3617}" ShortID="1040912540">
 									<CurveUsageInfoList>
 										<VolumeDryUsage>
 											<CurveUsageInfo Platform="Linked" CurveToUse="Custom">
-												<Curve Name="VolumeDry" ID="{30A415E1-2747-4A0C-87E3-80EAD83E38B6}">
+												<Curve Name="VolumeDry" ID="{9670E8EE-CA56-42F0-805E-1054A0BD9AED}">
 													<PropertyList>
 														<Property Name="Flags" Type="int32" Value="3"/>
 													</PropertyList>
@@ -374,21 +374,21 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<AudioFileSource Name="footsteps" ID="{5B2FC7D7-4A2F-4F4C-B64A-629F74606ADF}">
+						<AudioFileSource Name="steps" ID="{9FAE1854-39F9-4DE4-B472-C32AB04EB3AD}">
 							<Language>SFX</Language>
-							<AudioFile>footsteps.wav</AudioFile>
+							<AudioFile>steps.wav</AudioFile>
 							<MediaIDList>
-								<MediaID ID="817533101"/>
+								<MediaID ID="1066871374"/>
 							</MediaIDList>
 						</AudioFileSource>
 					</ChildrenList>
 					<ActiveSourceList>
-						<ActiveSource Name="footsteps" ID="{5B2FC7D7-4A2F-4F4C-B64A-629F74606ADF}" Platform="Linked"/>
+						<ActiveSource Name="steps" ID="{9FAE1854-39F9-4DE4-B472-C32AB04EB3AD}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
-				<Sound Name="gunshot" ID="{2A3042B5-D4E5-44C0-8121-B5306D6CDFCD}" ShortID="485681513">
+				<Sound Name="gunshot" ID="{80489D55-02BE-4CA9-87D3-FC426BB58ACE}" ShortID="579580559">
 					<PropertyList>
-						<Property Name="3DSpatialization" Type="int16" Value="2"/>
+						<Property Name="3DSpatialization" Type="int16" Value="1"/>
 						<Property Name="CenterPercentage" Type="int32">
 							<ValueList>
 								<Value>40</Value>
@@ -398,11 +398,11 @@
 					<ReferenceList>
 						<Reference Name="Attenuation">
 							<Custom>
-								<Attenuation Name="Attenuation (Custom)" ID="{EEE19318-C569-4DBA-A5E2-590ECA3040BA}" ShortID="360742596">
+								<Attenuation Name="Attenuation (Custom)" ID="{FB53AFD0-2EA5-4FCD-8404-BE9ADB084941}" ShortID="905239983">
 									<CurveUsageInfoList>
 										<VolumeDryUsage>
 											<CurveUsageInfo Platform="Linked" CurveToUse="Custom">
-												<Curve Name="VolumeDry" ID="{B8BECE68-8D7A-4488-9DAD-8BDBD66CEE81}">
+												<Curve Name="VolumeDry" ID="{7766BBC1-8CF0-411B-8328-EB0487B2B50E}">
 													<PropertyList>
 														<Property Name="Flags" Type="int32" Value="3"/>
 													</PropertyList>
@@ -487,16 +487,16 @@
 						</Reference>
 					</ReferenceList>
 					<ChildrenList>
-						<AudioFileSource Name="gunshot" ID="{89ACDFBD-FC65-47FD-A3FE-44FC64155083}">
+						<AudioFileSource Name="gunshot" ID="{CC964F95-B32D-4C0B-9131-ABAB79BD23D7}">
 							<Language>SFX</Language>
 							<AudioFile>gunshot.wav</AudioFile>
 							<MediaIDList>
-								<MediaID ID="301194895"/>
+								<MediaID ID="67773700"/>
 							</MediaIDList>
 						</AudioFileSource>
 					</ChildrenList>
 					<ActiveSourceList>
-						<ActiveSource Name="gunshot" ID="{89ACDFBD-FC65-47FD-A3FE-44FC64155083}" Platform="Linked"/>
+						<ActiveSource Name="gunshot" ID="{CC964F95-B32D-4C0B-9131-ABAB79BD23D7}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
 			</ChildrenList>

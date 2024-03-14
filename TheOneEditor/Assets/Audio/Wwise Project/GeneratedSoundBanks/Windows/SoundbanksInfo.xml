@@ -162,17 +162,17 @@
 				</AcousticTexture>
 			</AcousticTextures>
 		</SoundBank>
-		<SoundBank Id="3491347560" Type="User" Language="SFX" Hash="{C393BF11-8C8D-78A5-630C-E80D7C5EDC18}">
+		<SoundBank Id="3491347560" Type="User" Language="SFX" Hash="{D19C02E8-37B5-074D-8172-873296FC6241}">
 			<ShortName>TheOneEngine</ShortName>
 			<Path>TheOneEngine.bnk</Path>
 			<Media>
+				<File Id="67773700" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>gunshot.wav</ShortName>
+					<CachePath>SFX/gunshot_818F3B66.wem</CachePath>
+				</File>
 				<File Id="102266085" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>Bass160Fight.wav</ShortName>
 					<CachePath>SFX/Bass160Fight_818F3B66.wem</CachePath>
-				</File>
-				<File Id="301194895" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>gunshot.wav</ShortName>
-					<CachePath>SFX/gunshot_818F3B66.wem</CachePath>
 				</File>
 				<File Id="466064314" Language="SFX" Streaming="false" Location="Memory">
 					<ShortName>waves.wav</ShortName>
@@ -186,20 +186,15 @@
 					<ShortName>seagull1.wav</ShortName>
 					<CachePath>SFX/seagull1_818F3B66.wem</CachePath>
 				</File>
-				<File Id="817533101" Language="SFX" Streaming="false" Location="Memory">
-					<ShortName>footsteps.wav</ShortName>
-					<CachePath>SFX/footsteps_818F3B66.wem</CachePath>
+				<File Id="1066871374" Language="SFX" Streaming="false" Location="Memory">
+					<ShortName>steps.wav</ShortName>
+					<CachePath>SFX/steps_818F3B66.wem</CachePath>
 				</File>
 			</Media>
 			<Events>
-				<Event Id="2385628198" Name="FOOTSTEPS">
-					<MediaRefs>
-						<MediaRef Id="817533101"/>
-					</MediaRefs>
-				</Event>
 				<Event Id="1287408361" Name="GUNSHOT">
 					<MediaRefs>
-						<MediaRef Id="301194895"/>
+						<MediaRef Id="67773700"/>
 					</MediaRefs>
 				</Event>
 				<Event Id="1730564819" Name="MUSIC1">
@@ -222,8 +217,13 @@
 						<MediaRef Id="102266085"/>
 					</MediaRefs>
 				</Event>
+				<Event Id="621108255" Name="STEP">
+					<MediaRefs>
+						<MediaRef Id="1066871374"/>
+					</MediaRefs>
+				</Event>
 			</Events>
 		</SoundBank>
 	</SoundBanks>
-	<FileHash>{8C98C49A-A192-DF7C-3DE8-5EE7D8D84398}</FileHash>
+	<FileHash>{DDFD7409-A034-80E8-BFB7-6AE18E547836}</FileHash>
 </SoundBanksInfo>

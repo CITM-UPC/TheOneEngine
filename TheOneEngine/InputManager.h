@@ -40,7 +40,7 @@ public:
 	~InputManager();
 
 	bool Init();
-	bool PreUpdate(double dt);
+	bool PreUpdate();
 	bool CleanUp();
 
 	void HandleDeviceConnection(int index);
@@ -55,6 +55,8 @@ public:
 	InputManagerNamespace::KeyState GetGamepadButton(int gamepadId, SDL_GameControllerButton button) const;
 
 	GamePad pads[MAX_PADS];
+
+	bool shutDownEngine = false;
 };
 
 #endif //INPUT_MANAGER_H

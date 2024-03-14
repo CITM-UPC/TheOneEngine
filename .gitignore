@@ -35,6 +35,8 @@ bld/
 !WWise/SDK/Release
 !Wwise/SDK/include/Win32
 !Wwise/SDK/include/AK/Tools/Win32
+/TheOneBuilder/Library
+/TheOneBuilder/Assets
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/

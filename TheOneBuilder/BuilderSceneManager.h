@@ -24,9 +24,6 @@ public:
 	bool CleanUp();
 
 public:
-	N_SceneManager* N_sceneManager = nullptr;
-	Camera* cameraToRender = nullptr;
-
 };
 
 #endif // !__BUILDER_SCENE_MANAGER_H__

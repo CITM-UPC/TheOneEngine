@@ -25,6 +25,9 @@ public:
 	Rect2D GetRect() const;
 	void SetSize(float width, float height);
 
+	virtual json SaveUIElement();
+	virtual void LoadUIElement(const json& UIElementJSON);
+
 protected:
 
 	Rect2D rect;

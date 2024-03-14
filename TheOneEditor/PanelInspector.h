@@ -22,16 +22,22 @@ public:
 	void ChooseEventWindow();
 
 private:
-	bool matrixDirty;
+	GameObject* selectedGO = nullptr;
 
 	vec3f view_pos;
 	vec3f view_rot_rad;
 	vec3f view_rot_deg;
 	vec3f view_sca;
 
+	bool matrixDirty;
 	bool chooseScriptNameWindow;
 	bool chooseEventWindow;
 
+	const char* colliders[2] =
+	{
+		"Circle",
+		"Square",
+	};
 	GameObject* selectedGO = nullptr;
 
 	AkUniqueID selectedEvent;
