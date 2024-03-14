@@ -20,6 +20,7 @@
 
 #include <chrono>
 #include <memory>
+#include <string>
 
 class N_SceneManager;
 
@@ -36,6 +37,8 @@ public:
 	void Update(double dt);
 
 	void Render(Camera* camera);
+
+	void LogGL(string id);
 
 	void CleanUp();
 

@@ -3,6 +3,8 @@
 
 #include "GL/glew.h"
 
+#include "../TheOneEngine/EngineCore.h"
+
 static const unsigned int s_MaxFramebufferSize = 8192;
 
 FrameBuffer::FrameBuffer(int newWidth, int newHeight, bool depth) : initialized(true), depthActive(depth)
@@ -90,6 +92,9 @@ void FrameBuffer::Reset(bool depth)
 		LOG(LogType::LOG_OK, "Framebuffer completed");
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	assert(status == GL_FRAMEBUFFER_COMPLETE); //36053
 }
 
 void FrameBuffer::Resize(unsigned int newWidth, unsigned int newHeight)
@@ -115,6 +120,7 @@ void FrameBuffer::Clear(glm::vec4 color)
 void FrameBuffer::ClearBuffer(int value)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
-	glClearTexImage(colorAttachment, 0, GL_RGBA8, GL_INT, &value);
+	//glClearTexImage(colorAttachment, 0, GL_RGBA8, GL_INT, &value);
+	glGetString(GL_VERSION);
 }
 

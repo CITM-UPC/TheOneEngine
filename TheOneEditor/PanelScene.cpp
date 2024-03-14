@@ -185,11 +185,13 @@ bool PanelScene::Draw()
             ImGui::EndMenuBar();
         }
 
+        engine->LogGL("PanelScene.cpp 188");
 
         //Draw FrameBuffer Texture
         viewportSize = { availWindowSize.x, availWindowSize.y };
         ImGui::Image((ImTextureID)frameBuffer->getColorBufferTexture(), ImVec2{ viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
+        engine->LogGL("PanelScene.cpp 194");
 
 
         // ImGuizmo ------------------------------------------------------------------------
@@ -250,10 +252,15 @@ bool PanelScene::Draw()
         //ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND
         {
             frameBuffer->Bind();
-
+            engine->LogGL("Bind was Mondongo");
 
             frameBuffer->Clear();
+            engine->LogGL("Clear was Mondongo");
+
             frameBuffer->ClearBuffer(-1);
+            engine->LogGL("ClearBuffer was Mondongo");
+
+
             // Draw
             engine->Render(sceneCamera->GetComponent<Camera>());
 
@@ -282,6 +289,9 @@ bool PanelScene::Draw()
         }
 
 	}
+
+    engine->LogGL("PanelScene.cpp 289");
+
 
 	ImGui::End();
 	ImGui::PopStyleVar();

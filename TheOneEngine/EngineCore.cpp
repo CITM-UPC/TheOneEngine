@@ -140,8 +140,9 @@ void EngineCore::Update(double dt)
 
 void EngineCore::Render(Camera* camera)
 {
-    if (!camera)
-        camera = editorCamReference;
+    LogGL("BEFORE RENDER");
+
+    if (!camera) camera = editorCamReference;
 
     // Update Camera Matrix
     glMatrixMode(GL_PROJECTION);
@@ -156,7 +157,6 @@ void EngineCore::Render(Camera* camera)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_COLOR_MATERIAL);
-    //glEnable(GL_LIGHTING);
 
     switch (camera->cameraType)
     {
@@ -190,7 +190,20 @@ void EngineCore::Render(Camera* camera)
     glColor3f(1.0f, 1.0f, 1.0f);
     //DrawFrustum(camera->viewMatrix);
 
+    LogGL("DURING RENDER");
+
     assert(glGetError() == GL_NONE);
+}
+
+void EngineCore::LogGL(string id)
+{
+    GLenum errorCode = glGetError();
+    
+    if (errorCode != GL_NO_ERROR)
+    {
+        const GLubyte* errorString = gluErrorString(errorCode);
+        LOG(LogType::LOG_ERROR, "GL_%d  %s  %s", errorCode, errorString, id.c_str());
+    }
 }
 
 void EngineCore::CleanUp()
