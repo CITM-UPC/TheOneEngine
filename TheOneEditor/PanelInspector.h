@@ -38,7 +38,6 @@ private:
 		"Circle",
 		"Square",
 	};
-	GameObject* selectedGO = nullptr;
 
 	AkUniqueID selectedEvent;
 };

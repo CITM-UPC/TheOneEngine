@@ -104,24 +104,24 @@ void GameObject::GenerateAABBFromMesh()
 	case Formats::F_V3:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
 		for (const auto& v : std::span((V3*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
-			aabb.min = glm::min(aabb.min, vec3(v.v));
-			aabb.max = glm::max(aabb.max, vec3(v.v));
+			aabb.minPoint = (glm::min)(aabb.minPoint, vec3(v.v));
+			aabb.maxPoint = (glm::max)(aabb.maxPoint, vec3(v.v));
 		}
 		break;
 
 	case Formats::F_V3C4:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
 		for (const auto& v : std::span((V3C4*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
-			aabb.min = glm::min(aabb.min, vec3(v.v));
-			aabb.max = glm::max(aabb.max, vec3(v.v));
+			aabb.minPoint = (glm::min)(aabb.minPoint, vec3(v.v));
+			aabb.maxPoint = (glm::max)(aabb.maxPoint, vec3(v.v));
 		}
 		break;
 
 	case Formats::F_V3T2:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
 		for (const auto& v : std::span((V3T2*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
-			aabb.min = glm::min(aabb.min, vec3(v.v));
-			aabb.max = glm::max(aabb.max, vec3(v.v));
+			aabb.minPoint = (glm::min)(aabb.minPoint, vec3(v.v));
+			aabb.maxPoint = (glm::max)(aabb.maxPoint, vec3(v.v));
 		}
 		break;
 	}
@@ -147,8 +147,8 @@ AABBox GameObject::CalculateAABB()
 	for (const auto& child : children)
 	{
 		AABBox childAABB = (child.get()->GetComponent<Transform>()->GetTransform() * child.get()->CalculateAABB()).AABB();
-		aabb.min = glm::min(aabb.min, childAABB.min);
-		aabb.max = glm::max(aabb.max, childAABB.max);
+		aabb.minPoint = (glm::min)(aabb.minPoint, childAABB.minPoint);
+		aabb.maxPoint = (glm::max)(aabb.maxPoint, childAABB.maxPoint);
 	}
 
 	return aabb;

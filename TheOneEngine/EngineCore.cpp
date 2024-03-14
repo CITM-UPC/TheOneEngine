@@ -137,7 +137,6 @@ void EngineCore::Update(double dt)
     }
 
     this->dt = dt;
-    audio->Update(dt);
 }
 
 void EngineCore::Render(Camera* camera)

@@ -20,7 +20,7 @@ Component::Component(std::shared_ptr<GameObject> containerGO, Component* ref, Co
 	std::weak_ptr<GameObject> weakPtr = containerGO;
 	this->containerGO = weakPtr;
 
-	CreateUID();
+	//CreateUID();
 	CreateNameFromType(type);
 }
 

@@ -36,8 +36,8 @@ bool N_SceneManager::Awake()
 bool N_SceneManager::Start()
 {
 	FindCameraInScene();
-	currentScene->listenerAudioGOID = engine->audio->RegisterGameObject(currentScene->currentCamera->GetName().c_str());
-	engine->audio->SetDefaultListener(currentScene->listenerAudioGOID);
+	//currentScene->listenerAudioGOID = engine->audio->RegisterGameObject(currentScene->currentCamera->GetName().c_str());
+	//engine->audio->SetDefaultListener(currentScene->listenerAudioGOID);
 
 	return true;
 }
@@ -46,17 +46,17 @@ bool N_SceneManager::PreUpdate()
 {
 	// Do nothing
 
-	//move into audio engine, the real current camera transform
-	engine->audio->SetAudioGameObjectTransform(currentScene->listenerAudioGOID, 
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().x,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().y,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().z,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().x,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().y,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().z,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().x,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().y,
-		currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().z);
+	////move into audio engine, the real current camera transform
+	//engine->audio->SetAudioGameObjectTransform(currentScene->listenerAudioGOID, 
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().x,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().y,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetPosition().z,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().x,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().y,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetForward().z,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().x,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().y,
+	//	currentScene->currentCamera->GetContainerGO().get()->GetComponent<Transform>()->GetUp().z);
 
 
 	return true;
