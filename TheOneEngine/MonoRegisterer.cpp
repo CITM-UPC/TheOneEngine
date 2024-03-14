@@ -106,6 +106,10 @@ static float GetAppDeltaTime()
 {
 	return (float)engine->dt;
 }
+static void ExitApplication()
+{
+	engine->inputManager->shutDownEngine = true;
+}
 
 
 void MonoRegisterer::RegisterFunctions()
@@ -127,4 +131,5 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::DestroyGameObject", DestroyGameObject);
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
+	mono_add_internal_call("InternalCalls::ExitApplication", ExitApplication);
 }

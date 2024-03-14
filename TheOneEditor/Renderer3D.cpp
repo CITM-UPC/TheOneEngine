@@ -35,9 +35,7 @@ bool Renderer3D::Start()
 
 bool Renderer3D::PreUpdate()
 {
-    engine->PreUpdate();
-
-	return true;
+    return engine->PreUpdate();
 }
 
 bool Renderer3D::Update(double dt)
@@ -52,7 +50,6 @@ bool Renderer3D::Update(double dt)
 
 bool Renderer3D::PostUpdate()
 {
-
 	return true;
 }
 
