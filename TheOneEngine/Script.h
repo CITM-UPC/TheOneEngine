@@ -21,7 +21,7 @@ public:
 
     void Update() override;
 
-    void DrawComponent();
+    void DrawComponent(Camera* camera);
 
     json SaveComponent();
     void LoadComponent(const json& scriptJSON);

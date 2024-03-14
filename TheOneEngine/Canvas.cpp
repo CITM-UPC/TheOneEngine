@@ -22,10 +22,8 @@ Canvas::Canvas(std::shared_ptr<GameObject> containerGO, Canvas* ref) : Component
 
 Canvas::~Canvas() {}
 
-void Canvas::DrawComponent()
+void Canvas::DrawComponent(Camera* camera)
 {
-	Camera* camera = containerGO.lock().get()->GetComponent<Camera>();
-
 	if (!camera)
 		return;
 
@@ -156,11 +154,11 @@ void Canvas::LoadComponent(const json& canvasJSON)
 		const json& uiElementsJSON = canvasJSON["UiElements"];
 
 		for (auto& item : uiElementsJSON)
-		{
+		{			
 			if (item["Type"] == (int)UiType::IMAGE)
 			{
-				this->AddItemUI<ImageUI>();
-				this->GetItemUI<ImageUI>()->LoadUIElement(item);
+				int id = this->AddItemUI<ImageUI>();
+				this->GetItemUI<ImageUI>(id)->LoadUIElement(item);
 			}
 			if (item["Type"] == (int)UiType::UNKNOWN)
 			{
