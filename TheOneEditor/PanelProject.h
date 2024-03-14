@@ -6,6 +6,17 @@
 
 #include <filesystem>
 
+enum class FileDropType {
+	MODEL3D,
+	TEXTURE,
+	FOLDER,
+	SCRIPT,
+	SCENE,
+	PREFAB,
+
+	UNKNOWN
+};
+
 class PanelProject : public Panel
 {
 public:
@@ -14,6 +25,14 @@ public:
 
 	bool Draw();
 	std::pair<bool, uint32_t> DirectoryTreeViewRecursive(const std::filesystem::path& path, uint32_t* count, int* selection_mask);
+
+	//Function to move files through the folders and some to the scene
+	bool DragAndDrop();
+
+	//Function that shows the files of a selected folder (take into account selected Directory in DirectoryTreeViewRecursive)
+	bool ShowAssetFiles();
+
+
 
 public:
 	std::string directoryPath;

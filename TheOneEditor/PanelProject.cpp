@@ -2,6 +2,8 @@
 #include "App.h"
 #include "Gui.h"
 #include "imgui.h"
+#include "SceneManager.h"
+#include "..\TheOneEngine\EngineCore.h"
 
 #include <filesystem>
 #include <string>
@@ -35,7 +37,7 @@ bool PanelProject::Draw()
 		{
 			// We could also set ImGuiTableFlags_SizingFixedFit on the table and all columns will default to ImGuiTableColumnFlags_WidthFixed.
 			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
+			//ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
 
 			// Directory Tree View ----------------------------
 			ImGui::TableNextColumn();
@@ -134,4 +136,29 @@ std::pair<bool, uint32_t> PanelProject::DirectoryTreeViewRecursive(const fs::pat
 	}
 
 	return { any_node_clicked, node_clicked };
+}
+
+bool PanelProject::DragAndDrop()
+{
+	if (ImGui::BeginDragDropSource())
+	{
+		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
+		{
+			ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
+		}
+
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
+		{
+			GameObject* dragging = *(GameObject**)payload->Data;
+
+			//CreatePrefab(dragging);
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	return false;
 }
