@@ -202,7 +202,6 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BuilderApp.cpp" />
-    <ClCompile Include="BuilderInput.cpp" />
     <ClCompile Include="BuilderRenderer3D.cpp" />
     <ClCompile Include="BuilderSceneManager.cpp" />
     <ClCompile Include="BuilderWindow.cpp" />
@@ -212,7 +211,6 @@ copy "..\vcpkg\installed\x64-windows\bin\*.*" "$(OutDir)"</Command>
   <ItemGroup>
     <ClInclude Include="BuilderApp.h" />
     <ClInclude Include="BuilderDefs.h" />
-    <ClInclude Include="BuilderInput.h" />
     <ClInclude Include="BuilderModule.h" />
     <ClInclude Include="BuilderRenderer3D.h" />
     <ClInclude Include="BuilderSceneManager.h" />
