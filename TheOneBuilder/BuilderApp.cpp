@@ -136,7 +136,6 @@ void BuilderApp::PrepareUpdate()
 
 bool BuilderApp::PreUpdate()
 {
-	//OPTICK_CATEGORY("PreUpdate", Optick::Category::GameLogic);
 	bool ret = true;
 
 	for (const auto& module : modules)
@@ -153,8 +152,6 @@ bool BuilderApp::PreUpdate()
 
 bool BuilderApp::DoUpdate()
 {
-	//OPTICK_CATEGORY("DoUpdate", Optick::Category::GameLogic);
-
 	for (const auto& module : modules)
 	{
 		if (module->active == false)
@@ -169,8 +166,6 @@ bool BuilderApp::DoUpdate()
 
 bool BuilderApp::PostUpdate()
 {
-	//OPTICK_CATEGORY("PostUpdate", Optick::Category::GameLogic);
-
 	for (const auto& module : modules)
 	{
 		if (module->active == false)

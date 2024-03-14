@@ -40,7 +40,7 @@ bool BuilderSceneManager::Update(double dt)
 bool BuilderSceneManager::PostUpdate()
 {
 	engine->Render(engine->N_sceneManager->currentScene->currentCamera);
-	engine->N_sceneManager->PostUpdate();
+	engine->N_sceneManager->currentScene->Draw();
 
 	return true;
 }
