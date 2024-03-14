@@ -8,7 +8,7 @@
 BillboardRender::BillboardRender(Emmiter* owner)
 {
     this->owner = owner;
-    type = NONE;
+    type = BILLBOARD;
 }
 
 void BillboardRender::Update(Particle* particle, vec3 cameraPosition)
@@ -48,5 +48,20 @@ json BillboardRender::SaveModule()
 
     moduleJSON["Type"] = type;
 
+    moduleJSON["BillboardType"] = billboardType;
+
     return moduleJSON;
+}
+
+void BillboardRender::LoadModule(const json& moduleJSON)
+{
+    if (moduleJSON.contains("Type"))
+    {
+        type = moduleJSON["Type"];
+    }
+
+    if (moduleJSON.contains("BillboardType"))
+    {
+        billboardType = moduleJSON["BillboardType"];
+    }
 }

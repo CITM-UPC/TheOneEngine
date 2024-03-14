@@ -32,7 +32,7 @@ class BillboardRender : public RenderEmmiterModule {
 public:
 	BillboardRender(Emmiter* owner);
 
-	BillboardType type;
+	BillboardType billboardType;
 
 	void Update(Particle* particle, vec3 cameraPosition) override;
 

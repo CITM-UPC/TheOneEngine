@@ -39,6 +39,19 @@ json ConstantSpawnRate::SaveModule()
 	return moduleJSON;
 }
 
+void ConstantSpawnRate::LoadModule(const json& moduleJSON)
+{
+	if (moduleJSON.contains("Type"))
+	{
+		type = moduleJSON["Type"];
+	}
+
+	if (moduleJSON.contains("SpawnRate"))
+	{
+		spawnRate = moduleJSON["SpawnRate"];
+	}
+}
+
 SingleBurstSpawn::SingleBurstSpawn(Emmiter* owner)
 {
 	type = SINGLE_BURST;
@@ -70,6 +83,19 @@ json SingleBurstSpawn::SaveModule()
 	moduleJSON["Amount"] = amount;
 
 	return moduleJSON;
+}
+
+void SingleBurstSpawn::LoadModule(const json& moduleJSON)
+{
+	if (moduleJSON.contains("Type"))
+	{
+		type = moduleJSON["Type"];
+	}
+
+	if (moduleJSON.contains("Amount"))
+	{
+		amount = moduleJSON["Amount"];
+	}
 }
 
 ConstantBurstSpawn::ConstantBurstSpawn(Emmiter* owner)
@@ -110,4 +136,22 @@ json ConstantBurstSpawn::SaveModule()
 	moduleJSON["Amount"] = amount;
 
 	return moduleJSON;
+}
+
+void ConstantBurstSpawn::LoadModule(const json& moduleJSON)
+{
+	if (moduleJSON.contains("Type"))
+	{
+		type = moduleJSON["Type"];
+	}
+
+	if (moduleJSON.contains("SpawnRate"))
+	{
+		spawnRate = moduleJSON["SpawnRate"];
+	}
+
+	if (moduleJSON.contains("Amount"))
+	{
+		amount = moduleJSON["Amount"];
+	}
 }

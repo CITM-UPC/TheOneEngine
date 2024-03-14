@@ -47,12 +47,17 @@ void SetSpeed::LoadModule(const json& moduleJSON)
 
 	if (moduleJSON.contains("MinSpeed"))
 	{
-		{ speed.rangeValue.lowerLimit.x, speed.rangeValue.lowerLimit.y, speed.rangeValue.lowerLimit.z } = moduleJSON["MinSpeed"];
+		speed.rangeValue.lowerLimit.x = moduleJSON["MinSpeed"][0];
+		speed.rangeValue.lowerLimit.y = moduleJSON["MinSpeed"][1];
+		speed.rangeValue.lowerLimit.z = moduleJSON["MinSpeed"][2];
+
 	}
 
 	if (moduleJSON.contains("MaxSpeed"))
 	{
-		{ speed.rangeValue.upperLimit.x, speed.rangeValue.upperLimit.y, speed.rangeValue.upperLimit.z } = moduleJSON["MaxSpeed"];
+		speed.rangeValue.upperLimit.x = moduleJSON["MaxSpeed"][0];
+		speed.rangeValue.upperLimit.y = moduleJSON["MaxSpeed"][1];
+		speed.rangeValue.upperLimit.z = moduleJSON["MaxSpeed"][2];
 	}
 }
 
@@ -87,4 +92,32 @@ json SetColor::SaveModule()
 	moduleJSON["MaxColor"] = { color.rangeValue.upperLimit.x, color.rangeValue.upperLimit.y, color.rangeValue.upperLimit.z };
 
 	return moduleJSON;
+}
+
+void SetColor::LoadModule(const json& moduleJSON)
+{
+	if (moduleJSON.contains("Type"))
+	{
+		type = moduleJSON["Type"];
+	}
+
+	if (moduleJSON.contains("UsingSingleValueColor"))
+	{
+		color.usingSingleValue = moduleJSON["UsingSingleValueColor"];
+	}
+
+	if (moduleJSON.contains("MinColor"))
+	{
+		color.rangeValue.lowerLimit.x = moduleJSON["MinColor"][0];
+		color.rangeValue.lowerLimit.y = moduleJSON["MinColor"][1];
+		color.rangeValue.lowerLimit.z = moduleJSON["MinColor"][2];
+
+	}
+
+	if (moduleJSON.contains("MaxColor"))
+	{
+		color.rangeValue.upperLimit.x = moduleJSON["MaxColor"][0];
+		color.rangeValue.upperLimit.y = moduleJSON["MaxColor"][1];
+		color.rangeValue.upperLimit.z = moduleJSON["MaxColor"][2];
+	}
 }

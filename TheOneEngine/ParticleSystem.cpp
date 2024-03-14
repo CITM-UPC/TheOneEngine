@@ -1,6 +1,7 @@
 #include "ParticleSystem.h"
 #include "GameObject.h"
 #include "SingleOrRandom.h"
+#include "EngineCore.h"
 #include <ostream>
 #include <istream>
 #include <fstream>
@@ -44,7 +45,7 @@ void ParticleSystem::Update()
 {
 	if (isON) {
 		for (auto i = emmiters.begin(); i != emmiters.end(); ++i) {
-			(*i)->Update(dt);
+			(*i)->Update(engine->dt);
 		}
 	}
 }
