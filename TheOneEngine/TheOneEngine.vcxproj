@@ -20,6 +20,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeImmediateMode.h" />
     <ClInclude Include="Defs.h" />
+    <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="Emmiter.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GamepadInput.h" />
@@ -56,6 +57,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeImmediateMode.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
     <ClCompile Include="Emmiter.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamepadInput.cpp" />

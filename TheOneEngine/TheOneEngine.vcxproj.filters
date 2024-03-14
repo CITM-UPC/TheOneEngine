@@ -40,6 +40,9 @@
     <Filter Include="CollisionSolver">
       <UniqueIdentifier>{b4bff3d6-89e0-43fe-b513-b1d9b31c27bd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{954d7850-b1f2-45be-b0ff-9ffe77288d41}</UniqueIdentifier>
+    </Filter>
     <Filter Include="GameObject\Components\Particles">
       <UniqueIdentifier>{1b4d8a7c-3d67-4add-8d30-7eea933e5c6e}</UniqueIdentifier>
     </Filter>
@@ -138,6 +141,9 @@
     <ClInclude Include="GamepadInput.h">
       <Filter>Input</Filter>
     </ClInclude>
+    <ClInclude Include="Framebuffer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
     <ClInclude Include="Billboard.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -235,6 +241,9 @@
     </ClCompile>
     <ClCompile Include="GamepadInput.cpp">
       <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Framebuffer.cpp">
+      <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Billboard.cpp">
       <Filter>Utils</Filter>
