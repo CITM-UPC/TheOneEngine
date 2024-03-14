@@ -83,7 +83,7 @@ public:
         return nullptr;
     }
 
-    void DrawComponent();
+    void DrawComponent(Camera* camera);
 
     void SetTo2DRenderSettings(const bool& setTo);
 
