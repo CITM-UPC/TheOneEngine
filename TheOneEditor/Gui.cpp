@@ -113,13 +113,13 @@ bool Gui::Start()
 
 	// Input/Output
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
-	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
 
 	// Hekbas: Enableing viewports causes ImGui panels
 	// to disappear if not fully contained in main window
-	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+	io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
 	if (!&io)
 		LOG(LogType::LOG_ERROR, "-Enabling I/O");
@@ -127,7 +127,7 @@ bool Gui::Start()
 
 	// Setup Platform/Renderer backends
 	ImGui_ImplSDL2_InitForOpenGL(app->window->window, app->window->glContext);
-	ImGui_ImplOpenGL3_Init("#version 330 core");
+	ImGui_ImplOpenGL3_Init("#version 450");
 
 	// Setup Dear ImGui style
 	ImGui::StyleColorsDark();
@@ -196,11 +196,20 @@ bool Gui::Start()
 	style.Colors[ImGuiCol_NavWindowingDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.20f);
 	style.Colors[ImGuiCol_ModalWindowDimBg] = ImVec4(0.80f, 0.80f, 0.80f, 0.35f);
 	style.GrabRounding = style.FrameRounding = 2.3f;
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		style.WindowRounding = 0.0f;
+		style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+	}
 
 
 #pragma endregion IMGUI_STYLE
 
-	panelGame->Start();
+	// Iterate Panels & Start
+	for (const auto& panel : panels)
+	{
+		panel->Start();
+	}
 
 	return true;
 }
@@ -294,6 +303,8 @@ bool Gui::PostUpdate()
 {
 	bool ret = true;
 
+	ImGuiIO& io = ImGui::GetIO();
+
 	// Iterate Panels & Draw
 	for (const auto& panel : panels)
 	{
@@ -303,6 +314,26 @@ bool Gui::PostUpdate()
 
 	if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_DockingEnable)
 		ImGui::End();
+
+	io.DisplaySize = ImVec2((float)app->window->GetWidth(), (float)app->window->GetHeight());
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	// Update and Render additional Platform Windows
+	// (Platform functions may change the current OpenGL context, so we save/restore it to make it easier to paste this code elsewhere.
+	//  For this specific demo app we could also call SDL_GL_MakeCurrent(window, gl_context) directly)
+	if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+	{
+		SDL_Window* backup_current_window = SDL_GL_GetCurrentWindow();
+		SDL_GLContext backup_current_context = SDL_GL_GetCurrentContext();
+		ImGui::UpdatePlatformWindows();
+		ImGui::RenderPlatformWindowsDefault();
+		SDL_GL_MakeCurrent(backup_current_window, backup_current_context);
+	}
+
+
+	SDL_GL_SwapWindow(app->window->window);
 
 	return ret;
 }
@@ -320,21 +351,6 @@ bool Gui::CleanUp()
 	// hekbas check cleanup
 
 	return ret;
-}
-
-void Gui::Draw()
-{
-    //hekbas - Automatically called by ImGui::Render()
-    //ImGui::EndFrame();
-    ImGui::Render();
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-	// hekbas look into this
-	/*if (ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
-	{
-		ImGui::UpdatePlatformWindows();
-		ImGui::RenderPlatformWindowsDefault();
-	}*/
 }
 
 void Gui::HandleInput(SDL_Event* event)
@@ -363,22 +379,28 @@ void Gui::PlotChart(const char* label, const std::vector<int>& data, ImPlotFlags
 
 void Gui::MainWindowDockspace()
 {
+
+	// Flags
+	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
+
 	// Resize
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImGui::SetNextWindowPos(viewport->Pos);
 	ImGui::SetNextWindowSize(viewport->Size);
 	ImGui::SetNextWindowViewport(viewport->ID);
 
-	// Flags
-	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
-
-	ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking;
-	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
-	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus | ImGuiWindowFlags_NoBackground;
-
 	// Style
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
+
+	window_flags |= ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+	window_flags |= ImGuiWindowFlags_NoBringToFrontOnFocus | ImGuiWindowFlags_NoNavFocus;
+
+	// When using ImGuiDockNodeFlags_PassthruCentralNode, DockSpace() will render our background and handle the pass-thru hole, so we ask Begin() to not render a background.
+	if (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode)
+		window_flags |= ImGuiWindowFlags_NoBackground;
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 
 	static bool p_open = true;
@@ -387,6 +409,9 @@ void Gui::MainWindowDockspace()
 
 	// DockSpace
 	ImGuiIO& io = ImGui::GetIO();
+	ImGuiStyle& style = ImGui::GetStyle();
+	float minWinSizeX = style.WindowMinSize.x;
+	style.WindowMinSize.x = 370.0f;
 	if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
 	{
 		ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
@@ -416,6 +441,8 @@ void Gui::MainWindowDockspace()
 		//    ImGui::DockBuilderFinish(dockspace_id);
 		//}
 	}
+
+	style.WindowMinSize.x = minWinSizeX;
 	ImGui::End();
 }
 
@@ -498,7 +525,7 @@ void Gui::MainMenuGameObject()
 
 		ImGui::EndMenu();
 	}
-	if (ImGui::MenuItem("Camera")) { panelGame->gameCameras.push_back(engine->N_sceneManager->CreateCameraGO("newCamera").get()); }
+	if (ImGui::MenuItem("Camera")) { engine->N_sceneManager->CreateCameraGO("newCamera"); }
 	//Alex: this is just for debug
 	if (ImGui::MenuItem("Canvas")) { engine->N_sceneManager->CreateCanvasGO("newCanvas"); }
 }

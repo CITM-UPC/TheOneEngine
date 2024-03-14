@@ -26,7 +26,7 @@ public:
 
 	bool CleanUp();
 
-	void CameraInput(double dt);
+	void CameraInput(GameObject* cam);
 
 	void CreateRay();
 
@@ -34,9 +34,7 @@ public:
 
 	//hekbas test
 	double dtSum = 0;
-
-    std::shared_ptr<GameObject> sceneCamera;
-    std::shared_ptr<GameObject> cameraParent;
+	double dtTemp = 0;
 };
 
 #endif // !__RENDERER_3D_H__
