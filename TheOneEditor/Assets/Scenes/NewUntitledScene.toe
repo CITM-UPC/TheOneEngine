@@ -325,21 +325,21 @@
         {
           "Name": "Transform",
           "Transformation Matrix": [
-            -0.999999999999996,
+            -1.0,
             0.0,
-            -8.742278000372473e-08,
+            -8.742277657347586e-08,
             0.0,
             0.0,
             1.0,
             0.0,
             0.0,
-            8.742278000372473e-08,
+            8.742277657347586e-08,
             0.0,
-            -0.999999999999996,
+            -1.0,
             0.0,
-            0.046581339091062546,
+            0.046580567955970764,
             0.0,
-            8.308060646057129,
+            17.238475799560547,
             1.0
           ],
           "Type": 0,
@@ -473,8 +473,8 @@
           "Rect": [
             0.0,
             0.0,
-            -0.22689279913902283,
-            -0.12768305838108063
+            116.4802474975586,
+            65.54882049560547
           ],
           "Type": 6,
           "UID": 1205880597,
@@ -509,6 +509,70 @@
       ],
       "Enabled": true,
       "Name": "newCanvas",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            0.07000000029802322,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.07000000029802322,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.07000000029802322,
+            0.0,
+            0.0,
+            0.0,
+            -15.321989059448242,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 697960530
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SM_Xenomorph/Xenomorph.mesh",
+          "Type": 2,
+          "UID": 2307613532
+        },
+        {
+          "ColliderType": 0,
+          "CollisionType": 1,
+          "Height": 0.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 4.0,
+          "Type": 5,
+          "UID": 420087802,
+          "Width": 0.0
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "AdultXenomorphBehaviour",
+          "Type": 4,
+          "UID": 2537796157
+        }
+      ],
+      "Enabled": true,
+      "Name": "Xenomorph",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845

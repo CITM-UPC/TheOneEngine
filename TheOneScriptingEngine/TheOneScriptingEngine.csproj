@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdultXenomorphBehaviour.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="CamControlTest.cs" />
     <Compile Include="ExampleScript.cs" />
