@@ -85,7 +85,7 @@ public:
 
     void DrawComponent(Camera* camera);
 
-    void SetTo2DRenderSettings(const bool& setTo);
+    void SetTo2DRenderSettings(Camera* camera, const bool& setTo);
 
     // @Get / Set --------------------------------
     Rect2D GetRect() const;
@@ -102,10 +102,8 @@ public:
     bool debugDraw = true;
 
 private:
-    Rect2D rect = { 0,0,50,50 };
+    Rect2D rect = { 0,0,2,2 };
     std::vector<std::unique_ptr<ItemUI>> uiElements;
-
-
 };
 
 #endif //  !__CANVAS_H__

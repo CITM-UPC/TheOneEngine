@@ -18,19 +18,11 @@ void ImageUI::Draw2D()
 {
 	auto canvas = containerGO.get()->GetComponent<Canvas>();
 
-	rect.x = canvas->GetRect().x + GetRect().x;
-	rect.y = canvas->GetRect().y + GetRect().y;
+	float posX = canvas->GetRect().x + GetRect().x;
+	float posY = canvas->GetRect().y + GetRect().y;
 
-	float width = (canvas->GetRect().w * rect.w) / 100;
-	float height = (canvas->GetRect().h * rect.h) / 100;
-
-	//glLineWidth(2.0f);
-	//glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	//glm::mat4 projectionMatrix = glm::translate(glm::mat4(1.0f), glm::fvec3(x, y, 0)) * glm::mat4(1.0f) * glm::scale(glm::mat4(1.0f), glm::fvec3(GetRect().w, GetRect().h, 1));
-	//glPushMatrix();
-	//glMultMatrixf(glm::value_ptr(projectionMatrix));
-
+	float width = (canvas->GetRect().w * imageRect.w);
+	float height = (canvas->GetRect().h * imageRect.h);
 
 	glEnable(GL_TEXTURE_2D);
 	glEnable(GL_BLEND);
@@ -38,38 +30,32 @@ void ImageUI::Draw2D()
 
 	image.get()->bind();
 
-
 	glBegin(GL_QUADS);
 
+	glTexCoord2f(0.0f, 1.0f);  // Top-left corner of the texture
+	glVertex2f(posX - width / 2, posY + height / 2);
+	
+	glTexCoord2f(1.0f, 1.0f);  // Top-right corner of the texture
+	glVertex2f(posX + width / 2, posY + height / 2);
+
 	glTexCoord2f(1.0f, 0.0f);  // Bottom-right corner of the texture
-	glVertex2f(rect.x - width / 2, rect.y + height / 2);
+	glVertex2f(posX + width / 2, posY - height / 2);
 
 	glTexCoord2f(0.0f, 0.0f);  // Bottom-left corner of the texture
-	glVertex2f(rect.x + width / 2, rect.y + height / 2);
-
-	glTexCoord2f(0.0f, 1.0f);  // Top-left corner of the texture
-	glVertex2f(rect.x + width / 2, rect.y - height / 2);
-
-	glTexCoord2f(1.0f, 1.0f);  // Top-right corner of the texture
-	glVertex2f(rect.x - width / 2, rect.y - height / 2);
+	glVertex2f(posX - width / 2, posY - height / 2);
 
 	glEnd();
 
-	/*glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);*/
 	glBindTexture(GL_TEXTURE_2D, 0);
 
 	glDisable(GL_TEXTURE_2D);
-
-
-	//glPopMatrix();
 }
 
 json ImageUI::SaveUIElement()
 {
 	json uiElementJSON;
 
-	uiElementJSON["Rect"] = { rect.x, rect.y, rect.w, rect.h };
+	uiElementJSON["Rect"] = { imageRect.x, imageRect.y, imageRect.w, imageRect.h };
 	uiElementJSON["Type"] = (int)type;
 	uiElementJSON["Interactuable"] = interactuable;
 
@@ -82,10 +68,10 @@ void ImageUI::LoadUIElement(const json& UIElementJSON)
 {
 	if (UIElementJSON.contains("Rect"))
 	{
-		rect.x = UIElementJSON["Rect"][0];
-		rect.y = UIElementJSON["Rect"][1];
-		rect.w = UIElementJSON["Rect"][2];
-		rect.h = UIElementJSON["Rect"][3];
+		imageRect.x = UIElementJSON["Rect"][0];
+		imageRect.y = UIElementJSON["Rect"][1];
+		imageRect.w = UIElementJSON["Rect"][2];
+		imageRect.h = UIElementJSON["Rect"][3];
 	}
 	if (UIElementJSON.contains("Type")) type = (UiType)UIElementJSON["Type"];
 	if (UIElementJSON.contains("Interactuable")) interactuable = UIElementJSON["Interactuable"];

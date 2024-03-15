@@ -30,13 +30,11 @@ public:
 
 protected:
 
-	Rect2D rect;
+	Rect2D imageRect;
 	bool interactuable;
 
 	std::shared_ptr<GameObject> containerGO;
 	UiType type;
-
-
 };
 
 #endif // !__ITEMUI_H__
