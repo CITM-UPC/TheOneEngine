@@ -12,6 +12,9 @@
 #include "..\TheOneEngine\Script.h"
 #include "..\TheOneEngine\Collider2D.h"
 #include "..\TheOneEngine\MonoManager.h"
+#include "..\TheOneEngine\Canvas.h"
+#include "..\TheOneEngine\ItemUI.h"
+#include "..\TheOneEngine\ImageUI.h"
 
 #include "../TheOneAudio/AudioCore.h"
 
@@ -444,6 +447,105 @@ bool PanelInspector::Draw()
                 }
             }
 
+            //canvas
+
+            Canvas* tempCanvas = selectedGO->GetComponent<Canvas>();
+
+            if (tempCanvas != nullptr && ImGui::CollapsingHeader("Canvas", treeNodeFlags))
+            {
+
+                for (auto& item : tempCanvas->GetUiElements())
+                {
+                    if (item != nullptr && ImGui::CollapsingHeader(item->GetName().c_str(), treeNodeFlags))
+                    {
+                        int id = item->GetID();
+
+                        //add change name imgui
+                        static char changeUIName[256]; // Buffer para el nuevo nombre
+                        if (ImGui::InputText("Set Name", changeUIName, sizeof(changeUIName), ImGuiInputTextFlags_EnterReturnsTrue)) {
+                            std::string newName(changeUIName);
+                            LOG(LogType::LOG_INFO, "ItemUI %s has been renamed to %s", item->GetName().c_str(), newName.c_str());
+                            item->SetName(newName);
+                            changeUIName[0] = '\0';
+                        }
+
+                        ImGui::Text("Current ItemID is: %d", id);
+
+
+                        if (item->GetType() == UiType::IMAGE)
+                        {
+                            ImageUI* tempImageUI = tempCanvas->GetItemUI<ImageUI>(id);
+                            ImGui::Text("UiType: IMAGE");
+                            ImGui::Text("Image Path: %s", tempImageUI->GetPath().c_str());
+                        }
+                        //else if (item->GetType() == UiType::FONT)
+                        //{
+
+                        //}
+                        else if (item->GetType() == UiType::UNKNOWN)
+                        {
+                            ImGui::Text("UiType: UNKNOWN TYPE");
+                        }
+
+                        ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                        if (ImGui::Button("Remove ItemUI"))
+                        {
+                            tempCanvas->RemoveItemUI(id);
+                        }
+                    }
+                }
+
+                //adders and removers of itemui
+                ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                if (ImGui::TreeNode("Add ItemUI"))
+                {
+                    if (ImGui::TreeNode("ImageUI"))
+                    {
+                        static char nameRecipient[32];
+
+                        ImGui::InputText("File Name", nameRecipient, IM_ARRAYSIZE(nameRecipient));
+
+                        if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
+                        {
+                            tempCanvas->AddItemUI<ImageUI>(nameRecipient);
+                            nameRecipient[0] = '\0';
+                        }
+                        ImGui::TreePop();
+                    }
+                    if (ImGui::MenuItem("FontUI"))
+                    {
+                        //to implement
+
+                        //static char nameRecipient[32];
+
+                        //ImGui::InputText("File Name", nameRecipient, IM_ARRAYSIZE(nameRecipient));
+
+                        //if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
+                        //{
+                        //    //std::string className = "ActualScriptTest2";
+                        //    if (MonoManager::IsClassInMainAssembly(nameRecipient))
+                        //    {
+                        //        tempCanvas->AddItemUI<FontUI>(nameRecipient);
+                        //    }
+                        //    else
+                        //    {
+                        //        LOG(LogType::LOG_WARNING, "Could not find image '%s'", nameRecipient);
+                        //    }
+                        //}
+                        //ImGui::TreePop();
+                    }
+                    ImGui::TreePop();
+                }
+
+
+                //remover of canvas
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+                if (ImGui::Button("Remove Canvas"))
+                {
+                    selectedGO->RemoveComponent(ComponentType::Canvas);
+                }
+            }
+
             /*Add Component*/
             if (ImGui::BeginMenu("Add Component"))
             {
@@ -505,6 +607,14 @@ bool PanelInspector::Draw()
 
                     ImGui::TreePop();
                 }
+
+                if (ImGui::MenuItem("New Canvas"))
+                {
+                    selectedGO->AddComponent<Canvas>();
+                }
+
+
+
 
                 /*ImGuiTextFilter filter;
                 filter.Draw();*/

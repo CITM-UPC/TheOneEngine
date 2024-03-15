@@ -146,6 +146,22 @@ void Canvas::LoadComponent(const json& canvasJSON)
 	}
 }
 
+bool Canvas::RemoveItemUI(unsigned int id)
+{
+	bool ret = true;
+
+	for (auto it = uiElements.begin(); it != uiElements.end(); ++it)
+	{
+		if ((*it)->GetID() == id)
+		{
+			it = uiElements.erase(it);
+			break;
+		}
+	}
+
+	return ret;
+}
+
 std::vector<ItemUI*> Canvas::GetUiElements()
 {
 	std::vector<ItemUI*> tempUiElements;

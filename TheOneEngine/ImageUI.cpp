@@ -1,13 +1,14 @@
 #include "ImageUI.h"
 #include "Canvas.h"
 
-ImageUI::ImageUI(std::shared_ptr<GameObject> containerGO, Rect2D rect) : ItemUI(containerGO, UiType::IMAGE, false, rect)
+ImageUI::ImageUI(std::shared_ptr<GameObject> containerGO, Rect2D rect) : ItemUI(containerGO, UiType::IMAGE, name, false, rect)
 {
+	this->name = "Image";
 	imagePath = "Assets/Meshes/HUD.png";
 	image = std::make_unique<Texture>(imagePath, containerGO);
 }
 
-ImageUI::ImageUI(std::shared_ptr<GameObject> containerGO, const std::string& path, Rect2D rect) : ItemUI(containerGO, UiType::IMAGE, false, rect), imagePath(path)
+ImageUI::ImageUI(std::shared_ptr<GameObject> containerGO, const std::string& path, std::string name, Rect2D rect) : ItemUI(containerGO, UiType::IMAGE, name, false, rect), imagePath(path)
 {
 	image = std::make_unique<Texture>(imagePath);
 }
@@ -55,6 +56,8 @@ json ImageUI::SaveUIElement()
 {
 	json uiElementJSON;
 
+	uiElementJSON["ID"] = (unsigned int)id;
+	uiElementJSON["Name"] = name.c_str();
 	uiElementJSON["Rect"] = { imageRect.x, imageRect.y, imageRect.w, imageRect.h };
 	uiElementJSON["Type"] = (int)type;
 	uiElementJSON["Interactuable"] = interactuable;
@@ -66,6 +69,8 @@ json ImageUI::SaveUIElement()
 
 void ImageUI::LoadUIElement(const json& UIElementJSON)
 {
+	if (UIElementJSON.contains("ID")) id = (unsigned int)UIElementJSON["ID"];
+	if (UIElementJSON.contains("Name")) name = UIElementJSON["Name"];
 	if (UIElementJSON.contains("Rect"))
 	{
 		imageRect.x = UIElementJSON["Rect"][0];

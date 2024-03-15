@@ -1,7 +1,9 @@
 #include "ItemUI.h"
+#include "UIDGen.h"
 
-ItemUI::ItemUI(std::shared_ptr<GameObject> containerGO, UiType type, bool interactuable, Rect2D rect) : containerGO(containerGO), type(type), interactuable(interactuable), imageRect(rect)
+ItemUI::ItemUI(std::shared_ptr<GameObject> containerGO, UiType type, std::string name, bool interactuable, Rect2D rect) : containerGO(containerGO), type(type), interactuable(interactuable), imageRect(rect), name(name)
 {
+	this->id = UIDGen::GenerateUID();
 }
 
 ItemUI::~ItemUI()
@@ -28,6 +30,8 @@ json ItemUI::SaveUIElement()
 {
 	json uiElementJSON;
 
+	uiElementJSON["ID"] = (unsigned int)id;
+	uiElementJSON["Name"] = name.c_str();
 	uiElementJSON["Rect"] = { imageRect.x, imageRect.y, imageRect.w, imageRect.h };
 	uiElementJSON["Type"] = (int)type;
 	uiElementJSON["Interactuable"] = interactuable;
@@ -37,6 +41,8 @@ json ItemUI::SaveUIElement()
 
 void ItemUI::LoadUIElement(const json& UIElementJSON)
 {
+	if (UIElementJSON.contains("ID")) id = (unsigned int)UIElementJSON["ID"];
+	if (UIElementJSON.contains("Name")) name = UIElementJSON["Name"];
 	if (UIElementJSON.contains("Rect"))
 	{
 		imageRect.x = UIElementJSON["Rect"][0];

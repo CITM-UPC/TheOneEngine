@@ -17,71 +17,50 @@ public:
     template <typename TUI>
     unsigned int AddItemUI()
     {
-        int counter = 0;
-        for (const auto& component : uiElements)
-        {
-            if (dynamic_cast<TUI*>(component.get()))
-            {
-                counter++;
-            }
-        }
         std::unique_ptr<ItemUI> newItemUI = std::make_unique<TUI>(containerGO.lock());
+        unsigned int tempID = newItemUI->GetID();
         uiElements.push_back(std::move(newItemUI));
 
-        return counter;
+        return tempID;
     }
 
     template <typename TUI>
     unsigned int AddItemUI(std::string path)
     {
-        int counter = 0;
-        for (const auto& component : uiElements)
-        {
-            if (dynamic_cast<TUI*>(component.get()))
-            {
-                counter++;
-            }
-        }
         std::unique_ptr<ItemUI> newItemUI = std::make_unique<TUI>(containerGO.lock(), path);
+        unsigned int tempID = newItemUI->GetID();
         uiElements.push_back(std::move(newItemUI));
 
-        return counter;
+        return tempID;
     }
 
     template <typename TUI>
     unsigned int AddCopiedItemUI(TUI* ref)
     {
-        int counter = 0;
-        for (const auto& component : uiElements)
-        {
-            if (dynamic_cast<TUI*>(component.get()))
-            {
-                counter++;
-            }
-        }
         std::unique_ptr<ItemUI> newItemUI = std::make_unique<TUI>(containerGO.lock(), ref);
+        unsigned int tempID = newItemUI->GetID();
         uiElements.push_back(std::move(newItemUI));
 
-        return counter;
+        return tempID;
     }
 
     template <typename TUI>
     TUI* GetItemUI(unsigned int id)
     {
-        int counter = 0;
         for (const auto& component : uiElements)
         {
             if (dynamic_cast<TUI*>(component.get()))
             {
-                if (counter == id)
+                if (component.get()->GetID() == id)
                 {
                     return static_cast<TUI*>(component.get());
                 }
-                counter++;
             }
         }
         return nullptr;
     }
+
+    bool RemoveItemUI(unsigned int id);
 
     void DrawComponent(Camera* camera);
 
