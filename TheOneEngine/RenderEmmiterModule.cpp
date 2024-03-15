@@ -13,11 +13,13 @@ BillboardRender::BillboardRender(Emmiter* owner)
 
 void BillboardRender::Update(Particle* particle, Camera* camera)
 {
-    const float* viewMatrix = (float*)glm::value_ptr(camera->viewMatrix);
+    glDisable(GL_CULL_FACE);
+
+    const double* viewProjectionMatrix = (double*)glm::value_ptr(camera->viewProjectionMatrix);
 
     glPushMatrix();
     //glLoadIdentity();
-    glLoadMatrixf(viewMatrix);
+    glLoadMatrixd(viewProjectionMatrix);
 
     vec3 cameraPosition;
     cameraPosition = camera->GetContainerGO()->GetComponent<Transform>()->GetPosition();
@@ -30,13 +32,13 @@ void BillboardRender::Update(Particle* particle, Camera* camera)
     glBegin(GL_TRIANGLES);
     glColor3ub(particle->color.r, particle->color.g, particle->color.b);
 
-    glVertex3d(particlePosition.x - (1 * particle->scale.x), particlePosition.y + (1 * particle->scale.y), particlePosition.z);
-    glVertex3d(particlePosition.x - (1 * particle->scale.x), particlePosition.y - (1 * particle->scale.y), particlePosition.z);
-    glVertex3d(particlePosition.x + (1 * particle->scale.x), particlePosition.y + (1 * particle->scale.y), particlePosition.z);
+    glVertex3d(- (1 * particle->scale.x), + (1 * particle->scale.y), 0);
+    glVertex3d(- (1 * particle->scale.x), - (1 * particle->scale.y), 0);
+    glVertex3d(+ (1 * particle->scale.x), + (1 * particle->scale.y), 0);
 
-    glVertex3d(particlePosition.x - (1 * particle->scale.x), particlePosition.y - (1 * particle->scale.y), particlePosition.z);
-    glVertex3d(particlePosition.x + (1 * particle->scale.x), particlePosition.y - (1 * particle->scale.y), particlePosition.z);
-    glVertex3d(particlePosition.x + (1 * particle->scale.x), particlePosition.y + (1 * particle->scale.y), particlePosition.z);
+    glVertex3d(- (1 * particle->scale.x), - (1 * particle->scale.y), 0);
+    glVertex3d(+ (1 * particle->scale.x), - (1 * particle->scale.y), 0);
+    glVertex3d(+ (1 * particle->scale.x), + (1 * particle->scale.y), 0);
 
     glEnd();
 
@@ -45,6 +47,8 @@ void BillboardRender::Update(Particle* particle, Camera* camera)
     Billboard::EndBillboard();
 
     //glPopMatrix();
+
+    glEnable(GL_CULL_FACE);
 
 }
 

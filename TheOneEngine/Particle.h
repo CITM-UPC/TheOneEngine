@@ -23,7 +23,7 @@ public:
 	vec3 rotation;
 
 
-	vec3 scale = vec3(0.1, 0.1, 0.1);
+	vec3 scale = vec3(1, 1, 1);
 
 private:
 
