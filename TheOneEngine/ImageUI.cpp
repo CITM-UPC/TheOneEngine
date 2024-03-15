@@ -33,16 +33,16 @@ void ImageUI::Draw2D()
 
 	glBegin(GL_QUADS);
 
-	glTexCoord2f(0.0f, 1.0f);  // Top-left corner of the texture
+	glTexCoord2f(textureSection.x, textureSection.y + textureSection.h);  // Top-left corner of the texture
 	glVertex2f(posX - width / 2, posY + height / 2);
 	
-	glTexCoord2f(1.0f, 1.0f);  // Top-right corner of the texture
+	glTexCoord2f(textureSection.x + textureSection.w, textureSection.y + textureSection.h);  // Top-right corner of the texture
 	glVertex2f(posX + width / 2, posY + height / 2);
 
-	glTexCoord2f(1.0f, 0.0f);  // Bottom-right corner of the texture
+	glTexCoord2f(textureSection.x + textureSection.w, textureSection.y);  // Bottom-right corner of the texture
 	glVertex2f(posX + width / 2, posY - height / 2);
 
-	glTexCoord2f(0.0f, 0.0f);  // Bottom-left corner of the texture
+	glTexCoord2f(textureSection.x, textureSection.y);  // Bottom-left corner of the texture
 	glVertex2f(posX - width / 2, posY - height / 2);
 
 	glEnd();
@@ -83,4 +83,17 @@ void ImageUI::LoadUIElement(const json& UIElementJSON)
 
 	if (UIElementJSON.contains("ImagePath")) imagePath = UIElementJSON["ImagePath"];
 	image = std::make_unique<Texture>(imagePath);
+}
+
+Rect2D ImageUI::GetSect() const
+{
+	return this->textureSection;
+}
+
+void ImageUI::SetSectSize(float x, float y, float width, float height)
+{
+	textureSection.x = x;
+	textureSection.y = y;
+	textureSection.w = width;
+	textureSection.h = height;
 }
