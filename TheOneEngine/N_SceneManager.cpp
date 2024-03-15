@@ -628,6 +628,8 @@ void Scene::ChangePrimaryCamera(GameObject* newPrimaryCam)
 {
 	for (const auto& gameCam : rootSceneGO->children)
 	{
+		if (gameCam->GetComponent<Camera>() == nullptr) continue;
+
 		if (gameCam.get() != newPrimaryCam && gameCam->GetComponent<Camera>()->primaryCam)
 			gameCam->GetComponent<Camera>()->primaryCam = false;
 	}
