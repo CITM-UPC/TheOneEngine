@@ -39,6 +39,16 @@ public struct Vector3
         return new Vector3(a.x / b, a.y / b, a.z / b);
     }
 
+    public static bool operator ==(Vector3 a, Vector3 b)
+    {
+        return a.x == b.x && a.y == b.y && a.z == b.z;
+    }
+
+    public static bool operator !=(Vector3 a, Vector3 b)
+    {
+        return a.x != b.x || a.y != b.y || a.z != b.z;
+    }
+
     float Magnitude()
     {
         return (float)Math.Sqrt(x * x + y * y + z * z);
