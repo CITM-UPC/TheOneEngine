@@ -456,9 +456,10 @@ bool PanelInspector::Draw()
 
                 for (auto& item : tempCanvas->GetUiElements())
                 {
-                    if (item != nullptr && ImGui::CollapsingHeader(item->GetName().c_str(), treeNodeFlags))
+                    std::string tstring = "  " + item->GetName() + " [id: " + std::to_string(item->GetID()) + "]";
+                    if (item != nullptr && ImGui::CollapsingHeader(tstring.c_str(), treeNodeFlags))
                     {
-                        int id = item->GetID();
+                        unsigned int id = item->GetID();
 
                         //add change name imgui
                         static char changeUIName[256]; // Buffer para el nuevo nombre
@@ -468,15 +469,56 @@ bool PanelInspector::Draw()
                             item->SetName(newName);
                             changeUIName[0] = '\0';
                         }
+                        std::string idstring = "Current ItemID is: " + std::to_string(item->GetID());
+                        ImGui::Text(idstring.c_str());
+                        ImGui::Text("Rect section info:");
+                        float tempX, tempY, tempW, tempH;
+                        tempX = item->GetRect().x;
+                        tempY = item->GetRect().y;
+                        tempW = item->GetRect().w;
+                        tempH = item->GetRect().h;
+                        ImGui::Text("   X:");
+                        ImGui::SameLine();
+                        ImGui::DragFloat(" ", &tempX, 0.05f, -2.0f, 2.0f);
+                        ImGui::Text("   Y:");
+                        ImGui::SameLine();
+                        ImGui::DragFloat("  ", &tempY, 0.05f, -2.0f, 2.0f);
+                        ImGui::Text("   W:");
+                        ImGui::SameLine();
+                        ImGui::DragFloat("   ", &tempW, 0.05f, 0.0f, 10.0f);
+                        ImGui::Text("   H:");
+                        ImGui::SameLine();
+                        ImGui::DragFloat("    ", &tempH, 0.05f, 0.0f, 10.0f);
+                        ImGui::Dummy(ImVec2(0.0f, 5.0f));
 
-                        ImGui::Text("Current ItemID is: %d", id);
-
+                        item->SetRect(tempX, tempY, tempW, tempH);
 
                         if (item->GetType() == UiType::IMAGE)
                         {
                             ImageUI* tempImageUI = tempCanvas->GetItemUI<ImageUI>(id);
                             ImGui::Text("UiType: IMAGE");
                             ImGui::Text("Image Path: %s", tempImageUI->GetPath().c_str());
+                            ImGui::Text("Image section info:");
+
+                            float tempX2, tempY2, tempW2, tempH2;
+                            tempX2 = tempImageUI->GetSect().x;
+                            tempY2 = tempImageUI->GetSect().y;
+                            tempW2 = tempImageUI->GetSect().w;
+                            tempH2 = tempImageUI->GetSect().h;
+                            ImGui::Text("   X:");
+                            ImGui::SameLine();
+                            ImGui::DragFloat("     ", &tempX2, 1.0f);
+                            ImGui::Text("   Y:");
+                            ImGui::SameLine();
+                            ImGui::DragFloat("      ", &tempY2, 1.0f);
+                            ImGui::Text("   W:");
+                            ImGui::SameLine();
+                            ImGui::DragFloat("       ", &tempW2, 1.0f);
+                            ImGui::Text("   H:");
+                            ImGui::SameLine();
+                            ImGui::DragFloat("        ", &tempH2, 1.0f);
+
+                            tempImageUI->SetSectSize(tempX2, tempY2, tempW2, tempH2);
                         }
                         //else if (item->GetType() == UiType::FONT)
                         //{

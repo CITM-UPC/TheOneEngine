@@ -87,13 +87,19 @@ void ImageUI::LoadUIElement(const json& UIElementJSON)
 
 Rect2D ImageUI::GetSect() const
 {
-	return this->textureSection;
+	Rect2D imageSect;
+	imageSect.x = textureSection.x * image.get()->width;
+	imageSect.y = textureSection.y * image.get()->height;
+	imageSect.w = (textureSection.w * image.get()->width) - imageSect.x ;
+	imageSect.h = (textureSection.h * image.get()->height) - imageSect.y;
+
+	return imageSect;
 }
 
 void ImageUI::SetSectSize(float x, float y, float width, float height)
 {
-	textureSection.x = x;
-	textureSection.y = y;
-	textureSection.w = width;
-	textureSection.h = height;
+	textureSection.x = x / image.get()->width;
+	textureSection.y = y / image.get()->height;
+	textureSection.w = (x + width) / image.get()->width;
+	textureSection.h = (y + height) / image.get()->height;
 }
