@@ -141,6 +141,13 @@ public:
     json SaveGameObject();
     void LoadGameObject(const json& gameObjectJSON);
 
+    //Prefab
+    void SetPrefab(uint pId);
+    void UnpackPrefab();
+    void LockPrefab(bool lock); //To make it editable or not?
+    const uint GetPrefabID() const { return prefabID; }
+    bool IsPrefab() const { return prefabID != 0; }
+
 public:
     std::weak_ptr<GameObject> parent;
     std::vector<std::shared_ptr<GameObject>> children;
@@ -152,6 +159,11 @@ private:
     uint32_t UID;
     bool enabled;
     AABBox aabb;
+
+    //Prefab Vars
+    uint prefabID = 0; //Intit at 0 for GO that are not ina Prefab
+    bool lockedPrefab = true;
+    bool isPrefabDirty = false;
 };
 
 #endif // !__GAME_OBJECT_H__

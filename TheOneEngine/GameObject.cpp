@@ -467,3 +467,37 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 		}
 	}
 }
+
+void GameObject::SetPrefab(uint pID)
+{
+	if (!children.empty()) 
+	{
+		for (auto item = children.begin(); item != children.end(); ++item) 
+		{
+			if (*item != nullptr && (pID != 0 || (*item).get()->prefabID == this->prefabID))
+			{
+				(*item).get()->SetPrefab(pID);
+			}
+		}
+	}
+	prefabID = pID;
+}
+
+void GameObject::UnpackPrefab()
+{
+	if (IsPrefab())
+		SetPrefab(0);
+}
+
+void GameObject::LockPrefab(bool lock)
+{
+	if (IsPrefab())
+	{
+		lockedPrefab = lock;
+		for (auto item = children.begin(); item != children.end(); ++item) {
+			if (*item != nullptr) {
+				(*item).get()->LockPrefab(lock);
+			}
+		}
+	}
+}

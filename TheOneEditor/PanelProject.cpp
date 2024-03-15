@@ -155,6 +155,9 @@ bool PanelProject::DragAndDrop()
 		{
 			GameObject* dragging = *(GameObject**)payload->Data;
 
+			if (!dragging->IsPrefab())
+				dragging->Create / SetPrefab();
+
 			//CreatePrefab(dragging);
 		}
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(fileSelected)
