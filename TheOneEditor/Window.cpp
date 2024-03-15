@@ -142,8 +142,6 @@ bool Window::initOpenGL()
     }
     LOG(LogType::LOG_OK, "-OpenGL 3.1 Supported");
 
-    glViewport(0, 0, width, height);
-    glClearColor(0.25, 0.25, .25, 1);
 
     LOG(LogType::LOG_OK, "-Init OpenGL");
 

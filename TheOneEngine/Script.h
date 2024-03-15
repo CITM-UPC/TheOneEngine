@@ -22,7 +22,7 @@ public:
     void Enable() override;
     void Update() override;
 
-    void DrawComponent();
+    void DrawComponent(Camera* camera);
 
     json SaveComponent();
     void LoadComponent(const json& scriptJSON);

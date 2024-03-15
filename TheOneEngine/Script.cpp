@@ -1,6 +1,7 @@
 #include "Script.h"
 #include "MonoManager.h"
 #include "GameObject.h"
+#include "Camera.h"
 
 #include "EngineCore.h"
 #include "N_SceneManager.h"
@@ -36,7 +37,7 @@ void Script::Update()
 	MonoManager::CallScriptFunction(monoBehaviourInstance, "Update");
 }
 
-void Script::DrawComponent()
+void Script::DrawComponent(Camera* camera)
 {
 }
 

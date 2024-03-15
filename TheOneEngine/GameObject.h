@@ -13,6 +13,8 @@
 #include <list>
 #include <memory>
 
+class Camera;
+
 enum class DrawMode
 {
     GAME,
@@ -27,8 +29,8 @@ public:
     ~GameObject();
 
     void Update(double dt);
-    void Draw();
-    void DrawUI(const DrawMode mode);
+    void Draw(Camera* camera);
+    void DrawUI(Camera* camera, const DrawMode mode);
 
 
     // Components

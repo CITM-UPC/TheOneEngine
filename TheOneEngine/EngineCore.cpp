@@ -33,9 +33,9 @@ void EngineCore::Start()
     
 }
 
-void EngineCore::PreUpdate()
+bool EngineCore::PreUpdate()
 {
-    inputManager->PreUpdate();
+    return inputManager->PreUpdate();
 }
 
 void EngineCore::Update(double dt)
@@ -140,7 +140,9 @@ void EngineCore::Update(double dt)
 
 void EngineCore::Render(Camera* camera)
 {
-    //glClearColor(0.7f, 0.7f, 1.0f, 1.0f);
+    LogGL("BEFORE RENDER");
+
+    if (!camera) camera = editorCamReference;
 
     // Update Camera Matrix
     glMatrixMode(GL_PROJECTION);
@@ -155,7 +157,6 @@ void EngineCore::Render(Camera* camera)
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glEnable(GL_COLOR_MATERIAL);
-    //glEnable(GL_LIGHTING);
 
     switch (camera->cameraType)
     {
@@ -169,7 +170,6 @@ void EngineCore::Render(Camera* camera)
         LOG(LogType::LOG_ERROR, "EngineCore - CameraType invalid!");
         break;
     }
-    //gluPerspective(camera->fov, camera->aspect, camera->zNear, camera->zFar);
 
 	Transform* cameraTransform = camera->GetContainerGO().get()->GetComponent<Transform>();
 
@@ -190,7 +190,20 @@ void EngineCore::Render(Camera* camera)
     glColor3f(1.0f, 1.0f, 1.0f);
     //DrawFrustum(camera->viewMatrix);
 
+    LogGL("DURING RENDER");
+
     assert(glGetError() == GL_NONE);
+}
+
+void EngineCore::LogGL(string id)
+{
+    GLenum errorCode = glGetError();
+    
+    if (errorCode != GL_NO_ERROR)
+    {
+        const GLubyte* errorString = gluErrorString(errorCode);
+        LOG(LogType::LOG_ERROR, "GL_%d  %s  %s", errorCode, errorString, id.c_str());
+    }
 }
 
 void EngineCore::CleanUp()
@@ -408,17 +421,6 @@ void EngineCore::DrawRay(const Ray& ray)
     glDeleteVertexArrays(1, &rayVAO);
 }
 
-void EngineCore::OnWindowResize(int x, int y, int width, int height)
-{
-    glViewport(x, y, width, height);
-
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
-
 bool EngineCore::GetVSync()
 {
     return vsync;
@@ -466,4 +468,10 @@ void EngineCore::AddLog(LogType type, const char* entry)
 void EngineCore::CleanLogs()
 {
     logs.clear();
+}
+
+void EngineCore::SetEditorCamera(Camera* cam)
+{
+    if(cam)
+        editorCamReference = cam;
 }

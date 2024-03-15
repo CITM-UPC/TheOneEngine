@@ -8,92 +8,118 @@
 
 #include "../TheOneEngine/EngineCore.h"
 
-PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name),cameraToRender() {}
+PanelGame::PanelGame(PanelType type, std::string name) : Panel(type, name)
+{
+	frameBuffer = std::make_shared<FrameBuffer>(1280, 720, true);
+}
 
 PanelGame::~PanelGame() {}
 
-bool PanelGame::Start()
+void PanelGame::Start()
 {
-	return true;
+	current = engine->N_sceneManager->currentScene;
 }
 
 bool PanelGame::Draw()
 {
+	// Set primary and Game cameras vector
+	std::vector<GameObject*> gameCameras;
+	for (const auto GO : engine->N_sceneManager->GetGameObjects())
+	{
+		if (GO->HasCameraComponent()) { gameCameras.push_back(GO.get()); }
+
+	}
+
+	for (const auto& cam : gameCameras)
+	{
+		Camera* gameCam = cam->GetComponent<Camera>();
+
+		if (gameCam && !gameCam->primaryCam) continue;
+		primaryCamera = gameCam;
+	}
+
+	// Viewport resize check
+	if (viewportSize.x > 0.0f && viewportSize.y > 0.0f && // zero sized framebuffer is invalid
+		(frameBuffer->getWidth() != viewportSize.x || frameBuffer->getHeight() != viewportSize.y))
+	{
+		frameBuffer->Resize((uint32_t)viewportSize.x, (uint32_t)viewportSize.y);
+		if(primaryCamera)
+			primaryCamera->aspect = viewportSize.x / viewportSize.y;
+	}
+
+
+
 	ImGuiWindowFlags settingsFlags = 0;
 	settingsFlags = ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse | ImGuiWindowFlags_MenuBar;
 
-	//ImGui::PushStyleVar(ImGuiStyleVar_WindowMinSize, ImVec2(0.f, 0.f));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.f, 0.f));
 	ImGui::SetNextWindowSize(ImVec2(500, 300), ImGuiCond_Once);
 
-	ImGui::SetNextWindowBgAlpha(.0f);
 	if (ImGui::Begin("Game", &enabled, settingsFlags))
 	{
+		isHovered = ImGui::IsWindowHovered();
+		isFocused = ImGui::IsWindowFocused();
 		//Get selected GO
 		selectedGO = engine->N_sceneManager->GetSelectedGO().get();
 
-		// Top Bar --------------------------
-		if (ImGui::BeginMenuBar())
+		ImVec2 availWindowSize = ImGui::GetContentRegionAvail();
+
+		//// Top Bar --------------------------
+		//if (ImGui::BeginMenuBar())
+		//{
+		//	if (ImGui::BeginMenu("Camera"))
+		//	{
+		//		for (auto camerasGO : gameCameras)
+		//		{
+		//			if(ImGui::MenuItem(camerasGO->GetName().c_str()))
+		//			{
+		//				cameraToRender = camerasGO->GetComponent<Camera>();
+		//			}
+		//		}
+		//		ImGui::EndMenu();
+		//	}
+
+		//	if (ImGui::BeginMenu("Aspect"))
+		//	{
+		//		ImGui::EndMenu();
+		//	}
+
+		//	ImGui::PopStyleVar();
+		//	ImGui::EndMenuBar();
+		//}
+
+		//ALL DRAWING MUST HAPPEN BETWEEN FB BIND/UNBIND-------------------------------------------------
 		{
-			//if (ImGui::Combo("##Camera", &resolution, gameCameras, 8))
+			frameBuffer->Bind();
 
-			//if (selectedItem != -1) {
-			//    // Do something with the selected item
-			//    ImGui::Text("Selected Object: %s", items[selectedItem]);
-			//}
 
-			if (ImGui::BeginMenu("Camera"))
+			frameBuffer->Clear();
+			frameBuffer->ClearBuffer(-1);
+			// Draw
+			engine->Render(primaryCamera);
+
+			// Game cameras Frustum
+			for (const auto& cam : gameCameras)
 			{
-				for (auto camerasGO : gameCameras)
-				{
-					if(ImGui::MenuItem(camerasGO->GetName().c_str()))
-					{
-						cameraToRender = camerasGO->GetComponent<Camera>();
-					}
-				}
-				ImGui::EndMenu();
-			}
+				Camera* gameCam = cam->GetComponent<Camera>();
 
-			if (ImGui::BeginMenu("Aspect"))
-			{
-				ImGui::EndMenu();
+				if (gameCam != nullptr && gameCam->drawFrustum)
+					engine->DrawFrustum(gameCam->frustum);
 			}
+			current->Draw(DrawMode::EDITOR);
 
-			ImGui::PopStyleVar();
-			ImGui::EndMenuBar();
+
+			frameBuffer->Unbind();
 		}
 
-		// Viewport Control --------------------------
-		// SDL Window
-		int SDLWindowWidth, SDLWindowHeight;
-		app->window->GetSDLWindowSize(&SDLWindowWidth, &SDLWindowHeight);
-		ImVec2 windowPos = ImGui::GetWindowPos();
-		ImVec2 windowSize = ImGui::GetWindowSize();
+		//Draw FrameBuffer Texture
+		viewportSize = { availWindowSize.x, availWindowSize.y };
+		ImGui::Image((ImTextureID)frameBuffer->getColorBufferTexture(), ImVec2{ viewportSize.x, viewportSize.y }, ImVec2{ 0, 1 }, ImVec2{ 1, 0 });
 
-		// ImGui Window
-		ImVec2 regionSize = ImGui::GetContentRegionAvail();
-
-		// Aspect Ratio Size
-		int width, height;
-		app->gui->CalculateSizeAspectRatio(regionSize.x, regionSize.y, width, height);
-
-		// Viewport coordinates
-		int x = static_cast<int>(windowPos.x);
-		int y = SDLWindowHeight - windowPos.y - windowSize.y;
-
-        engine->OnWindowResize(x, y, width, height);
-
-		engine->Render(engine->N_sceneManager->currentScene->currentCamera);
     }
 
 	ImGui::End();
 	ImGui::PopStyleVar();
 
-	return true;
-}
-
-bool PanelGame::AddCameraToRenderList(GameObject* cameraGO)
-{
-	gameCameras.push_back(cameraGO);
 	return true;
 }
