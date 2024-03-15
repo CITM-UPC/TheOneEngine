@@ -140,7 +140,12 @@ void MonoManager::CallScriptFunction(MonoObject* monoBehaviourInstance, std::str
 
     if (method == nullptr)
     {
-        LOG(LogType::LOG_ERROR, "Could not find method %s", functionToCall);
+        for (auto checkFunction : functionsToIgnore)
+        {
+            if (functionToCall == checkFunction) return;
+        }
+
+        LOG(LogType::LOG_ERROR, "Could not find method %s", functionToCall.c_str());
         return;
     }
 

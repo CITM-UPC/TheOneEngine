@@ -38,6 +38,13 @@
           "Yaw": 0.0,
           "zFar": 1000.0,
           "zNear": 0.1
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "CameraMovement",
+          "Type": 4,
+          "UID": 193459339
         }
       ],
       "Enabled": true,

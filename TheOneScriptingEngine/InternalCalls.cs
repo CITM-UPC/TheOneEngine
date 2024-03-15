@@ -44,6 +44,9 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void DestroyGameObject(IntPtr GOtoDestroy);
 
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static IntPtr FindGameObject(string name);
+
     //Helpers
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static float GetAppDeltaTime();

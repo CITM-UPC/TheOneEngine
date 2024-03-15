@@ -71,10 +71,20 @@ bool N_SceneManager::Update(double dt, bool isPlaying)
 	
 	sceneIsPlaying = isPlaying;
 
+	if (previousFrameIsPlaying != isPlaying && isPlaying == true)
+	{
+		for (const auto gameObject : currentScene->GetRootSceneGO()->children)
+		{
+			gameObject->Enable();
+		}
+	}
+
 	if (isPlaying)
 	{
 		currentScene->UpdateGOs(dt);
 	}
+
+	previousFrameIsPlaying = isPlaying;
 
 	return true;
 }
