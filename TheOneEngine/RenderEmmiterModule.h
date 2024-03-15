@@ -1,9 +1,11 @@
 #pragma once
 #include "Particle.h"
-#include "SingleOrRandom.h"
-#include <vector>
-#include "Defs.h"
+
 #include "Billboard.h"
+#include "Camera.h"
+#include "Defs.h"
+
+#include <vector>
 
 class Emmiter;
 
@@ -11,7 +13,7 @@ class RenderEmmiterModule {
 public:
 	virtual void Reset() {};
 
-	virtual void Update(Particle* particle, vec3 cameraPosition) {};
+	virtual void Update(Particle* particle, Camera* camera) {};
 
 	virtual json SaveModule() { return json(); };
 
@@ -34,7 +36,7 @@ public:
 
 	BillboardType billboardType;
 
-	void Update(Particle* particle, vec3 cameraPosition) override;
+	void Update(Particle* particle, Camera* camera) override;
 
 	json SaveModule();
 

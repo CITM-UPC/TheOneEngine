@@ -1,9 +1,12 @@
 #pragma once
 
 #include "Component.h"
-#include "Emmiter.h"
-#include <vector>
+
 #include "Transform.h"
+#include "Emmiter.h"
+
+#include <vector>
+#include <memory>
 
 class ParticleSystem : public Component {
 
@@ -13,7 +16,7 @@ public:
 	~ParticleSystem();
 
 	void Update() override;
-	void DrawComponent() override;
+	void DrawComponent(Camera* camera) override;
 
 	void Play();
 	void Stop();

@@ -30,6 +30,33 @@ Emmiter::Emmiter(ParticleSystem* owner)
 	RestartParticlePool();
 }
 
+Emmiter::Emmiter(ParticleSystem* owner, Emmiter* ref)
+{
+	this->owner = owner;
+
+	delay = ref->delay;
+	maxParticles = ref->maxParticles;
+	duration = ref->duration;
+	lifetime = ref->lifetime;
+	isLooping = ref->isLooping;
+	isON = ref->isON;
+
+	// TO-DO
+	spawnModule = std::make_unique<ConstantSpawnRate>(this);
+
+	renderModule = std::make_unique<BillboardRender>(this);
+
+	auto setSpeed = std::make_unique<SetSpeed>();
+	setSpeed->speed.usingSingleValue = false;
+	setSpeed->speed.rangeValue.lowerLimit = vec3{ -0.5, 1, -0.5 };
+	setSpeed->speed.rangeValue.upperLimit = vec3{ 0.5, 2, 0.5 };
+
+
+	initializeModules.push_back(std::move(setSpeed));
+
+	RestartParticlePool();
+}
+
 Emmiter::~Emmiter()
 {
 }
@@ -85,7 +112,7 @@ void Emmiter::Update(double dt)
 	}
 }
 
-void Emmiter::Render(vec3 cameraPosition)
+void Emmiter::Render(Camera* camera)
 {
 	//// sort particles by distance to the camera
 	//std::map<float, Particle*> particlesToRender;
@@ -103,7 +130,7 @@ void Emmiter::Render(vec3 cameraPosition)
 
 	if (renderModule) {
 		for (auto i = particlesToRender.begin(); i != particlesToRender.end(); ++i) {
-			renderModule->Update(*i, cameraPosition);
+			renderModule->Update(*i, camera);
 		}
 	}
 }

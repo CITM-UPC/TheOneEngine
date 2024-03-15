@@ -1,7 +1,7 @@
 #include "RenderEmmiterModule.h"
 #include "Emmiter.h"
 #include "ParticleSystem.h"
-#include "TransformComponent.h"
+#include "Transform.h"
 #include "Billboard.h"
 #include "GL/glew.h"
 
@@ -11,12 +11,19 @@ BillboardRender::BillboardRender(Emmiter* owner)
     type = BILLBOARD;
 }
 
-void BillboardRender::Update(Particle* particle, vec3 cameraPosition)
+void BillboardRender::Update(Particle* particle, Camera* camera)
 {
-    glPushMatrix();
-    glTranslatef(particle->position.x, particle->position.y, particle->position.z);
+    const float* projectionMatrix = (float*)glm::value_ptr(camera->projectionMatrix);
 
-    vec3 particlePosition = particle->position + owner->owner->GetTransform()->getPosition();
+    glPushMatrix();
+    glLoadMatrixf(projectionMatrix);
+
+    vec3 cameraPosition;
+    cameraPosition.x = camera->projectionMatrix[3].x;
+    cameraPosition.y = camera->projectionMatrix[3].y;
+    cameraPosition.z = camera->projectionMatrix[3].z;
+
+    vec3 particlePosition = particle->position + owner->owner->GetTransform()->GetPosition();
 
     Billboard::BeginSphericalBillboard(particlePosition, cameraPosition);
 

@@ -1,16 +1,17 @@
 #pragma once
-
-#include <vector>
-#include <queue>
-#include <array>
-#include "Particle.h"
-#include <memory>
-
 #include "SpawnEmmiterModule.h"
 #include "InitializeEmmiterModule.h"
 #include "UpdateEmmiterModule.h"
 #include "RenderEmmiterModule.h"
 
+#include "Particle.h"
+
+#include "Camera.h"
+
+#include <vector>
+#include <queue>
+#include <array>
+#include <memory>
 
 class ParticleSystem;
 
@@ -22,7 +23,7 @@ public:
 
 	void Start();
 	void Update(double dt);
-	void Render(vec3 cameraPosition);
+	void Render(Camera* camera);
 
 	void SpawnParticles(int amount);
 

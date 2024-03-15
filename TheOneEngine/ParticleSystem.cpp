@@ -50,10 +50,10 @@ void ParticleSystem::Update()
 	}
 }
 
-void ParticleSystem::DrawComponent()
+void ParticleSystem::DrawComponent(Camera* camera)
 {
 	for (auto i = emmiters.begin(); i != emmiters.end(); ++i) {
-		(*i)->Render(cameraPosition);
+		(*i)->Render(camera);
 	}
 }
 
