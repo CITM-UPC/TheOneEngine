@@ -17,6 +17,11 @@ enum class FileDropType {
 	UNKNOWN
 };
 
+struct FileInfo {
+	std::string name;
+	FileDropType fileType;
+};
+
 class PanelProject : public Panel
 {
 public:
@@ -32,7 +37,8 @@ public:
 	//Function that shows the files of a selected folder (take into account selected Directory in DirectoryTreeViewRecursive)
 	bool ShowAssetFiles();
 
-
+	// Function to list files in a directory
+	std::vector<FileInfo> ListFiles(const std::string& path);
 
 public:
 	std::string directoryPath;

@@ -22,6 +22,8 @@ PanelProject::~PanelProject() {}
 
 bool PanelProject::Draw()
 {
+	std::vector<FileInfo> files = ListFiles(directoryPath);
+
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
 
 	if (ImGui::Begin("Project"))
@@ -65,8 +67,19 @@ bool PanelProject::Draw()
 			// Inspector ----------------------------
 			ImGui::TableNextColumn();
 
-			//if (currentFolder != nullptr)
-			//hekbas - need to implement Inspector
+			ImGui::Text("%s", directoryPath.c_str());
+
+			ImGui::Separator();
+
+			for (const auto& file : files) {
+				// Load icon texture
+				GLuint iconTexture = 0; // You need to load the icon texture using OpenGL
+
+				// Display icon and filename
+				ImGui::Image((void*)(intptr_t)iconTexture, ImVec2(24, 24));
+				//Add Here to center image with text
+				ImGui::Text("%s", file.name.c_str());
+			}
 
 
 			ImGui::EndTable();
@@ -140,36 +153,50 @@ std::pair<bool, uint32_t> PanelProject::DirectoryTreeViewRecursive(const fs::pat
 
 bool PanelProject::DragAndDrop()
 {
-	if (ImGui::BeginDragDropSource())
-	{
-		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
-		{
-			ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
-		}
+	//if (ImGui::BeginDragDropSource())
+	//{
+	//	if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
+	//	{
+	//		ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
+	//	}
 
-		ImGui::EndDragDropSource();
-	}
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
-		{
-			GameObject* dragging = *(GameObject**)payload->Data;
+	//	ImGui::EndDragDropSource();
+	//}
+	//if (ImGui::BeginDragDropTarget())
+	//{
+	//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
+	//	{
+	//		GameObject* dragging = *(GameObject**)payload->Data;
 
-			if (!dragging->IsPrefab())
-				dragging->Create / SetPrefab();
+	//		if (!dragging->IsPrefab())
+	//			dragging->Create / SetPrefab();
 
-			//CreatePrefab(dragging);
-		}
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(fileSelected)
-		{
-			//Create a FileNode class
+	//		//CreatePrefab(dragging);
+	//	}
+	//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(fileSelected)
+	//	{
+	//		//Create a FileNode class
 
-			GameObject* dragging = *(GameObject**)payload->Data;
+	//		GameObject* dragging = *(GameObject**)payload->Data;
 
-			//CreatePrefab(dragging);
-		}
-		ImGui::EndDragDropTarget();
-	}
+	//		//CreatePrefab(dragging);
+	//	}
+	//	ImGui::EndDragDropTarget();
+	//}
 
 	return false;
+}
+
+std::vector<FileInfo> PanelProject::ListFiles(const std::string& path)
+{
+	std::vector<FileInfo> files;
+	for (const auto& entry : fs::directory_iterator(path)) {
+		if (entry.is_regular_file()) {
+			FileInfo fileInfo;
+			fileInfo.name = entry.path().filename().string();
+			//fileInfo.fileType = GetIconPath(entry.path().extension().string()); //Change to GetType by extension
+			files.push_back(fileInfo);
+		}
+	}
+	return files;
 }
