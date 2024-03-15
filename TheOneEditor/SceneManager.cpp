@@ -24,6 +24,10 @@ bool SceneManager::Start()
 	engine->N_sceneManager->currentScene = new Scene(0, "NewUntitledScene");
 	engine->N_sceneManager->CreateCameraGO("mainCamera");
 	//engine->N_sceneManager->LoadScene("NewUntitledScene");
+
+	// to delete
+	engine->N_sceneManager->AddSmokerObject();
+
 	engine->N_sceneManager->Start();
 
 	return true;

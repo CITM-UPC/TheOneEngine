@@ -73,6 +73,9 @@ public:
 	void SaveScene();
 	void LoadSceneFromJSON(const std::string& filename);
 
+	// to debug
+	GameObject* AddSmokerObject();
+
 public:
 	Scene* currentScene = nullptr; //Convert to smart ptr
 	std::vector<std::shared_ptr<GameObject>> objectsToAdd;

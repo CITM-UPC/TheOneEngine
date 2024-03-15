@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Collider2D.h"
 #include "Canvas.h"
+#include "ParticleSystem.h"
 #include "../TheOneAudio/AudioCore.h"
 #include "EngineCore.h"
 
@@ -219,6 +220,42 @@ void N_SceneManager::LoadSceneFromJSON(const std::string& filename)
 	{
 		LOG(LogType::LOG_ERROR, "Scene file does not contain GameObjects information");
 	}
+}
+
+GameObject* N_SceneManager::AddSmokerObject()
+{
+	// to delete
+	auto smoker = engine->N_sceneManager->CreateEmptyGO("Smoker");
+
+	smoker->AddComponent<ParticleSystem>();
+
+	auto ps = smoker->GetComponent<ParticleSystem>();
+
+	ps->ClearEmmiters();
+
+	Emmiter* em1 = ps->AddEmmiter();
+
+	em1->ClearModules();
+
+	auto spawn = (ConstantSpawnRate*)em1->AddModule(SpawnEmmiterModule::CONSTANT);
+
+	spawn->spawnRate = 2;
+
+	SetSpeed* sp = (SetSpeed*)em1->AddModule(InitializeEmmiterModule::SET_SPEED);
+
+	sp->speed.usingSingleValue = false;
+	sp->speed.rangeValue.lowerLimit = vec3{ -0.5, 1, -0.5 };
+	sp->speed.rangeValue.upperLimit = vec3{ 0.5, 2, 0.5 };
+
+	SetColor* cp = (SetColor*)em1->AddModule(InitializeEmmiterModule::SET_COLOR);
+
+	cp->color.usingSingleValue = true;
+	cp->color.rangeValue.upperLimit = vec3{ 100, 100, 100 };
+
+	em1->AddModule(RenderEmmiterModule::BILLBOARD);
+
+	return smoker.get();
+
 }
 
 std::string N_SceneManager::GenerateUniqueName(const std::string& baseName)

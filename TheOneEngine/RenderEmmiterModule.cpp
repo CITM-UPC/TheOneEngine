@@ -13,15 +13,14 @@ BillboardRender::BillboardRender(Emmiter* owner)
 
 void BillboardRender::Update(Particle* particle, Camera* camera)
 {
-    const float* projectionMatrix = (float*)glm::value_ptr(camera->projectionMatrix);
+    const float* viewMatrix = (float*)glm::value_ptr(camera->viewMatrix);
 
     glPushMatrix();
-    glLoadMatrixf(projectionMatrix);
+    //glLoadIdentity();
+    glLoadMatrixf(viewMatrix);
 
     vec3 cameraPosition;
-    cameraPosition.x = camera->projectionMatrix[3].x;
-    cameraPosition.y = camera->projectionMatrix[3].y;
-    cameraPosition.z = camera->projectionMatrix[3].z;
+    cameraPosition = camera->GetContainerGO()->GetComponent<Transform>()->GetPosition();
 
     vec3 particlePosition = particle->position + owner->owner->GetTransform()->GetPosition();
 
@@ -31,13 +30,13 @@ void BillboardRender::Update(Particle* particle, Camera* camera)
     glBegin(GL_TRIANGLES);
     glColor3ub(particle->color.r, particle->color.g, particle->color.b);
 
-    glVertex3d(-(1 * particle->scale.x), +(1 * particle->scale.y), 0);
-    glVertex3d(-(1 * particle->scale.x), -(1 * particle->scale.y), 0);
-    glVertex3d(+(1 * particle->scale.x), +(1 * particle->scale.y), 0);
+    glVertex3d(particlePosition.x - (1 * particle->scale.x), particlePosition.y + (1 * particle->scale.y), particlePosition.z);
+    glVertex3d(particlePosition.x - (1 * particle->scale.x), particlePosition.y - (1 * particle->scale.y), particlePosition.z);
+    glVertex3d(particlePosition.x + (1 * particle->scale.x), particlePosition.y + (1 * particle->scale.y), particlePosition.z);
 
-    glVertex3d(-(1 * particle->scale.x), -(1 * particle->scale.y), 0);
-    glVertex3d(+(1 * particle->scale.x), -(1 * particle->scale.y), 0);
-    glVertex3d(+(1 * particle->scale.x), +(1 * particle->scale.y), 0);
+    glVertex3d(particlePosition.x - (1 * particle->scale.x), particlePosition.y - (1 * particle->scale.y), particlePosition.z);
+    glVertex3d(particlePosition.x + (1 * particle->scale.x), particlePosition.y - (1 * particle->scale.y), particlePosition.z);
+    glVertex3d(particlePosition.x + (1 * particle->scale.x), particlePosition.y + (1 * particle->scale.y), particlePosition.z);
 
     glEnd();
 

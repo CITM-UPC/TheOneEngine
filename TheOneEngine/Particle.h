@@ -6,10 +6,6 @@
 
 #include "Types.h"
 
-#include "glm/gtc/quaternion.hpp"
-#include "glm/gtx/quaternion.hpp"
-
-
 class Particle {
 public:
 	float duration;
@@ -24,7 +20,7 @@ public:
 	vec3 position;
 	vec3 speed;
 
-	glm::quat rotation;
+	vec3 rotation;
 
 
 	vec3 scale = vec3(0.1, 0.1, 0.1);
