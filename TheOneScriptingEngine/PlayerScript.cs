@@ -10,6 +10,16 @@ public class PlayerScript : MonoBehaviour
 		Vector3 movement = Vector3.zero;
 
 		//Keyboard
+
+		if (Input.GetKeyboardButton(Input.KeyboardCode.K)) {
+			SceneManager.LoadScene("Scene");
+		}
+
+		if (Input.GetKeyboardButton(Input.KeyboardCode.ESCAPE))
+		{
+			InternalCalls.ExitApplication();
+		}
+
 		if (Input.GetKeyboardButton(Input.KeyboardCode.W))
 		{
 			movement = movement + Vector3.forward;

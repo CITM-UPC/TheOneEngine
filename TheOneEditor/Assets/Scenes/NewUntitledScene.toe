@@ -10,20 +10,20 @@
             0.0,
             0.0,
             0.0,
-            1.0,
+            0.7349874311498417,
+            0.6780807297451806,
             0.0,
             0.0,
+            -0.6780807297451806,
+            0.7349874311498417,
             0.0,
             0.0,
-            1.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
+            32.5,
+            -40.0,
             1.0
           ],
           "Type": 0,
-          "UID": 1946988069
+          "UID": 750543445
         },
         {
           "Aspect": 1.777,
@@ -32,9 +32,10 @@
           "Name": "Camera",
           "ParentUID": 3452816845,
           "Pitch": 0.0,
+          "PrimaryCamera": true,
           "Size": 5.0,
           "Type": 1,
-          "UID": 3069852969,
+          "UID": 1013513168,
           "Yaw": 0.0,
           "zFar": 1000.0,
           "zNear": 0.1
@@ -42,6 +43,401 @@
       ],
       "Enabled": true,
       "Name": "mainCamera",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            50.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            50.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 296588579
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SM_Cube/pCube1.mesh",
+          "Type": 2,
+          "UID": 630816107
+        }
+      ],
+      "Enabled": true,
+      "Name": "Floor",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            50.0,
+            0.0,
+            25.0,
+            5.0,
+            0.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 312021351
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SM_Cube/pCube1.mesh",
+          "Type": 2,
+          "UID": 1417063151
+        },
+        {
+          "ColliderType": 1,
+          "CollisionType": 2,
+          "Height": 50.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 0.5,
+          "Type": 5,
+          "UID": 3133391091,
+          "Width": 2.0
+        }
+      ],
+      "Enabled": true,
+      "Name": "Wall1",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            50.0,
+            0.0,
+            -25.0,
+            5.0,
+            0.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 892820637
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SM_Cube/pCube1.mesh",
+          "Type": 2,
+          "UID": 4029450197
+        },
+        {
+          "ColliderType": 1,
+          "CollisionType": 2,
+          "Height": 50.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 0.5,
+          "Type": 5,
+          "UID": 3219577293,
+          "Width": 2.0
+        }
+      ],
+      "Enabled": true,
+      "Name": "Wall2",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            50.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            5.0,
+            25.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 2742595863
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SM_Cube/pCube1.mesh",
+          "Type": 2,
+          "UID": 450867817
+        },
+        {
+          "ColliderType": 1,
+          "CollisionType": 2,
+          "Height": 2.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 0.5,
+          "Type": 5,
+          "UID": 575762771,
+          "Width": 50.0
+        }
+      ],
+      "Enabled": true,
+      "Name": "Wall3",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            50.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            10.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            5.0,
+            -25.0,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 252218876
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SM_Cube/pCube1.mesh",
+          "Type": 2,
+          "UID": 2952603709
+        },
+        {
+          "ColliderType": 1,
+          "CollisionType": 2,
+          "Height": 2.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 0.5,
+          "Type": 5,
+          "UID": 3419810440,
+          "Width": 50.0
+        }
+      ],
+      "Enabled": true,
+      "Name": "Wall4",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            -0.999999999999996,
+            0.0,
+            -8.742278000372473e-08,
+            0.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            8.742278000372473e-08,
+            0.0,
+            -0.999999999999996,
+            0.0,
+            0.046581339091062546,
+            0.0,
+            8.308060646057129,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 882453117
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SK_MainCharacter/SK_MainCharacter.mesh",
+          "Type": 2,
+          "UID": 54796494
+        },
+        {
+          "ColliderType": 0,
+          "CollisionType": 0,
+          "Height": 0.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 3.0,
+          "Type": 5,
+          "UID": 3885624118,
+          "Width": 0.0
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "PlayerScript",
+          "Type": 4,
+          "UID": 2318333276
+        }
+      ],
+      "Enabled": true,
+      "Name": "Player",
+      "ParentUID": 3452816845,
+      "Static": false,
+      "UID": 3452816845
+    },
+    {
+      "Components": [
+        {
+          "Name": "Transform",
+          "Transformation Matrix": [
+            0.3700000047683716,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.3700000047683716,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.3700000047683716,
+            0.0,
+            -15.0,
+            0.0,
+            -13.5,
+            1.0
+          ],
+          "Type": 0,
+          "UID": 3856082297
+        },
+        {
+          "Active": true,
+          "DrawAABB": true,
+          "DrawChecker": false,
+          "DrawNormalsFaces": false,
+          "DrawNormalsVerts": false,
+          "DrawOBB": false,
+          "DrawWireframe": false,
+          "Name": "Mesh",
+          "ParentUID": 3452816845,
+          "Path": "Library/Meshes/SM_Box_LowPoly/SM_Box_LowPoly.mesh",
+          "Type": 2,
+          "UID": 562316601
+        },
+        {
+          "ColliderType": 1,
+          "CollisionType": 2,
+          "Height": 9.0,
+          "Name": "Specified Type was not found",
+          "ParentUID": 3452816845,
+          "Radius": 0.5,
+          "Type": 5,
+          "UID": 1732455273,
+          "Width": 9.0
+        }
+      ],
+      "Enabled": true,
+      "Name": "Box",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845
@@ -69,7 +465,7 @@
             1.0
           ],
           "Type": 0,
-          "UID": 2148903111
+          "UID": 996990749
         },
         {
           "DebugDraw": true,
@@ -78,69 +474,43 @@
           "Rect": [
             0.0,
             0.0,
-            2.0,
-            2.0
+            -0.22689279913902283,
+            -0.12768305838108063
           ],
           "Type": 6,
-          "UID": 487246600,
+          "UID": 1205880597,
           "UiElements": [
             {
-              "ID": 898886627,
               "ImagePath": "Assets/Meshes/HUD.png",
-              "ImageSection": [
-                0.4695787727832794,
-                0.7815667986869812,
-                0.04160166531801224,
-                0.0276497695595026
-              ],
               "Interactuable": false,
-              "Name": "Image",
               "Rect": [
-                -0.25999999046325684,
-                0.1899999976158142,
-                1.0,
-                1.0
+                0.0,
+                0.0,
+                150.0,
+                100.0
               ],
-              "State": 0,
               "Type": 0
-            },
-            {
-              "ID": 705051365,
-              "ImagePath": "Assets/Meshes/HUD.png",
-              "ImageSectionHovered": [
-                0.4690587520599365,
-                0.7594469785690308,
-                0.04732189327478409,
-                0.07465437799692154
-              ],
-              "ImageSectionIdle": [
-                0.5772230625152588,
-                0.8368663787841797,
-                0.049402493983507156,
-                0.11889401078224182
-              ],
-              "ImageSectionSelected": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-              ],
-              "Interactuable": false,
-              "Name": "ButtonImage",
-              "Rect": [
-                0.5099999904632568,
-                0.0,
-                0.20000000298023224,
-                0.30000001192092896
-              ],
-              "State": 0,
-              "Type": 1
             }
           ]
+        },
+        {
+          "Aspect": 1.777,
+          "CameraType": 0,
+          "FOV": 65.0,
+          "Name": "Camera",
+          "ParentUID": 3452816845,
+          "Pitch": 0.0,
+          "PrimaryCamera": false,
+          "Size": 5.0,
+          "Type": 1,
+          "UID": 2294665742,
+          "Yaw": 0.0,
+          "zFar": 1000.0,
+          "zNear": 0.1
         }
       ],
       "Enabled": true,
-      "Name": "Test",
+      "Name": "newCanvas",
       "ParentUID": 3452816845,
       "Static": false,
       "UID": 3452816845
