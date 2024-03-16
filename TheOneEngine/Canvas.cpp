@@ -171,3 +171,8 @@ std::vector<ItemUI*> Canvas::GetUiElements()
 	}
 	return tempUiElements;
 }
+
+std::vector<std::unique_ptr<ItemUI>>& Canvas::GetUiElementsPtr()
+{
+	return uiElements;
+}

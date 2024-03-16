@@ -76,7 +76,10 @@ public:
     json SaveComponent();
     void LoadComponent(const json& canvasJSON);
 
+    //return a vector of all the uiElements (IT DOES NOT return uiElements vector, only its content as a sepparated vector)
     std::vector<ItemUI*> GetUiElements();
+    //return real variable of uiElements vector
+    std::vector<std::unique_ptr<ItemUI>>& GetUiElementsPtr();
 
     bool debugDraw = true;
 

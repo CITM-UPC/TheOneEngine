@@ -453,7 +453,7 @@ bool PanelInspector::Draw()
 
             if (tempCanvas != nullptr && ImGui::CollapsingHeader("Canvas", treeNodeFlags))
             {
-
+                int counter = 0;
                 for (auto& item : tempCanvas->GetUiElements())
                 {
                     std::string tstring = "  " + item->GetName() + " [id: " + std::to_string(item->GetID()) + "]";
@@ -469,6 +469,22 @@ bool PanelInspector::Draw()
                             item->SetName(newName);
                             changeUIName[0] = '\0';
                         }
+                        //move up/down in hierarchy
+                        if (ImGui::ArrowButton("Move Up in uiElements vector", 2) && counter > 0)
+                        {
+                            std::swap(tempCanvas->GetUiElementsPtr()[counter], tempCanvas->GetUiElementsPtr()[counter - 1]);
+                            break;
+                        }
+                        ImGui::SameLine();
+                        ImGui::Text("  Move Up");
+                        if (ImGui::ArrowButton("Move Down in uiElements vector", 3) && counter < tempCanvas->GetUiElements().size() - 1)
+                        {
+                            std::swap(tempCanvas->GetUiElementsPtr()[counter], tempCanvas->GetUiElementsPtr()[counter + 1]);
+                            break;
+                        }
+                        ImGui::SameLine();
+                        ImGui::Text("  Move Down");
+
                         std::string idstring = "Current ItemID is: " + std::to_string(item->GetID());
                         ImGui::Text(idstring.c_str());
                         ImGui::Text("Rect section info:");
@@ -479,10 +495,10 @@ bool PanelInspector::Draw()
                         tempH = item->GetRect().h;
                         ImGui::Text("   X:");
                         ImGui::SameLine();
-                        ImGui::DragFloat(" ", &tempX, 0.05f, -2.0f, 2.0f);
+                        ImGui::DragFloat(" ", &tempX, 0.01f, -2.0f, 2.0f);
                         ImGui::Text("   Y:");
                         ImGui::SameLine();
-                        ImGui::DragFloat("  ", &tempY, 0.05f, -2.0f, 2.0f);
+                        ImGui::DragFloat("  ", &tempY, 0.01f, -2.0f, 2.0f);
                         ImGui::Text("   W:");
                         ImGui::SameLine();
                         ImGui::DragFloat("   ", &tempW, 0.05f, 0.0f, 10.0f);
@@ -535,6 +551,7 @@ bool PanelInspector::Draw()
                             tempCanvas->RemoveItemUI(id);
                         }
                     }
+                    counter++;
                 }
 
                 //adders and removers of itemui

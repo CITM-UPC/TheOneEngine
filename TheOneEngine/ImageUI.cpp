@@ -90,8 +90,8 @@ Rect2D ImageUI::GetSect() const
 	Rect2D imageSect;
 	imageSect.x = textureSection.x * image.get()->width;
 	imageSect.y = textureSection.y * image.get()->height;
-	imageSect.w = (textureSection.w * image.get()->width) - imageSect.x ;
-	imageSect.h = (textureSection.h * image.get()->height) - imageSect.y;
+	imageSect.w = (textureSection.w * image.get()->width);
+	imageSect.h = (textureSection.h * image.get()->height);
 
 	return imageSect;
 }
@@ -100,6 +100,8 @@ void ImageUI::SetSectSize(float x, float y, float width, float height)
 {
 	textureSection.x = x / image.get()->width;
 	textureSection.y = y / image.get()->height;
-	textureSection.w = (x + width) / image.get()->width;
-	textureSection.h = (y + height) / image.get()->height;
+	textureSection.w = (width) / image.get()->width;
+	imageRect.w = (width) / image.get()->width;
+	textureSection.h = (height) / image.get()->height;
+	imageRect.h = (height) / image.get()->height;
 }
