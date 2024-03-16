@@ -4,6 +4,7 @@
 #include "Camera.h"
 #include "ItemUI.h"
 #include "ImageUI.h"
+#include "ButtonImageUI.h"
 
 Canvas::Canvas(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Canvas)
 {}
@@ -137,6 +138,11 @@ void Canvas::LoadComponent(const json& canvasJSON)
 			{
 				int id = this->AddItemUI<ImageUI>();
 				this->GetItemUI<ImageUI>(id)->LoadUIElement(item);
+			}
+			if (item["Type"] == (int)UiType::BUTTONIMAGE)
+			{
+				int id = this->AddItemUI<ButtonImageUI>();
+				this->GetItemUI<ButtonImageUI>(id)->LoadUIElement(item);
 			}
 			if (item["Type"] == (int)UiType::UNKNOWN)
 			{

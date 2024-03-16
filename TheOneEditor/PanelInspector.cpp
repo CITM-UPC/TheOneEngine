@@ -15,6 +15,7 @@
 #include "..\TheOneEngine\Canvas.h"
 #include "..\TheOneEngine\ItemUI.h"
 #include "..\TheOneEngine\ImageUI.h"
+#include "..\TheOneEngine\ButtonImageUI.h"
 
 #include "../TheOneAudio/AudioCore.h"
 
@@ -536,6 +537,102 @@ bool PanelInspector::Draw()
 
                             tempImageUI->SetSectSize(tempX2, tempY2, tempW2, tempH2);
                         }
+                        else if (item->GetType() == UiType::BUTTONIMAGE)
+                        {
+                            ButtonImageUI* tempButtonImageUI = tempCanvas->GetItemUI<ButtonImageUI>(id);
+                            ImGui::Text("UiType: BUTTONIMAGE");
+                            ImGui::Text("Image Path: %s", tempButtonImageUI->GetPath().c_str());
+                            if (ImGui::CollapsingHeader("Image section IDLE info: ", treeNodeFlags))
+                            {
+                                if (ImGui::Button("Set current Section ptr as idle"))
+                                {
+                                    tempButtonImageUI->SetState(UiState::IDLE);
+                                }
+                                float tempX2, tempY2, tempW2, tempH2;
+                                tempX2 = tempButtonImageUI->GetSectIdle().x;
+                                tempY2 = tempButtonImageUI->GetSectIdle().y;
+                                tempW2 = tempButtonImageUI->GetSectIdle().w;
+                                tempH2 = tempButtonImageUI->GetSectIdle().h;
+                                ImGui::Text("   X:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("     ", &tempX2, 1.0f);
+                                ImGui::Text("   Y:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("      ", &tempY2, 1.0f);
+                                ImGui::Text("   W:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("       ", &tempW2, 1.0f);
+                                ImGui::Text("   H:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("        ", &tempH2, 1.0f);
+
+                                if (tempButtonImageUI->GetState() == UiState::IDLE)
+                                {
+                                    tempButtonImageUI->SetSectSizeIdle(tempX2, tempY2, tempW2, tempH2);
+                                }
+                                ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                            }
+                            if (ImGui::CollapsingHeader("Image section HOVERED info: ", treeNodeFlags))
+                            {
+                                if (ImGui::Button("Set current Section ptr as hovered"))
+                                {
+                                    tempButtonImageUI->SetState(UiState::HOVERED);
+                                }
+                                float tempX2, tempY2, tempW2, tempH2;
+                                tempX2 = tempButtonImageUI->GetSectHovered().x;
+                                tempY2 = tempButtonImageUI->GetSectHovered().y;
+                                tempW2 = tempButtonImageUI->GetSectHovered().w;
+                                tempH2 = tempButtonImageUI->GetSectHovered().h;
+                                ImGui::Text("   X:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("         ", &tempX2, 1.0f);
+                                ImGui::Text("   Y:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("          ", &tempY2, 1.0f);
+                                ImGui::Text("   W:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("           ", &tempW2, 1.0f);
+                                ImGui::Text("   H:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("            ", &tempH2, 1.0f);
+
+                                if (tempButtonImageUI->GetState() == UiState::HOVERED)
+                                {
+                                    tempButtonImageUI->SetSectSizeHovered(tempX2, tempY2, tempW2, tempH2);
+                                }
+                                ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                            }
+                            if (ImGui::CollapsingHeader("Image section SELECTED info: ", treeNodeFlags))
+                            {
+                                if (ImGui::Button("Set current Section ptr as selected"))
+                                {
+                                    tempButtonImageUI->SetState(UiState::SELECTED);
+                                }
+                                float tempX2, tempY2, tempW2, tempH2;
+                                tempX2 = tempButtonImageUI->GetSectSelected().x;
+                                tempY2 = tempButtonImageUI->GetSectSelected().y;
+                                tempW2 = tempButtonImageUI->GetSectSelected().w;
+                                tempH2 = tempButtonImageUI->GetSectSelected().h;
+                                ImGui::Text("   X:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("             ", &tempX2, 1.0f);
+                                ImGui::Text("   Y:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("              ", &tempY2, 1.0f);
+                                ImGui::Text("   W:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("               ", &tempW2, 1.0f);
+                                ImGui::Text("   H:");
+                                ImGui::SameLine();
+                                ImGui::DragFloat("                ", &tempH2, 1.0f);
+
+                                if (tempButtonImageUI->GetState() == UiState::SELECTED)
+                                {
+                                    tempButtonImageUI->SetSectSizeSelected(tempX2, tempY2, tempW2, tempH2);
+                                }
+                                ImGui::Dummy(ImVec2(0.0f, 5.0f));
+                            }
+                        }
                         //else if (item->GetType() == UiType::FONT)
                         //{
 
@@ -567,6 +664,19 @@ bool PanelInspector::Draw()
                         if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
                         {
                             tempCanvas->AddItemUI<ImageUI>(nameRecipient);
+                            nameRecipient[0] = '\0';
+                        }
+                        ImGui::TreePop();
+                    }
+                    if (ImGui::TreeNode("ButtonImageUI"))
+                    {
+                        static char nameRecipient[32];
+
+                        ImGui::InputText("File Name ", nameRecipient, IM_ARRAYSIZE(nameRecipient));
+
+                        if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
+                        {
+                            tempCanvas->AddItemUI<ButtonImageUI>(nameRecipient);
                             nameRecipient[0] = '\0';
                         }
                         ImGui::TreePop();

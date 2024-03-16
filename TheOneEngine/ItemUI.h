@@ -7,6 +7,16 @@
 
 enum class UiType {
 	IMAGE,
+	BUTTONIMAGE,
+	UNKNOWN
+};
+
+enum class UiState {
+	IDLE,
+	HOVERED,
+	SELECTED,
+	HOVEREDSELECTED,
+	DISABLED,
 	UNKNOWN
 };
 
@@ -58,6 +68,16 @@ public:
 		imageRect = { x, y, w, h };
 	}
 
+	UiState GetState()
+	{
+		return state;
+	}
+
+	virtual void SetState(UiState state)
+	{
+		this->state = state;
+	}
+
 protected:
 
 	Rect2D imageRect;
@@ -65,6 +85,8 @@ protected:
 
 	std::shared_ptr<GameObject> containerGO;
 	UiType type;
+
+	UiState state;
 
 	unsigned int id;
 	std::string name;
