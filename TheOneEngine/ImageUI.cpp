@@ -29,6 +29,11 @@ void ImageUI::Draw2D()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+	glClear(GL_DEPTH_BUFFER_BIT);
+
 	image.get()->bind();
 
 	glBegin(GL_QUADS);
@@ -48,6 +53,10 @@ void ImageUI::Draw2D()
 	glEnd();
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+
+	glDisable(GL_DEPTH_TEST);
+
+	glDisable(GL_BLEND);
 
 	glDisable(GL_TEXTURE_2D);
 }
