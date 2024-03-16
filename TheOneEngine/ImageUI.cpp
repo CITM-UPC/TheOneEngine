@@ -59,8 +59,11 @@ json ImageUI::SaveUIElement()
 	uiElementJSON["ID"] = (unsigned int)id;
 	uiElementJSON["Name"] = name.c_str();
 	uiElementJSON["Rect"] = { imageRect.x, imageRect.y, imageRect.w, imageRect.h };
+	uiElementJSON["ImageSection"] = { textureSection.x, textureSection.y, textureSection.w, textureSection.h };
 	uiElementJSON["Type"] = (int)type;
-	uiElementJSON["Interactuable"] = interactuable;
+	uiElementJSON["State"] = (int)state;
+	uiElementJSON["Interactuable"] = interactuable;	
+
 
 	uiElementJSON["ImagePath"] = imagePath;
 
@@ -78,7 +81,15 @@ void ImageUI::LoadUIElement(const json& UIElementJSON)
 		imageRect.w = UIElementJSON["Rect"][2];
 		imageRect.h = UIElementJSON["Rect"][3];
 	}
+	if (UIElementJSON.contains("ImageSection"))
+	{
+		textureSection.x = UIElementJSON["ImageSection"][0];
+		textureSection.y = UIElementJSON["ImageSection"][1];
+		textureSection.w = UIElementJSON["ImageSection"][2];
+		textureSection.h = UIElementJSON["ImageSection"][3];
+	}
 	if (UIElementJSON.contains("Type")) type = (UiType)UIElementJSON["Type"];
+	if (UIElementJSON.contains("State")) state = (UiState)UIElementJSON["State"];
 	if (UIElementJSON.contains("Interactuable")) interactuable = UIElementJSON["Interactuable"];
 
 	if (UIElementJSON.contains("ImagePath")) imagePath = UIElementJSON["ImagePath"];
@@ -101,7 +112,5 @@ void ImageUI::SetSectSize(float x, float y, float width, float height)
 	textureSection.x = x / image.get()->width;
 	textureSection.y = y / image.get()->height;
 	textureSection.w = (width) / image.get()->width;
-	imageRect.w = (width) / image.get()->width;
 	textureSection.h = (height) / image.get()->height;
-	imageRect.h = (height) / image.get()->height;
 }

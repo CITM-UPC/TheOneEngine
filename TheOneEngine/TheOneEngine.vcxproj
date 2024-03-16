@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ButtonImageUI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="CollisionSolver.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="ItemUI.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ButtonImageUI.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="CollisionSolver.cpp" />
