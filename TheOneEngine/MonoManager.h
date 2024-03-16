@@ -1,5 +1,6 @@
 #pragma once
 #include "GameObject.h"
+#include "DebugShape.h"
 
 #include "mono\jit\jit.h"
 #include "mono\metadata\assembly.h"
@@ -41,9 +42,14 @@ public:
 
     static bool IsClassInMainAssembly(const char* className);
 
+    void RenderShapesQueue();
+
 private:
     char* ReadBytes(const std::string& filepath, uint32_t* outSize);
     MonoAssembly* LoadCSharpAssembly(const std::string& assemblyPath);
     static MonoClass* GetClassInAssembly(MonoAssembly* assembly, const char* namespaceName, const char* className);
+
+public:
+    std::vector<DebugShape> debugShapesQueue;
 };
 

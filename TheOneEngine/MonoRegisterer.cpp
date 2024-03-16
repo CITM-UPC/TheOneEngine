@@ -121,6 +121,87 @@ static void ExitApplication()
 	engine->inputManager->shutDownEngine = true;
 }
 
+//Debug
+static void ScriptingLog(MonoString* monoString, LogType logType)
+{
+	std::string message = MonoRegisterer::MonoStringToUTF8(monoString);
+	LOG(logType, message.c_str());
+}
+static void DrawWireCircle(vec3f position, float radius, vec3f colorNormalized)
+{
+	DebugShape shapeToAdd;
+
+	shapeToAdd.center = position;
+	shapeToAdd.color = colorNormalized;
+
+	//Set points which will define the line
+	const int segments = 30;
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
+	}
+
+	engine->monoManager->debugShapesQueue.push_back(shapeToAdd);
+}
+static void DrawWireSquare()
+{
+
+}
+static void DrawWireSphere(vec3f position, float radius, vec3f colorNormalized)
+{
+	DebugShape shapeToAdd;
+
+	shapeToAdd.center = position;
+	shapeToAdd.color = colorNormalized;
+
+	//Set points which will define the line
+	const int segments = 40;
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
+	}
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, y, 0));
+	}
+	
+	//Go to starting spot for last circle
+	for (int i = 0; i < segments / 4; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
+	}
+
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(0, y, x));
+	}
+
+	//Go back to starting spot for entire shape
+	for (int i = segments / 4; i > 0; --i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
+	}
+
+	engine->monoManager->debugShapesQueue.push_back(shapeToAdd);
+}
+static void DrawWireCube()
+{
+
+}
+
+
 
 void MonoRegisterer::RegisterFunctions()
 {
@@ -143,6 +224,10 @@ void MonoRegisterer::RegisterFunctions()
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
 	mono_add_internal_call("InternalCalls::ExitApplication", ExitApplication);
+
+	mono_add_internal_call("InternalCalls::ScriptingLog", ScriptingLog);
+	mono_add_internal_call("InternalCalls::DrawWireCircle", DrawWireCircle);
+	mono_add_internal_call("InternalCalls::DrawWireSphere", DrawWireSphere);
 }
 
 bool MonoRegisterer::CheckMonoError(MonoError& error)

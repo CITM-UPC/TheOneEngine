@@ -126,6 +126,9 @@
     <ClInclude Include="Framebuffer.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="DebugShape.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp">

@@ -45,6 +45,7 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="CamControlTest.cs" />
     <Compile Include="CameraMovement.cs" />
+    <Compile Include="Debug.cs" />
     <Compile Include="ExampleScript.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IGameObject.cs" />

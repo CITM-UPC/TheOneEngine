@@ -187,6 +187,8 @@ void EngineCore::Render(Camera* camera)
 
     if (collisionSolver->drawCollisions) collisionSolver->DrawCollisions();
 
+    if (!monoManager->debugShapesQueue.empty()) monoManager->RenderShapesQueue();
+
     glColor3f(1.0f, 1.0f, 1.0f);
     //DrawFrustum(camera->viewMatrix);
 

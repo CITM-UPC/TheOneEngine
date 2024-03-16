@@ -53,4 +53,14 @@ class InternalCalls
     
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void ExitApplication();
+
+    //Debug
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void ScriptingLog(string message, int logType);
+    
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void DrawWireCircle(Vector3 position, float radius, Vector3 color);
+    
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void DrawWireSphere(Vector3 position, float radius, Vector3 color);
 }

@@ -18,6 +18,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeImmediateMode.h" />
+    <ClInclude Include="DebugShape.h" />
     <ClInclude Include="Defs.h" />
     <ClInclude Include="Framebuffer.h" />
     <ClInclude Include="GameObject.h" />

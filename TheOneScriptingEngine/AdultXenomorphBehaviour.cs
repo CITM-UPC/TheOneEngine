@@ -7,6 +7,7 @@ public class AdultXenomorphBehaviour : MonoBehaviour
 
     bool chasing = false;
     float movementSpeed = 15.0f;
+    float detectionRange = 20.0f;
 
     public override void Start()
 	{
@@ -15,9 +16,11 @@ public class AdultXenomorphBehaviour : MonoBehaviour
 
 	public override void Update()
 	{
+        Debug.DrawWireCircle(attachedGameObject.transform.position + Vector3.up * 4, detectionRange, new Vector3(0.9f, 0.0f, 0.9f));
+
         directorVector = (playerGO.transform.position - attachedGameObject.transform.position).Normalize();
 
-        if (!chasing && Vector3.Distance(playerGO.transform.position, attachedGameObject.transform.position) < 30.0f)
+        if (!chasing && Vector3.Distance(playerGO.transform.position, attachedGameObject.transform.position) < detectionRange)
         {
             chasing = true;
         }
