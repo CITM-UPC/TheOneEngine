@@ -48,6 +48,7 @@
     <Compile Include="IGameObject.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="InternalCalls.cs" />
+    <Compile Include="SceneManager.cs" />
     <Compile Include="ITransform.cs" />
     <Compile Include="MonoBehaviour.cs" />
     <Compile Include="PlayerScript.cs" />

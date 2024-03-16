@@ -6,10 +6,6 @@
 #include "Transform.h"
 #include "N_SceneManager.h"
 
-#include "../mono/include/mono/jit/jit.h"
-#include "../mono/include/mono/metadata/assembly.h"
-#include "../mono/include/mono/metadata/attrdefs.h"
-
 #include <glm/vec3.hpp>
 
 //Constructors
@@ -111,6 +107,11 @@ static void ExitApplication()
 	engine->inputManager->shutDownEngine = true;
 }
 
+static void LoadScene(MonoString* sceneName) {
+	std::string name = MonoRegisterer::MonoStringToUTF8(sceneName);
+
+	engine->N_sceneManager->LoadScene(name);
+}
 
 void MonoRegisterer::RegisterFunctions()
 {
@@ -132,4 +133,35 @@ void MonoRegisterer::RegisterFunctions()
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
 	mono_add_internal_call("InternalCalls::ExitApplication", ExitApplication);
+
+	mono_add_internal_call("InternalCalls::LoadScene", LoadScene);
+}
+
+bool MonoRegisterer::CheckMonoError(MonoError& error)
+{
+	bool hasError = !mono_error_ok(&error);
+	if (hasError)
+	{
+		unsigned short errorCode = mono_error_get_error_code(&error);
+		const char* errorMessage = mono_error_get_message(&error);
+		std::cout << "Mono Error!" << std::endl;
+		std::cout << "Error Code: " << errorCode << std::endl;
+		std::cout << "Error Message: " << errorMessage << std::endl;
+		mono_error_cleanup(&error);
+	}
+	return hasError;
+}
+
+std::string MonoRegisterer::MonoStringToUTF8(MonoString* monoString)
+{
+	if (monoString == nullptr || mono_string_length(monoString) == 0)
+		return "";
+
+	MonoError error;
+	char* utf8 = mono_string_to_utf8_checked(monoString, &error);
+	if (CheckMonoError(error))
+		return "";
+	std::string result(utf8);
+	mono_free(utf8);
+	return result;
 }

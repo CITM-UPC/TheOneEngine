@@ -50,4 +50,9 @@ class InternalCalls
     
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void ExitApplication();
+
+    //Scene Manager
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void LoadScene(string sceneName);
+
 }
