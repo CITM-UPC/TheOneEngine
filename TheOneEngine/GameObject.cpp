@@ -468,7 +468,7 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 	}
 }
 
-void GameObject::SetPrefab(uint pID)
+void GameObject::SetPrefab(const uint& pID)
 {
 	if (!children.empty()) 
 	{

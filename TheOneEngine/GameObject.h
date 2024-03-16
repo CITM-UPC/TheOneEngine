@@ -142,7 +142,7 @@ public:
     void LoadGameObject(const json& gameObjectJSON);
 
     //Prefab
-    void SetPrefab(uint pId);
+    void SetPrefab(const uint& pId);
     void UnpackPrefab();
     void LockPrefab(bool lock); //To make it editable or not?
     const uint GetPrefabID() const { return prefabID; }

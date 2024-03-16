@@ -4,7 +4,10 @@
 
 #include "Panel.h"
 
+#include "..\TheOneEngine\EngineCore.h"
+
 #include <filesystem>
+#include <unordered_map>
 
 enum class FileDropType {
 	MODEL3D,
@@ -32,6 +35,8 @@ public:
 	~PanelProject();
 
 	bool Draw();
+	bool CleanUp();
+
 	std::pair<bool, uint32_t> DirectoryTreeViewRecursive(const std::filesystem::path& path, uint32_t* count, int* selection_mask);
 
 	//Function to move files through the folders and some to the scene
@@ -42,8 +47,12 @@ public:
 
 	// Function to list files in a directory
 	std::vector<FileInfo> ListFiles(const std::string& path);
-
 	FileDropType FindFileType(const std::string& fileExtension);
+
+	GLuint LoadTexture(const std::string& filename);
+	void LoadIcons();
+
+	void SaveWarning();
 
 private:
 
@@ -57,6 +66,8 @@ private:
 	bool refresh = true;
 	std::vector<FileInfo> files;
 	FileInfo fileSelected;
+
+	std::unordered_map<FileDropType, GLuint> iconTextures;
 
 	bool warningScene = false;
 };

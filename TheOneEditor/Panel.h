@@ -28,6 +28,7 @@ public:
 	virtual ~Panel();
 
 	virtual bool Draw() = 0;
+	virtual bool CleanUp() { return true; }
 
 	virtual PanelType GetType();
 	virtual std::string GetName();

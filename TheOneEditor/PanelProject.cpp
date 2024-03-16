@@ -3,10 +3,13 @@
 #include "Gui.h"
 #include "imgui.h"
 #include "SceneManager.h"
-#include "..\TheOneEngine\EngineCore.h"
+
+#include <IL/il.h>
 
 #include <filesystem>
 #include <string>
+#include <locale>
+#include <codecvt>
 
 #define BIT(x) (1 << x)
 
@@ -14,8 +17,9 @@ namespace fs = std::filesystem;
 
 PanelProject::PanelProject(PanelType type, std::string name) : Panel(type, name)
 {
+	LoadIcons();
 	directoryPath = ASSETS_PATH;
-	fontSize = 32.0f;
+	fontSize = 50.0f;
 }
 
 PanelProject::~PanelProject() {}
@@ -30,9 +34,6 @@ bool PanelProject::Draw()
 		int width = ImGui::GetContentRegionAvail().x;
 
 		static ImGuiTableFlags tableFlags = ImGuiTableFlags_Resizable;
-		/*ImGui::CheckboxFlags("ImGuiTableFlags_NoKeepColumnsVisible", &tableFlags, ImGuiTableFlags_NoKeepColumnsVisible);
-		ImGui::CheckboxFlags("ImGuiTableFlags_BordersInnerV", &tableFlags, ImGuiTableFlags_BordersInnerV);
-		ImGui::CheckboxFlags("ImGuiTableFlags_BordersOuterV", &tableFlags, ImGuiTableFlags_BordersOuterV);*/
 
 		if (ImGui::BeginTable("table", 2, tableFlags))
 		{
@@ -78,34 +79,29 @@ bool PanelProject::Draw()
 			ImGui::Separator();
 
 			InspectorDraw();
+			DragAndDrop();
 
 			ImGui::EndTable();
 		}
 
-		if (warningScene)
-		{
-			ImGui::OpenPopup("WarningScene");
-			warningScene = false;
-		}
-
-		if (ImGui::BeginPopup("WarningScene"))
-		{
-			ImGui::Text("You have unsaved changes in this scene. Are you sure?");
-			if (ImGui::Button("Yes", { 100, 20 })) {
-				engine->N_sceneManager->LoadScene(fileSelected.name);
-				ImGui::CloseCurrentPopup();
-			}
-			ImGui::SameLine();
-			if (ImGui::Button("No", { 100, 20 })) {
-				ImGui::CloseCurrentPopup();
-			}
-
-		}
+		SaveWarning();
 
 		ImGui::PopStyleVar();
 		ImGui::End();
 	}
 
+	return true;
+}
+
+bool PanelProject::CleanUp()
+{
+	// Clean up icon textures
+	for (auto& pair : iconTextures) {
+		glDeleteTextures(1, &pair.second);
+	}
+	iconTextures.clear();
+
+	ilShutDown();
 	return true;
 }
 
@@ -175,36 +171,36 @@ std::pair<bool, uint32_t> PanelProject::DirectoryTreeViewRecursive(const fs::pat
 
 bool PanelProject::DragAndDrop()
 {
-	//if (ImGui::BeginDragDropSource())
-	//{
-	//	if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
-	//	{
-	//		ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
-	//	}
+	/*if (ImGui::BeginDragDropSource())
+	{
+		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
+		{
+			ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
+		}
 
-	//	ImGui::EndDragDropSource();
-	//}
-	//if (ImGui::BeginDragDropTarget())
-	//{
-	//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
-	//	{
-	//		GameObject* dragging = *(GameObject**)payload->Data;
+		ImGui::EndDragDropSource();
+	}*/
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
+		{
+			GameObject* dragging = *(GameObject**)payload->Data;
 
-	//		if (!dragging->IsPrefab())
-	//			dragging->Create / SetPrefab();
+			if (!dragging->IsPrefab())
+				dragging->SetPrefab(0);
 
-	//		//CreatePrefab(dragging);
-	//	}
-	//	if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(fileSelected)
-	//	{
-	//		//Create a FileNode class
+			//CreatePrefab(dragging);
+		}
+		//if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(fileSelected)
+		//{
+		//	//Create a FileNode class
 
-	//		GameObject* dragging = *(GameObject**)payload->Data;
+		//	GameObject* dragging = *(GameObject**)payload->Data;
 
-	//		//CreatePrefab(dragging);
-	//	}
-	//	ImGui::EndDragDropTarget();
-	//}
+		//	//CreatePrefab(dragging);
+		//}
+		ImGui::EndDragDropTarget();
+	}
 
 	return false;
 }
@@ -224,19 +220,18 @@ void PanelProject::InspectorDraw()
 		ImGui::BeginGroup();
 
 		// Load icon texture
-		GLuint iconTexture = 0; // You need to load the icon texture using OpenGL
+		GLuint iconTexture = iconTextures[file.fileType];
 
 		// Display icon and filename
 		ImGui::Indent();
 		ImVec2 textPos(ImGui::GetCursorPos().x + (fontSize - ImGui::CalcTextSize(file.name.c_str()).x) * 0.5f, ImGui::GetCursorPos().y + fontSize + 10);
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1,1));
 		
-		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(fontSize, fontSize), -1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
+		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(1.0f, 1.0f, 1.0f, 0.50f));
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
 		{
 			fileSelected = file;
-			LOG(LogType::LOG_INFO, "File Selected: %s", fileSelected.name.c_str());
 		}
 
 		DoubleClickFile(file);
@@ -308,17 +303,95 @@ FileDropType PanelProject::FindFileType(const std::string& fileExtension)
 	return FileDropType::UNKNOWN;
 }
 
+GLuint PanelProject::LoadTexture(const std::string& filename)
+{
+	// Generate a new texture ID
+	GLuint textureID;
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
+
+	// Load image using DevIL
+	ILuint ilImage;
+	ilGenImages(1, &ilImage);
+	ilBindImage(ilImage);
+
+	if (!ilLoadImage((const wchar_t*)filename.c_str())) {
+		LOG(LogType::LOG_ERROR, "Error loading texture: %s", filename.c_str());
+		return 0;
+	}
+
+	// Convert image to RGBA format
+	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+	// Set texture parameters
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, ilGetInteger(IL_IMAGE_WIDTH), ilGetInteger(IL_IMAGE_HEIGHT),
+		0, GL_RGBA, GL_UNSIGNED_BYTE, ilGetData());
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	// Cleanup DevIL resources
+	ilDeleteImages(1, &ilImage);
+
+	return textureID;
+}
+
+void PanelProject::LoadIcons()
+{
+	// Initialize DevIL
+	ilInit();
+
+	// Load and store icon textures
+	iconTextures[FileDropType::FOLDER] = LoadTexture("Config/Icons/PanelProject/folder.png");
+	iconTextures[FileDropType::PREFAB] = LoadTexture("Config\\Icons/PanelProject/prefab.png");
+	iconTextures[FileDropType::SCENE] = LoadTexture("Config\\Icons/PanelProject/scene.png");
+	iconTextures[FileDropType::SCRIPT] = LoadTexture("Config\\Icons/PanelProject/script.png");
+	iconTextures[FileDropType::TEXTURE] = LoadTexture("Config\\Icons/PanelProject/texture.png");
+	iconTextures[FileDropType::UNKNOWN] = LoadTexture("Config\\Icons/PanelProject/unknown.png");
+}
+
+void PanelProject::SaveWarning()
+{
+	if (warningScene)
+	{
+		ImGui::OpenPopup("WarningScene");
+		warningScene = false;
+	}
+
+	ImGui::SetNextWindowSize(ImVec2(415, 70));
+	ImVec2 mainViewportPos = ImGui::GetMainViewport()->GetCenter();
+	ImGui::SetNextWindowPos(ImVec2(mainViewportPos.x, mainViewportPos.y), ImGuiCond_Appearing, ImVec2(0.5, 0.9));
+
+	if (ImGui::BeginPopup("WarningScene"))
+	{
+		ImGui::SetCursorPosY(10.0f);
+		ImGui::Indent();
+		ImGui::Text("You have unsaved changes in this scene. Are you sure?");
+		//ImGui::Indent();
+		ImGui::SetCursorPosX((ImGui::GetContentRegionAvail().x - 100 * 2.0f - ImGui::GetStyle().ItemSpacing.x) / 2.0f);
+		if (ImGui::Button("Yes", { 100, 20 })) {
+			engine->N_sceneManager->LoadScene(fileSelected.name);
+			ImGui::CloseCurrentPopup();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("No", { 100, 20 })) {
+			ImGui::CloseCurrentPopup();
+		}
+	
+	}
+}
+
 void PanelProject::DoubleClickFile(FileInfo& info)
 {
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 	{
 		// Handle double click
-		if (info.fileType == FileDropType::FOLDER) {
+		switch (info.fileType)
+		{
+		case FileDropType::FOLDER:
 			directoryPath = info.path;
 			refresh = true;
-		}
-		else if (info.fileType == FileDropType::SCENE)
-		{
+			break;
+		case FileDropType::SCENE:
 			if (engine->N_sceneManager->currentScene->IsDirty())
 			{
 				warningScene = true;
@@ -327,6 +400,9 @@ void PanelProject::DoubleClickFile(FileInfo& info)
 			{
 				engine->N_sceneManager->LoadScene(info.name);
 			}
+			break;
+		default:
+			break;
 		}
 	}
 	
