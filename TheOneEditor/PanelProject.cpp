@@ -15,6 +15,7 @@ namespace fs = std::filesystem;
 PanelProject::PanelProject(PanelType type, std::string name) : Panel(type, name)
 {
 	directoryPath = ASSETS_PATH;
+	fontSize = 32.0f;
 }
 
 PanelProject::~PanelProject() {}
@@ -22,8 +23,6 @@ PanelProject::~PanelProject() {}
 
 bool PanelProject::Draw()
 {
-	std::vector<FileInfo> files = ListFiles(directoryPath);
-
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2{ 0.0f, 0.0f });
 
 	if (ImGui::Begin("Project"))
@@ -71,16 +70,7 @@ bool PanelProject::Draw()
 
 			ImGui::Separator();
 
-			for (const auto& file : files) {
-				// Load icon texture
-				GLuint iconTexture = 0; // You need to load the icon texture using OpenGL
-
-				// Display icon and filename
-				ImGui::Image((void*)(intptr_t)iconTexture, ImVec2(24, 24));
-				//Add Here to center image with text
-				ImGui::Text("%s", file.name.c_str());
-			}
-
+			ShowAssetFiles();
 
 			ImGui::EndTable();
 		}
@@ -187,16 +177,84 @@ bool PanelProject::DragAndDrop()
 	return false;
 }
 
+void PanelProject::ShowAssetFiles()
+{
+	std::vector<FileInfo> files = ListFiles(directoryPath);
+
+	//Create Logic Function
+	for (const auto& file : files) 
+	{
+		ImVec2 windowPos = ImGui::GetWindowPos();
+		// Start a new line
+		ImGui::BeginGroup();
+
+		// Load icon texture
+		GLuint iconTexture = 0; // You need to load the icon texture using OpenGL
+
+		// Display icon and filename
+		ImGui::Indent();
+		ImVec2 textPos(ImGui::GetCursorPos().x + (fontSize - ImGui::CalcTextSize(file.name.c_str()).x) * 0.5f, ImGui::GetCursorPos().y + fontSize + 10);
+		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize));
+		ImGui::SetCursorPos(textPos);
+		ImGui::Text("%s", file.name.c_str(), ImVec2(fontSize, fontSize));
+
+		// End current line
+		ImGui::EndGroup();
+
+		// Move cursor to the next line
+		ImGui::SameLine(0, ImGui::GetStyle().ItemSpacing.y + fontSize);
+
+		//ImGui::Spacing();
+	}
+}
+
 std::vector<FileInfo> PanelProject::ListFiles(const std::string& path)
 {
 	std::vector<FileInfo> files;
 	for (const auto& entry : fs::directory_iterator(path)) {
-		if (entry.is_regular_file()) {
-			FileInfo fileInfo;
-			fileInfo.name = entry.path().filename().string();
-			//fileInfo.fileType = GetIconPath(entry.path().extension().string()); //Change to GetType by extension
-			files.push_back(fileInfo);
+		FileInfo fileInfo;
+
+		fileInfo.name = entry.path().stem().string();
+		fileInfo.isDirectory = entry.is_directory();
+
+		if (fileInfo.isDirectory)
+		{
+			fileInfo.fileType = FileDropType::FOLDER;
 		}
+		else
+		{
+			std::string extension = entry.path().extension().string();
+			fileInfo.fileType = FindFileType(extension);
+		}
+
+		files.push_back(fileInfo);
 	}
 	return files;
+}
+
+FileDropType PanelProject::FindFileType(const std::string& fileExtension)
+{
+
+	if (fileExtension == ".fbx")
+	{
+		return FileDropType::MODEL3D;
+	}
+	else if (fileExtension == ".png")
+	{
+		return FileDropType::TEXTURE;
+	}
+	else if (fileExtension == ".cs")
+	{
+		return FileDropType::SCRIPT;
+	}
+	else if (fileExtension == ".toe")
+	{
+		return FileDropType::SCENE;
+	}
+	else if (fileExtension == ".prefab")
+	{
+		return FileDropType::PREFAB;
+	}
+
+	return FileDropType::UNKNOWN;
 }
