@@ -15,14 +15,19 @@ public class AdultXenomorphBehaviour : MonoBehaviour
     Vector3 directorVector;
     float playerDistance;
 
-    float movementSpeed = 25.0f;
+    float movementSpeed = 35.0f;
 
     States currentState = States.Idle;
     bool detected = false;
     
-    float enemyDetectedRange = 20.0f;
-    float maxAttackRange = 30.0f;
+    float enemyDetectedRange = 35.0f;
+    float maxAttackRange = 20.0f;
     float maxChasingRange = 40.0f;
+
+    bool shooting = false;
+    bool hasShot = false;
+    float currentTimer = 0.0f;
+    float attackCooldown = 2.0f;
 
     public override void Start()
 	{
@@ -32,9 +37,15 @@ public class AdultXenomorphBehaviour : MonoBehaviour
 	public override void Update()
 	{
         //Draw debug ranges
-        Debug.DrawWireCircle(attachedGameObject.transform.position + Vector3.up * 4, enemyDetectedRange,    new Vector3(1.0f, 0.8f, 0.0f)); //Yellow
-        Debug.DrawWireCircle(attachedGameObject.transform.position + Vector3.up * 4, maxChasingRange,       new Vector3(0.9f, 0.0f, 0.9f)); //Purple
-        Debug.DrawWireCircle(attachedGameObject.transform.position + Vector3.up * 4, maxAttackRange,        new Vector3(0.0f, 0.8f, 1.0f)); //Blue
+        if (!detected)
+        {
+            Debug.DrawWireCircle(attachedGameObject.transform.position + Vector3.up * 4, enemyDetectedRange, new Vector3(1.0f, 0.8f, 0.0f)); //Yellow
+        }
+        else
+        {
+            Debug.DrawWireCircle(attachedGameObject.transform.position + Vector3.up * 4, maxChasingRange, new Vector3(0.9f, 0.0f, 0.9f)); //Purple
+            Debug.DrawWireCircle(attachedGameObject.transform.position + Vector3.up * 4, maxAttackRange, new Vector3(0.0f, 0.8f, 1.0f)); //Blue
+        }
 
         //Set the director vector and distance to the player
         directorVector = (playerGO.transform.position - attachedGameObject.transform.position).Normalize();
@@ -43,10 +54,11 @@ public class AdultXenomorphBehaviour : MonoBehaviour
         //Change the states
         if (!detected && playerDistance < enemyDetectedRange) detected = true;
 
-        if (detected)
+        if (detected && !shooting)
         {
             if (playerDistance < maxAttackRange)
             {
+                shooting = true;
                 currentState = States.Attack;
             }
             else if (playerDistance > maxAttackRange && playerDistance < maxChasingRange)
@@ -66,6 +78,19 @@ public class AdultXenomorphBehaviour : MonoBehaviour
                 return;
             case States.Attack:
                 attachedGameObject.transform.LookAt(playerGO.transform.position);
+                if (currentTimer < attackCooldown)
+                {
+                    currentTimer += Time.deltaTime;
+                    if (!hasShot && currentTimer > attackCooldown / 2)
+                    {
+                        InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
+                        hasShot = true;
+                    }
+                    break;
+                }
+                currentTimer = 0.0f;
+                hasShot = false;
+                shooting = false;
                 break;
             case States.Chase:
                 attachedGameObject.transform.LookAt(playerGO.transform.position);
