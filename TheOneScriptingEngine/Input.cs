@@ -18,6 +18,7 @@ public class Input
 		UP = 82,
 		SPACEBAR = 44,
 		ESCAPE = 41,
+		LSHIFT = 225,
 	}
 
 	public enum MouseButtonCode
