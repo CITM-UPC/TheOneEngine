@@ -15,5 +15,5 @@ void Prefab::SerializePrefab(std::string path)
 
 	fs::path filename = path + "/" + fileNameExt; //Edit depending if the bar is already written
 
-	json sceneJSON;
+	json prefabJSON;
 }

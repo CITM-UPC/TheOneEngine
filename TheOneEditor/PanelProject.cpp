@@ -42,15 +42,22 @@ bool PanelProject::Draw()
 
 			// Directory Tree View ----------------------------
 			ImGui::TableNextColumn();
-			if (ImGui::CollapsingHeader("Assets", ImGuiTreeNodeFlags_DefaultOpen))
+			ImGuiTreeNodeFlags base_flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick | ImGuiTreeNodeFlags_DefaultOpen;
+			if (ImGui::TreeNodeEx("Assets", base_flags))
 			{
+				if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
+				{
+					directoryPath = ASSETS_PATH;
+					refresh = true;
+				}
+
 				uint32_t count = 0;
-				for (const auto& entry : fs::recursive_directory_iterator(directoryPath))
+				for (const auto& entry : fs::recursive_directory_iterator(ASSETS_PATH))
 					count++;
 
 				static int selection_mask = 0;
 
-				auto clickState = DirectoryTreeViewRecursive(directoryPath, &count, &selection_mask);
+				auto clickState = DirectoryTreeViewRecursive(ASSETS_PATH, &count, &selection_mask);
 
 				if (clickState.first)
 				{
@@ -70,9 +77,29 @@ bool PanelProject::Draw()
 
 			ImGui::Separator();
 
-			ShowAssetFiles();
+			InspectorDraw();
 
 			ImGui::EndTable();
+		}
+
+		if (warningScene)
+		{
+			ImGui::OpenPopup("WarningScene");
+			warningScene = false;
+		}
+
+		if (ImGui::BeginPopup("WarningScene"))
+		{
+			ImGui::Text("You have unsaved changes in this scene. Are you sure?");
+			if (ImGui::Button("Yes", { 100, 20 })) {
+				engine->N_sceneManager->LoadScene(fileSelected.name);
+				ImGui::CloseCurrentPopup();
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("No", { 100, 20 })) {
+				ImGui::CloseCurrentPopup();
+			}
+
 		}
 
 		ImGui::PopStyleVar();
@@ -112,6 +139,11 @@ std::pair<bool, uint32_t> PanelProject::DirectoryTreeViewRecursive(const fs::pat
 		{
 			node_clicked = *count;
 			any_node_clicked = true;
+			if (entry.is_directory())
+			{
+				directoryPath = entry.path().string();
+				refresh = true;
+			}
 		}
 
 		(*count)--;
@@ -177,14 +209,17 @@ bool PanelProject::DragAndDrop()
 	return false;
 }
 
-void PanelProject::ShowAssetFiles()
+void PanelProject::InspectorDraw()
 {
-	std::vector<FileInfo> files = ListFiles(directoryPath);
-
-	//Create Logic Function
-	for (const auto& file : files) 
+	if (refresh)
 	{
-		ImVec2 windowPos = ImGui::GetWindowPos();
+		files.clear();
+		files = ListFiles(directoryPath);
+		refresh = false;
+	}
+
+	for (auto& file : files) 
+	{
 		// Start a new line
 		ImGui::BeginGroup();
 
@@ -194,7 +229,19 @@ void PanelProject::ShowAssetFiles()
 		// Display icon and filename
 		ImGui::Indent();
 		ImVec2 textPos(ImGui::GetCursorPos().x + (fontSize - ImGui::CalcTextSize(file.name.c_str()).x) * 0.5f, ImGui::GetCursorPos().y + fontSize + 10);
-		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1,1));
+		
+		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(fontSize, fontSize), -1, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
+
+		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
+		{
+			fileSelected = file;
+			LOG(LogType::LOG_INFO, "File Selected: %s", fileSelected.name.c_str());
+		}
+
+		DoubleClickFile(file);
+
+		//File or folder name underneath icon
 		ImGui::SetCursorPos(textPos);
 		ImGui::Text("%s", file.name.c_str(), ImVec2(fontSize, fontSize));
 
@@ -203,7 +250,8 @@ void PanelProject::ShowAssetFiles()
 
 		// Move cursor to the next line
 		ImGui::SameLine(0, ImGui::GetStyle().ItemSpacing.y + fontSize);
-
+		
+		//Historn: Create COLUMNS AND ROWS
 		//ImGui::Spacing();
 	}
 }
@@ -214,6 +262,7 @@ std::vector<FileInfo> PanelProject::ListFiles(const std::string& path)
 	for (const auto& entry : fs::directory_iterator(path)) {
 		FileInfo fileInfo;
 
+		fileInfo.path = entry.path().string();
 		fileInfo.name = entry.path().stem().string();
 		fileInfo.isDirectory = entry.is_directory();
 
@@ -257,4 +306,28 @@ FileDropType PanelProject::FindFileType(const std::string& fileExtension)
 	}
 
 	return FileDropType::UNKNOWN;
+}
+
+void PanelProject::DoubleClickFile(FileInfo& info)
+{
+	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+	{
+		// Handle double click
+		if (info.fileType == FileDropType::FOLDER) {
+			directoryPath = info.path;
+			refresh = true;
+		}
+		else if (info.fileType == FileDropType::SCENE)
+		{
+			if (engine->N_sceneManager->currentScene->IsDirty())
+			{
+				warningScene = true;
+			}
+			else
+			{
+				engine->N_sceneManager->LoadScene(info.name);
+			}
+		}
+	}
+	
 }

@@ -19,9 +19,10 @@ enum class FileDropType {
 
 struct FileInfo {
 	std::string name;
-	FileDropType fileType;
-	bool isDirectory;
-	bool isSelected;
+	FileDropType fileType = FileDropType::UNKNOWN;
+	bool isDirectory = false;
+	bool isSelected = false;
+	std::string path;
 };
 
 class PanelProject : public Panel
@@ -37,18 +38,27 @@ public:
 	bool DragAndDrop();
 
 	//Function that shows the files of a selected folder (take into account selected Directory in DirectoryTreeViewRecursive)
-	void ShowAssetFiles();
+	void InspectorDraw();
 
 	// Function to list files in a directory
 	std::vector<FileInfo> ListFiles(const std::string& path);
 
 	FileDropType FindFileType(const std::string& fileExtension);
 
+private:
+
+	void DoubleClickFile(FileInfo& info);
+
 public:
 	std::string directoryPath;
 
 private:
 	float fontSize;
+	bool refresh = true;
+	std::vector<FileInfo> files;
+	FileInfo fileSelected;
+
+	bool warningScene = false;
 };
 
 #endif // !__PANEL_PROJECT_H__
