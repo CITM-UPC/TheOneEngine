@@ -80,7 +80,6 @@ bool PanelProject::Draw()
 			ImGui::Separator();
 
 			InspectorDraw();
-			DragAndDrop();
 
 			ImGui::EndTable();
 		}
@@ -194,9 +193,9 @@ void PanelProject::InspectorDraw()
 
 		ImGui::Indent();
 		ImVec2 textPos(ImGui::GetCursorPos().x + (fontSize - ImGui::CalcTextSize(displayName.c_str()).x) * 0.5f, ImGui::GetCursorPos().y + fontSize + 10);
-		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1,1));
+		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
 		
-		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(1.0f, 1.0f, 1.0f, 0.20f));
+		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(1.0f, 1.0f, 1.0f, 0.00f));
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
 		{
@@ -212,6 +211,10 @@ void PanelProject::InspectorDraw()
 		ImGui::EndGroup();
 
 		ImGui::SameLine(0, ImGui::GetStyle().ItemSpacing.y + fontSize);
+		
+		if (DragAndDrop(file))
+			break;
+		ImGui::PopStyleVar(4);
 	}
 }
 
@@ -392,31 +395,53 @@ void PanelProject::DoubleClickFile(FileInfo& info)
 	
 }
 
-bool PanelProject::DragAndDrop()
+bool PanelProject::DragAndDrop(FileInfo& info)
 {
-	/*if (ImGui::BeginDragDropSource())
+	// Check if the window is being hovered over while dragging
+	if (ImGui::IsWindowHovered() && ImGui::IsMouseDragging(0)) 
 	{
-		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
-		{
-			ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
-		}
+		ImGui::SetWindowFocus("Project");
+	}
+
+	if (ImGui::BeginDragDropSource())
+	{
+		ImGui::SetDragDropPayload(info.name.c_str(), &info, sizeof(FileInfo));
 
 		ImGui::EndDragDropSource();
-	}*/
-	if (ImGui::BeginDragDropTarget()) {
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAME_OBJECT")) {
-			GameObject* gameObject = *(GameObject**)payload->Data;
-			if (gameObject) {
-				// Save the GameObject as a prefab
-				SaveGameObjectAsPrefab(gameObject);
+	}
+	if (ImGui::BeginDragDropTarget()) 
+	{
+		if (engine->N_sceneManager->GetSelectedGO().get())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
+			{
+				GameObject* gameObject = *(GameObject**)payload->Data;
+				if (gameObject)
+				{
+					// Save the GameObject as a prefab
+					SaveGameObjectAsPrefab(gameObject);
+				}
+				ImGui::EndDragDropTarget();
+			}
+		}
+		else if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(info.name.c_str()))
+		{
+			FileInfo* fileInfo = (FileInfo*)payload->Data;
+			if (fileInfo) {
+				if (ImGui::IsItemHovered())
+				{
+					LOG(LogType::LOG_INFO, "Path Hovered File: %s", info.path);
+					// Perform the file move operation
+					fs::rename(fileInfo->path, info.path);
+				}
 			}
 			ImGui::EndDragDropTarget();
-			return true;
+			refresh = true;
 		}
 		ImGui::EndDragDropTarget();
 	}
 
-	return false;
+	return refresh;
 }
 
 void PanelProject::SaveGameObjectAsPrefab(GameObject* gameObject) {
@@ -430,6 +455,7 @@ void PanelProject::SaveGameObjectAsPrefab(GameObject* gameObject) {
 		json gameObjectJSON = gameObject->SaveGameObject();
 		std::ofstream(directoryPath + prefabName) << gameObjectJSON.dump(2);
 		LOG(LogType::LOG_OK, "PREFAB CREATED SUCCESSFULLY");
-
-	}
+		refresh = true;
+		engine->N_sceneManager->currentScene->SetIsDirty(true);
+	} 
 }
