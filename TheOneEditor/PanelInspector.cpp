@@ -73,7 +73,8 @@ bool PanelInspector::Draw()
             ImGui::Dummy(ImVec2(0.0f, 10.0f));
 
             //add change name imgui
-            static char newNameBuffer[256]; // Buffer para el nuevo nombre
+            static char newNameBuffer[32]; // Buffer para el nuevo nombre
+            strcpy(newNameBuffer, selectedGO->GetName().c_str());
             if (ImGui::InputText("New Name", newNameBuffer, sizeof(newNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue)) {
                 std::string newName(newNameBuffer);
                 LOG(LogType::LOG_INFO, "GameObject %s has been renamed to %s", selectedGO->GetName().c_str(), newName.c_str());
@@ -466,7 +467,8 @@ bool PanelInspector::Draw()
                         unsigned int id = item->GetID();
 
                         //add change name imgui
-                        static char changeUIName[256]; // Buffer para el nuevo nombre
+                        static char changeUIName[32]; // Buffer para el nuevo nombre
+                        strcpy(changeUIName, item->GetName().c_str());
                         if (ImGui::InputText("Set Name", changeUIName, sizeof(changeUIName), ImGuiInputTextFlags_EnterReturnsTrue)) {
                             std::string newName(changeUIName);
                             LOG(LogType::LOG_INFO, "ItemUI %s has been renamed to %s", item->GetName().c_str(), newName.c_str());
