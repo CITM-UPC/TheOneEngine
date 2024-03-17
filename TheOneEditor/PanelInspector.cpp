@@ -454,6 +454,9 @@ bool PanelInspector::Draw()
 
             if (tempCanvas != nullptr && ImGui::CollapsingHeader("Canvas", treeNodeFlags))
             {
+                ImGui::Checkbox("Toggle debug draw", &(tempCanvas->debugDraw));
+
+                //ui elements show
                 int counter = 0;
                 for (auto& item : tempCanvas->GetUiElements())
                 {
