@@ -245,7 +245,6 @@ std::vector<FileInfo> PanelProject::ListFiles(const std::string& path)
 
 FileDropType PanelProject::FindFileType(const std::string& fileExtension)
 {
-
 	// Convert fileExtension to lowercase
 	std::string lowercaseExtension = fileExtension;
 	std::transform(lowercaseExtension.begin(), lowercaseExtension.end(), lowercaseExtension.begin(),
@@ -274,6 +273,10 @@ FileDropType PanelProject::FindFileType(const std::string& fileExtension)
 	else if (lowercaseExtension == ".txt")
 	{
 		return FileDropType::TXT;
+	}
+	else if (lowercaseExtension == ".particles")
+	{
+		return FileDropType::PARTICLES;
 	}
 
 	return FileDropType::UNKNOWN;
@@ -324,6 +327,7 @@ void PanelProject::LoadIcons()
 	iconTextures[FileDropType::SCRIPT] = LoadTexture("Config\\Icons/PanelProject/script.png");
 	iconTextures[FileDropType::TEXTURE] = LoadTexture("Config\\Icons/PanelProject/texture.png");
 	iconTextures[FileDropType::TXT] = LoadTexture("Config\\Icons/PanelProject/txt.png");
+	iconTextures[FileDropType::PARTICLES] = LoadTexture("Config\\Icons/PanelProject/particles.png");
 	iconTextures[FileDropType::UNKNOWN] = LoadTexture("Config\\Icons/PanelProject/unknown.png");
 }
 

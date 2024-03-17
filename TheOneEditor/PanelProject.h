@@ -17,6 +17,7 @@ enum class FileDropType {
 	SCENE,
 	PREFAB,
 	TXT,
+	PARTICLES,
 
 	UNKNOWN
 };
