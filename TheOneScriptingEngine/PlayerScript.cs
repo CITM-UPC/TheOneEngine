@@ -55,7 +55,7 @@ public class PlayerScript : MonoBehaviour
 
 		if (Input.GetKeyboardButton(Input.KeyboardCode.SPACEBAR))
 		{
-			InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
+			InternalCalls.InstantiateBullet(attachedGameObject.transform.position + attachedGameObject.transform.forward * 3.5f, attachedGameObject.transform.rotation);
 		}
 		if (Input.GetKeyboardButton(Input.KeyboardCode.LSHIFT)) { speed = 30.0f; }
 		else { speed = 15.0f; }
@@ -85,7 +85,7 @@ public class PlayerScript : MonoBehaviour
 
 		if (Input.GetControllerButton(Input.ControllerButtonCode.R1))
         {
-			InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
+			InternalCalls.InstantiateBullet(attachedGameObject.transform.position + attachedGameObject.transform.forward * 3.5f, attachedGameObject.transform.rotation);
 		}
 	}
 }

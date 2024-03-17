@@ -4,6 +4,7 @@
 
 #include "EngineCore.h"
 #include "Transform.h"
+#include "Collider2D.h"
 #include "N_SceneManager.h"
 
 #include <glm/vec3.hpp>
@@ -25,11 +26,6 @@ static bool GetControllerButton(int controllerButton, int gamePad)
 	auto inputToPass = (SDL_GameControllerButton)controllerButton;
 
 	auto result = engine->inputManager->GetGamepadButton(gamePad, inputToPass);
-
-	if (result == InputManagerNamespace::KEY_IDLE)
-	{
-		LOG(LogType::LOG_WARNING, "Button %i is idle", controllerButton);
-	}
 
 	return result == InputManagerNamespace::KEY_DOWN;
 }
@@ -88,7 +84,10 @@ static GameObject* InstantiateBullet(vec3f* initialPosition, vec3f* direction)
 	SetRotation(go, direction);
 
 	go->AddScript("Bullet");
-
+	go->AddComponent<Collider2D>();
+	go->GetComponent<Collider2D>()->colliderType = ColliderType::Circle;
+	go->GetComponent<Collider2D>()->collisionType = CollisionType::Bullet;
+	go->GetComponent<Collider2D>()->radius = 0.4f;
 	return go;
 }
 

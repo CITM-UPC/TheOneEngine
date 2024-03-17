@@ -8,12 +8,14 @@ public class AdultXenomorphBehaviour : MonoBehaviour
         Attack,
         Chase,
         Patrol,
-        Death
+        Dead
     }
 
     IGameObject playerGO;
     Vector3 directorVector;
     float playerDistance;
+
+    float life = 200;
 
     float movementSpeed = 35.0f;
 
@@ -36,6 +38,8 @@ public class AdultXenomorphBehaviour : MonoBehaviour
 
 	public override void Update()
 	{
+        if (currentState == States.Dead) return;
+
         //Draw debug ranges
         if (!detected)
         {
@@ -51,7 +55,14 @@ public class AdultXenomorphBehaviour : MonoBehaviour
         directorVector = (playerGO.transform.position - attachedGameObject.transform.position).Normalize();
         playerDistance = Vector3.Distance(playerGO.transform.position, attachedGameObject.transform.position);
 
-        //Change the states
+        UpdateFSMStates();
+        DoStateBehaviour();
+    }
+
+    void UpdateFSMStates()
+    {
+        if (life <= 0) { currentState = States.Dead; return; }
+
         if (!detected && playerDistance < enemyDetectedRange) detected = true;
 
         if (detected && !shooting)
@@ -71,7 +82,10 @@ public class AdultXenomorphBehaviour : MonoBehaviour
                 currentState = States.Idle;
             }
         }
+    }
 
+    void DoStateBehaviour()
+    {
         switch (currentState)
         {
             case States.Idle:
@@ -83,7 +97,7 @@ public class AdultXenomorphBehaviour : MonoBehaviour
                     currentTimer += Time.deltaTime;
                     if (!hasShot && currentTimer > attackCooldown / 2)
                     {
-                        InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
+                        InternalCalls.InstantiateBullet(attachedGameObject.transform.position + attachedGameObject.transform.forward * 4.5f, attachedGameObject.transform.rotation);
                         hasShot = true;
                     }
                     break;
@@ -98,10 +112,16 @@ public class AdultXenomorphBehaviour : MonoBehaviour
                 break;
             case States.Patrol:
                 break;
-            case States.Death:
+            case States.Dead:
+                attachedGameObject.transform.rotation = new Vector3(-1.65f, attachedGameObject.transform.rotation.y, attachedGameObject.transform.rotation.z);
                 break;
             default:
                 break;
         }
+    }
+
+    public void ReduceLife() //temporary function for the hardcoding of collisions
+    {
+        life -= 50.0f;
     }
 }
