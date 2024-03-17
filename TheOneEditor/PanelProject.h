@@ -16,6 +16,7 @@ enum class FileDropType {
 	SCRIPT,
 	SCENE,
 	PREFAB,
+	TXT,
 
 	UNKNOWN
 };
@@ -41,6 +42,9 @@ public:
 
 	//Function to move files through the folders and some to the scene
 	bool DragAndDrop();
+
+	//Serializes a GameObject into a Prefab file
+	void SaveGameObjectAsPrefab(GameObject* gameObject);
 
 	//Function that shows the files of a selected folder (take into account selected Directory in DirectoryTreeViewRecursive)
 	void InspectorDraw();

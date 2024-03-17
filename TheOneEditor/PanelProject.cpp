@@ -4,8 +4,11 @@
 #include "imgui.h"
 #include "SceneManager.h"
 
+#include "..\TheOneEngine\UIDGen.h"
+
 #include <IL/il.h>
 
+#include <fstream>
 #include <filesystem>
 #include <string>
 #include <locale>
@@ -37,9 +40,7 @@ bool PanelProject::Draw()
 
 		if (ImGui::BeginTable("table", 2, tableFlags))
 		{
-			// We could also set ImGuiTableFlags_SizingFixedFit on the table and all columns will default to ImGuiTableColumnFlags_WidthFixed.
 			ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
-			//ImGui::TableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 100.0f);
 
 			// Directory Tree View ----------------------------
 			ImGui::TableNextColumn();
@@ -74,7 +75,7 @@ bool PanelProject::Draw()
 			// Inspector ----------------------------
 			ImGui::TableNextColumn();
 
-			ImGui::Text("%s", directoryPath.c_str());
+			ImGui::Text("%s", fileSelected.path.c_str());
 
 			ImGui::Separator();
 
@@ -169,42 +170,6 @@ std::pair<bool, uint32_t> PanelProject::DirectoryTreeViewRecursive(const fs::pat
 	return { any_node_clicked, node_clicked };
 }
 
-bool PanelProject::DragAndDrop()
-{
-	/*if (ImGui::BeginDragDropSource())
-	{
-		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
-		{
-			ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
-		}
-
-		ImGui::EndDragDropSource();
-	}*/
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
-		{
-			GameObject* dragging = *(GameObject**)payload->Data;
-
-			if (!dragging->IsPrefab())
-				dragging->SetPrefab(0);
-
-			//CreatePrefab(dragging);
-		}
-		//if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(fileSelected)
-		//{
-		//	//Create a FileNode class
-
-		//	GameObject* dragging = *(GameObject**)payload->Data;
-
-		//	//CreatePrefab(dragging);
-		//}
-		ImGui::EndDragDropTarget();
-	}
-
-	return false;
-}
-
 void PanelProject::InspectorDraw()
 {
 	if (refresh)
@@ -214,20 +179,24 @@ void PanelProject::InspectorDraw()
 		refresh = false;
 	}
 
+	float contentWidth = ImGui::GetWindowContentRegionWidth();
+
 	for (auto& file : files) 
 	{
-		// Start a new line
+		std::string displayName = (file.name.size() >= 10) ? file.name.substr(0, 10) + "..." : file.name;
+
+		if (ImGui::GetCursorPosX() + fontSize > contentWidth)
+			ImGui::NewLine();
+
 		ImGui::BeginGroup();
 
-		// Load icon texture
 		GLuint iconTexture = iconTextures[file.fileType];
 
-		// Display icon and filename
 		ImGui::Indent();
-		ImVec2 textPos(ImGui::GetCursorPos().x + (fontSize - ImGui::CalcTextSize(file.name.c_str()).x) * 0.5f, ImGui::GetCursorPos().y + fontSize + 10);
+		ImVec2 textPos(ImGui::GetCursorPos().x + (fontSize - ImGui::CalcTextSize(displayName.c_str()).x) * 0.5f, ImGui::GetCursorPos().y + fontSize + 10);
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(1,1));
 		
-		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(1.0f, 1.0f, 1.0f, 0.50f));
+		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(1.0f, 1.0f, 1.0f, 0.20f));
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
 		{
@@ -236,18 +205,13 @@ void PanelProject::InspectorDraw()
 
 		DoubleClickFile(file);
 
-		//File or folder name underneath icon
 		ImGui::SetCursorPos(textPos);
-		ImGui::Text("%s", file.name.c_str(), ImVec2(fontSize, fontSize));
 
-		// End current line
+		ImGui::Text("%s", displayName.c_str(), ImVec2(fontSize, fontSize));
+
 		ImGui::EndGroup();
 
-		// Move cursor to the next line
 		ImGui::SameLine(0, ImGui::GetStyle().ItemSpacing.y + fontSize);
-		
-		//Historn: Create COLUMNS AND ROWS
-		//ImGui::Spacing();
 	}
 }
 
@@ -279,25 +243,34 @@ std::vector<FileInfo> PanelProject::ListFiles(const std::string& path)
 FileDropType PanelProject::FindFileType(const std::string& fileExtension)
 {
 
-	if (fileExtension == ".fbx")
+	// Convert fileExtension to lowercase
+	std::string lowercaseExtension = fileExtension;
+	std::transform(lowercaseExtension.begin(), lowercaseExtension.end(), lowercaseExtension.begin(),
+		[](unsigned char c) { return std::tolower(c); });
+
+	if (lowercaseExtension == ".fbx")
 	{
 		return FileDropType::MODEL3D;
 	}
-	else if (fileExtension == ".png")
+	else if (lowercaseExtension == ".png" || lowercaseExtension == ".dds")
 	{
 		return FileDropType::TEXTURE;
 	}
-	else if (fileExtension == ".cs")
+	else if (lowercaseExtension == ".cs")
 	{
 		return FileDropType::SCRIPT;
 	}
-	else if (fileExtension == ".toe")
+	else if (lowercaseExtension == ".toe")
 	{
 		return FileDropType::SCENE;
 	}
-	else if (fileExtension == ".prefab")
+	else if (lowercaseExtension == ".prefab")
 	{
 		return FileDropType::PREFAB;
+	}
+	else if (lowercaseExtension == ".txt")
+	{
+		return FileDropType::TXT;
 	}
 
 	return FileDropType::UNKNOWN;
@@ -341,11 +314,13 @@ void PanelProject::LoadIcons()
 	ilInit();
 
 	// Load and store icon textures
-	iconTextures[FileDropType::FOLDER] = LoadTexture("Config/Icons/PanelProject/folder.png");
+	iconTextures[FileDropType::FOLDER] = LoadTexture("Config\\Icons/PanelProject/folder.png");
+	iconTextures[FileDropType::MODEL3D] = LoadTexture("Config\\Icons/PanelProject/fbx.png");
 	iconTextures[FileDropType::PREFAB] = LoadTexture("Config\\Icons/PanelProject/prefab.png");
 	iconTextures[FileDropType::SCENE] = LoadTexture("Config\\Icons/PanelProject/scene.png");
 	iconTextures[FileDropType::SCRIPT] = LoadTexture("Config\\Icons/PanelProject/script.png");
 	iconTextures[FileDropType::TEXTURE] = LoadTexture("Config\\Icons/PanelProject/texture.png");
+	iconTextures[FileDropType::TXT] = LoadTexture("Config\\Icons/PanelProject/txt.png");
 	iconTextures[FileDropType::UNKNOWN] = LoadTexture("Config\\Icons/PanelProject/unknown.png");
 }
 
@@ -366,7 +341,7 @@ void PanelProject::SaveWarning()
 		ImGui::SetCursorPosY(10.0f);
 		ImGui::Indent();
 		ImGui::Text("You have unsaved changes in this scene. Are you sure?");
-		//ImGui::Indent();
+
 		ImGui::SetCursorPosX((ImGui::GetContentRegionAvail().x - 100 * 2.0f - ImGui::GetStyle().ItemSpacing.x) / 2.0f);
 		if (ImGui::Button("Yes", { 100, 20 })) {
 			engine->N_sceneManager->LoadScene(fileSelected.name);
@@ -384,7 +359,6 @@ void PanelProject::DoubleClickFile(FileInfo& info)
 {
 	if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 	{
-		// Handle double click
 		switch (info.fileType)
 		{
 		case FileDropType::FOLDER:
@@ -401,9 +375,61 @@ void PanelProject::DoubleClickFile(FileInfo& info)
 				engine->N_sceneManager->LoadScene(info.name);
 			}
 			break;
+		case FileDropType::PREFAB:
+			if (engine->N_sceneManager->currentScene->IsDirty())
+			{
+				warningScene = true;
+			}
+			else
+			{
+				engine->N_sceneManager->LoadScene(info.name);
+			}
+			break;
 		default:
 			break;
 		}
 	}
 	
+}
+
+bool PanelProject::DragAndDrop()
+{
+	/*if (ImGui::BeginDragDropSource())
+	{
+		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
+		{
+			ImGui::SetDragDropPayload(fileSelected, &childGO, sizeof(GameObject));
+		}
+
+		ImGui::EndDragDropSource();
+	}*/
+	if (ImGui::BeginDragDropTarget()) {
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("GAME_OBJECT")) {
+			GameObject* gameObject = *(GameObject**)payload->Data;
+			if (gameObject) {
+				// Save the GameObject as a prefab
+				SaveGameObjectAsPrefab(gameObject);
+			}
+			ImGui::EndDragDropTarget();
+			return true;
+		}
+		ImGui::EndDragDropTarget();
+	}
+
+	return false;
+}
+
+void PanelProject::SaveGameObjectAsPrefab(GameObject* gameObject) {
+	if (gameObject) {
+		
+		gameObject->SetPrefab(UIDGen::GenerateUID());
+
+		std::string prefabName = gameObject->GetName() + ".prefab";
+
+		// Serialize the GameObject and save it as a prefab file
+		json gameObjectJSON = gameObject->SaveGameObject();
+		std::ofstream(directoryPath + prefabName) << gameObjectJSON.dump(2);
+		LOG(LogType::LOG_OK, "PREFAB CREATED SUCCESSFULLY");
+
+	}
 }

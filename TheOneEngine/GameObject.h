@@ -142,7 +142,7 @@ public:
     void LoadGameObject(const json& gameObjectJSON);
 
     //Prefab
-    void SetPrefab(const uint& pId);
+    void SetPrefab(const uint32_t& pId);
     void UnpackPrefab();
     void LockPrefab(bool lock); //To make it editable or not?
     const uint GetPrefabID() const { return prefabID; }
@@ -161,7 +161,7 @@ private:
     AABBox aabb;
 
     //Prefab Vars
-    uint prefabID = 0; //Intit at 0 for GO that are not ina Prefab
+    uint32_t prefabID = 0; //Intit at 0 for GO that are not ina Prefab
     bool lockedPrefab = true;
     bool isPrefabDirty = false;
 };
