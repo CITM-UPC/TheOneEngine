@@ -657,11 +657,11 @@ bool PanelInspector::Draw()
                 {
                     if (ImGui::TreeNode("ImageUI"))
                     {
-                        static char nameRecipient[32];
+                        static char nameRecipient[64];
 
                         ImGui::InputText("File Name", nameRecipient, IM_ARRAYSIZE(nameRecipient));
 
-                        if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
+                        if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient[0] != '\0')
                         {
                             tempCanvas->AddItemUI<ImageUI>(nameRecipient);
                             nameRecipient[0] = '\0';
@@ -670,11 +670,11 @@ bool PanelInspector::Draw()
                     }
                     if (ImGui::TreeNode("ButtonImageUI"))
                     {
-                        static char nameRecipient[32];
+                        static char nameRecipient[64];
 
                         ImGui::InputText("File Name ", nameRecipient, IM_ARRAYSIZE(nameRecipient));
 
-                        if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient != "")
+                        if (app->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && nameRecipient[0] != '\0')
                         {
                             tempCanvas->AddItemUI<ButtonImageUI>(nameRecipient);
                             nameRecipient[0] = '\0';
