@@ -58,7 +58,9 @@ void Canvas::DrawComponent(Camera* camera)
 
 void Canvas::SetTo2DRenderSettings(Camera* camera, const bool& setTo)
 {
-	glm::mat4 viewMatrix = glm::transpose(glm::mat4(camera->getViewMatrix()));
+	glm::mat4 viewMatrix = glm::mat4(1.0f);
+	viewMatrix[0][0] *= -1;
+	viewMatrix[2][2] *= -1;
 	glm::mat4 projectionMatrix = glm::transpose(glm::mat4(camera->projectionMatrix));
 
 	if (setTo)
@@ -74,6 +76,7 @@ void Canvas::SetTo2DRenderSettings(Camera* camera, const bool& setTo)
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(glm::value_ptr(projectionMatrix));
 		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(glm::value_ptr(viewMatrix));
 	}
 }
 
