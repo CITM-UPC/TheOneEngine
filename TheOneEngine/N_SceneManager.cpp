@@ -432,6 +432,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateMeshGO(std::string path)
 					meshGO.get()->GetComponent<Mesh>()->meshData = mData;
 					meshGO.get()->GetComponent<Mesh>()->meshData.texturePath = textures[mesh.materialIndex]->path;
 					meshGO.get()->GetComponent<Mesh>()->path = file;
+					meshGO.get()->GetComponent<Transform>()->SetTransform(mData.meshTransform);
 				}
 			}
 

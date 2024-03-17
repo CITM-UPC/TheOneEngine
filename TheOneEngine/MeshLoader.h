@@ -33,6 +33,7 @@ struct MeshData
 	std::vector<vec3f> meshNorms;
 	std::vector<vec3f> meshFaceCenters;
 	std::vector<vec3f> meshFaceNorms;
+	glm::mat4 meshTransform;
 
 	std::string texturePath;
 

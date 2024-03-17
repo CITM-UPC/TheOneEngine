@@ -229,11 +229,12 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
             vec3f* texCoords = (vec3f*)mesh->mTextureCoords[0];
 
             // Apply global transformation to vertices
-            for (size_t i = 0; i < mesh->mNumVertices; ++i)
-            {
-                aiVector3D transformedVertex = globalTransform * mesh->mVertices[i];
-                verts[i] = vec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z);
-            }
+            //for (size_t i = 0; i < mesh->mNumVertices; ++i)
+            //{
+            //    aiVector3D transformedVertex = globalTransform * mesh->mVertices[i];
+            //    verts[i] = vec3f(transformedVertex.x, transformedVertex.y, transformedVertex.z);
+            //}
+            auto transform = scene->mRootNode->mChildren[m]->mTransformation;
 
             std::vector<V3T2> vertex_data;
             std::vector<unsigned int> index_data;
@@ -269,6 +270,14 @@ std::vector<MeshBufferedData> MeshLoader::LoadMesh(const std::string& path)
                 vertex_data,
                 index_data
             };
+
+            glm::mat4 meshTransform;
+            meshTransform[0][0] = transform.a1; meshTransform[0][1] = transform.b1; meshTransform[0][2] = transform.c1; meshTransform[0][3] = transform.d1;
+            meshTransform[1][0] = transform.a2; meshTransform[1][1] = transform.b2; meshTransform[1][2] = transform.c2; meshTransform[1][3] = transform.d2;
+            meshTransform[2][0] = transform.a3; meshTransform[2][1] = transform.b3; meshTransform[2][2] = transform.c3; meshTransform[2][3] = transform.d3;
+            meshTransform[3][0] = transform.a4; meshTransform[3][1] = transform.b4; meshTransform[3][2] = transform.c4; meshTransform[3][3] = transform.d4;
+            meshData.meshTransform = meshTransform;
+ 
             aiString aiPath;
             scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &aiPath);
             fs::path texPath = fs::path(path).parent_path() / fs::path(aiPath.C_Str()).filename();
