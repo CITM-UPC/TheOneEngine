@@ -113,7 +113,7 @@ public class AdultXenomorphBehaviour : MonoBehaviour
             case States.Patrol:
                 break;
             case States.Dead:
-                attachedGameObject.transform.rotation = new Vector3(-1.65f, attachedGameObject.transform.rotation.y, attachedGameObject.transform.rotation.z);
+                attachedGameObject.transform.Rotate(Vector3.right * 1100.0f); //80 degrees??
                 break;
             default:
                 break;

@@ -68,10 +68,18 @@ static void Translate(GameObject* GOptr, vec3f* finalPos)
 
 	GOptr->GetComponent<Transform>()->SetPosition((vec3)*finalPos, HandleSpace::GLOBAL);
 }
+static void Rotate(GameObject* GOptr, vec3f* increment)
+{
+	GOptr->GetComponent<Transform>()->Rotate((vec3)*increment, HandleSpace::LOCAL);
+}
 
 static vec3f GetTransformForward(GameObject* GOptr)
 {
 	return (vec3f)GOptr->GetComponent<Transform>()->GetForward();
+}
+static vec3f GetTransformRight(GameObject* GOptr)
+{
+	return (vec3f)GOptr->GetComponent<Transform>()->GetRight();
 }
 
 //GameObject
@@ -215,7 +223,9 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::GetRotation", GetRotation);
 	mono_add_internal_call("InternalCalls::SetRotation", SetRotation);
 	mono_add_internal_call("InternalCalls::Translate", Translate);
+	mono_add_internal_call("InternalCalls::Rotate", Rotate);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
+	mono_add_internal_call("InternalCalls::GetTransformRight", GetTransformRight);
 
 	mono_add_internal_call("InternalCalls::InstantiateBullet", InstantiateBullet);
 	mono_add_internal_call("InternalCalls::DestroyGameObject", DestroyGameObject);

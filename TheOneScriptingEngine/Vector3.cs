@@ -29,6 +29,11 @@ public struct Vector3
         return new Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
     }
 
+    public static Vector3 operator *(Vector3 a, Vector3 b)
+    {
+        return new Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+    }
+
     public static Vector3 operator *(Vector3 a, float b)
     {
         return new Vector3(a.x * b, a.y * b, a.z * b);

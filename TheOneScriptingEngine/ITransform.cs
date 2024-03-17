@@ -34,6 +34,13 @@ public class ITransform : IComponent
             return InternalCalls.GetTransformForward(containerGOptr);
         }
     }
+    public Vector3 right
+    {
+        get
+        {
+            return InternalCalls.GetTransformRight(containerGOptr);
+        }
+    }
 
     public ITransform(IntPtr GOptr) : base(GOptr) { }
 
@@ -43,6 +50,11 @@ public class ITransform : IComponent
 
         Vector3 finalPos = position + increment;
         InternalCalls.Translate(containerGOptr, ref finalPos);
+    }
+
+    public void Rotate(Vector3 increment)
+    {
+       InternalCalls.Rotate(containerGOptr, ref increment);
     }
 
     public void LookAt(Vector3 targetPosition)

@@ -35,7 +35,12 @@ class InternalCalls
     internal extern static void Translate(IntPtr GOptr, ref Vector3 increment);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void Rotate(IntPtr GOptr, ref Vector3 increment);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetTransformForward(IntPtr GOptr);
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static Vector3 GetTransformRight(IntPtr GOptr);
 
     //GameObjects
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
