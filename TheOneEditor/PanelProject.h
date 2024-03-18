@@ -44,6 +44,8 @@ public:
 	//Function to move files through the folders and some to the scene
 	bool DragAndDrop(FileInfo& info);
 
+	void ContextMenu(FileInfo& info);
+
 	//Serializes a GameObject into a Prefab file
 	void SaveGameObjectAsPrefab(GameObject* gameObject);
 

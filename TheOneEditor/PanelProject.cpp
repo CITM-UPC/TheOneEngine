@@ -214,8 +214,11 @@ void PanelProject::InspectorDraw()
 
 		ImGui::SameLine(0, ImGui::GetStyle().ItemSpacing.y + fontSize);
 		
+		ContextMenu(file);
+
 		if (DragAndDrop(file))
 			break;
+
 		ImGui::PopStyleVar(5);
 	}
 }
@@ -448,6 +451,21 @@ bool PanelProject::DragAndDrop(FileInfo& info)
 	}
 
 	return refresh;
+}
+
+void PanelProject::ContextMenu(FileInfo& info)
+{
+	if (ImGui::BeginPopupContextItem())
+	{
+		
+		/*if (ImGui::MenuItem("Delete"))
+		{
+			fs::remove(info.name);
+			refresh = true;
+		}*/
+
+		ImGui::EndPopup();
+	}
 }
 
 void PanelProject::SaveGameObjectAsPrefab(GameObject* gameObject) {
