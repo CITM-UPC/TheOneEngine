@@ -5,15 +5,37 @@
 void UIEmmiterWriteNode(Emmiter* emmiter)
 {
 	ImGui::InputInt("maxParticles", &emmiter->maxParticles);
-	if (ImGui::Button("Reset Pool")) {
-		emmiter->RestartParticlePool();
-	}
+
+	if (ImGui::Button("Reset Pool")) emmiter->RestartParticlePool();
+
 	ImGui::InputFloat("Duration", &emmiter->duration);
 	ImGui::InputFloat("Delay", &emmiter->delay);
 	ImGui::Checkbox("Loop", &emmiter->isLooping);
 
+	ImGui::Separator();
+
+	// spawn add ----
 	ImGui::SeparatorText("Spawn Module");
-	
+
+	ImGui::SameLine();
+
+	ImGui::PushID("add_spawn_emmiter_window");
+	if (ImGui::BeginMenu("+"))
+	{
+		if (ImGui::MenuItem("Constant"))
+			emmiter->AddModule(SpawnEmmiterModule::CONSTANT);
+
+		if (ImGui::MenuItem("Single Burst"))
+			emmiter->AddModule(SpawnEmmiterModule::SINGLE_BURST);
+
+		if (ImGui::MenuItem("Constant Burst"))
+			emmiter->AddModule(SpawnEmmiterModule::CONSTANT_BURST);
+
+		ImGui::EndMenu();
+	}
+	ImGui::PopID();
+
+	// spawn draw ---
 	if (emmiter->spawnModule) {
 		switch (emmiter->spawnModule->type) {
 		case SpawnEmmiterModule::CONSTANT:
@@ -34,9 +56,29 @@ void UIEmmiterWriteNode(Emmiter* emmiter)
 		ImGui::Separator();
 	}
 	
+	// init add ----
 	ImGui::SeparatorText("Initialize Modules");
 
+	ImGui::SameLine();
+
+	ImGui::PushID("add_init_emmiter_window");
+	if (ImGui::BeginMenu("+"))
+	{
+		if (ImGui::MenuItem("Set Speed"))
+			emmiter->AddModule(InitializeEmmiterModule::SET_SPEED);
+
+		if (ImGui::MenuItem("Set Color"))
+			emmiter->AddModule(InitializeEmmiterModule::SET_COLOR);
+
+		ImGui::EndMenu();
+	}
+	ImGui::PopID();
+
+	// init draw ---
+	int imGuiIDInit = 0;
+	
 	for (auto m = emmiter->initializeModules.begin(); m != emmiter->initializeModules.end(); ++m) {
+		ImGui::PushID("init_emmiter" + imGuiIDInit);
 		switch ((*m)->type) {
 		case InitializeEmmiterModule::SET_SPEED:
 			UIInspectorEmmiterInitializeModule((SetSpeed*)(*m).get());
@@ -49,29 +91,65 @@ void UIEmmiterWriteNode(Emmiter* emmiter)
 		default:
 			break;
 		}
+		ImGui::PopID();
+		imGuiIDInit++;
+		ImGui::Dummy(ImVec2(0.0f, 10.0f));
 	}
 
 	ImGui::Separator();
 
+	// update add ----
 	ImGui::SeparatorText("Update Modules");
 
+	ImGui::SameLine();
+
+	ImGui::PushID("add_update_emmiter_window");
+	if (ImGui::BeginMenu("+"))
+	{
+
+		ImGui::EndMenu();
+	}
+	ImGui::PopID();
+
+	// update draw ---
+	int imGuiIDUpdate = 0;
+
 	for (auto m = emmiter->updateModules.begin(); m != emmiter->updateModules.end(); ++m) {
+		ImGui::PushID("update_emmiter" + imGuiIDInit);
 		switch ((*m)->type) {
 		case UpdateEmmiterModule::CHANGE_COLOR:
 			break;
+
 		default:
 			break;
 		}
+		ImGui::PopID();
+		imGuiIDUpdate++;
+		ImGui::Dummy(ImVec2(0.0f, 10.0f));
 	}
 
 	ImGui::Separator();
 
-
+	// render add ----
 	ImGui::SeparatorText("Render Modules");
 
+	ImGui::SameLine();
+
+	ImGui::PushID("add_render_emmiter_window");
+	if (ImGui::BeginMenu("+"))
+	{
+		if (ImGui::MenuItem("Billboard"))
+			emmiter->AddModule(RenderEmmiterModule::BILLBOARD);
+
+		ImGui::EndMenu();
+	}
+	ImGui::PopID();
+
+	// render draw ---
 	if (emmiter->renderModule) {
 		switch (emmiter->spawnModule->type) {
 		case RenderEmmiterModule::BILLBOARD:
+			UIInspectorEmmiterRenderModule((BillboardRender*)emmiter->renderModule.get());
 			break;
 		default:
 			break;
@@ -84,19 +162,19 @@ void UIEmmiterWriteNode(Emmiter* emmiter)
 
 // spawn modules ---------------------------------------------------------------------------------------------------------------
 void UIInspectorEmmiterSpawnModule(ConstantSpawnRate* spawnModule) {
-	ImGui::SeparatorText("Constant Spawn Rate");
+	ImGui::Text("Constant Spawn Rate");
 	ImGui::InputFloat("Spawn Rate", &spawnModule->spawnRate);
 	ImGui::InputFloat("Particle Duration", &spawnModule->duration);
 }
 
 void UIInspectorEmmiterSpawnModule(SingleBurstSpawn* spawnModule) {
-	ImGui::SeparatorText("Single Burst");
+	ImGui::Text("Single Burst");
 	ImGui::InputFloat("Amount", &spawnModule->amount);
 	ImGui::InputFloat("Particle Duration", &spawnModule->duration);
 }
 
 void UIInspectorEmmiterSpawnModule(ConstantBurstSpawn* spawnModule) {
-	ImGui::SeparatorText("Constant Burst");
+	ImGui::Text("Constant Burst");
 	ImGui::InputFloat("Amount", &spawnModule->amount);
 	ImGui::InputFloat("Spawn Rate", &spawnModule->spawnRate);
 	ImGui::InputFloat("Particle Duration", &spawnModule->duration);
@@ -106,7 +184,7 @@ void UIInspectorEmmiterSpawnModule(ConstantBurstSpawn* spawnModule) {
 // initialize modules ----------------------------------------------------------------------------------------------------------
 void UIInspectorEmmiterInitializeModule(SetSpeed* initModule)
 {
-	ImGui::SeparatorText("Set Initial Speed: ");
+	ImGui::Text("Set Initial Speed: ");
 
 	ImGui::Checkbox("Single Value", &initModule->speed.usingSingleValue);
 
@@ -141,7 +219,7 @@ void UIInspectorEmmiterInitializeModule(SetSpeed* initModule)
 
 void UIInspectorEmmiterInitializeModule(SetColor* initModule)
 {
-	ImGui::SeparatorText("Set Initial Color: ");
+	ImGui::Text("Set Initial Color: ");
 
 	ImGui::Checkbox("Single Value", &initModule->color.usingSingleValue);
 
@@ -185,4 +263,5 @@ void UIInspectorEmmiterInitializeModule(SetColor* initModule)
 // render modules --------------------------------------------------------------------------------------------------------------
 void UIInspectorEmmiterRenderModule(BillboardRender* renderModule)
 {
+	ImGui::Text("Billboard Render");
 }

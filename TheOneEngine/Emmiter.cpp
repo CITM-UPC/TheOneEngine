@@ -352,8 +352,8 @@ void Emmiter::LoadEmmiter(const json& emmiterJSON)
 
 	if (emmiterJSON.contains("SpawnModule"))
 	{
-		auto spawnM = AddModule((SpawnEmmiterModule::SpawnEmmiterModuleType)emmiterJSON["SpawnModule"]["Type"]);
-		spawnM->LoadModule(emmiterJSON["SpawnModule"]);
+		auto spawnM = AddModule((SpawnEmmiterModule::SpawnEmmiterModuleType)emmiterJSON["SpawnModule"][0]["Type"]);
+		spawnM->LoadModule(emmiterJSON["SpawnModule"][0]);
 	}
 
 	if (emmiterJSON.contains("InitializeModules"))
@@ -381,7 +381,7 @@ void Emmiter::LoadEmmiter(const json& emmiterJSON)
 
 	if (emmiterJSON.contains("RenderModule"))
 	{
-		auto spawnM = AddModule((RenderEmmiterModule::RenderEmmiterModuleType)emmiterJSON["RenderModule"]["Type"]);
-		spawnM->LoadModule(emmiterJSON["RenderModule"]);
+		auto spawnM = AddModule((RenderEmmiterModule::RenderEmmiterModuleType)emmiterJSON["RenderModule"][0]["Type"]);
+		spawnM->LoadModule(emmiterJSON["RenderModule"][0]);
 	}
 }
