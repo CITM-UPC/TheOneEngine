@@ -18,7 +18,8 @@ public class Input
 		UP = 82,
 		SPACEBAR = 44,
 		ESCAPE = 41,
-	}
+        RETURN = 40,
+    }
 
 	public enum MouseButtonCode
 	{

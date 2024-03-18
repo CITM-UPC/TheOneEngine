@@ -11,6 +11,10 @@ public class PlayerScript : MonoBehaviour
 
 		//Keyboard
 
+		if (Input.GetKeyboardButton(Input.KeyboardCode.K)) {
+			SceneManager.LoadScene("Scene");
+		}
+
 		if (Input.GetKeyboardButton(Input.KeyboardCode.ESCAPE))
 		{
 			InternalCalls.ExitApplication();
