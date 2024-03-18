@@ -5,6 +5,7 @@
 #include "Texture.h"
 #include "Collider2D.h"
 #include "Canvas.h"
+#include "ParticleSystem.h"
 #include "UIDGen.h"
 #include "BBox.hpp"
 #include "Camera.h"
@@ -448,6 +449,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			{
 				this->AddComponent<Canvas>();
 				this->GetComponent<Canvas>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::ParticleSystem)
+			{
+				this->AddComponent<ParticleSystem>();
+				this->GetComponent<ParticleSystem>()->LoadComponent(componentJSON);
 			}
 		}
 	}

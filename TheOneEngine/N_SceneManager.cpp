@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Collider2D.h"
 #include "Canvas.h"
+#include "ParticleSystem.h"
 #include "../TheOneAudio/AudioCore.h"
 #include "EngineCore.h"
 

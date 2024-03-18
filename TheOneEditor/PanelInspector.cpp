@@ -12,6 +12,9 @@
 #include "..\TheOneEngine\Script.h"
 #include "..\TheOneEngine\Collider2D.h"
 #include "..\TheOneEngine\MonoManager.h"
+#include "..\TheOneEngine\ParticleSystem.h"
+
+#include "InspectorParticleSystems.h"
 
 #include "../TheOneAudio/AudioCore.h"
 
@@ -444,11 +447,52 @@ bool PanelInspector::Draw()
                 }
             }
 
+            /*Particle System Component*/
+            ParticleSystem* particleSystem = selectedGO->GetComponent<ParticleSystem>();
+
+            if (particleSystem != nullptr && ImGui::CollapsingHeader("Particle System", treeNodeFlags))
+            {
+                /*if (ImGui::Button("Load")) {
+                    particleSystem->Load("");
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Save")) {
+                    particleSystem->Save();
+                }*/
+
+                if (ImGui::Button("Play")) {
+                    particleSystem->Play();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Stop")) {
+                    particleSystem->Stop();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Replay")) {
+                    particleSystem->Replay();
+                }
+
+                for (auto emmiter = particleSystem->emmiters.begin(); emmiter != particleSystem->emmiters.end(); ++emmiter) {
+                    UIEmmiterWriteNode((*emmiter).get());
+                }
+
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+                if (ImGui::Button("Remove Particle System"))
+                {
+                    selectedGO->RemoveComponent(ComponentType::ParticleSystem);
+                }
+            }
+
             /*Add Component*/
             if (ImGui::BeginMenu("Add Component"))
             {
                 if (ImGui::MenuItem("New Script"))
                     chooseScriptNameWindow = true;
+
+                if (ImGui::MenuItem("Particle System"))
+                {
+                    selectedGO->AddComponent<ParticleSystem>();
+                }
 
                 if (ImGui::TreeNode("Collider2D"))
                 {
@@ -505,6 +549,8 @@ bool PanelInspector::Draw()
 
                     ImGui::TreePop();
                 }
+                
+
 
                 /*ImGuiTextFilter filter;
                 filter.Draw();*/
