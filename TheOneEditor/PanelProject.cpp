@@ -86,7 +86,7 @@ bool PanelProject::Draw()
 
 		SaveWarning();
 
-		ImGui::PopStyleVar();
+		ImGui::PopStyleVar(2);
 		ImGui::End();
 	}
 
@@ -196,6 +196,7 @@ void PanelProject::InspectorDraw()
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
 		
 		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.f, 0.f, 0.f, 0.f));
 		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(.30f, .30f, .30f, 0.00f));
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
