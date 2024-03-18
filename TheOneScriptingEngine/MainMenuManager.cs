@@ -68,5 +68,10 @@ public class MainMenuManager : MonoBehaviour
         {
             SceneManager.LoadScene("NewUntitledScene");
         }
+
+        if ((Input.GetControllerButton(Input.ControllerButtonCode.X) || Input.GetKeyboardButton(Input.KeyboardCode.RETURN)) && canvas.GetSelection() == 3)
+        {
+            InternalCalls.ExitApplication();
+        }
     }
 }
