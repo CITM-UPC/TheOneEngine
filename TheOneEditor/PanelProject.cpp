@@ -195,7 +195,8 @@ void PanelProject::InspectorDraw()
 		ImVec2 textPos(ImGui::GetCursorPos().x + (fontSize - ImGui::CalcTextSize(displayName.c_str()).x) * 0.5f, ImGui::GetCursorPos().y + fontSize + 10);
 		ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, ImVec2(0,0));
 		
-		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(1.0f, 1.0f, 1.0f, 0.00f));
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
+		ImGui::ImageButton((void*)(intptr_t)iconTexture, ImVec2(fontSize, fontSize), ImVec2(0.0f, 0.0f), ImVec2(1.0f, 1.0f), -1, ImVec4(.30f, .30f, .30f, 0.00f));
 
 		if (ImGui::IsItemHovered() && ImGui::IsMouseClicked(0))
 		{
@@ -214,7 +215,7 @@ void PanelProject::InspectorDraw()
 		
 		if (DragAndDrop(file))
 			break;
-		ImGui::PopStyleVar(4);
+		ImGui::PopStyleVar(5);
 	}
 }
 
