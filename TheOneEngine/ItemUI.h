@@ -73,10 +73,12 @@ public:
 		return state;
 	}
 
-	virtual void SetState(UiState state)
+	void SetState(UiState state)
 	{
 		this->state = state;
 	}
+
+	virtual void UpdateState();
 
 protected:
 

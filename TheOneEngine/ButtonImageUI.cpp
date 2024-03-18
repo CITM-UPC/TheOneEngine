@@ -57,6 +57,8 @@ ButtonImageUI::~ButtonImageUI() {}
 
 void ButtonImageUI::Draw2D()
 {
+	UpdateState();
+
 	auto canvas = containerGO.get()->GetComponent<Canvas>();
 
 	float posX = canvas->GetRect().x + GetRect().x;
@@ -227,4 +229,28 @@ void ButtonImageUI::SetSectSizeSelected(float x, float y, float width, float hei
 	imageSelectedSection.y = y / image.get()->height;
 	imageSelectedSection.w = (width) / image.get()->width;
 	imageSelectedSection.h = (height) / image.get()->height;
+}
+
+void ButtonImageUI::UpdateState()
+{
+	switch (state)
+	{
+	case UiState::IDLE:
+		currentSection = &imageIdleSection;
+		break;
+	case UiState::HOVERED:
+		currentSection = &imageHoveredSection;
+		break;
+	case UiState::SELECTED:
+		currentSection = &imageSelectedSection;
+		break;
+	case UiState::HOVEREDSELECTED:
+		break;
+	case UiState::DISABLED:
+		break;
+	case UiState::UNKNOWN:
+		break;
+	default:
+		break;
+	}
 }

@@ -34,30 +34,7 @@ public:
 		return imagePath;
 	}
 
-	void SetState(UiState state) override
-	{
-		switch (state)
-		{
-		case UiState::IDLE:
-			currentSection = &imageIdleSection;
-			break;
-		case UiState::HOVERED:
-			currentSection = &imageHoveredSection;
-			break;
-		case UiState::SELECTED:
-			currentSection = &imageSelectedSection;
-			break;
-		case UiState::HOVEREDSELECTED:
-			break;
-		case UiState::DISABLED:
-			break;
-		case UiState::UNKNOWN:
-			break;
-		default:
-			break;
-		}
-		this->state = state;
-	}
+	void UpdateState() override;
 
 private:
 	std::string imagePath;

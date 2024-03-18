@@ -55,4 +55,11 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void LoadScene(string sceneName);
 
+    //User Interfaces
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void MoveSelectedButton(IntPtr GOptr, int direction);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static int GetSelectiedButton(IntPtr GOptr);
+
 }

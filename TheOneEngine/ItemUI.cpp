@@ -16,6 +16,11 @@ void ItemUI::Draw2D()
 
 }
 
+void ItemUI::UpdateState()
+{
+
+}
+
 Rect2D ItemUI::GetRect() const
 {
 	return imageRect;

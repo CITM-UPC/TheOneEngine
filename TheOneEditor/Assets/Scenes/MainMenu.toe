@@ -274,6 +274,13 @@
               "Type": 0
             }
           ]
+        },
+        {
+          "Name": "Script",
+          "ParentUID": 3452816845,
+          "ScriptName": "MainMenuManager",
+          "Type": 4,
+          "UID": 1923971447
         }
       ],
       "Enabled": true,
