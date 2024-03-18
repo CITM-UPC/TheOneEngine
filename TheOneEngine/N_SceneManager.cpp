@@ -9,6 +9,7 @@
 #include "Texture.h"
 #include "Collider2D.h"
 #include "Canvas.h"
+#include "ParticleSystem.h"
 #include "../TheOneAudio/AudioCore.h"
 #include "EngineCore.h"
 
@@ -373,9 +374,8 @@ std::shared_ptr<GameObject> N_SceneManager::CreateCanvasGO(std::string name)
 	std::shared_ptr<GameObject> canvasGO = std::make_shared<GameObject>(name);
 	canvasGO.get()->AddComponent<Transform>();
 	canvasGO.get()->AddComponent<Canvas>();
-	canvasGO.get()->AddComponent<Camera>();
-	canvasGO.get()->GetComponent<Camera>()->UpdateCamera();
-	//Alex: This is just for debug
+	
+	// Debug Img
 	canvasGO.get()->GetComponent<Canvas>()->AddItemUI<ImageUI>();
 
 	canvasGO.get()->parent = currentScene->GetRootSceneGO().get()->weak_from_this();
@@ -661,7 +661,6 @@ void Scene::UpdateGOs(double dt)
 
 void Scene::RecurseUIDraw(std::shared_ptr<GameObject> parentGO, DrawMode mode)
 {
-
 	for (const auto gameObject : parentGO.get()->children)
 	{
 		gameObject.get()->DrawUI(currentCamera, mode);

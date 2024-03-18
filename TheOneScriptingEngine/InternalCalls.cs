@@ -17,7 +17,6 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void GetControllerJoystick(int joystick, ref Vector2 joyResult, int gamePad);
 
-
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetPosition(IntPtr GOptr);
@@ -51,6 +50,18 @@ class InternalCalls
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static IntPtr FindGameObject(string name);
+
+    //Scene Manager
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void LoadScene(string sceneName);
+
+    //User Interfaces
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void MoveSelectedButton(IntPtr GOptr, int direction);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static int GetSelectiedButton(IntPtr GOptr);
+
 
     //Helpers
     [MethodImplAttribute(MethodImplOptions.InternalCall)]

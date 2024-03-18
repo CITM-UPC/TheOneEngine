@@ -4,6 +4,7 @@
 
 #include "EngineCore.h"
 #include "Transform.h"
+#include "Canvas.h"
 #include "Collider2D.h"
 #include "N_SceneManager.h"
 
@@ -118,6 +119,57 @@ static GameObject* FindGameObject(MonoString* monoString)
 	return nullptr;
 }
 
+//Scene Management
+static void LoadScene(MonoString* sceneName)
+{
+	std::string name = MonoRegisterer::MonoStringToUTF8(sceneName);
+
+	engine->N_sceneManager->LoadScene(name);
+}
+
+//User Interface
+static int GetSelectiedButton(GameObject* containerGO)
+{
+	std::vector<ItemUI*> uiElements = containerGO->GetComponent<Canvas>()->GetUiElements();
+	int ret = -1;
+	for (size_t i = 0; i < uiElements.size(); i++)
+	{
+		if (uiElements[i]->GetType() == UiType::BUTTONIMAGE)
+		{
+			ret++;
+			if (uiElements[i]->GetState() == UiState::HOVERED)
+				return ret;
+		}
+	}
+	return ret;
+}
+static void MoveSelectedButton(GameObject* containerGO, int direction)
+{
+	std::vector<ItemUI*> uiElements = containerGO->GetComponent<Canvas>()->GetUiElements();
+
+	for (size_t i = 0; i < uiElements.size(); i++)
+	{
+		if (uiElements[i]->GetType() == UiType::BUTTONIMAGE && uiElements[i]->GetState() == UiState::HOVERED)
+		{
+			for (int j = i + direction; j != i; j += direction)
+			{
+				if (j < 0)
+					j = uiElements.size() - 1;
+				else if (j >= uiElements.size())
+					j = 0;
+
+				if (uiElements[j]->GetType() == UiType::BUTTONIMAGE)
+				{
+					uiElements[i]->SetState(UiState::IDLE);
+					uiElements[j]->SetState(UiState::HOVERED);
+					break;
+				}
+			}
+			break;
+		}
+	}
+}
+
 //Helpers
 static float GetAppDeltaTime()
 {
@@ -208,8 +260,6 @@ static void DrawWireCube()
 
 }
 
-
-
 void MonoRegisterer::RegisterFunctions()
 {
 	mono_add_internal_call("InternalCalls::GetGameObjectPtr", GetGameObjectPtr);
@@ -230,6 +280,11 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::InstantiateBullet", InstantiateBullet);
 	mono_add_internal_call("InternalCalls::DestroyGameObject", DestroyGameObject);
 	mono_add_internal_call("InternalCalls::FindGameObject", FindGameObject);
+
+	mono_add_internal_call("InternalCalls::LoadScene", LoadScene);
+
+	mono_add_internal_call("InternalCalls::GetSelectiedButton", GetSelectiedButton);
+	mono_add_internal_call("InternalCalls::MoveSelectedButton", MoveSelectedButton);
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
 	mono_add_internal_call("InternalCalls::ExitApplication", ExitApplication);
