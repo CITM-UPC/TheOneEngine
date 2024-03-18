@@ -3,6 +3,9 @@
 #include "GameObject.h"
 #include "Camera.h"
 
+#include "EngineCore.h"
+#include "N_SceneManager.h"
+
 Script::Script(std::shared_ptr<GameObject> containerGO, std::string name) : Component(containerGO, ComponentType::Script), scriptName(name)
 {
 	//Init things
@@ -19,6 +22,14 @@ Script::~Script()
 {
 	//delete monoBehaviourInstance;
 	monoBehaviourInstance = nullptr;
+}
+
+void Script::Enable()
+{
+	if (engine->N_sceneManager->GetSceneIsPlaying())
+	{
+		MonoManager::CallScriptFunction(monoBehaviourInstance, "Start");
+	}
 }
 
 void Script::Update()

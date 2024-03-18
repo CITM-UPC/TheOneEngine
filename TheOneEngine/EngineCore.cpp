@@ -128,6 +128,34 @@ void EngineCore::Update(double dt)
             case CollisionType::Wall:
                 // do nothing at all
                 break;
+            case CollisionType::Bullet:
+                for (auto& item2 : collisionSolver->goWithCollision)
+                {
+                    if (item != item2)
+                    {
+                        switch (item2->GetComponent<Collider2D>()->collisionType)
+                        {
+                        case CollisionType::Player:
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                LOG(LogType::LOG_WARNING, "Player Hit");
+                                item->Delete(engine->N_sceneManager->objectsToDelete);
+                            }
+                            break;
+                        case CollisionType::Enemy:
+                            //if they collide
+                            if (collisionSolver->CheckCollision(item, item2))
+                            {
+                                MonoManager::CallScriptFunction(item2->GetComponent<Script>()->monoBehaviourInstance, "ReduceLife");
+                                item->Delete(engine->N_sceneManager->objectsToDelete);
+                            }
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+                break;
             default:
                 break;
             }
@@ -186,6 +214,11 @@ void EngineCore::Render(Camera* camera)
     DrawAxis();
 
     if (collisionSolver->drawCollisions) collisionSolver->DrawCollisions();
+
+    if (!monoManager->debugShapesQueue.empty())
+    {
+        monoManager->RenderShapesQueue();
+    }
 
     glColor3f(1.0f, 1.0f, 1.0f);
     //DrawFrustum(camera->viewMatrix);

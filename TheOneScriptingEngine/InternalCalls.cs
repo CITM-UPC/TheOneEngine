@@ -17,7 +17,6 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void GetControllerJoystick(int joystick, ref Vector2 joyResult, int gamePad);
 
-
     //Transform
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetPosition(IntPtr GOptr);
@@ -35,7 +34,12 @@ class InternalCalls
     internal extern static void Translate(IntPtr GOptr, ref Vector3 increment);
 
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void Rotate(IntPtr GOptr, ref Vector3 increment);
+
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static Vector3 GetTransformForward(IntPtr GOptr);
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static Vector3 GetTransformRight(IntPtr GOptr);
 
     //GameObjects
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -44,12 +48,8 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static void DestroyGameObject(IntPtr GOtoDestroy);
 
-    //Helpers
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static float GetAppDeltaTime();
-    
-    [MethodImplAttribute(MethodImplOptions.InternalCall)]
-    internal extern static void ExitApplication();
+    internal extern static IntPtr FindGameObject(string name);
 
     //Scene Manager
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
@@ -62,4 +62,21 @@ class InternalCalls
     [MethodImplAttribute(MethodImplOptions.InternalCall)]
     internal extern static int GetSelectiedButton(IntPtr GOptr);
 
+
+    //Helpers
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static float GetAppDeltaTime();
+    
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void ExitApplication();
+
+    //Debug
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void ScriptingLog(string message, int logType);
+    
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void DrawWireCircle(Vector3 position, float radius, Vector3 color);
+    
+    [MethodImplAttribute(MethodImplOptions.InternalCall)]
+    internal extern static void DrawWireSphere(Vector3 position, float radius, Vector3 color);
 }

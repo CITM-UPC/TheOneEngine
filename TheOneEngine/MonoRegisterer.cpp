@@ -5,6 +5,7 @@
 #include "EngineCore.h"
 #include "Transform.h"
 #include "Canvas.h"
+#include "Collider2D.h"
 #include "N_SceneManager.h"
 
 #include <glm/vec3.hpp>
@@ -26,11 +27,6 @@ static bool GetControllerButton(int controllerButton, int gamePad)
 	auto inputToPass = (SDL_GameControllerButton)controllerButton;
 
 	auto result = engine->inputManager->GetGamepadButton(gamePad, inputToPass);
-
-	if (result == InputManagerNamespace::KEY_IDLE)
-	{
-		LOG(LogType::LOG_WARNING, "Button %i is idle", controllerButton);
-	}
 
 	return result == InputManagerNamespace::KEY_DOWN;
 }
@@ -73,10 +69,18 @@ static void Translate(GameObject* GOptr, vec3f* finalPos)
 
 	GOptr->GetComponent<Transform>()->SetPosition((vec3)*finalPos, HandleSpace::GLOBAL);
 }
+static void Rotate(GameObject* GOptr, vec3f* increment)
+{
+	GOptr->GetComponent<Transform>()->Rotate((vec3)*increment, HandleSpace::LOCAL);
+}
 
 static vec3f GetTransformForward(GameObject* GOptr)
 {
 	return (vec3f)GOptr->GetComponent<Transform>()->GetForward();
+}
+static vec3f GetTransformRight(GameObject* GOptr)
+{
+	return (vec3f)GOptr->GetComponent<Transform>()->GetRight();
 }
 
 //GameObject
@@ -89,7 +93,10 @@ static GameObject* InstantiateBullet(vec3f* initialPosition, vec3f* direction)
 	SetRotation(go, direction);
 
 	go->AddScript("Bullet");
-
+	go->AddComponent<Collider2D>();
+	go->GetComponent<Collider2D>()->colliderType = ColliderType::Circle;
+	go->GetComponent<Collider2D>()->collisionType = CollisionType::Bullet;
+	go->GetComponent<Collider2D>()->radius = 0.4f;
 	return go;
 }
 
@@ -98,16 +105,21 @@ static void DestroyGameObject(GameObject* objectToDestroy)
 	objectToDestroy->Delete(engine->N_sceneManager->objectsToDelete);
 }
 
-//Helpers
-static float GetAppDeltaTime()
+static GameObject* FindGameObject(MonoString* monoString)
 {
-	return (float)engine->dt;
-}
-static void ExitApplication()
-{
-	engine->inputManager->shutDownEngine = true;
+	std::string name = MonoRegisterer::MonoStringToUTF8(monoString);
+
+	for (auto go : engine->N_sceneManager->currentScene->GetRootSceneGO()->children)
+	{
+		if (go->GetName() == name)
+		{
+			return go.get();
+		}
+	}
+	return nullptr;
 }
 
+//Scene Management
 static void LoadScene(MonoString* sceneName)
 {
 	std::string name = MonoRegisterer::MonoStringToUTF8(sceneName);
@@ -115,6 +127,22 @@ static void LoadScene(MonoString* sceneName)
 	engine->N_sceneManager->LoadScene(name);
 }
 
+//User Interface
+static int GetSelectiedButton(GameObject* containerGO)
+{
+	std::vector<ItemUI*> uiElements = containerGO->GetComponent<Canvas>()->GetUiElements();
+	int ret = -1;
+	for (size_t i = 0; i < uiElements.size(); i++)
+	{
+		if (uiElements[i]->GetType() == UiType::BUTTONIMAGE)
+		{
+			ret++;
+			if (uiElements[i]->GetState() == UiState::HOVERED)
+				return ret;
+		}
+	}
+	return ret;
+}
 static void MoveSelectedButton(GameObject* containerGO, int direction)
 {
 	std::vector<ItemUI*> uiElements = containerGO->GetComponent<Canvas>()->GetUiElements();
@@ -142,20 +170,94 @@ static void MoveSelectedButton(GameObject* containerGO, int direction)
 	}
 }
 
-static int GetSelectiedButton(GameObject* containerGO)
+//Helpers
+static float GetAppDeltaTime()
 {
-	std::vector<ItemUI*> uiElements = containerGO->GetComponent<Canvas>()->GetUiElements();
-	int ret = -1;
-	for (size_t i = 0; i < uiElements.size(); i++)
-	{
-		if (uiElements[i]->GetType() == UiType::BUTTONIMAGE)
-		{
-			ret++;
-			if (uiElements[i]->GetState() == UiState::HOVERED)
-				return ret;
-		}
+	return (float)engine->dt;
+}
+static void ExitApplication()
+{
+	engine->inputManager->shutDownEngine = true;
+}
+
+//Debug
+static void ScriptingLog(MonoString* monoString, LogType logType)
+{
+	std::string message = MonoRegisterer::MonoStringToUTF8(monoString);
+	LOG(logType, message.c_str());
+}
+static void DrawWireCircle(vec3f position, float radius, vec3f colorNormalized)
+{
+	DebugShape shapeToAdd;
+
+	shapeToAdd.center = position;
+	shapeToAdd.color = colorNormalized;
+
+	//Set points which will define the line
+	const int segments = 30;
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
 	}
-	return ret;
+
+	engine->monoManager->debugShapesQueue.push_back(shapeToAdd);
+}
+static void DrawWireSquare()
+{
+
+}
+static void DrawWireSphere(vec3f position, float radius, vec3f colorNormalized)
+{
+	DebugShape shapeToAdd;
+
+	shapeToAdd.center = position;
+	shapeToAdd.color = colorNormalized;
+
+	//Set points which will define the line
+	const int segments = 40;
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
+	}
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, y, 0));
+	}
+	
+	//Go to starting spot for last circle
+	for (int i = 0; i < segments / 4; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
+	}
+
+	for (int i = 0; i < segments; ++i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(0, y, x));
+	}
+
+	//Go back to starting spot for entire shape
+	for (int i = segments / 4; i > 0; --i) {
+		float angle = 2.0f * 3.14159f * float(i) / float(segments);
+		float x = radius * cosf(angle);
+		float y = radius * sinf(angle);
+		shapeToAdd.points.push_back(vec3f(x, 0, y));
+	}
+
+	engine->monoManager->debugShapesQueue.push_back(shapeToAdd);
+}
+static void DrawWireCube()
+{
+
 }
 
 void MonoRegisterer::RegisterFunctions()
@@ -171,18 +273,25 @@ void MonoRegisterer::RegisterFunctions()
 	mono_add_internal_call("InternalCalls::GetRotation", GetRotation);
 	mono_add_internal_call("InternalCalls::SetRotation", SetRotation);
 	mono_add_internal_call("InternalCalls::Translate", Translate);
+	mono_add_internal_call("InternalCalls::Rotate", Rotate);
 	mono_add_internal_call("InternalCalls::GetTransformForward", GetTransformForward);
+	mono_add_internal_call("InternalCalls::GetTransformRight", GetTransformRight);
 
 	mono_add_internal_call("InternalCalls::InstantiateBullet", InstantiateBullet);
 	mono_add_internal_call("InternalCalls::DestroyGameObject", DestroyGameObject);
+	mono_add_internal_call("InternalCalls::FindGameObject", FindGameObject);
+
+	mono_add_internal_call("InternalCalls::LoadScene", LoadScene);
+
+	mono_add_internal_call("InternalCalls::GetSelectiedButton", GetSelectiedButton);
+	mono_add_internal_call("InternalCalls::MoveSelectedButton", MoveSelectedButton);
 
 	mono_add_internal_call("InternalCalls::GetAppDeltaTime", GetAppDeltaTime);
 	mono_add_internal_call("InternalCalls::ExitApplication", ExitApplication);
 
-	mono_add_internal_call("InternalCalls::LoadScene", LoadScene);
-
-	mono_add_internal_call("InternalCalls::MoveSelectedButton", MoveSelectedButton);
-	mono_add_internal_call("InternalCalls::GetSelectiedButton", GetSelectiedButton);
+	mono_add_internal_call("InternalCalls::ScriptingLog", ScriptingLog);
+	mono_add_internal_call("InternalCalls::DrawWireCircle", DrawWireCircle);
+	mono_add_internal_call("InternalCalls::DrawWireSphere", DrawWireSphere);
 }
 
 bool MonoRegisterer::CheckMonoError(MonoError& error)

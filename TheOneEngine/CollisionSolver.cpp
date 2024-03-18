@@ -69,6 +69,9 @@ void CollisionSolver::DrawCollisions()
         case CollisionType::Wall:
             glColor3f(0.0f, 0.0f, 1.0f); // Azul para muro
             break;
+        case CollisionType::Bullet:
+            glColor3f(1.0f, 0.7f, 0.0f); // Naranja para bala
+            break;
         default:
             glColor3f(1.0f, 1.0f, 1.0f); // Blanco para otros tipos
             break;
