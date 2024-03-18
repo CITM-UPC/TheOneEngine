@@ -19,7 +19,8 @@ enum class CollisionType
 {
     Player,
     Enemy,
-    Wall
+    Wall,
+    Bullet,
 };
 
 class Collider2D : public Component

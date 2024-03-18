@@ -11,6 +11,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Billboard.h" />
+    <ClInclude Include="ButtonImageUI.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider2D.h" />
     <ClInclude Include="CollisionSolver.h" />
@@ -18,10 +20,13 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="CubeImmediateMode.h" />
+    <ClInclude Include="DebugShape.h" />
     <ClInclude Include="Defs.h" />
     <ClInclude Include="Framebuffer.h" />
+    <ClInclude Include="Emmiter.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GamepadInput.h" />
+    <ClInclude Include="InitializeEmmiterModule.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Graphic.h" />
     <ClInclude Include="Log.h" />
@@ -29,17 +34,25 @@
     <ClInclude Include="MeshLoader.h" />
     <ClInclude Include="MonoManager.h" />
     <ClInclude Include="MonoRegisterer.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="N_SceneManager.h" />
+    <ClInclude Include="RenderEmmiterModule.h" />
     <ClInclude Include="Script.h" />
+    <ClInclude Include="SingleOrRandom.h" />
+    <ClInclude Include="SpawnEmmiterModule.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="EngineCore.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIDGen.h" />
     <ClInclude Include="ImageUI.h" />
     <ClInclude Include="ItemUI.h" />
+    <ClInclude Include="UpdateEmmiterModule.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="ButtonImageUI.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider2D.cpp" />
     <ClCompile Include="CollisionSolver.cpp" />
@@ -48,22 +61,30 @@
     <ClCompile Include="Cube.cpp" />
     <ClCompile Include="CubeImmediateMode.cpp" />
     <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="Emmiter.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GamepadInput.cpp" />
+    <ClCompile Include="InitializeEmmiterModule.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshLoader.cpp" />
     <ClCompile Include="MonoManager.cpp" />
     <ClCompile Include="MonoRegisterer.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Ray.cpp" />
     <ClCompile Include="N_SceneManager.cpp" />
+    <ClCompile Include="RenderEmmiterModule.cpp" />
     <ClCompile Include="Script.cpp" />
+    <ClCompile Include="SingleOrRandom.cpp" />
+    <ClCompile Include="SpawnEmmiterModule.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="EngineCore.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="ImageUI.cpp" />
     <ClCompile Include="ItemUI.cpp" />
+    <ClCompile Include="UpdateEmmiterModule.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TheOneAudio\TheOneAudio.vcxproj">

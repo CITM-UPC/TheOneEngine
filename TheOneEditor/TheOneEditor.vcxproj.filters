@@ -67,6 +67,9 @@
     <ClCompile Include="PanelBuild.cpp">
       <Filter>Panels</Filter>
     </ClCompile>
+    <ClCompile Include="InspectorParticleSystems.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Panel.h">
@@ -127,6 +130,9 @@
       <Filter>Modules</Filter>
     </ClInclude>
     <ClInclude Include="PanelBuild.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="InspectorParticleSystems.h">
       <Filter>Panels</Filter>
     </ClInclude>
   </ItemGroup>
