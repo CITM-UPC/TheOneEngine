@@ -442,6 +442,8 @@ std::shared_ptr<GameObject> N_SceneManager::CreateMeshGO(std::string path)
 					meshGO.get()->GetComponent<Mesh>()->meshData = mData;
 					meshGO.get()->GetComponent<Mesh>()->meshData.texturePath = textures[mesh.materialIndex]->path;
 					meshGO.get()->GetComponent<Mesh>()->path = file;
+
+					meshGO.get()->GetComponent<Transform>()->SetTransform(mData.meshTransform);
 				}
 			}
 
@@ -509,6 +511,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateExistingMeshGO(std::string pat
 
 			std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mData.meshName);
 			meshGO.get()->AddComponent<Transform>();
+			meshGO.get()->GetComponent<Transform>()->SetTransform(mData.meshTransform);
 			meshGO.get()->AddComponent<Mesh>();
 			//meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
