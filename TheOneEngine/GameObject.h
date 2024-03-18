@@ -140,6 +140,8 @@ public:
     void CreateUID();
     uint32 GetUID() { return UID; }
 
+    AABBox GetAABBox() { return aabb; }
+
     json SaveGameObject();
     void LoadGameObject(const json& gameObjectJSON);
 

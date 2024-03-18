@@ -406,6 +406,30 @@ bool PanelInspector::Draw()
                     collider2D->colliderType = (ColliderType)colliderType;
                 }
 
+                // Offset of collider
+                float offsetX = (float)collider2D->offset.x;
+                float offsetY = (float)collider2D->offset.y;
+                float offsetZ = (float)collider2D->offset.z;
+                ImGui::Text("Offset");
+                ImGui::Text("X");
+                ImGui::SameLine();
+                if (ImGui::InputFloat("##OffsetX", &offsetX))
+                {
+                    collider2D->offset.x = offsetX;
+                }
+                ImGui::Text("Y");
+                ImGui::SameLine();
+                if (ImGui::InputFloat("##OffsetY", &offsetY))
+                {
+                    collider2D->offset.y = offsetY;
+                }
+                ImGui::Text("Z");
+                ImGui::SameLine();
+                if (ImGui::InputFloat("##OffsetZ", &offsetZ))
+                {
+                    collider2D->offset.z = offsetZ;
+                }
+
                 if (collider2D->colliderType == ColliderType::Rect)
                 {
                     // Rectangle collider

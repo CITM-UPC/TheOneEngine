@@ -501,6 +501,7 @@ std::shared_ptr<GameObject> N_SceneManager::CreateExistingMeshGO(std::string pat
 
 			std::shared_ptr<GameObject> meshGO = std::make_shared<GameObject>(mData.meshName);
 			meshGO.get()->AddComponent<Transform>();
+			meshGO.get()->GetComponent<Transform>()->SetTransform(mData.meshTransform);
 			meshGO.get()->AddComponent<Mesh>();
 			//meshGO.get()->AddComponent<Texture>(); // hekbas: must implement
 
