@@ -480,10 +480,16 @@ bool PanelInspector::Draw()
                 for (auto emmiter = particleSystem->emmiters.begin(); emmiter != particleSystem->emmiters.end(); ++emmiter) {
                     UIEmmiterWriteNode((*emmiter).get());
                 }
+
+
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+                if (ImGui::Button("Remove Particle System"))
+                {
+                    selectedGO->RemoveComponent(ComponentType::ParticleSystem);
+                }
             }
 
-            //canvas
-
+            // Canvas Component
             Canvas* tempCanvas = selectedGO->GetComponent<Canvas>();
 
             if (tempCanvas != nullptr && ImGui::CollapsingHeader("Canvas", treeNodeFlags))
@@ -688,13 +694,6 @@ bool PanelInspector::Draw()
                     }
                     counter++;
                 }
-
-                ImGui::Dummy(ImVec2(0.0f, 10.0f));
-                if (ImGui::Button("Remove Particle System"))
-                {
-                    selectedGO->RemoveComponent(ComponentType::ParticleSystem);
-                }
-            }
 
                 //adders and removers of itemui
                 ImGui::Dummy(ImVec2(0.0f, 5.0f));
