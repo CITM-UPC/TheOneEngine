@@ -2,7 +2,7 @@
 
 public class PlayerScript : MonoBehaviour
 {
-	float speed = 7.0f;
+	float speed = 15.0f;
 
 	public override void Update()
 	{
@@ -10,24 +10,30 @@ public class PlayerScript : MonoBehaviour
 		Vector3 movement = Vector3.zero;
 
 		//Keyboard
+
+		if (Input.GetKeyboardButton(Input.KeyboardCode.K)) {
+			SceneManager.LoadScene("Scene");
+		}
+
+		if (Input.GetKeyboardButton(Input.KeyboardCode.ESCAPE))
+		{
+			InternalCalls.ExitApplication();
+		}
 		if (Input.GetKeyboardButton(Input.KeyboardCode.W))
 		{
 			movement = movement + Vector3.forward;
 			toMove = true;
 		}
-
 		if (Input.GetKeyboardButton(Input.KeyboardCode.D))
 		{
 			movement = movement - Vector3.right;
 			toMove = true;
 		}
-
 		if (Input.GetKeyboardButton(Input.KeyboardCode.S))
 		{
 			movement = movement - Vector3.forward;
 			toMove = true;
 		}
-
 		if (Input.GetKeyboardButton(Input.KeyboardCode.A))
 		{
 			movement = movement + Vector3.right;
@@ -53,8 +59,10 @@ public class PlayerScript : MonoBehaviour
 
 		if (Input.GetKeyboardButton(Input.KeyboardCode.SPACEBAR))
 		{
-			InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
+			InternalCalls.InstantiateBullet(attachedGameObject.transform.position + attachedGameObject.transform.forward * 3.5f, attachedGameObject.transform.rotation);
 		}
+		if (Input.GetKeyboardButton(Input.KeyboardCode.LSHIFT)) { speed = 30.0f; }
+		else { speed = 15.0f; }
 
 		if (toMove)
 		{
@@ -81,7 +89,7 @@ public class PlayerScript : MonoBehaviour
 
 		if (Input.GetControllerButton(Input.ControllerButtonCode.R1))
         {
-			InternalCalls.InstantiateBullet(attachedGameObject.transform.position, attachedGameObject.transform.rotation);
+			InternalCalls.InstantiateBullet(attachedGameObject.transform.position + attachedGameObject.transform.forward * 3.5f, attachedGameObject.transform.rotation);
 		}
 	}
 }

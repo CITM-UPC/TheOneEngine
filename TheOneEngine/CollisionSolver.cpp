@@ -55,11 +55,18 @@ void CollisionSolver::DrawCollisions()
             continue;
         }
 
-        // Translate según la posición del objeto
-        glTranslatef(transform->GetPosition().x, 1, transform->GetPosition().z);
+        auto collider = collision->GetComponent<Collider2D>();
+
+        //Calculate position of collider
+        float x_, y_, z_ = 0;
+        x_ = transform->GetPosition().x + collider->offset.x;
+        y_ = 1 + collider->offset.y;
+        z_ = transform->GetPosition().z + collider->offset.z;
+
+        glTranslatef(x_, y_, z_);
 
         // Dibujar la colisión según su tipo y configuración
-        switch (collision->GetComponent<Collider2D>()->collisionType) {
+        switch (collider->collisionType) {
         case CollisionType::Player:
             glColor3f(0.0f, 1.0f, 0.0f); // Verde para jugador
             break;
@@ -69,6 +76,9 @@ void CollisionSolver::DrawCollisions()
         case CollisionType::Wall:
             glColor3f(0.0f, 0.0f, 1.0f); // Azul para muro
             break;
+        case CollisionType::Bullet:
+            glColor3f(1.0f, 0.7f, 0.0f); // Naranja para bala
+            break;
         default:
             glColor3f(1.0f, 1.0f, 1.0f); // Blanco para otros tipos
             break;
@@ -77,12 +87,40 @@ void CollisionSolver::DrawCollisions()
         glBegin(GL_LINE_LOOP);
         if (collision->GetComponent<Collider2D>()->colliderType == ColliderType::Rect) {
             // Dibujar rectángulo
-            float halfW = collision->GetComponent<Collider2D>()->w / 2.0f;
-            float halfH = collision->GetComponent<Collider2D>()->h / 2.0f;
-            glVertex3f(-halfW, 0.0f, -halfH);
-            glVertex3f(halfW, 0.0f, -halfH);
-            glVertex3f(halfW, 0.0f, halfH);
-            glVertex3f(-halfW, 0.0f, halfH);
+            if (collider->collisionType == CollisionType::Wall)
+            {
+                // Modular kit
+                float width_ = collision->GetComponent<Collider2D>()->w;
+                float height_ = collision->GetComponent<Collider2D>()->h;
+                float angle = transform->GetRotationEuler().y;
+
+                // Calculate vertex values when it rotates
+                float cosAngle = cosf(angle);
+                float sinAngle = sinf(angle);
+
+                float rotatedX1 = -width_ * cosAngle;
+                float rotatedZ1 = width_ * sinAngle;
+                float rotatedX2 = -width_ * cosAngle + height_ * sinAngle;
+                float rotatedZ2 = width_ * sinAngle + height_ * cosAngle;
+                float rotatedX3 = height_ * sinAngle;
+                float rotatedZ3 = height_ * cosAngle;            
+
+                // Draw rectangle
+                glVertex3f(rotatedX1, 0.0f, rotatedZ1); 
+                glVertex3f(rotatedX2, 0.0f, rotatedZ2); 
+                glVertex3f(rotatedX3, 0.0f, rotatedZ3); 
+                glVertex3f(0.0f, 0.0f, 0.0f); 
+            }
+            else
+            {
+                // Pivot middle
+                float halfW = collision->GetComponent<Collider2D>()->w / 2.0f;
+                float halfH = collision->GetComponent<Collider2D>()->h / 2.0f;
+                glVertex3f(-halfW, 0.0f, -halfH);
+                glVertex3f(halfW, 0.0f, -halfH);
+                glVertex3f(halfW, 0.0f, halfH);
+                glVertex3f(-halfW, 0.0f, halfH);
+            }          
         }
         else if (collision->GetComponent<Collider2D>()->colliderType == ColliderType::Circle) {
             // Dibujar círculo
@@ -100,8 +138,6 @@ void CollisionSolver::DrawCollisions()
     }
 }
 
-
-
 double DistanceXZ(const vec3 posA, const vec3 posB)
 {
     vec2 posA_XZ = vec2(posA.x, posA.z);
@@ -109,7 +145,6 @@ double DistanceXZ(const vec3 posA, const vec3 posB)
 
     return glm::distance(posA_XZ, posB_XZ);
 }
-
 
 bool CollisionSolver::CheckCollision(GameObject* objA, GameObject* objB)
 {

@@ -5,17 +5,20 @@
 #include "Panel.h"
 
 #include "../TheOneEngine/Transform.h"
+#include "../TheOneEngine/Framebuffer.h"
 
 #include<vector>
 
 class Ray;
 class Camera;
+class Scene;
 
 class PanelScene : public Panel
 {
 public:
 	PanelScene(PanelType type, std::string name);
 	~PanelScene();
+	void Start();
 
 	bool Draw();
 
@@ -26,6 +29,7 @@ public:
 
 public:
 	bool isHovered;
+	bool isFocused;
 	std::vector<Ray> rays;
 
 	bool drawMesh;
@@ -54,6 +58,13 @@ private:
 		"Pivot",
 		"Center",
 	};
+
+	Scene* current;
+	std::shared_ptr<GameObject> sceneCamera;
+	std::shared_ptr<GameObject> cameraParent;
+	std::shared_ptr<FrameBuffer> frameBuffer;
+
+	glm::vec2 viewportSize = { 0.0f, 0.0f };
 };
 
 #endif // !__PANEL_SCENE_H__

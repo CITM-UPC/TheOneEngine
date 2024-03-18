@@ -5,8 +5,10 @@
 #include "Texture.h"
 #include "Collider2D.h"
 #include "Canvas.h"
+#include "ParticleSystem.h"
 #include "UIDGen.h"
 #include "BBox.hpp"
+#include "Camera.h"
 
 #include "Math.h"
 
@@ -47,25 +49,25 @@ void GameObject::Update(double dt)
 	aabb = CalculateAABB();
 }
 
-void GameObject::Draw()
+void GameObject::Draw(Camera* camera)
 {
 	for (const auto& component : components)
 	{
 		if (component && component->IsEnabled() && component->GetType() != ComponentType::Canvas)
-			component->DrawComponent();
+			component->DrawComponent(camera);
 	}
 
 	//if (drawAABB)
 		DrawAABB();
 }
 
-void GameObject::DrawUI(const DrawMode mode)
+void GameObject::DrawUI(Camera* camera, const DrawMode mode)
 {
 	auto canvas = this->GetComponent<Canvas>();
 
 	if (canvas && canvas->IsEnabled())
 		if (mode == DrawMode::GAME || canvas->debugDraw)
-			canvas->DrawComponent();
+			canvas->DrawComponent(camera);
 }
 
 // Component ----------------------------------------
@@ -447,6 +449,11 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			{
 				this->AddComponent<Canvas>();
 				this->GetComponent<Canvas>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::ParticleSystem)
+			{
+				this->AddComponent<ParticleSystem>();
+				this->GetComponent<ParticleSystem>()->LoadComponent(componentJSON);
 			}
 		}
 	}
