@@ -12,10 +12,13 @@
 #include "..\TheOneEngine\Script.h"
 #include "..\TheOneEngine\Collider2D.h"
 #include "..\TheOneEngine\MonoManager.h"
+#include "..\TheOneEngine\ParticleSystem.h"
 #include "..\TheOneEngine\Canvas.h"
 #include "..\TheOneEngine\ItemUI.h"
 #include "..\TheOneEngine\ImageUI.h"
 #include "..\TheOneEngine\ButtonImageUI.h"
+
+#include "InspectorParticleSystems.h"
 
 #include "../TheOneAudio/AudioCore.h"
 
@@ -449,6 +452,36 @@ bool PanelInspector::Draw()
                 }
             }
 
+            /*Particle System Component*/
+            ParticleSystem* particleSystem = selectedGO->GetComponent<ParticleSystem>();
+
+            if (particleSystem != nullptr && ImGui::CollapsingHeader("Particle System", treeNodeFlags))
+            {
+                /*if (ImGui::Button("Load")) {
+                    particleSystem->Load("");
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Save")) {
+                    particleSystem->Save();
+                }*/
+
+                if (ImGui::Button("Play")) {
+                    particleSystem->Play();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Stop")) {
+                    particleSystem->Stop();
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Replay")) {
+                    particleSystem->Replay();
+                }
+
+                for (auto emmiter = particleSystem->emmiters.begin(); emmiter != particleSystem->emmiters.end(); ++emmiter) {
+                    UIEmmiterWriteNode((*emmiter).get());
+                }
+            }
+
             //canvas
 
             Canvas* tempCanvas = selectedGO->GetComponent<Canvas>();
@@ -656,6 +689,13 @@ bool PanelInspector::Draw()
                     counter++;
                 }
 
+                ImGui::Dummy(ImVec2(0.0f, 10.0f));
+                if (ImGui::Button("Remove Particle System"))
+                {
+                    selectedGO->RemoveComponent(ComponentType::ParticleSystem);
+                }
+            }
+
                 //adders and removers of itemui
                 ImGui::Dummy(ImVec2(0.0f, 5.0f));
                 if (ImGui::TreeNode("Add ItemUI"))
@@ -725,6 +765,11 @@ bool PanelInspector::Draw()
             {
                 if (ImGui::MenuItem("New Script"))
                     chooseScriptNameWindow = true;
+
+                if (ImGui::MenuItem("Particle System"))
+                {
+                    selectedGO->AddComponent<ParticleSystem>();
+                }
 
                 if (ImGui::TreeNode("Collider2D"))
                 {
