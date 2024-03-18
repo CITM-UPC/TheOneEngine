@@ -79,6 +79,16 @@ void UIEmmiterWriteNode(Emmiter* emmiter)
 	
 	for (auto m = emmiter->initializeModules.begin(); m != emmiter->initializeModules.end(); ++m) {
 		ImGui::PushID("init_emmiter" + imGuiIDInit);
+
+		if (ImGui::Button("Delete Module"))
+		{
+			auto moduleToDelete = m;
+			++m;
+			emmiter->initializeModules.erase(moduleToDelete);
+			ImGui::PopID();
+			break;
+		}
+
 		switch ((*m)->type) {
 		case InitializeEmmiterModule::SET_SPEED:
 			UIInspectorEmmiterInitializeModule((SetSpeed*)(*m).get());
@@ -116,6 +126,16 @@ void UIEmmiterWriteNode(Emmiter* emmiter)
 
 	for (auto m = emmiter->updateModules.begin(); m != emmiter->updateModules.end(); ++m) {
 		ImGui::PushID("update_emmiter" + imGuiIDInit);
+		
+		if (ImGui::Button("Delete Module"))
+		{
+			auto moduleToDelete = m;
+			++m;
+			emmiter->updateModules.erase(moduleToDelete);
+			ImGui::PopID();
+			break;
+		}
+
 		switch ((*m)->type) {
 		case UpdateEmmiterModule::CHANGE_COLOR:
 			break;
@@ -188,6 +208,8 @@ void UIInspectorEmmiterInitializeModule(SetSpeed* initModule)
 
 	ImGui::Checkbox("Single Value", &initModule->speed.usingSingleValue);
 
+	ImGui::PushItemWidth(60);
+
 	if (initModule->speed.usingSingleValue) {
 		ImGui::PushID("set_speed_single_PS");
 		ImGui::InputDouble("X", &initModule->speed.singleValue.x, 0, 0, "%.2f");
@@ -215,6 +237,8 @@ void UIInspectorEmmiterInitializeModule(SetSpeed* initModule)
 		ImGui::PopID();
 	}
 
+	ImGui::PopItemWidth();
+
 }
 
 void UIInspectorEmmiterInitializeModule(SetColor* initModule)
@@ -222,6 +246,8 @@ void UIInspectorEmmiterInitializeModule(SetColor* initModule)
 	ImGui::Text("Set Initial Color: ");
 
 	ImGui::Checkbox("Single Value", &initModule->color.usingSingleValue);
+
+	ImGui::PushItemWidth(60);
 
 	if (initModule->color.usingSingleValue) {
 		ImGui::PushID("set_color_single_PS");
@@ -249,6 +275,8 @@ void UIInspectorEmmiterInitializeModule(SetColor* initModule)
 		ImGui::InputDouble("B", &initModule->color.rangeValue.upperLimit.b, 0, 0, "%.2f");
 		ImGui::PopID();
 	}
+
+	ImGui::PopItemWidth();
 
 }
 
