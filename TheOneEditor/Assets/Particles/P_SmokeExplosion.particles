@@ -1,0 +1,112 @@
+{
+  "Emmiters": [
+    {
+      "Delay": 0.0,
+      "Duration": 5.0,
+      "InitializeModules": [
+        {
+          "MaxDirection": [
+            10.0,
+            10.0,
+            10.0
+          ],
+          "MinDirection": [
+            -10.0,
+            -5.0,
+            -10.0
+          ],
+          "Type": 4,
+          "UsingSingleValueDirection": false
+        },
+        {
+          "MaxSpeed": 15.0,
+          "MinSpeed": 7.0,
+          "Type": 0,
+          "UsingSingleValueSpeed": false
+        },
+        {
+          "MaxColor": [
+            100.0,
+            100.0,
+            100.0,
+            255.0
+          ],
+          "MinColor": [
+            100.0,
+            100.0,
+            100.0,
+            255.0
+          ],
+          "Type": 1,
+          "UsingSingleValueColor": true
+        },
+        {
+          "IsProportional": true,
+          "MaxScale": [
+            7.0,
+            7.0,
+            7.0
+          ],
+          "MinScale": [
+            3.0,
+            3.0,
+            3.0
+          ],
+          "Type": 2,
+          "UsingSingleValueScale": false
+        }
+      ],
+      "IsLooping": false,
+      "Lifetime": 0.0,
+      "MaxParticles": 100,
+      "RenderModule": [
+        {
+          "BillboardType": 0,
+          "Type": 0
+        }
+      ],
+      "SpawnModule": [
+        {
+          "Amount": 50.0,
+          "Duration": 4.0,
+          "Type": 1
+        }
+      ],
+      "UpdateModules": [
+        {
+          "Acceleration": [
+            0.0,
+            10.0,
+            0.0
+          ],
+          "Type": 0
+        },
+        {
+          "FinalScale": [
+            10.0,
+            10.0,
+            10.0
+          ],
+          "Type": 2
+        },
+        {
+          "AffectA": true,
+          "AffectB": false,
+          "AffectG": false,
+          "AffectR": false,
+          "FinalColor": [
+            255.0,
+            255.0,
+            255.0,
+            0.0
+          ],
+          "Type": 1
+        }
+      ]
+    }
+  ],
+  "Name": "P_SmokeExplosion",
+  "StartON": false,
+  "Type": 9,
+  "UID": 1138319974
+}

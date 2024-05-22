@@ -1,39 +1,105 @@
-#include "PanelHierarchy.h"
+﻿#include "PanelHierarchy.h"
 #include "App.h"
+#include "Renderer3D.h"
 #include "SceneManager.h"
 #include "Gui.h"
 #include "imgui.h"
+#include "..\TheOneEngine\EngineCore.h"
 
 #include <variant>
 
-PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name), open_selected(false), reparent(false){}
+PanelHierarchy::PanelHierarchy(PanelType type, std::string name) : Panel(type, name), open_selected(false), reparent(false) {}
 
 PanelHierarchy::~PanelHierarchy() {}
 
+
 void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 {
-	for (const auto childGO : parent.get()->children)
+	for (const auto& childGO : parent.get()->children)
 	{
 		uint treeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
 
-		if (childGO.get()->children.size() == 0)
+		if (childGO.get()->children.empty())
 			treeFlags |= ImGuiTreeNodeFlags_Leaf;
 
-		if (childGO == app->sceneManager->GetSelectedGO())
+		if (childGO == engine->N_sceneManager->GetSelectedGO())
 			treeFlags |= ImGuiTreeNodeFlags_Selected;
 
+		if (childGO->IsPrefab())
+		{
+			ifstream prefabFile;
+
+			fs::path filename = ASSETS_PATH;
+			filename += "Prefabs\\" + childGO->GetPrefabName() + ".prefab";
+
+			prefabFile.open(filename);
+			if (!prefabFile)
+			{
+				childGO->UnpackPrefab();
+			}
+			else prefabFile.close();
+		}
+
+		//bool isOpen = false;
+		//if (!childGO.get()->GetName().empty())
+		//{
+		bool isPrefab = childGO.get()->IsPrefab();
+
+		if (isPrefab && childGO.get()->IsEditablePrefab() && !childGO.get()->IsPrefabDirty())
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(.2f, .8f, 1.f, 1.f));
+		}
+		else if (isPrefab && !childGO.get()->IsEditablePrefab())
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, .3f, .2f, 1.f));
+		}
+		else if (isPrefab && childGO.get()->IsEditablePrefab() && childGO.get()->IsPrefabDirty())
+		{
+			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, .50f, 1.0f, 1.f));
+		}
+
 		bool isOpen = ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags);
+		//}
+		
+		if (isPrefab)
+		{
+			ImGui::PopStyleColor();
+		}
 
 		if (ReparentDragDrop(childGO))
+		{
+			ImGui::TreePop();
 			break;
+		}
 
 		if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
 		{
-			app->sceneManager->SetSelectedGO(childGO);
-			LOG(LogType::LOG_INFO, "SelectedGO: %s", app->sceneManager->GetSelectedGO().get()->GetName().c_str());
+			engine->N_sceneManager->SetSelectedGO(childGO);
+			LOG(LogType::LOG_INFO, "SelectedGO: %s", engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str());
+
+			if (engine->N_sceneManager->GetSelectedGO()->IsPrefab())
+				LOG(LogType::LOG_INFO, "Selected Prefab ID: %zu", engine->N_sceneManager->GetSelectedGO()->GetPrefabID());
 		}
 
+
 		ContextMenu(childGO);
+		if (duplicate)
+		{
+			ImGui::TreePop();
+			duplicate = false;
+			break;
+		}
+		if (createEmpty)
+		{
+			ImGui::TreePop();
+			createEmpty = false;
+			break;
+		}
+		if (remove)
+		{
+			ImGui::TreePop();
+			break;
+		}
 
 		if (isOpen && !reparent)
 		{
@@ -42,8 +108,128 @@ void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
 
 			ImGui::TreePop();
 		}
+
+
+	}
+
+	if (remove)
+	{
+		for (auto& item : toDeleteList)
+		{
+			item.get()->Delete();
+		}
+
+		remove = false;
 	}
 }
+
+// old
+//void PanelHierarchy::RecurseShowChildren(std::shared_ptr<GameObject> parent)
+//{
+//	for (const auto& childGO : parent.get()->children)
+//	{
+//		uint treeFlags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
+//
+//		if (childGO.get()->children.size() == 0)
+//			treeFlags |= ImGuiTreeNodeFlags_Leaf;
+//
+//		if (childGO == engine->N_sceneManager->GetSelectedGO())
+//			treeFlags |= ImGuiTreeNodeFlags_Selected;
+//
+//		if (childGO->IsPrefab())
+//		{
+//			ifstream prefabFile;
+//
+//			fs::path filename = ASSETS_PATH;
+//			filename += "Prefabs\\" + childGO->GetPrefabName() + ".prefab";
+//
+//			prefabFile.open(filename);
+//			if (!prefabFile)
+//			{
+//				childGO->UnpackPrefab();
+//			}
+//			else prefabFile.close();
+//		}
+//
+//		//bool isOpen = false;
+//		//if (!childGO.get()->GetName().empty())
+//		//{
+//		bool isPrefab = childGO.get()->IsPrefab();
+//
+//		if (isPrefab && childGO.get()->IsEditablePrefab() && !childGO.get()->IsPrefabDirty())
+//		{
+//			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(.2f, .8f, 1.f, 1.f));
+//		}
+//		else if (isPrefab && !childGO.get()->IsEditablePrefab())
+//		{
+//			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.f, .3f, .2f, 1.f));
+//		}
+//		else if (isPrefab && childGO.get()->IsEditablePrefab() && childGO.get()->IsPrefabDirty())
+//		{
+//			ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, .50f, 1.0f, 1.f));
+//		}
+//
+//		bool isOpen = ImGui::TreeNodeEx(childGO.get()->GetName().data(), treeFlags);
+//		//}
+//
+//		if (ReparentDragDrop(childGO))
+//		{
+//			ImGui::TreePop();
+//			break;
+//		}
+//
+//		if (ImGui::IsItemClicked(0) && !ImGui::IsItemToggledOpen())
+//		{
+//			engine->N_sceneManager->SetSelectedGO(childGO);
+//			LOG(LogType::LOG_INFO, "SelectedGO: %s", engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str());
+//
+//			if (engine->N_sceneManager->GetSelectedGO()->IsPrefab())
+//				LOG(LogType::LOG_INFO, "Selected Prefab ID: %zu", engine->N_sceneManager->GetSelectedGO()->GetPrefabID());
+//		}
+//
+//		ContextMenu(childGO);
+//		if (duplicate)
+//		{
+//			ImGui::TreePop();
+//			duplicate = false;
+//			break;
+//		}
+//		if (createEmpty)
+//		{
+//			ImGui::TreePop();
+//			createEmpty = false;
+//			break;
+//		}
+//		if (remove)
+//		{
+//			ImGui::TreePop();
+//			break;
+//		}
+//
+//		if (isOpen && !reparent)
+//		{
+//			//treeFlags &= ~ImGuiTreeNodeFlags_Selected;
+//			RecurseShowChildren(childGO);
+//
+//			ImGui::TreePop();
+//		}
+//
+//		if (isPrefab)
+//		{
+//			ImGui::PopStyleColor();
+//		}
+//	}
+//
+//	if (remove)
+//	{
+//		for (auto& item : toDeleteList)
+//		{
+//			item.get()->Delete();
+//		}
+//
+//		remove = false;
+//	}
+//}
 
 bool PanelHierarchy::Draw()
 {
@@ -56,16 +242,33 @@ bool PanelHierarchy::Draw()
 
 	if (ImGui::Begin(name.c_str(), &enabled, settingsFlags))
 	{
-		if (ImGui::TreeNodeEx(app->sceneManager->GetRootSceneGO().get()->GetName().data(), treeFlags))
+		if (ImGui::TreeNodeEx(engine->N_sceneManager->currentScene->GetRootSceneGO().get()->GetName().data(), treeFlags))
 		{
 			reparent = false;
-			ReparentDragDrop(app->sceneManager->GetRootSceneGO());
-			RecurseShowChildren(app->sceneManager->GetRootSceneGO());
+			//ReparentDragDrop(engine->N_sceneManager->currentScene->GetRootSceneGO());
+			std::shared_ptr<GameObject> parent = engine->N_sceneManager->currentScene->GetRootSceneGO();
+			if (ImGui::BeginPopupContextItem())
+			{
+				//add change name imgui
+
+				static char newNameBuffer[32]; // Buffer para el nuevo nombre
+				strcpy(newNameBuffer, parent->GetName().c_str());
+				if (ImGui::InputText("Change Scene Name", newNameBuffer, sizeof(newNameBuffer), ImGuiInputTextFlags_EnterReturnsTrue))
+				{
+					std::string newSceneName(newNameBuffer);
+					LOG(LogType::LOG_INFO, "Scene %s has been renamed to %s", parent->GetName().c_str(), newSceneName.c_str());
+					parent->SetName(newSceneName); // Establece el nuevo nombre del GameObject
+					engine->N_sceneManager->currentScene->SetSceneName(newSceneName);
+					// Limpiar el buffer despu�s de cambiar el nombre
+					newNameBuffer[0] = '\0';
+				}
+				ImGui::EndPopup();
+			}
+			RecurseShowChildren(parent);
 			ImGui::TreePop();
 		}
-
-		ImGui::End();
 	}
+	ImGui::End();
 
 	return true;
 }
@@ -74,22 +277,56 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 {
 	if (ImGui::BeginPopupContextItem())
 	{
-		if (ImGui::MenuItem("Create Empty"))
+		if (go.get()->IsEditablePrefab() && ImGui::MenuItem("Create Empty"))
 		{
-			//Historn: Add Duplicate function
+			createEmpty = true;
+			engine->N_sceneManager->ReparentGO(go, engine->N_sceneManager->CreateEmptyGO("Parent of " + go.get()->GetName(), false));
+			LOG(LogType::LOG_INFO, "Empty parent for %s created", go.get()->GetName().c_str());
 		}
-		
+
 		if (ImGui::MenuItem("Duplicate"))
 		{
-			//Historn: Add Duplicate function
+			duplicate = true;
+			engine->N_sceneManager->SetSelectedGO(engine->N_sceneManager->DuplicateGO(go));
+			LOG(LogType::LOG_INFO, "%s has been duplicated", go.get()->GetName().c_str());
+		}
+
+		if (!go.get()->IsPrefab())
+		{
+			if (ImGui::MenuItem("Make Prefab"))
+			{
+				SaveGameobjectAsPrefab(engine->N_sceneManager->GetSelectedGO());
+			}
+		}
+
+		if (go.get()->IsPrefab())
+		{
+			if (ImGui::MenuItem("Unpack Prefab"))
+			{
+				go.get()->UnpackPrefab();
+			}
 		}
 
 		if (ImGui::MenuItem("Remove"))
 		{
-			//Historn: Change to remove function
+			remove = true;
 			LOG(LogType::LOG_INFO, "Use Count: %d", go.use_count());
+			engine->N_sceneManager->SetSelectedGO(nullptr);
+
+			toDeleteList.push_back(go);
+
 			//go.get()->Delete();
-			go.get()->Disable();
+			//go.get()->Disable();
+		}
+
+		if ((go.get()->IsPrefab() && go.get()->IsEditablePrefab()) && ImGui::MenuItem("Lock"))
+		{
+			go.get()->SetEditablePrefab(false);
+		}
+
+		if ((go.get()->IsPrefab() && !go.get()->IsEditablePrefab()) && ImGui::MenuItem("Unlock"))
+		{
+			go.get()->SetEditablePrefab(true);
 		}
 
 		ImGui::EndPopup();
@@ -98,48 +335,80 @@ void PanelHierarchy::ContextMenu(std::shared_ptr<GameObject> go)
 
 bool PanelHierarchy::ReparentDragDrop(std::shared_ptr<GameObject> childGO)
 {
-
 	if (ImGui::BeginDragDropSource())
 	{
-		if (childGO != app->sceneManager->GetRootSceneGO())
+		if (childGO != engine->N_sceneManager->currentScene->GetRootSceneGO())
 		{
-			ImGui::SetDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+			if (childGO.get()->IsEditablePrefab())
+			{
+				ImGui::SetDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str(), &childGO, sizeof(GameObject));
+			}
 		}
 
 		ImGui::EndDragDropSource();
 	}
+
 	if (ImGui::BeginDragDropTarget())
 	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(app->sceneManager->GetSelectedGO().get()->GetName().c_str()))
+		if (engine->N_sceneManager->GetSelectedGO().get())
 		{
-			GameObject* dragging = *(GameObject**)payload->Data;
-
-			GameObject* currentParent = childGO.get();
-			while (currentParent)
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload(engine->N_sceneManager->GetSelectedGO().get()->GetName().c_str()))
 			{
-				if (currentParent == dragging)
+				GameObject* dragging = *(GameObject**)payload->Data;
+				GameObject* currentParent = childGO.get();
+
+				if (childGO.get()->IsEditablePrefab())
 				{
-					return false;
+					while (currentParent)
+					{
+						if (currentParent == dragging)
+							return false;
+
+						currentParent = currentParent->parent.lock().get();
+					}
+
+					GameObject* oldParent = dragging->parent.lock().get();
+					dragging->parent = childGO.get()->weak_from_this();
+					std::shared_ptr<GameObject> newChild = dragging->weak_from_this().lock();
+
+					if (oldParent != nullptr)
+					{
+						std::vector<std::shared_ptr<GameObject>>::iterator position = std::find(oldParent->children.begin(), oldParent->children.end(), newChild);
+						oldParent->children.erase(position);
+					}
+
+					if (dragging->parent.lock().get()->IsPrefab())
+					{
+						//dragging->SetPrefab(dragging->parent.lock().get()->GetPrefabID(), dragging->GetPrefabName());
+						dragging->parent.lock().get()->SetPrefabDirty(true);
+					}
+
+					childGO.get()->children.emplace_back(newChild);
+					reparent = true;
 				}
-				currentParent = currentParent->parent.lock().get();
 			}
-				
-			GameObject* oldParent = dragging->parent.lock().get();
-
-			dragging->parent = childGO.get()->weak_from_this();
-
-			std::shared_ptr<GameObject> newChild = dragging->weak_from_this().lock();
-
-			if (oldParent != nullptr)
-			{
-				std::vector<std::shared_ptr<GameObject>>::iterator position = std::find(oldParent->children.begin(), oldParent->children.end(), newChild);
-				oldParent->children.erase(position);
-			}
-
-			childGO.get()->children.emplace_back(newChild);
-			reparent = true;
 		}
+
 		ImGui::EndDragDropTarget();
 	}
+
 	return reparent;
+}
+
+void PanelHierarchy::SaveGameobjectAsPrefab(std::shared_ptr<GameObject> goToSaveAsPrefab)
+{
+	goToSaveAsPrefab->SetPrefab(UIDGen::GenerateUID(), goToSaveAsPrefab->GetName());
+
+	std::string prefabName = goToSaveAsPrefab->GetName() + ".prefab";
+
+	// Serialize the GameObject and save it as a prefab file
+	json gameObjectJSON = goToSaveAsPrefab->SaveGameObject();
+
+	fs::path filename = ASSETS_PATH;
+	filename += "Prefabs\\" + prefabName;
+
+	std::ofstream(filename) << gameObjectJSON.dump(2);
+
+	LOG(LogType::LOG_OK, "PREFAB CREATED SUCCESSFULLY");
+	engine->N_sceneManager->currentScene->SetIsDirty(true);
 }

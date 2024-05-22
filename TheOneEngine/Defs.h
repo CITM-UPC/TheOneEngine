@@ -8,6 +8,7 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_opengl.h"
 #include "nlohmann/json.hpp"
+#include "Log.h"
 
 #include <glm/glm.hpp>
 #include <glm/vec2.hpp>
@@ -16,7 +17,10 @@
 #include <glm/mat4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/quaternion.hpp>
-#include "glm/gtc/type_ptr.hpp"
+#include <glm/gtc/type_ptr.hpp>
+#include <glm/gtx/matrix_decompose.hpp>
+#include <glm/gtx/euler_angles.hpp>
+
 
 // NULL just in case ----------------------
 #ifdef NULL
@@ -24,6 +28,10 @@
 #endif
 #define NULL  0
 
+// Invalid Index
+#define INVALID_INDEX static_cast<unsigned long long>(-1)
+
+#define GL_PTR_OFFSET(i) reinterpret_cast<void*>(static_cast<intptr_t>(i))
 
 // PREDEFINED & GENERAL VARIABLES ------------------------------------------------
 /// Keep a value between 0.0f and 1.0f
@@ -136,13 +144,42 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 	a = b;
 	b = tmp;
 }
+
+/// Checks if a weak_ptr has not been initialized
+template <typename T>
+bool IsUninitialized(std::weak_ptr<T> const& weak)
+{
+	using wt = std::weak_ptr<T>;
+	return !weak.owner_before(wt{}) && !wt{}.owner_before(weak);
+}
+
+/// Checks for errors in OpenGL calls
+#ifdef _DEBUG
+#define GLCALL(_f)                     \
+    _f;                        \
+    { \
+	GLenum errorCode = glGetError(); \
+        const GLubyte* errorString = gluErrorString(errorCode);\
+	if(errorCode != GL_NO_ERROR){ LOG(LogType::LOG_ERROR, "GL_%d  %s", errorCode, errorString); LOG(LogType::LOG_ERROR, "%s:%d glGetError() = 0x%04x\n", __FILE__, __LINE__, errorCode); }\
+    assert(errorCode == GL_NO_ERROR); }
+#else  // NOT _DEBUG
+#define GLCALL(_f) _f
+#endif  // _DEBUG
+
+#define GLERR \
+		{ \
+        GLuint glerr;\
+        while((glerr = glGetError()) != GL_NO_ERROR){\
+            fprintf(stderr, "%s:%d glGetError() = 0x%04x\n", __FILE__, __LINE__, glerr); \
+			assert(glerr == GL_NO_ERROR);	\
+		}}
 // -------------------------------------------------------------------------------
 
 
 // CONFIGURATION -----------------------------------------------------------------
 #define TITLE "TheOneEngine"
 #define VERSION "v0.3"
-#define ORGANIZATION "[CITM - UPC]"
+#define ORGANIZATION "[SWG]"
 
 // Folder paths
 #define ASSETS_PATH "Assets\\"

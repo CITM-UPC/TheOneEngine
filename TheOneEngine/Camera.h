@@ -5,12 +5,17 @@
 #include "Defs.h"
 #include "GameObject.h"
 #include "Ray.h"
+#include "Log.h"
 
-#include "..\TheOneEditor\Log.h"
-#include "..\TheOneEditor\Input.h"
+#include "../TheOneEditor/Input.h"
 
 #include <memory>
 
+enum class CameraType 
+{
+    PERSPECTIVE,
+    ORTHOGRAPHIC
+};
 
 struct Plane
 {
@@ -38,7 +43,8 @@ struct Plane
 
 struct Frustum : public Plane
 {
-    // hekbas - don't use near and far as those are already defined in minwindef.h
+    // hekbas - don't use near and far
+    // those are already defined in minwindef.h
     Plane _near; 
     Plane _far;
     Plane left;
@@ -99,16 +105,11 @@ class Camera : public Component
 public:
 
     Camera(std::shared_ptr<GameObject> containerGO);
+    Camera(std::shared_ptr<GameObject> containerGO, Camera* ref);
     ~Camera();
-
-    void translate(const vec3f& translation, bool local = true);
-    void setPosition(const vec3f& newPosition);
-    void rotate(const vec3f& axis, float angle, bool local = true);  
-    void rotate(const vec3f& eulerRotation, bool local = true);
 
     const mat4f& getViewMatrix();
 
-    //update
     void UpdateCamera();
     void UpdateCameraVectors();
     void UpdateViewMatrix();
@@ -123,24 +124,29 @@ public:
 
 public:
 
+    CameraType cameraType;
+
+    //perpective
     double fov;
     double aspect;
+
+    //orthogonal
+    double size;
+
     double zNear;
     double zFar;
 
     float yaw, pitch;
 
-	vec3f eye;		// Position
-	vec3f center;	// LookAt
-	vec3f up;		// Orientation
-	vec3f forward;
-	vec3f right;
+	vec3f lookAt;
 
     Frustum frustum;
-    mat4 viewMatrix;
-    mat4 projectionMatrix;
-    mat4 viewProjectionMatrix;
+    glm::mat4 viewMatrix;
+    glm::mat4 projectionMatrix;
+    glm::mat4 viewProjectionMatrix;
 
     bool drawFrustum;
+
+    bool primaryCam;
 };
 #endif // !__CAMERA_H__

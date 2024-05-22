@@ -4,7 +4,7 @@
 
 #include "Panel.h"
 
-#include "..\TheOneEngine\GameObject.h"
+#include "../TheOneEngine/GameObject.h"
 
 #include <string>
 #include <vector>
@@ -25,9 +25,16 @@ public:
 
 	bool ReparentDragDrop(std::shared_ptr<GameObject> childGO);
 
+	void SaveGameobjectAsPrefab(std::shared_ptr<GameObject> goToSaveAsPrefab);
+
 private:
 	bool open_selected;
 	bool reparent;
+
+	bool remove = false;
+	bool duplicate = false;
+	bool createEmpty = false;
+	std::vector<std::shared_ptr<GameObject>> toDeleteList;
 };
 
 #endif // !__PANEL_HIERARCHY_H__

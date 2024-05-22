@@ -35,6 +35,9 @@ bld/
 !WWise/SDK/Release
 !Wwise/SDK/include/Win32
 !Wwise/SDK/include/AK/Tools/Win32
+/TheOneBuilder/Library
+/TheOneBuilder/Assets
+/TheOneEditor/Tools/import_anim.json
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -400,3 +403,10 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Allowed files
+!mono/bin/
+!mono/lib/Debug/
+!mono/lib/Release/
+!external/ozz/lib/Debug
+!external/ozz/lib/Release

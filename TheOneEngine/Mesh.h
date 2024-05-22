@@ -3,41 +3,52 @@
 #pragma once
 
 #include "Defs.h"
-#include "MeshLoader.h"
 #include "Component.h"
-#include "Texture.h"
-#include "Graphic.h"
+#include "Resources.h"
+
+#include "../TheOneAnimation/samples/framework/mesh.h"
+#include "ozz/base/maths/simd_math.h"
+#include "ozz/base/span.h"
 
 #include <vector>
 #include <memory>
 #include <string>
 
+
+class Camera;
+class Material;
 class GameObject;
 struct MeshBufferData;
+
 
 class Mesh : public Component
 {
 public:
 
     Mesh(std::shared_ptr<GameObject> containerGO);
+    Mesh(std::shared_ptr<GameObject> containerGO, Mesh* ref);
     virtual ~Mesh();
 
-    void DrawComponent();
+    void DrawComponent(Camera* camera);
 
     json SaveComponent();
     void LoadComponent(const json& meshJSON);
 
 private:
-
-    void ConfigureVertexFormat();
-    void DrawVertexNormals();
-    void DrawFaceNormals();
+    //void DrawVertexNormals();
+    //void DrawFaceNormals();
     //void DrawWireframe();
 
-public:
+    bool RenderOzzSkinnedMesh(
+        Model* mesh,
+        Material* material,
+        const ozz::span<ozz::math::Float4x4> _skinning_matrices,
+        const mat4& _transform);
+    bool RenderMesh(Model* mesh, Material* material, const mat4& transform);
 
-    MeshBufferedData mesh;
-    MeshData meshData;
+public:
+    ResourceId meshID = -1;
+    ResourceId materialID = -1;
 
     bool active;
     bool drawWireframe;
@@ -49,12 +60,6 @@ public:
    
     int normalLineWidth;
     float normalLineLength;
-
-    std::string path;
-
-private:
-
-    MeshLoader* meshLoader;
 };
 
 #endif // !__MESH_H__

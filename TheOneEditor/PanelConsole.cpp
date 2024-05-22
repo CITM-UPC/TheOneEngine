@@ -3,7 +3,8 @@
 #include "Gui.h"
 #include "imgui.h"
 
-#include "Log.h"
+#include "../TheOneEngine/EngineCore.h"
+#include "../TheOneEngine/Log.h"
 
 PanelConsole::PanelConsole(PanelType type, std::string name) : Panel(type, name) {}
 
@@ -16,8 +17,13 @@ bool PanelConsole::Draw()
 
 	if (ImGui::Begin("Console", &enabled, consoleFlags))
 	{
-		if (ImGui::SmallButton("Clear"))
-			app->CleanLogs();
+		if (ImGui::Button("Clear"))
+			engine->CleanLogs();
+
+		ImGui::SameLine();
+
+		static bool clearOnPlay = false;
+		ImGui::Checkbox("Clear on Play", &clearOnPlay);
 
 		ImGui::Separator();
 
@@ -28,48 +34,56 @@ bool PanelConsole::Draw()
 		if (ImGui::BeginChild("Scrollbar", ImVec2(0, 0), false, scrollFlags))
 		{
 			ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(5, 15));
-
 			std::string logType;
+			ImVec4 color = ImVec4(1, 1, 1, 1);
 
-			for (const auto& log : app->GetLogs())
+			for (const auto& log : engine->GetLogs())
 			{
 				switch (log.type)
 				{
 					case LogType::LOG_INFO:
 						logType = "";
+						color = ImVec4(1, 1, 1, 1);
 						break;
 
 					case LogType::LOG_ASSIMP:
 						logType = "[ASSIMP] ";
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
+						color = ImVec4(1, 1, 1, 1);
 						break;
 
 					case LogType::LOG_AUDIO:
 						logType = "[AUDIO] ";
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
+						color = ImVec4(1, 1, 1, 1);
+						break;
+
+					case LogType::LOG_MONO:
+						logType = "[MONO] ";
+						color = ImVec4(1, 1, 1, 1);
 						break;
 
 					case LogType::LOG_OK:
 						logType = "[OK] ";
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0, 1, 0, 1));
+						color = ImVec4(0, 1, 0, 1);
 						break;
 
 					case LogType::LOG_WARNING:
 						logType = "[WARNING] ";
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 1, 0, 1));
+						color = ImVec4(1, 1, 0, 1);
 						break;
 
 					case LogType::LOG_ERROR:
 						logType = "[ERROR] ";
-						ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1, 0, 0, 1));
+						color = ImVec4(1, 0, 0, 1);
 						break;
 				}
 				
 				if (log.message[0] == '-')
 					logType.insert(0, "\t");
 
+				ImGui::PushStyleColor(ImGuiCol_Text, color);
 				ImGui::Text(logType.c_str());
 				ImGui::PopStyleColor();
+
 				ImGui::SameLine();
 				ImGui::Text(log.message.c_str());
 			}
@@ -79,11 +93,12 @@ bool PanelConsole::Draw()
 			if (ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
 				ImGui::SetScrollHereY(1.0f);
 
-			ImGui::EndChild();
 		}
+		ImGui::EndChild();
 
-		ImGui::End();
+		if (clearOnPlay) engine->CleanLogs();
 	}
+	ImGui::End();
 
 	return true;
 }

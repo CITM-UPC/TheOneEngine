@@ -3,14 +3,18 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Texture.h"
+#include "Collider2D.h"
+#include "Listener.h"
+#include "AudioSource.h"
+#include "Canvas.h"
+#include "ParticleSystem.h"
 #include "UIDGen.h"
 #include "BBox.hpp"
-
-
-#include "../TheOneEditor/SceneManager.h"
+#include "Camera.h"
+#include "N_SceneManager.h"
 
 #include "Math.h"
-
+#include "EngineCore.h"
 
 GameObject::GameObject(std::string name) :
 	name(name),
@@ -19,6 +23,8 @@ GameObject::GameObject(std::string name) :
 	components(),
 	enabled(true),
 	isStatic(false),
+	isKeeped(false),
+	hasTransparency(false),
 	aabb()
 {
 	// hekbas - shared_from_this() must NOT be called in the constructor!!!
@@ -46,20 +52,46 @@ void GameObject::Update(double dt)
 
 	// Recalculate AABBs
 	aabb = CalculateAABB();
+
+	// Prefab deletion check to make GO not prefab
+	// Not works because only goes through GO update in PLAY state
+	/*if (this->IsPrefab())
+	{
+		std::stringstream prefabPath(ASSETS_PATH);
+		prefabPath << "Prefabs\\" << this->name;
+
+		std::ifstream prefabFile(prefabPath.str());
+
+		if (!prefabFile.good())
+		{
+			prefabID = 0;
+			SetPrefab(false);
+
+		}
+	}
+	return false;*/
 }
 
-void GameObject::Draw()
+void GameObject::Draw(Camera* camera)
 {
 	for (const auto& component : components)
 	{
-		if (component && component->IsEnabled())
-			component->DrawComponent();
+		if (component && component->IsEnabled() && component->GetType() != ComponentType::Canvas)
+			component->DrawComponent(camera);
 	}
 
 	//if (drawAABB)
 		DrawAABB();
 }
 
+void GameObject::DrawUI(Camera* camera, const DrawMode mode)
+{
+	auto canvas = this->GetComponent<Canvas>();
+
+	if (canvas && canvas->IsEnabled())
+		if (mode == DrawMode::GAME || canvas->debugDraw || engine->N_sceneManager->GetSceneIsPlaying())
+			canvas->DrawComponent(camera);
+}
 
 // Component ----------------------------------------
 void GameObject::RemoveComponent(ComponentType type)
@@ -83,7 +115,9 @@ void GameObject::RemoveComponent(ComponentType type)
 // AABB -------------------------------------
 void GameObject::GenerateAABBFromMesh()
 {
-	Mesh* mesh = GetComponent<Mesh>();
+	//TODO: this comment is temporal, it needs to be changed to retained mode
+
+	/*Mesh* mesh = GetComponent<Mesh>();
 
 	glGenBuffers(1, &mesh->mesh.vertex_buffer_id);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->mesh.vertex_buffer_id);
@@ -93,40 +127,27 @@ void GameObject::GenerateAABBFromMesh()
 	case Formats::F_V3:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(V3) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
 		for (const auto& v : std::span((V3*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
-			aabb.min = glm::min(aabb.min, vec3(v.v));
-			aabb.max = glm::max(aabb.max, vec3(v.v));
+			aabb.min = (glm::min)(aabb.min, vec3(v.v));
+			aabb.max = (glm::max)(aabb.max, vec3(v.v));
 		}
 		break;
 
 	case Formats::F_V3C4:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(V3C4) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
 		for (const auto& v : std::span((V3C4*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
-			aabb.min = glm::min(aabb.min, vec3(v.v));
-			aabb.max = glm::max(aabb.max, vec3(v.v));
+			aabb.min = (glm::min)(aabb.min, vec3(v.v));
+			aabb.max = (glm::max)(aabb.max, vec3(v.v));
 		}
 		break;
 
 	case Formats::F_V3T2:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(V3T2) * mesh->mesh.numVerts, mesh->meshData.vertex_data.data(), GL_STATIC_DRAW);
 		for (const auto& v : std::span((V3T2*)mesh->meshData.vertex_data.data(), mesh->meshData.vertex_data.size())) {
-			aabb.min = glm::min(aabb.min, vec3(v.v));
-			aabb.max = glm::max(aabb.max, vec3(v.v));
+			aabb.min = (glm::min)(aabb.min, vec3(v.v));
+			aabb.max = (glm::max)(aabb.max, vec3(v.v));
 		}
 		break;
-	}
-
-	//GLenum error = glGetError();
-	//if (error != GL_NO_ERROR) {
-	//    // Print the raw error code
-	//    fprintf(stderr, "OpenGL error code: %d\n", error);
-	//
-	//    // Print the corresponding error string
-	//    const char* errorString = reinterpret_cast<const char*>(gluErrorString(error));
-	//    fprintf(stderr, "OpenGL error: %s\n", errorString ? errorString : "Unknown");
-	//
-	//    assert(false); // Trigger an assertion failure for debugging
-	//}
-
+	}*/
 }
 
 AABBox GameObject::CalculateAABB()
@@ -135,9 +156,9 @@ AABBox GameObject::CalculateAABB()
 
 	for (const auto& child : children)
 	{
-		AABBox childAABB = (child.get()->GetComponent<Transform>()->getMatrix() * child.get()->CalculateAABB()).AABB();
-		aabb.min = glm::min(aabb.min, childAABB.min);
-		aabb.max = glm::max(aabb.max, childAABB.max);
+		AABBox childAABB = (child.get()->GetComponent<Transform>()->GetTransform() * child.get()->CalculateAABB()).AABB();
+		aabb.min = (glm::min)(aabb.min, childAABB.min);
+		aabb.max = (glm::max)(aabb.max, childAABB.max);
 	}
 
 	return aabb;
@@ -147,7 +168,7 @@ AABBox GameObject::CalculateAABBWithChildren()
 {
 	AABBox aabb = CalculateAABB();
 	// Transform the AABB to the coordinate system of the parent objects
-	mat4 parentTransform = GetComponent<Transform>()->GetWorldTransform();
+	mat4 parentTransform = GetComponent<Transform>()->CalculateWorldTransform();
 	OBBox obb = parentTransform * aabb;
 	return obb.AABB();
 }
@@ -265,11 +286,28 @@ void GameObject::Disable()
 
 void GameObject::Delete()
 {
-	for (const auto& component : components)
-		component.get_deleter();
+	auto it = std::find(parent.lock()->children.begin(), parent.lock()->children.end(), shared_from_this());
 
-	for (const auto& child : children)
-		child.~shared_ptr();
+	if (it != parent.lock()->children.end())
+  		parent.lock()->children.erase(it);	
+}
+
+void GameObject::AddToDelete(std::vector<GameObject*>& objectsToDelete)
+{
+	for (auto go : objectsToDelete)
+		if (go == this) return;
+
+	objectsToDelete.push_back(this);
+}
+
+std::vector<Component*> GameObject::GetAllComponents(bool tunometecabrasalamambiche)
+{
+	std::vector<Component*> tempComponents;
+	for (const auto& item : components)
+	{
+		tempComponents.push_back(item.get());
+	}
+	return tempComponents;
 }
 
 std::string GameObject::GetName() const
@@ -292,6 +330,11 @@ void GameObject::SetStatic(bool staticFlag)
 	isStatic = staticFlag;
 }
 
+bool GameObject::HasCameraComponent()
+{
+	return this->GetComponent<Camera>();
+}
+
 void GameObject::CreateUID()
 {
 	UID = UIDGen::GenerateUID();
@@ -311,7 +354,18 @@ json GameObject::SaveGameObject()
 	gameObjectJSON["UID"] = UID;
 	gameObjectJSON["Name"] = name;
 	gameObjectJSON["Static"] = isStatic;
+	gameObjectJSON["Keeped"] = isKeeped;
 	gameObjectJSON["Enabled"] = enabled;
+	gameObjectJSON["HasTransparency"] = hasTransparency;
+	
+	//Save prefab variables
+	if (prefabID != 0)
+	{
+		gameObjectJSON["PrefabID"] = prefabID;
+		gameObjectJSON["EditablePrefab"] = editablePrefab;
+		gameObjectJSON["PrefabDirty"] = isPrefabDirty;
+		gameObjectJSON["PrefabName"] = prefabName;
+	}
 
 	if (!components.empty())
 	{
@@ -356,9 +410,37 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 		isStatic = gameObjectJSON["Static"];
 	}
 
+	if (gameObjectJSON.contains("Keeped"))
+	{
+		isKeeped = gameObjectJSON["Keeped"];
+	}
+
 	if (gameObjectJSON.contains("Enabled"))
 	{
 		enabled = gameObjectJSON["Enabled"];
+	}
+
+	if (gameObjectJSON.contains("HasTransparency"))
+	{
+		hasTransparency = gameObjectJSON["HasTransparency"];
+	}
+
+	if (gameObjectJSON.contains("PrefabID"))
+	{
+		prefabID = gameObjectJSON["PrefabID"];
+
+		if (gameObjectJSON.contains("EditablePrefab"))
+		{
+			editablePrefab = gameObjectJSON["EditablePrefab"];
+		}
+		if (gameObjectJSON.contains("PrefabDirty"))
+		{
+			isPrefabDirty = gameObjectJSON["PrefabDirty"];
+		}
+		if (gameObjectJSON.contains("PrefabName"))
+		{
+			prefabName = gameObjectJSON["PrefabName"];
+		}
 	}
 
 	// Load components
@@ -370,20 +452,66 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 		{
 
 			// Assuming each component has a LoadComponent function
-			if (componentJSON["Type"] == 0)
+			if (componentJSON["Type"] == (int)ComponentType::Transform)
 			{
 				this->AddComponent<Transform>();
 				this->GetComponent<Transform>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON["Type"] == 1)
+			else if (componentJSON["Type"] == (int)ComponentType::Camera)
 			{
 				this->AddComponent<Camera>();
 				this->GetComponent<Camera>()->LoadComponent(componentJSON);
 			}
-			else if (componentJSON["Type"] == 2)
+			else if (componentJSON["Type"] == (int)ComponentType::Mesh)
 			{
 				this->AddComponent<Mesh>();
 				this->GetComponent<Mesh>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::Script)
+			{
+				this->AddScript(componentJSON["ScriptName"]);
+				this->GetComponent<Script>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::Listener)
+			{
+				this->AddComponent<Listener>();
+				this->GetComponent<Listener>()->LoadComponent(componentJSON);
+
+				// Check if the gameobject has an Audio Source
+				if (this->GetComponent<AudioSource>() == nullptr)
+					this->GetComponent<Listener>()->goID = audioManager->audio->RegisterGameObject(this->GetName());
+				else
+					this->GetComponent<Listener>()->goID = this->GetComponent<AudioSource>()->goID;
+				audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)this->GetComponent<Listener>());
+				audioManager->audio->SetDefaultListener(this->GetComponent<Listener>()->goID);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::AudioSource)
+			{
+				this->AddComponent<AudioSource>();
+				this->GetComponent<AudioSource>()->LoadComponent(componentJSON);
+
+				// Check if the gameobject has a Listener
+				if (this->GetComponent<Listener>() == nullptr)
+					this->GetComponent<AudioSource>()->goID = audioManager->audio->RegisterGameObject(this->GetName());
+				else
+					this->GetComponent<AudioSource>()->goID = this->GetComponent<Listener>()->goID;
+
+				audioManager->AddAudioObject((std::shared_ptr<AudioComponent>)this->GetComponent<AudioSource>());
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::Collider2D)
+			{
+				this->AddComponent<Collider2D>();
+				this->GetComponent<Collider2D>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::Canvas)
+			{
+				this->AddComponent<Canvas>();
+				this->GetComponent<Canvas>()->LoadComponent(componentJSON);
+			}
+			else if (componentJSON["Type"] == (int)ComponentType::ParticleSystem)
+			{
+				this->AddComponent<ParticleSystem>();
+				this->GetComponent<ParticleSystem>()->LoadComponent(componentJSON);
 			}
 		}
 	}
@@ -401,6 +529,53 @@ void GameObject::LoadGameObject(const json& gameObjectJSON)
 			// Add the loaded child game object to the current game object
 			childGameObject.get()->parent = this->weak_from_this().lock();
 			this->children.emplace_back(childGameObject);
+		}
+	}
+}
+
+void GameObject::SetPrefab(const uint32_t& pID, const std::string fileName)
+{
+	prefabID = pID;
+	prefabName = fileName;
+}
+
+void GameObject::UnpackPrefab()
+{
+	if (IsPrefab())
+	{
+		SetPrefab(0, "");
+		editablePrefab = true; 
+		isPrefabDirty = false;
+	}
+		
+}
+
+void GameObject::SetEditablePrefab(bool editable)
+{
+	if (IsPrefab())
+	{
+		editablePrefab = editable;
+		for (auto item = children.begin(); item != children.end(); ++item) {
+			if (*item != nullptr) {
+				(*item).get()->SetEditablePrefab(editable);
+			}
+		}
+	}
+}
+
+void GameObject::SetPrefabDirty(bool changed)
+{
+	if (IsPrefab())
+	{
+		isPrefabDirty = changed;
+		if (parent.lock() != engine->N_sceneManager->currentScene->GetRootSceneGO() && parent.lock().get()->GetPrefabID() == this->prefabID)
+		{
+			parent.lock().get()->SetPrefabDirty(changed);
+		}
+		for (auto item = children.begin(); item != children.end(); ++item) {
+			if (*item != nullptr) {
+				(*item).get()->SetPrefabDirty(changed);
+			}
 		}
 	}
 }

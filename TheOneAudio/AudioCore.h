@@ -4,6 +4,9 @@
 
 #include "AudioUtility.h"
 
+//max audioevents at the same time, number can be changed if needed
+#define MAX_AUDIO_EVENTS 20
+
 class AudioEvent
 {
 public:
@@ -13,6 +16,13 @@ public:
 
 	AkPlayingID playing_id;					// When Event is played, is different from 0L
 	AkCallbackFunc event_call_back;			// Call back function
+};
+
+enum struct EngineState
+{
+	STOPPED = 0,
+	PLAYING = 1,
+	PAUSED = 2
 };
 
 class AudioCore
@@ -26,15 +36,49 @@ public:
 
 	void CleanUp();
 
+	// Set default listener
+	void SetDefaultListener(AkGameObjectID goID);
+	void RemoveDefaultListener(AkGameObjectID goID);
+
+	// ---------------------- EVENTS ---------------------- //
+	// Register a Wwise game object and return its id or return -1 if failed
+	AkGameObjectID RegisterGameObject(std::string name);
+	// Unregister a Wwise game object
+	void UnregisterGameObject(AkGameObjectID goID, std::string name);
+	// Function to play an event
+	void PlayEvent(AkUniqueID event, AkGameObjectID goID);
+	// Function to stop event
+	void StopEvent(AkUniqueID event, AkGameObjectID goID);
+	// Function to pause event
+	void PauseEvent(AkUniqueID event, AkGameObjectID goID);
+	// Function to resume the event if it has been paused
+	void ResumeEvent(AkUniqueID event, AkGameObjectID goID);
+
+	// ----------------------- STATES ---------------------- //
+	void SetState(AkStateGroupID stateGroup, AkStateID state);
+	void SetState(const char* stateGroup, const char* state);
+
+	// ---------------------- SWITCHES ---------------------- //
+	void SetSwitch(AkSwitchGroupID switchGroup, AkSwitchStateID switchState, AkGameObjectID goID);
+
+	// ------------------------ RTPC ------------------------ //
+	void SetRTPCValue(const char* name, int value);
+
+	//audio engine functions
 	void PlayEngine();
 	void PauseEngine();
+	void StopEngine();
 
-	void SetListenerTransform(float posx, float posy, float posz, float ofx, float ofy, float ofz, float otx, float oty, float otz);
-	void SetSpatial1Transform(float posx, float posy, float posz);
-	void SetSpatial2Transform(float posx, float posy, float posz);
+	//volume functions
+	//percentage, from 0 (mute) to 100 (max)
+	void SetGlobalVolume(float volume);
 
-	bool isGameOn;
+	EngineState state = EngineState::STOPPED;
 
+	float globalVolume = 100.0f;
+
+
+	//function called when an event finishes, to make AudioEvent know it ended
 	static void EventCallBack(AkCallbackType in_eType, AkCallbackInfo* in_pCallbackInfo);
 
 private:
@@ -46,21 +90,12 @@ private:
 	bool InitSpatialAudio();
 	bool InitCommunication();
 
-	// Camera
-	AkGameObjectID GAME_OBJECT_ID_BACKGROUNDMUSIC;
-	// Static
-	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND1;
-	// Moving
-	AkGameObjectID GAME_OBJECT_ID_SPATIALSOUND2;
+	//vector of all game object ids
+	std::vector<AkGameObjectID> gameObjectIDs;
 
-	// 1st music background
-	AudioEvent* music1;
-	// 2nd music background
-	AudioEvent* music2;
-	// Static
-	AudioEvent* spatial1;
-	// Moving
-	AudioEvent* spatial2;
+	//vector of all audio events that must be used
+	//WHEN ITERATING IT USE AS MAX VALUE MAX_AUDIO_EVENTS
+	std::vector<AudioEvent*> audioEvents;
 
 	//true: music1
 	//false: music2

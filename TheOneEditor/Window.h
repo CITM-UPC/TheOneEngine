@@ -3,7 +3,7 @@
 #pragma once
 
 #include "Module.h"
-#include "..\TheOneEngine\Defs.h"
+#include "../TheOneEngine/Defs.h"
 
 #include <SDL2/SDL.h>
 
@@ -58,6 +58,11 @@ public:
 
     void OnResizeWindow(int width, int height);
 
+    void InfiniteScroll(bool global = false);
+
+    uint GetWidth() { return width; }
+    uint GetHeight() { return height; }
+
 public:
     SDL_Window* window;
     SDL_GLContext glContext;
@@ -71,6 +76,8 @@ private:
     Resolution resolution;
     uint width;
     uint height;
+    uint minWidth;
+    uint minHeight;
 };
 
 #endif // !__WINDOW_H__

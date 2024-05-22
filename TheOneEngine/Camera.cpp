@@ -6,23 +6,20 @@
 #include "Ray.h"
 
 Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO, ComponentType::Camera),
-    aspect(1.777), fov(65),
-    zNear(0.1), zFar(1000),
+    cameraType(CameraType::PERSPECTIVE),
+    aspect(1.777), fov(65), size(200), 
+    zNear(0.1), zFar(3000),
     yaw(0), pitch(0),
     viewMatrix(1.0f),
-    forward(0, 0, 0), right(0, 0, 0), up(0, 0, 0),
-    eye(0, 0, 0), center(0, 0, 0),
-    drawFrustum(true)
+    lookAt(0, 0, 0),
+    drawFrustum(true),
+    primaryCam(false)
 {
     Transform* transform = containerGO.get()->GetComponent<Transform>();
 
     if (transform)
     {
-        forward = transform->getForward();
-        right = transform->getRight();
-        up = transform->getUp();
-        eye = transform->getPosition();
-        center = eye - forward; //hekbas maybe +
+        lookAt = transform->GetPosition() + transform->GetForward();
     }
     else
     {
@@ -30,72 +27,29 @@ Camera::Camera(std::shared_ptr<GameObject> containerGO) : Component(containerGO,
     }  
 }
 
+Camera::Camera(std::shared_ptr<GameObject> containerGO, Camera* ref) : Component(containerGO, ComponentType::Camera),
+    cameraType(ref->cameraType),
+    aspect(ref->aspect), fov(ref->fov), size(ref->size),
+    zNear(ref->zNear), zFar(ref->zFar),
+    yaw(ref->yaw), pitch(ref->pitch),
+    viewMatrix(ref->viewMatrix),
+    lookAt(ref->lookAt),
+    drawFrustum(ref->drawFrustum),
+    primaryCam(ref->primaryCam)
+{
+    frustum = ref->frustum;
+    projectionMatrix = ref->projectionMatrix;
+    viewProjectionMatrix = ref->viewProjectionMatrix;
+}
+
 Camera::~Camera() {}
 
-
-void Camera::translate(const vec3f& translation, bool local)
-{
-    if (auto sharedGO = this->containerGO.lock())
-    {
-        sharedGO.get()->GetComponent<Transform>()->translate(translation, local);
-    }
-    else
-    {
-        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
-    }
-
-    UpdateCamera();
-}
-
-void Camera::setPosition(const vec3f& newPosition)
-{
-    if (auto sharedGO = this->containerGO.lock())
-    {
-        sharedGO.get()->GetComponent<Transform>()->setPosition(newPosition);
-    }
-    else
-    {
-        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
-    }
-
-    UpdateCamera();
-}
-
-void Camera::rotate(const vec3f& axis, float angle, bool local)
-{
-    if (auto sharedGO = this->containerGO.lock())
-    {
-        sharedGO.get()->GetComponent<Transform>()->rotate(axis, angle, local);
-    }
-    else
-    {
-        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
-    }
-
-    UpdateCamera();
-}
-
-void Camera::rotate(const vec3f& eulerRotation, bool local)
-{
-    if (auto sharedGO = this->containerGO.lock())
-    {
-        sharedGO.get()->GetComponent<Transform>()->rotate(eulerRotation, local);
-    }
-    else
-    {
-        LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
-    }
-
-    UpdateCamera();
-}
 
 const mat4f& Camera::getViewMatrix()
 {
     return viewMatrix;
 }
 
-
-// update camera
 
 void Camera::UpdateCamera()
 {
@@ -108,16 +62,12 @@ void Camera::UpdateCamera()
 
 void Camera::UpdateCameraVectors()
 {
-    if (auto sharedGO = this->containerGO.lock())
+    GameObject* GO = this->containerGO.lock().get();
+
+    if (GO)
     {
-        Transform* transform = sharedGO.get()->GetComponent<Transform>();
-
-        forward = transform->getForward();
-        right = transform->getRight();
-        up = transform->getUp();
-
-        eye = transform->getPosition();
-        center = eye + forward;
+        Transform* transform = GO->GetComponent<Transform>();
+        lookAt = transform->GetPosition() + transform->GetForward();
     }
     else
     {
@@ -127,10 +77,16 @@ void Camera::UpdateCameraVectors()
 
 void Camera::UpdateViewMatrix()
 {
-    if (auto sharedGO = this->containerGO.lock())
+    GameObject* GO = this->containerGO.lock().get();
+
+    if (GO)
     {
-        Camera* camera = sharedGO.get()->GetComponent<Camera>();
-        viewMatrix = glm::lookAt(camera->eye, camera->center, camera->up);
+		Transform* transform = GO->GetComponent<Transform>();
+        Camera* camera = GO->GetComponent<Camera>();
+        glm::vec3 tempPosition = transform->GetPosition();
+        glm::vec3 tempUp = transform->GetUp();
+
+        viewMatrix = glm::lookAt(tempPosition, camera->lookAt, tempUp);
     }
     else
     {
@@ -140,7 +96,24 @@ void Camera::UpdateViewMatrix()
 
 void Camera::UpdateProjectionMatrix()
 {
-    projectionMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+    switch (cameraType)
+    {
+    case CameraType::PERSPECTIVE:
+        projectionMatrix = glm::perspective(glm::radians(fov), aspect, zNear, zFar);
+        break;
+
+    case CameraType::ORTHOGRAPHIC:
+    {
+        double halfWidth = size * 0.5f;
+        double halfHeight = halfWidth / aspect;
+        projectionMatrix = glm::ortho(-halfWidth, halfWidth, -halfHeight, halfHeight, zNear, zFar);
+    }
+    break;
+
+    default:
+        LOG(LogType::LOG_ERROR, "CameraType invalid!");
+        break;
+    }
 }
 
 void Camera::UpdateViewProjectionMatrix()
@@ -158,10 +131,21 @@ Ray Camera::ComputeCameraRay(float x, float y)
 {
     glm::mat4 viewProjInverse = glm::inverse(viewProjectionMatrix);
 
-    //glm::vec4 worldOrigin = viewProjInverse * glm::vec4(x, y, -1.0f, 1.0f);
+    //glm::vec4 worldDirection = viewProjInverse * glm::vec4(x, y, -1.0f, 1.0f);
     glm::vec4 worldDirection = viewProjInverse * glm::vec4(x, y, 1.0f, 1.0f);
 
-    return Ray(eye, glm::normalize(worldDirection));
+	GameObject* GO = this->containerGO.lock().get();
+
+	if (GO)
+	{
+		Transform* transform = GO->GetComponent<Transform>();
+        return Ray(transform->GetPosition(), glm::normalize(worldDirection));
+	}
+	else
+	{
+		LOG(LogType::LOG_ERROR, "GameObject Container invalid!");
+        return Ray();
+	}
 }
 
 
@@ -171,10 +155,10 @@ json Camera::SaveComponent()
 
     cameraJSON["Name"] = name;
     cameraJSON["Type"] = type;
+
     if (auto pGO = containerGO.lock())
-    {
         cameraJSON["ParentUID"] = pGO.get()->GetUID();
-    }
+
     cameraJSON["UID"] = UID;
     cameraJSON["FOV"] = fov;
     cameraJSON["Aspect"] = aspect;
@@ -182,18 +166,9 @@ json Camera::SaveComponent()
     cameraJSON["zFar"] = zFar;
     cameraJSON["Yaw"] = yaw;
     cameraJSON["Pitch"] = pitch;
-
-    //Maybe not necessary to serialize
-    //hekbas - correct, Frustum can be created from camera
-    /*cameraJSON["Frustum"]["nearTopLeft"] = { frustum.nearTopLeft.x, frustum.nearTopLeft.y, frustum.nearTopLeft.z };
-    cameraJSON["Frustum"]["nearTopRight"] = { frustum.nearTopRight.x, frustum.nearTopRight.y, frustum.nearTopRight.z };
-    cameraJSON["Frustum"]["nearBottomLeft"] = { frustum.nearBottomLeft.x, frustum.nearBottomLeft.y, frustum.nearBottomLeft.z };
-    cameraJSON["Frustum"]["nearBottomRight"] = { frustum.nearBottomRight.x, frustum.nearBottomRight.y, frustum.nearBottomRight.z };
-
-    cameraJSON["Frustum"]["farTopLeft"] = { frustum.farTopLeft.x, frustum.farTopLeft.y, frustum.farTopLeft.z };
-    cameraJSON["Frustum"]["farTopRight"] = { frustum.farTopRight.x, frustum.farTopRight.y, frustum.farTopRight.z };
-    cameraJSON["Frustum"]["farBottomLeft"] = { frustum.farBottomLeft.x, frustum.farBottomLeft.y, frustum.farBottomLeft.z };
-    cameraJSON["Frustum"]["farBottomRight"] = { frustum.farBottomRight.x, frustum.farBottomRight.y, frustum.farBottomRight.z };*/
+    cameraJSON["Size"] = size;
+    cameraJSON["CameraType"] = cameraType;
+    cameraJSON["PrimaryCamera"] = primaryCam;
 
     return cameraJSON;
 }
@@ -201,59 +176,27 @@ json Camera::SaveComponent()
 void Camera::LoadComponent(const json& cameraJSON)
 {
     // Load basic properties
-    if (cameraJSON.contains("UID"))
-    {
-        UID = cameraJSON["UID"];
-    }
-
-    if (cameraJSON.contains("Name"))
-    {
-        name = cameraJSON["Name"];
-    }
-
-    // Load parent UID and set parent
-    /*if (cameraJSON.contains("ParentUID"))
-    {
-        uint32_t parentUID = cameraJSON["ParentUID"];
-        if (auto parentGameObject = SceneManager::GetInstance().FindGOByUID(parentUID))
-        {
-            containerGO = parentGameObject;
-        }
-    }*/
+    if (cameraJSON.contains("UID")) UID = cameraJSON["UID"];
+    if (cameraJSON.contains("Name")) name = cameraJSON["Name"];
 
     // Load camera-specific properties
-    if (cameraJSON.contains("FOV"))
+    if (cameraJSON.contains("FOV")) fov = cameraJSON["FOV"];
+    if (cameraJSON.contains("Aspect")) aspect = cameraJSON["Aspect"];
+    if (cameraJSON.contains("zNear")) zNear = cameraJSON["zNear"];
+    if (cameraJSON.contains("zFar")) zFar = cameraJSON["zFar"];
+    if (cameraJSON.contains("Yaw")) yaw = cameraJSON["Yaw"];
+    if (cameraJSON.contains("Pitch")) pitch = cameraJSON["Pitch"];
+    if (cameraJSON.contains("Size")) size = cameraJSON["Size"];
+
+    if (cameraJSON.contains("CameraType")) 
     {
-        fov = cameraJSON["FOV"];
+        if (cameraJSON["CameraType"] == 0)
+            cameraType = CameraType::PERSPECTIVE;
+        else if (cameraJSON["CameraType"] == 1)
+            cameraType = CameraType::ORTHOGRAPHIC;
     }
 
-    if (cameraJSON.contains("Aspect"))
-    {
-        aspect = cameraJSON["Aspect"];
-    }
-
-    if (cameraJSON.contains("zNear"))
-    {
-        zNear = cameraJSON["zNear"];
-    }
-
-    if (cameraJSON.contains("zFar"))
-    {
-        zFar = cameraJSON["zFar"];
-    }
-
-    if (cameraJSON.contains("Yaw"))
-    {
-        yaw = cameraJSON["Yaw"];
-    }
-
-    if (cameraJSON.contains("Pitch"))
-    {
-        pitch = cameraJSON["Pitch"];
-    }
-
-    // Implement additional logic to handle other camera-specific properties as needed
-    // ...
+    if (cameraJSON.contains("PrimaryCamera")) primaryCam = cameraJSON["PrimaryCamera"];
 
     // Optional: Recalculate view and projection matrices based on loaded data
     UpdateCamera();

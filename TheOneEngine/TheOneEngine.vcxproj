@@ -11,37 +11,145 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Action.h" />
+    <ClInclude Include="Animation\animations\OzzAnimationPartialBlending.h" />
+    <ClInclude Include="Animation\animations\OzzAnimationSimple.h" />
+    <ClInclude Include="Animation\OzzAnimation.h" />
+    <ClInclude Include="AudioComponent.h" />
+    <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="Billboard.h" />
+    <ClInclude Include="ButtonImageUI.h" />
+    <ClInclude Include="Buffer.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CheckerUI.h" />
+    <ClInclude Include="Collider2D.h" />
+    <ClInclude Include="CollisionSolver.h" />
+    <ClInclude Include="Canvas.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="Cube.h" />
-    <ClInclude Include="CubeImmediateMode.h" />
+    <ClInclude Include="DebugShape.h" />
     <ClInclude Include="Defs.h" />
+    <ClInclude Include="Easing.h" />
+    <ClInclude Include="EasingManager.h" />
+    <ClInclude Include="FileDialog.h" />
+    <ClInclude Include="Font.h" />
+    <ClInclude Include="Framebuffer.h" />
+    <ClInclude Include="Emmiter.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GamepadInput.h" />
+    <ClInclude Include="InitializeEmmiterModule.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Graphic.h" />
+    <ClInclude Include="Listener.h" />
+    <ClInclude Include="Log.h" />
+    <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
-    <ClInclude Include="MeshLoader.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="MonoManager.h" />
+    <ClInclude Include="MonoRegisterer.h" />
+    <ClInclude Include="MSDFData.h" />
+    <ClInclude Include="Particle.h" />
+    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="N_SceneManager.h" />
+    <ClInclude Include="RenderEmmiterModule.h" />
+    <ClInclude Include="Renderer2D.h" />
+    <ClInclude Include="Resources.h" />
+    <ClInclude Include="ResourcesFontImpl.h" />
+    <ClInclude Include="ResourcesImageImpl.h" />
+    <ClInclude Include="ResourcesImpl.h" />
+    <ClInclude Include="ResourcesMaterialImpl.h" />
+    <ClInclude Include="ResourcesModelImpl.h" />
+    <ClInclude Include="ResourcesShaderImpl.h" />
+    <ClInclude Include="Script.h" />
+    <ClInclude Include="SingleOrRandom.h" />
+    <ClInclude Include="SliderUI.h" />
+    <ClInclude Include="SpawnEmmiterModule.h" />
+    <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="TextUI.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="EngineCore.h" />
+    <ClInclude Include="Shader.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UIDGen.h" />
+    <ClInclude Include="ImageUI.h" />
+    <ClInclude Include="ItemUI.h" />
+    <ClInclude Include="UniformBuffer.h" />
+    <ClInclude Include="UpdateEmmiterModule.h" />
+    <ClInclude Include="Uniform.h" />
+    <ClInclude Include="VertexArray.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Animation\animations\OzzAnimationPartialBlending.cpp" />
+    <ClCompile Include="Animation\animations\OzzAnimationSimple.cpp" />
+    <ClCompile Include="Animation\OzzAnimation.cpp" />
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="ButtonImageUI.cpp" />
+    <ClCompile Include="Buffer.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CheckerUI.cpp" />
+    <ClCompile Include="Collider2D.cpp" />
+    <ClCompile Include="CollisionSolver.cpp" />
+    <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="Cube.cpp" />
-    <ClCompile Include="CubeImmediateMode.cpp" />
+    <ClCompile Include="Easing.cpp" />
+    <ClCompile Include="FileDialog.cpp" />
+    <ClCompile Include="Font.cpp" />
+    <ClCompile Include="Framebuffer.cpp" />
+    <ClCompile Include="Emmiter.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GamepadInput.cpp" />
+    <ClCompile Include="InitializeEmmiterModule.cpp" />
+    <ClCompile Include="Listener.cpp" />
+    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
-    <ClCompile Include="MeshLoader.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="MonoManager.cpp" />
+    <ClCompile Include="MonoRegisterer.cpp" />
+    <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="Ray.cpp" />
-    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="N_SceneManager.cpp" />
+    <ClCompile Include="RenderEmmiterModule.cpp" />
+    <ClCompile Include="Renderer2D.cpp" />
+    <ClCompile Include="ResourcesImpl.cpp" />
+    <ClCompile Include="Script.cpp" />
+    <ClCompile Include="SingleOrRandom.cpp" />
+    <ClCompile Include="SliderUI.cpp" />
+    <ClCompile Include="SpawnEmmiterModule.cpp" />
     <ClCompile Include="EngineCore.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="AudioSource.cpp" />
+    <ClCompile Include="TextUI.cpp" />
+    <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="ImageUI.cpp" />
+    <ClCompile Include="ItemUI.cpp" />
+    <ClCompile Include="Uniform.cpp" />
+    <ClCompile Include="UniformBuffer.cpp" />
+    <ClCompile Include="VertexArray.cpp" />
+    <ClCompile Include="UpdateEmmiterModule.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\extern\msdf-atlas-gen\msdf-atlas-gen.vcxproj">
+      <Project>{38bd587b-248b-4c81-0d1f-bda7f98b28e6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\extern\msdf-atlas-gen\msdfgen\freetype\freetype.vcxproj">
+      <Project>{89895bd8-7556-b6e3-9e6f-a48b8a9beb71}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\extern\msdf-atlas-gen\msdfgen\msdfgen.vcxproj">
+      <Project>{8900d8dd-f5df-5679-fef7-e14f6a56bdda}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TheOneAnimation\TheOneAnimation.vcxproj">
+      <Project>{6ceb38e1-d500-4b35-92d4-9d7051489f29}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\TheOneAudio\TheOneAudio.vcxproj">
       <Project>{606662a0-b707-4c97-8361-5d46fd7fd1f3}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\TheOneScripting\TheOneScripting.csproj">
+      <Project>{e3064d12-da09-4437-920e-cfeee63bdd82}</Project>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -83,9 +191,10 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)Wwise\SDK\include\Win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)mono\include\;$(SolutionDir);$(SolutionDir)TheOneAnimation\;$(SolutionDir)TheOneAnimation\include\;$(SolutionDir)TheOneAnimation\src\;$(SolutionDir)TheOneAnimation\samples\;$(SolutionDir)extern\msdf-atlas-gen\msdf-atlas-gen;$(SolutionDir)extern\msdf-atlas-gen\msdfgen</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -94,14 +203,17 @@
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew gli stb glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;mono-2.0-sgen.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)mono\lib\Debug\</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>copy "..\mono\bin\" "..\x64\Debug\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -109,9 +221,9 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>AK_OPTIMIZED;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)Wwise\SDK\include\Win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg\installed\x64-windows\include\;$(SolutionDir)Wwise\SDK\include\;$(SolutionDir)Wwise\SDK\include\Win32;$(SolutionDir)mono\include\;$(SolutionDir)TheOneAnimation\;$(SolutionDir)TheOneAnimation\include\;$(SolutionDir)TheOneAnimation\src\;$(SolutionDir)TheOneAnimation\samples\;$(SolutionDir)extern\msdf-atlas-gen\msdf-atlas-gen\;$(SolutionDir)extern\msdf-atlas-gen\msdfgen;$(SolutionDir)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
     </ClCompile>
@@ -124,14 +236,17 @@ $(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohm
     </Link>
     <PreBuildEvent>
       <Command>call $(SolutionDir)vcpkg\bootstrap-vcpkg.bat
-$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
+$(SolutionDir)\vcpkg\vcpkg.exe install opengl glew gli stb glm assimp pcg simdjson nlohmann-json devil[libjpeg,libpng] --recurse --overlay-triplets=$(SolutionDir)custom-triplets</Command>
     </PreBuildEvent>
     <Lib>
-      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib</AdditionalDependencies>
+      <AdditionalDependencies>OpenGL32.lib;GlU32.lib;assimp-vc142-mt.lib;DevIL.lib;ILU.lib;ILUT.lib;mono-2.0-sgen.lib;</AdditionalDependencies>
     </Lib>
     <Lib>
-      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg\installed\x64-windows\lib\;$(SolutionDir)mono\lib\Release\</AdditionalLibraryDirectories>
     </Lib>
+    <PostBuildEvent>
+      <Command>copy "..\mono\bin\" "..\x64\Release\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

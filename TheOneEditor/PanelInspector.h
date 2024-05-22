@@ -3,7 +3,9 @@
 #pragma once
 
 #include "Panel.h"
-#include "..\TheOneEngine\Defs.h"
+#include "../TheOneEngine/Defs.h"
+
+class GameObject;
 
 class PanelInspector : public Panel
 {
@@ -11,15 +13,35 @@ public:
 	PanelInspector(PanelType type, std::string name);
 	~PanelInspector();
 
+	void OnSelectGO(std::shared_ptr<GameObject> gameObj);
 	bool Draw();
 
+	void ChooseScriptNameWindow();
+	void ChooseParticlesToImportWindow();
+
+	void OverridePrefabs(GameObject& gameObject);
+	void OverridePrefabFile(GameObject& gameObject);
+
 private:
-	bool matrixDirty;
+	GameObject* selectedGO = nullptr;
 
 	vec3f view_pos;
 	vec3f view_rot_rad;
 	vec3f view_rot_deg;
 	vec3f view_sca;
+
+	bool matrixDirty;
+	bool chooseScriptNameWindow;
+	bool chooseParticlesToImportWindow;
+
+	const char* colliders[2] =
+	{
+		"Circle",
+		"Square",
+	};
+
+	int sliderDesignOptionToModify = 0;
+	bool sliderActivePart = true;
 };
 
 #endif // !__PANEL_INSPECTOR_H__
